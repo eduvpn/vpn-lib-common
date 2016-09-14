@@ -33,12 +33,12 @@ class Service
         $this->hooks = [];
     }
 
-    public function addHook($type, $name, callable $callback)
+    public function addHook($type, $name, HookInterface $hook)
     {
         if (!array_key_exists($type, $this->hooks)) {
             $this->hooks[$type] = [];
         }
-        $this->hooks[$type][] = ['name' => $name, 'cb' => $callback];
+        $this->hooks[$type][] = ['name' => $name, 'hook' => $hook];
     }
 
     public function addRoute($requestMethod, $pathInfo, callable $callback)
@@ -68,7 +68,7 @@ class Service
             $hookData = [];
             if (array_key_exists('before', $this->hooks)) {
                 foreach ($this->hooks['before'] as $hook) {
-                    $hookData[$hook['name']] = $hook['cb']($request);
+                    $hookData[$hook['name']] = $hook['hook']->execute($request);
                 }
             }
 

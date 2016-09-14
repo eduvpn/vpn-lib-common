@@ -105,9 +105,13 @@ class ServiceTest extends PHPUnit_Framework_TestCase
         );
 
         $service = new Service();
-        $service->addHook('before', 'test', function (Request $request) {
-            return '12345';
-        });
+        $callbackHook = new CallbackHook(
+            function (Request $request) {
+                return '12345';
+            }
+        );
+        $service->addHook('before', 'test', $callbackHook);
+
         $service->get('/foo', function (Request $request, array $hookData) {
             $response = new Response();
             $response->setBody($hookData['test']);
