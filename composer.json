@@ -1,0 +1,22 @@
+{
+    "authors": [
+        {
+            "email": "fkooman@tuxed.net",
+            "name": "Fran\u00e7ois Kooman"
+        }
+    ],
+    "autoload": {
+        "psr-0": {
+            "SURFnet\\VPN\\Common\\": "src/"
+        }
+    },
+    "description": "Common VPN library",
+    "license": "AGPL-3.0",
+    "name": "eduvpn/common",
+    "require": {
+        "ext-json": "*",
+        "ext-spl": "*",
+        "php": ">= 5.4.0",
+        "psr/log": "^1.0"
+    }
+}
