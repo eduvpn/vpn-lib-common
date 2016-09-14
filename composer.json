@@ -17,6 +17,7 @@
         "ext-json": "*",
         "ext-spl": "*",
         "php": ">= 5.4.0",
-        "psr/log": "^1.0"
+        "psr/log": "^1.0",
+        "symfony/yaml": "^2.8"
     }
 }
