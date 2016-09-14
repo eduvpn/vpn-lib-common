@@ -21,8 +21,17 @@ use Exception;
 
 class HttpException extends Exception
 {
-    public function __construct($message, $code, Exception $previous = null)
+    /** @var array */
+    private $responseHeaders;
+
+    public function __construct($message, $code, array $responseHeaders = [], Exception $previous = null)
     {
         parent::__construct($message, $code, $previous);
+        $this->responseHeaders = $responseHeaders;
+    }
+
+    public function getResponseHeaders()
+    {
+        return $this->responseHeaders;
     }
 }

@@ -42,6 +42,13 @@ class Response
         $this->headers[$key] = $value;
     }
 
+    public function getHeader($key)
+    {
+        if (array_key_exists($key, $this->headers)) {
+            return $this->headers[$key];
+        }
+    }
+
     public function setBody($body)
     {
         $this->body = $body;

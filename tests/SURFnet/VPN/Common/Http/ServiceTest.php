@@ -74,7 +74,7 @@ class ServiceTest extends PHPUnit_Framework_TestCase
     {
         $request = new Request(
             [
-                'REQUEST_METHOD' => 'POST',
+                'REQUEST_METHOD' => 'DELETE',
                 'PATH_INFO' => '/bar',
                 'SERVER_NAME' => 'vpn.example',
             ]
@@ -82,15 +82,16 @@ class ServiceTest extends PHPUnit_Framework_TestCase
 
         $service = new Service();
         $service->get('/foo', function (Request $request) {
-            $response = new Response(201, 'application/json');
-            $response->setBody('{}');
-
-            return $response;
+            return new Response();
+        });
+        $service->post('/foo', function (Request $request) {
+            return new Response();
         });
         $response = $service->run($request);
 
         $this->assertSame(405, $response->getStatusCode());
-        $this->assertSame('{"error":"method \"POST\" not allowed"}', $response->getBody());
+        $this->assertSame('GET,POST', $response->getHeader('Allow'));
+        $this->assertSame('{"error":"method \"DELETE\" not allowed"}', $response->getBody());
     }
 
     public function testHook()

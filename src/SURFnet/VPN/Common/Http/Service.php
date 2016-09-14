@@ -78,7 +78,8 @@ class Service
             if (!array_key_exists($requestMethod, $this->routes)) {
                 throw new HttpException(
                     sprintf('method "%s" not allowed', $requestMethod),
-                    405
+                    405,
+                    ['Allow' => implode(',', array_keys($this->routes))]
                 );
             }
             if (!array_key_exists($pathInfo, $this->routes[$requestMethod])) {
@@ -90,7 +91,10 @@ class Service
 
             return $this->routes[$requestMethod][$pathInfo]($request, $hookData);
         } catch (HttpException $e) {
-            $response = new Response($e->getCode());
+            $response = new Response($e->getCode(), 'application/json');
+            foreach ($e->getResponseHeaders() as $key => $value) {
+                $response->addHeader($key, $value);
+            }
             $response->setBody(json_encode(['error' => $e->getMessage()]));
 
             return $response;
