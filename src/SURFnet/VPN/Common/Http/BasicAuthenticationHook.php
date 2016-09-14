@@ -24,9 +24,13 @@ class BasicAuthenticationHook implements HookInterface
     /** @var array */
     private $userPass;
 
-    public function __construct(array $userPass)
+    /** @var string */
+    private $realm;
+
+    public function __construct(array $userPass, $realm = 'Protected Area')
     {
         $this->userPass = $userPass;
+        $this->realm = $realm;
     }
 
     public function execute(Request $request)
@@ -37,7 +41,7 @@ class BasicAuthenticationHook implements HookInterface
             throw new HttpException(
                 'missing authentication information',
                 401,
-                ['WWW-Authenticate' => 'Basic realm="vpn-ca-api"']
+                ['WWW-Authenticate' => sprintf('Basic realm="%s"', $this->realm)]
             );
         }
 
@@ -51,7 +55,7 @@ class BasicAuthenticationHook implements HookInterface
         throw new HttpException(
             'invalid authentication information',
             401,
-            ['WWW-Authenticate' => 'Basic realm="vpn-ca-api"']
+            ['WWW-Authenticate' => sprintf('Basic realm="%s"', $this->realm)]
         );
     }
 }
