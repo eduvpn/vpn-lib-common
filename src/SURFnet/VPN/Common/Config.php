@@ -29,7 +29,7 @@ class Config
 
     public function __construct(array $configData)
     {
-        $this->configData = array_merge(self::defaultConfig(), $configData);
+        $this->configData = array_merge(static::defaultConfig(), $configData);
     }
 
     public static function defaultConfig()

@@ -17,6 +17,9 @@
  */
 namespace SURFnet\VPN\Common;
 
+require_once sprintf('%s/Test/MyConfig.php', __DIR__);
+
+use SURFnet\VPN\Common\Test\MyConfig;
 use PHPUnit_Framework_TestCase;
 
 class ConfigTest extends PHPUnit_Framework_TestCase
@@ -90,5 +93,11 @@ class ConfigTest extends PHPUnit_Framework_TestCase
     {
         $c = Config::fromFile(sprintf('%s/data/config.yml', __DIR__));
         $this->assertSame('b', $c->v('bar', 'a'));
+    }
+
+    public function testMyConfigDefaultValues()
+    {
+        $c = new MyConfig([]);
+        $this->assertSame('bar', $c->v('foo'));
     }
 }
