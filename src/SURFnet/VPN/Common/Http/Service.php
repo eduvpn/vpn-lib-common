@@ -25,20 +25,26 @@ class Service
     private $routes;
 
     /** @var array */
-    private $hooks;
+    private $beforeHooks;
+
+    /** @var array */
+    private $afterHooks;
 
     public function __construct()
     {
         $this->routes = [];
-        $this->hooks = [];
+        $this->beforeHooks = [];
+        $this->afterHooks = [];
     }
 
-    public function addHook($type, $name, HookInterface $hook)
+    public function addBeforeHook($name, BeforeHookInterface $beforeHook)
     {
-        if (!array_key_exists($type, $this->hooks)) {
-            $this->hooks[$type] = [];
-        }
-        $this->hooks[$type][] = ['name' => $name, 'hook' => $hook];
+        $this->beforeHooks[$name] = $beforeHook;
+    }
+
+    public function addAfterHook($name, AfterHookInterface $afterHook)
+    {
+        $this->afterHooks[$name] = $afterHook;
     }
 
     public function addRoute($requestMethod, $pathInfo, callable $callback)
@@ -66,10 +72,8 @@ class Service
         try {
             // before hooks
             $hookData = [];
-            if (array_key_exists('before', $this->hooks)) {
-                foreach ($this->hooks['before'] as $hook) {
-                    $hookData[$hook['name']] = $hook['hook']->execute($request);
-                }
+            foreach ($this->beforeHooks as $k => $v) {
+                $hookData[$k] = $v->executeBefore($request);
             }
 
             $requestMethod = $request->getRequestMethod();
@@ -89,7 +93,15 @@ class Service
                 );
             }
 
-            return $this->routes[$requestMethod][$pathInfo]($request, $hookData);
+            $response = $this->routes[$requestMethod][$pathInfo]($request, $hookData);
+            // after hooks
+
+            $hookData = [];
+            foreach ($this->afterHooks as $k => $v) {
+                $response = $v->executeAfter($request, $response);
+            }
+
+            return $response;
         } catch (HttpException $e) {
             $response = new Response($e->getCode(), 'application/json');
             foreach ($e->getResponseHeaders() as $key => $value) {

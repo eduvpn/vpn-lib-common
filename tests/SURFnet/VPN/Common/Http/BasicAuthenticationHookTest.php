@@ -38,7 +38,7 @@ class BasicAuthenticationHookTest extends PHPUnit_Framework_TestCase
             ]
         );
 
-        $this->assertSame('foo', $basicAuthentication->execute($request));
+        $this->assertSame('foo', $basicAuthentication->executeBefore($request));
     }
 
     /**
@@ -62,7 +62,7 @@ class BasicAuthenticationHookTest extends PHPUnit_Framework_TestCase
             ]
         );
 
-        $basicAuthentication->execute($request);
+        $basicAuthentication->executeBefore($request);
     }
 
     /**
@@ -84,6 +84,6 @@ class BasicAuthenticationHookTest extends PHPUnit_Framework_TestCase
             ]
         );
 
-        $basicAuthentication->execute($request);
+        $basicAuthentication->executeBefore($request);
     }
 }

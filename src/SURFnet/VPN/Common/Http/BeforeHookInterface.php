@@ -17,33 +17,7 @@
  */
 namespace SURFnet\VPN\Common\Http;
 
-class CallbackHook implements BeforeHookInterface, AfterHookInterface
+interface BeforeHookInterface
 {
-    /** @var callable|null */
-    private $before;
-
-    /** @var callable|null */
-    private $after;
-
-    public function __construct(callable $before = null, callable $after = null)
-    {
-        $this->before = $before;
-        $this->after = $after;
-    }
-
-    public function executeBefore(Request $request)
-    {
-        if (!is_null($this->before)) {
-            return call_user_func($this->before, $request);
-        }
-    }
-
-    public function executeAfter(Request $request, Response $response)
-    {
-        if (!is_null($this->after)) {
-            return call_user_func($this->after, $request, $response);
-        }
-
-        return $response;
-    }
+    public function executeBefore(Request $request);
 }

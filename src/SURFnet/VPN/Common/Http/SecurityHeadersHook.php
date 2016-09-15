@@ -17,32 +17,17 @@
  */
 namespace SURFnet\VPN\Common\Http;
 
-class CallbackHook implements BeforeHookInterface, AfterHookInterface
+class SecurityHeadersHook implements AfterHookInterface
 {
-    /** @var callable|null */
-    private $before;
-
-    /** @var callable|null */
-    private $after;
-
-    public function __construct(callable $before = null, callable $after = null)
-    {
-        $this->before = $before;
-        $this->after = $after;
-    }
-
-    public function executeBefore(Request $request)
-    {
-        if (!is_null($this->before)) {
-            return call_user_func($this->before, $request);
-        }
-    }
-
     public function executeAfter(Request $request, Response $response)
     {
-        if (!is_null($this->after)) {
-            return call_user_func($this->after, $request, $response);
-        }
+        // XXX only add them if the request comes from a browser
+        // CSP: https://developer.mozilla.org/en-US/docs/Security/CSP
+        $response->addHeader('Content-Security-Policy', "default-src 'self'");
+        // X-Frame-Options: https://developer.mozilla.org/en-US/docs/HTTP/X-Frame-Options
+        $response->addHeader('X-Frame-Options', 'DENY');
+        $response->addHeader('X-Content-Type-Options', 'nosniff');
+        $response->addHeader('X-Xss-Protection', '1; mode=block');
 
         return $response;
     }

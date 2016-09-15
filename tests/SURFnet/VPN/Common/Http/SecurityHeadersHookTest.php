@@ -17,33 +17,23 @@
  */
 namespace SURFnet\VPN\Common\Http;
 
-class CallbackHook implements BeforeHookInterface, AfterHookInterface
+use PHPUnit_Framework_TestCase;
+
+class SecurityHeadersHookTest extends PHPUnit_Framework_TestCase
 {
-    /** @var callable|null */
-    private $before;
-
-    /** @var callable|null */
-    private $after;
-
-    public function __construct(callable $before = null, callable $after = null)
+    public function testBasicAuthentication()
     {
-        $this->before = $before;
-        $this->after = $after;
-    }
+        $request = new Request(
+            [
+                'REQUEST_METHOD' => 'GET',
+                'SERVER_NAME' => 'vpn.example',
+            ]
+        );
 
-    public function executeBefore(Request $request)
-    {
-        if (!is_null($this->before)) {
-            return call_user_func($this->before, $request);
-        }
-    }
+        $response = new Response();
+        $securityHeadersHook = new SecurityHeadersHook();
+        $hookResponse = $securityHeadersHook->executeAfter($request, $response);
 
-    public function executeAfter(Request $request, Response $response)
-    {
-        if (!is_null($this->after)) {
-            return call_user_func($this->after, $request, $response);
-        }
-
-        return $response;
+        $this->assertSame("default-src 'self'", $hookResponse->getHeader('Content-Security-Policy'));
     }
 }

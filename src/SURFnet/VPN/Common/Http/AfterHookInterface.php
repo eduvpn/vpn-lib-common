@@ -17,7 +17,7 @@
  */
 namespace SURFnet\VPN\Common\Http;
 
-interface HookInterface
+interface AfterHookInterface
 {
-    public function execute(Request $request);
+    public function executeAfter(Request $request, Response $response);
 }

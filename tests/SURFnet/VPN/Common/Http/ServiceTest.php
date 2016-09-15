@@ -94,7 +94,7 @@ class ServiceTest extends PHPUnit_Framework_TestCase
         $this->assertSame('{"error":"method \"DELETE\" not allowed"}', $response->getBody());
     }
 
-    public function testHook()
+    public function testHooks()
     {
         $request = new Request(
             [
@@ -108,9 +108,15 @@ class ServiceTest extends PHPUnit_Framework_TestCase
         $callbackHook = new CallbackHook(
             function (Request $request) {
                 return '12345';
+            },
+            function (Request $request, Response $response) {
+                $response->addHeader('Foo', 'Bar');
+
+                return $response;
             }
         );
-        $service->addHook('before', 'test', $callbackHook);
+        $service->addBeforeHook('test', $callbackHook);
+        $service->addAfterHook('test', $callbackHook);
 
         $service->get('/foo', function (Request $request, array $hookData) {
             $response = new Response();
@@ -122,5 +128,6 @@ class ServiceTest extends PHPUnit_Framework_TestCase
 
         $this->assertSame(200, $response->getStatusCode());
         $this->assertSame('12345', $response->getBody());
+        $this->assertSame('Bar', $response->getHeader('Foo'));
     }
 }

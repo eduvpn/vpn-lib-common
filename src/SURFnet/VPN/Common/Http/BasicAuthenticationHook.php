@@ -19,7 +19,7 @@ namespace SURFnet\VPN\Common\Http;
 
 use SURFnet\VPN\Common\Http\Exception\HttpException;
 
-class BasicAuthenticationHook implements HookInterface
+class BasicAuthenticationHook implements BeforeHookInterface
 {
     /** @var array */
     private $userPass;
@@ -33,7 +33,7 @@ class BasicAuthenticationHook implements HookInterface
         $this->realm = $realm;
     }
 
-    public function execute(Request $request)
+    public function executeBefore(Request $request)
     {
         $authUser = $request->getHeader('PHP_AUTH_USER', false);
         $authPass = $request->getHeader('PHP_AUTH_PW', false);
