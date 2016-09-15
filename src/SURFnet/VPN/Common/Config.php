@@ -19,55 +19,58 @@ namespace SURFnet\VPN\Common;
 
 use Symfony\Component\Yaml\Yaml;
 use SURFnet\VPN\Common\Exception\ConfigException;
+use InvalidArgumentException;
+use RuntimeException;
 
-/**
- * Read configuration.
- */
 class Config
 {
     /** @var array */
-    protected $configData;
+    private $configData;
 
     public function __construct(array $configData)
     {
-        $this->configData = $configData;
+        $this->configData = array_merge(self::defaultConfig(), $configData);
+    }
+
+    public static function defaultConfig()
+    {
+        return [];
+    }
+
+    public function v()
+    {
+        $argv = func_get_args();
+        // if no parameters are requested, return everything
+        if (0 === count($argv)) {
+            return $this->configData;
+        }
+
+        $configPointer = $this->configData;
+        foreach ($argv as $arg) {
+            if (!is_string($arg)) {
+                throw new InvalidArgumentException('requested configuration field must be string');
+            }
+            if (!is_array($configPointer) || !array_key_exists($arg, $configPointer)) {
+                throw new ConfigException(sprintf('missing configuration field "%s"', implode(',', $argv)));
+            }
+            $configPointer = $configPointer[$arg];
+        }
+
+        return $configPointer;
     }
 
     public static function fromFile($configFile)
     {
         if (false === $fileContent = @file_get_contents($configFile)) {
-            throw new ConfigException(sprintf('unable to read configuration file "%s"', $configFile));
+            throw new RuntimeException(sprintf('unable to read configuration file "%s"', $configFile));
         }
 
         $parsedConfig = Yaml::parse($fileContent);
 
         if (!is_array($parsedConfig)) {
-            throw new ConfigException(sprintf('invalid configuration file format in "%s"', $configFile));
+            throw new RuntimeException(sprintf('invalid configuration file format in "%s"', $configFile));
         }
 
         return new static($parsedConfig);
-    }
-
-    public function s($key, $value)
-    {
-        $this->configData[$key] = $value;
-    }
-
-    public function v($key, $defaultValue = null)
-    {
-        if (array_key_exists($key, $this->configData)) {
-            return $this->configData[$key];
-        }
-
-        if (is_null($defaultValue)) {
-            throw new ConfigException(sprintf('missing configuration field "%s"', $key));
-        }
-
-        return $defaultValue;
-    }
-
-    public function toArray()
-    {
-        return $this->configData;
     }
 }
