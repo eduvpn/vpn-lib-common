@@ -53,6 +53,13 @@ class ConfigTest extends PHPUnit_Framework_TestCase
         $this->assertSame($configData, $c->v());
     }
 
+    public function testExists()
+    {
+        $c = new Config(['foo' => 'bar']);
+        $this->assertTrue($c->e('foo'));
+        $this->assertFalse($c->e('bar'));
+    }
+
     /**
      * @expectedException SURFnet\VPN\Common\Exception\ConfigException
      * @expectedExceptionMessage missing configuration field "foo"

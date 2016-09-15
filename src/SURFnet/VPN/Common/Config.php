@@ -37,6 +37,9 @@ class Config
         return [];
     }
 
+    /**
+     * Get a configuration value.
+     */
     public function v()
     {
         $argv = func_get_args();
@@ -57,6 +60,30 @@ class Config
         }
 
         return $configPointer;
+    }
+
+    /**
+     * Check if a configuration value exists.
+     */
+    public function e()
+    {
+        $argv = func_get_args();
+        if (0 === count($argv)) {
+            return true;
+        }
+
+        $configPointer = $this->configData;
+        foreach ($argv as $arg) {
+            if (!is_string($arg)) {
+                throw new InvalidArgumentException('requested configuration field must be string');
+            }
+            if (!is_array($configPointer) || !array_key_exists($arg, $configPointer)) {
+                return false;
+            }
+            $configPointer = $configPointer[$arg];
+        }
+
+        return true;
     }
 
     public static function fromFile($configFile)
