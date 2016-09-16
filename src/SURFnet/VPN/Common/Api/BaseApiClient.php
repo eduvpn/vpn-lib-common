@@ -44,7 +44,7 @@ class BaseApiClient
 
     public function post($requestUri, array $postData)
     {
-        $response = $this->httpClient->get(
+        $response = $this->httpClient->post(
             sprintf('%s%s', $this->baseUri, $requestUri),
             [
                 'body' => [
