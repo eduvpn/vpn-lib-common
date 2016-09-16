@@ -91,7 +91,7 @@ class RequestTest extends PHPUnit_Framework_TestCase
 
     /**
      * @expectedException SURFnet\VPN\Common\Http\Exception\HttpException
-     * @expectedExceptionMessage missing required query parameter "user_id"
+     * @expectedExceptionMessage missing required field "user_id"
      */
     public function testGetMissingQueryParameter()
     {

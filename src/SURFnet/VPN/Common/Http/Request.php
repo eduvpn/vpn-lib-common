@@ -70,32 +70,16 @@ class Request
 
     public function getQueryParameter($key, $isRequired = true, $defaultValue = null)
     {
-        return self::getValueFromArray('query parameter', $this->getData, $key, $isRequired, $defaultValue);
+        return Utils::getValueFromArray($this->getData, $key, $isRequired, $defaultValue);
     }
 
     public function getPostParameter($key, $isRequired = true, $defaultValue = null)
     {
-        return self::getValueFromArray('post parameter', $this->postData, $key, $isRequired, $defaultValue);
+        return Utils::getValueFromArray($this->postData, $key, $isRequired, $defaultValue);
     }
 
     public function getHeader($key, $isRequired = true, $defaultValue = null)
     {
-        return self::getValueFromArray('header', $this->serverData, $key, $isRequired, $defaultValue);
-    }
-
-    private static function getValueFromArray($type, array $sourceData, $key, $isRequired, $defaultValue)
-    {
-        if (array_key_exists($key, $sourceData)) {
-            return $sourceData[$key];
-        }
-
-        if ($isRequired) {
-            throw new HttpException(
-                sprintf('missing required %s "%s"', $type, $key),
-                400
-            );
-        }
-
-        return $defaultValue;
+        return Utils::getValueFromArray($this->serverData, $key, $isRequired, $defaultValue);
     }
 }

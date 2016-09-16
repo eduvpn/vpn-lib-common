@@ -44,7 +44,6 @@ class Response
 
     public function getHeader($key)
     {
-        // XXX deal with required/not required header?
         if (array_key_exists($key, $this->headers)) {
             return $this->headers[$key];
         }

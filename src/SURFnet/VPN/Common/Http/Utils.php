@@ -17,24 +17,23 @@
  */
 namespace SURFnet\VPN\Common\Http;
 
-use PHPUnit_Framework_TestCase;
+use SURFnet\VPN\Common\Http\Exception\HttpException;
 
-class SecurityHeadersHookTest extends PHPUnit_Framework_TestCase
+class Utils
 {
-    public function testBasicAuthentication()
+    public static function getValueFromArray(array $sourceData, $key, $isRequired, $defaultValue)
     {
-        $request = new Request(
-            [
-                'REQUEST_METHOD' => 'GET',
-                'SERVER_NAME' => 'vpn.example',
-                'HTTP_ACCEPT' => 'text/html',
-            ]
-        );
+        if (array_key_exists($key, $sourceData)) {
+            return $sourceData[$key];
+        }
 
-        $response = new Response();
-        $securityHeadersHook = new SecurityHeadersHook();
-        $hookResponse = $securityHeadersHook->executeAfter($request, $response);
+        if ($isRequired) {
+            throw new HttpException(
+                sprintf('missing required field "%s"', $key),
+                400
+            );
+        }
 
-        $this->assertSame("default-src 'self'", $hookResponse->getHeader('Content-Security-Policy'));
+        return $defaultValue;
     }
 }
