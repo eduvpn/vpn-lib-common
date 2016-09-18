@@ -27,7 +27,7 @@ class FileIO
             throw new RuntimeException(sprintf('unable to read file "%s"', $filePath));
         }
 
-        return $filePath;
+        return $fileData;
     }
 
     public static function readJsonFile($filePath)
@@ -37,6 +37,8 @@ class FileIO
         if (JSON_ERROR_NONE !== json_last_error()) {
             throw new RuntimeException(sprintf('unable to decode JSON from file "%s"', $filePath));
         }
+
+        return $jsonData;
     }
 
     public static function writeFile($filePath, $fileData)
