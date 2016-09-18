@@ -17,6 +17,8 @@
  */
 namespace SURFnet\VPN\Common;
 
+use RuntimeException;
+
 class FileIO
 {
     public static function readFile($filePath)
