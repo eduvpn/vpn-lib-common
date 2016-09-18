@@ -25,7 +25,7 @@ use RuntimeException;
 class Config
 {
     /** @var array */
-    private $configData;
+    protected $configData;
 
     public function __construct(array $configData)
     {
