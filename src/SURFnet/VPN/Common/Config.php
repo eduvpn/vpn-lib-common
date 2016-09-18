@@ -88,16 +88,18 @@ class Config
 
     public static function fromFile($configFile)
     {
-        if (false === $fileContent = @file_get_contents($configFile)) {
-            throw new RuntimeException(sprintf('unable to read configuration file "%s"', $configFile));
-        }
-
+        $fileContent = FileIO::readFile($configFile);
         $parsedConfig = Yaml::parse($fileContent);
-
         if (!is_array($parsedConfig)) {
             throw new RuntimeException(sprintf('invalid configuration file format in "%s"', $configFile));
         }
 
         return new static($parsedConfig);
+    }
+
+    public static function toFile($configFile, array $configData)
+    {
+        $yamlData = Yaml::dump($configData);
+        FileIO::writeFile($configFile, $yamlData);
     }
 }
