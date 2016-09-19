@@ -15,15 +15,13 @@
  *  You should have received a copy of the GNU Affero General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-namespace SURFnet\VPN\Common\Api;
+namespace SURFnet\VPN\Common\HttpClient;
 
-use GuzzleHttp\Client;
-
-class VpnServerApiClient extends BaseApiClient
+class VpnServerApiClient extends BaseClient
 {
-    public function __construct(Client $httpClient, $vpnServerApiUri)
+    public function __construct(HttpClientInterface $httpClient, $vpnCaApiUri)
     {
-        parent::__construct($httpClient, $vpnServerApiUri);
+        parent::__construct($httpClient, $vpnCaApiUri);
     }
 
     public function getConnections()

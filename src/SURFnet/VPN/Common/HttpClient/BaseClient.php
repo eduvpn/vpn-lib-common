@@ -15,19 +15,17 @@
  *  You should have received a copy of the GNU Affero General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-namespace SURFnet\VPN\Common\Api;
+namespace SURFnet\VPN\Common\HttpClient;
 
-use GuzzleHttp\Client;
-
-class BaseApiClient
+class BaseClient
 {
-    /** @var \GuzzleHttp\Client */
+    /** @var HttpClientInterface */
     private $httpClient;
 
     /** @var string */
     private $baseUri;
 
-    public function __construct(Client $httpClient, $baseUri)
+    public function __construct(HttpClientInterface $httpClient, $baseUri)
     {
         $this->httpClient = $httpClient;
         $this->baseUri = $baseUri;
@@ -39,37 +37,16 @@ class BaseApiClient
             sprintf('%s%s', $this->baseUri, $requestUri)
         );
 
-        return $response->json()['data'];
+        return $response['data'];
     }
 
     public function post($requestUri, array $postData)
     {
         $response = $this->httpClient->post(
             sprintf('%s%s', $this->baseUri, $requestUri),
-            [
-                'body' => [
-                    $postData,
-                ],
-            ]
+            $postData
         );
 
-        return $response->json()['data'];
+        return $response['data'];
     }
-
-//    protected function exec($requestMethod, $requestUri, $options = array())
-//    {
-//        try {
-//            return $this->httpClient->$requestMethod($requestUri, $options)->json();
-//        } catch (BadResponseException $e) {
-//            $responseBody = $e->getResponse()->json();
-
-//            if (array_key_exists('error_description', $responseBody)) {
-//                $errorMessage = sprintf('[%d] %s (%s)', $e->getResponse()->getStatusCode(), $responseBody['error'], $responseBody['error_description']);
-//            } else {
-//                $errorMessage = sprintf('[%d] %s', $e->getResponse()->getStatusCode(), $responseBody['error']);
-//            }
-
-//            throw new RuntimeException($errorMessage);
-//        }
-//    }
 }
