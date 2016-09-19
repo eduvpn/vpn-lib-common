@@ -15,27 +15,12 @@
  *  You should have received a copy of the GNU Affero General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-namespace SURFnet\VPN\Common\Http;
+namespace SURFnet\VPN\Common\Test;
 
-require_once sprintf('%s/Test/TestRequest.php', __DIR__);
-
-use PHPUnit_Framework_TestCase;
-use SURFnet\VPN\Common\Http\Test\TestRequest;
-
-class SecurityHeadersHookTest extends PHPUnit_Framework_TestCase
+class TestTpl implements TplInterface
 {
-    public function testBasicAuthentication()
+    public function render($templateName, array $templateVariables)
     {
-        $request = new TestRequest(
-            [
-                'HTTP_ACCEPT' => 'text/html',
-            ]
-        );
-
-        $response = new Response();
-        $securityHeadersHook = new SecurityHeadersHook();
-        $hookResponse = $securityHeadersHook->executeAfter($request, $response);
-
-        $this->assertSame("default-src 'self'", $hookResponse->getHeader('Content-Security-Policy'));
+        return json_encode([$templateName => $templateVariables]);
     }
 }

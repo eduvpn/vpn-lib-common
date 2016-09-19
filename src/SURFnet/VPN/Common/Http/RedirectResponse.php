@@ -17,25 +17,11 @@
  */
 namespace SURFnet\VPN\Common\Http;
 
-require_once sprintf('%s/Test/TestRequest.php', __DIR__);
-
-use PHPUnit_Framework_TestCase;
-use SURFnet\VPN\Common\Http\Test\TestRequest;
-
-class SecurityHeadersHookTest extends PHPUnit_Framework_TestCase
+class RedirectResponse extends Response
 {
-    public function testBasicAuthentication()
+    public function __construct($redirectUri, $statusCode = 302)
     {
-        $request = new TestRequest(
-            [
-                'HTTP_ACCEPT' => 'text/html',
-            ]
-        );
-
-        $response = new Response();
-        $securityHeadersHook = new SecurityHeadersHook();
-        $hookResponse = $securityHeadersHook->executeAfter($request, $response);
-
-        $this->assertSame("default-src 'self'", $hookResponse->getHeader('Content-Security-Policy'));
+        parent::__construct($statusCode);
+        $this->setHeader('Location', $redirectUri);
     }
 }

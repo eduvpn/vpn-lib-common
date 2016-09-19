@@ -15,27 +15,46 @@
  *  You should have received a copy of the GNU Affero General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-namespace SURFnet\VPN\Common\Http;
+namespace SURFnet\VPN\Common\Http\Test;
 
-require_once sprintf('%s/Test/TestRequest.php', __DIR__);
+use SURFnet\VPN\Common\Http\SessionInterface;
 
-use PHPUnit_Framework_TestCase;
-use SURFnet\VPN\Common\Http\Test\TestRequest;
-
-class SecurityHeadersHookTest extends PHPUnit_Framework_TestCase
+class TestSession implements SessionInterface
 {
-    public function testBasicAuthentication()
+    /** var @array */
+    private $s;
+
+    public function __construct()
     {
-        $request = new TestRequest(
-            [
-                'HTTP_ACCEPT' => 'text/html',
-            ]
-        );
+        $this->s = array();
+    }
 
-        $response = new Response();
-        $securityHeadersHook = new SecurityHeadersHook();
-        $hookResponse = $securityHeadersHook->executeAfter($request, $response);
+    public function set($key, $value)
+    {
+        $this->s[$key] = $value;
+    }
 
-        $this->assertSame("default-src 'self'", $hookResponse->getHeader('Content-Security-Policy'));
+    public function delete($key)
+    {
+        unset($this->s[$key]);
+    }
+
+    public function has($key)
+    {
+        return array_key_exists($key, $this->s);
+    }
+
+    public function get($key)
+    {
+        if (!$this->has($key)) {
+            return;
+        }
+
+        return $this->s[$key];
+    }
+
+    public function destroy()
+    {
+        $this->s = array();
     }
 }

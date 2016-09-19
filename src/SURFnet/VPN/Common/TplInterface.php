@@ -15,24 +15,18 @@
  *  You should have received a copy of the GNU Affero General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-namespace SURFnet\VPN\Common\Http;
+namespace SURFnet\VPN\Common;
 
-class TestRequest extends Request
+interface TplInterface
 {
-    public function __construct(array $serverData, array $getData = [], array $postData = [])
-    {
-        $serverData = array_merge(
-            [
-                'SERVER_NAME' => 'vpn.example',
-                'SERVER_PORT' => 80,
-                'REQUEST_SCHEME' => 'http',
-                'REQUEST_METHOD' => 'GET',
-                'REQUEST_URI' => '/',
-                'PATH_INFO' => '/',
-            ],
-            $serverData
-        );
-
-        parent::__construct($serverData, $getData, $postData);
-    }
+    /**
+     * Render the template.
+     *
+     * @param string $templateName      the name of the template
+     * @param array  $templateVariables the variables to be used in the
+     *                                  template
+     *
+     * @return string the rendered template
+     */
+    public function render($templateName, array $templateVariables);
 }

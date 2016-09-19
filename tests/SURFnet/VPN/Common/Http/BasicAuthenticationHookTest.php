@@ -17,9 +17,10 @@
  */
 namespace SURFnet\VPN\Common\Http;
 
-require_once sprintf('%s/TestRequest.php', __DIR__);
+require_once sprintf('%s/Test/TestRequest.php', __DIR__);
 
 use PHPUnit_Framework_TestCase;
+use SURFnet\VPN\Common\Http\Test\TestRequest;
 
 class BasicAuthenticationHookTest extends PHPUnit_Framework_TestCase
 {
