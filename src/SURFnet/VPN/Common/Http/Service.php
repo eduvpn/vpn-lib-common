@@ -73,7 +73,13 @@ class Service
             // before hooks
             $hookData = [];
             foreach ($this->beforeHooks as $k => $v) {
-                $hookData[$k] = $v->executeBefore($request);
+                $hookResponse = $v->executeBefore($request);
+                // if we get back a Response object, return it immediately
+                if ($hookResponse instanceof Response) {
+                    return $hookResponse;
+                }
+
+                $hookData[$k] = $hookResponse;
             }
 
             $requestMethod = $request->getRequestMethod();

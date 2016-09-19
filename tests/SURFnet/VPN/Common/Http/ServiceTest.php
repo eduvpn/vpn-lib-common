@@ -17,17 +17,17 @@
  */
 namespace SURFnet\VPN\Common\Http;
 
+require_once sprintf('%s/TestRequest.php', __DIR__);
+
 use PHPUnit_Framework_TestCase;
 
 class ServiceTest extends PHPUnit_Framework_TestCase
 {
     public function testGet()
     {
-        $request = new Request(
+        $request = new TestRequest(
             [
-                'REQUEST_METHOD' => 'GET',
                 'PATH_INFO' => '/foo',
-                'SERVER_NAME' => 'vpn.example',
             ]
         );
 
@@ -49,11 +49,9 @@ class ServiceTest extends PHPUnit_Framework_TestCase
 
     public function testMissingDocument()
     {
-        $request = new Request(
+        $request = new TestRequest(
             [
-                'REQUEST_METHOD' => 'GET',
                 'PATH_INFO' => '/bar',
-                'SERVER_NAME' => 'vpn.example',
             ]
         );
 
@@ -72,11 +70,10 @@ class ServiceTest extends PHPUnit_Framework_TestCase
 
     public function testUnsupportedMethod()
     {
-        $request = new Request(
+        $request = new TestRequest(
             [
                 'REQUEST_METHOD' => 'DELETE',
                 'PATH_INFO' => '/bar',
-                'SERVER_NAME' => 'vpn.example',
             ]
         );
 
@@ -96,11 +93,9 @@ class ServiceTest extends PHPUnit_Framework_TestCase
 
     public function testHooks()
     {
-        $request = new Request(
+        $request = new TestRequest(
             [
-                'REQUEST_METHOD' => 'GET',
                 'PATH_INFO' => '/foo',
-                'SERVER_NAME' => 'vpn.example',
             ]
         );
 
@@ -129,5 +124,28 @@ class ServiceTest extends PHPUnit_Framework_TestCase
         $this->assertSame(200, $response->getStatusCode());
         $this->assertSame('12345', $response->getBody());
         $this->assertSame('Bar', $response->getHeader('Foo'));
+    }
+
+    public function testHookResponse()
+    {
+        $request = new TestRequest(
+            [
+                'PATH_INFO' => '/foo',
+            ]
+        );
+        $service = new Service();
+        $callbackHook = new CallbackHook(
+            function (Request $request) {
+                return new Response(201);
+            }
+        );
+        $service->addBeforeHook('test', $callbackHook);
+
+        $service->get('/foo', function (Request $request, array $hookData) {
+            return new Response();
+        });
+        $response = $service->run($request);
+
+        $this->assertSame(201, $response->getStatusCode());
     }
 }

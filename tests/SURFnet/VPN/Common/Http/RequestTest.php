@@ -26,7 +26,9 @@ class RequestTest extends PHPUnit_Framework_TestCase
         $request = new Request(
             [
                 'SERVER_NAME' => 'vpn.example',
+                'SERVER_PORT' => 80,
                 'REQUEST_METHOD' => 'GET',
+                'REQUEST_URI' => '/',
             ]
         );
         $this->assertSame('vpn.example', $request->getServerName());
@@ -37,7 +39,9 @@ class RequestTest extends PHPUnit_Framework_TestCase
         $request = new Request(
             [
                 'SERVER_NAME' => 'vpn.example',
+                'SERVER_PORT' => 80,
                 'REQUEST_METHOD' => 'GET',
+                'REQUEST_URI' => '/',
             ]
         );
         $this->assertSame('GET', $request->getRequestMethod());
@@ -57,7 +61,9 @@ class RequestTest extends PHPUnit_Framework_TestCase
         $request = new Request(
             [
                 'SERVER_NAME' => 'vpn.example',
+                'SERVER_PORT' => 80,
                 'REQUEST_METHOD' => 'GET',
+                'REQUEST_URI' => '/foo/bar',
                 'PATH_INFO' => '/foo/bar',
             ]
         );
@@ -69,7 +75,9 @@ class RequestTest extends PHPUnit_Framework_TestCase
         $request = new Request(
             [
                 'SERVER_NAME' => 'vpn.example',
+                'SERVER_PORT' => 80,
                 'REQUEST_METHOD' => 'GET',
+                'REQUEST_URI' => '/',
             ]
         );
         $this->assertSame('/', $request->getPathInfo());
@@ -80,7 +88,9 @@ class RequestTest extends PHPUnit_Framework_TestCase
         $request = new Request(
             [
                 'SERVER_NAME' => 'vpn.example',
+                'SERVER_PORT' => 80,
                 'REQUEST_METHOD' => 'GET',
+                'REQUEST_URI' => '/?user_id=foo',
             ],
             [
                 'user_id' => 'foo',
@@ -98,8 +108,9 @@ class RequestTest extends PHPUnit_Framework_TestCase
         $request = new Request(
             [
                 'SERVER_NAME' => 'vpn.example',
+                'SERVER_PORT' => 80,
                 'REQUEST_METHOD' => 'GET',
-            ]
+                'REQUEST_URI' => '/',            ]
         );
         $request->getQueryParameter('user_id');
     }
@@ -109,7 +120,9 @@ class RequestTest extends PHPUnit_Framework_TestCase
         $request = new Request(
             [
                 'SERVER_NAME' => 'vpn.example',
+                'SERVER_PORT' => 80,
                 'REQUEST_METHOD' => 'GET',
+                'REQUEST_URI' => '/',
             ]
         );
         $this->assertSame('bar', $request->getQueryParameter('user_id', false, 'bar'));
@@ -120,7 +133,9 @@ class RequestTest extends PHPUnit_Framework_TestCase
         $request = new Request(
             [
                 'SERVER_NAME' => 'vpn.example',
+                'SERVER_PORT' => 80,
                 'REQUEST_METHOD' => 'GET',
+                'REQUEST_URI' => '/',
             ],
             [],
             [
@@ -135,10 +150,52 @@ class RequestTest extends PHPUnit_Framework_TestCase
         $request = new Request(
             [
                 'SERVER_NAME' => 'vpn.example',
+                'SERVER_PORT' => 80,
                 'REQUEST_METHOD' => 'GET',
+                'REQUEST_URI' => '/',
                 'HTTP_ACCEPT' => 'text/html',
             ]
         );
         $this->assertSame('text/html', $request->getHeader('HTTP_ACCEPT'));
+    }
+
+    public function testRequestUri()
+    {
+        $request = new Request(
+            [
+                'SERVER_NAME' => 'vpn.example',
+                'SERVER_PORT' => 80,
+                'REQUEST_METHOD' => 'GET',
+                'REQUEST_URI' => '/',
+            ]
+        );
+        $this->assertSame('http://vpn.example/', $request->getUri());
+    }
+
+    public function testHttpsRequestUri()
+    {
+        $request = new Request(
+            [
+                'REQUEST_SCHEME' => 'https',
+                'SERVER_NAME' => 'vpn.example',
+                'SERVER_PORT' => 443,
+                'REQUEST_METHOD' => 'GET',
+                'REQUEST_URI' => '/',
+            ]
+        );
+        $this->assertSame('https://vpn.example/', $request->getUri());
+    }
+
+    public function testNonStandardPortRequestUri()
+    {
+        $request = new Request(
+            [
+                'SERVER_NAME' => 'vpn.example',
+                'SERVER_PORT' => 8080,
+                'REQUEST_METHOD' => 'GET',
+                'REQUEST_URI' => '/',
+            ]
+        );
+        $this->assertSame('http://vpn.example:8080/', $request->getUri());
     }
 }

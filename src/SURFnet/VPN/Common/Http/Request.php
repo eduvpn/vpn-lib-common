@@ -35,6 +35,8 @@ class Request
         $requiredHeaders = [
             'REQUEST_METHOD',
             'SERVER_NAME',
+            'SERVER_PORT',
+            'REQUEST_URI',
         ];
 
         foreach ($requiredHeaders as $key) {
@@ -47,6 +49,39 @@ class Request
         $this->serverData = $serverData;
         $this->getData = $getData;
         $this->postData = $postData;
+    }
+
+    public function getUri()
+    {
+        // scheme
+        if (!array_key_exists('REQUEST_SCHEME', $this->serverData)) {
+            $requestScheme = 'http';
+        } else {
+            $requestScheme = $this->serverData['REQUEST_SCHEME'];
+        }
+
+        // server_name
+        $serverName = $this->serverData['SERVER_NAME'];
+
+        // port
+        $serverPort = $this->serverData['SERVER_PORT'];
+
+        $usePort = false;
+        if ('https' === $requestScheme && 443 !== $serverPort) {
+            $usePort = true;
+        }
+        if ('http' === $requestScheme && 80 !== $serverPort) {
+            $usePort = true;
+        }
+
+        // request_uri
+        $requestUri = $this->serverData['REQUEST_URI'];
+
+        if ($usePort) {
+            return sprintf('%s://%s:%d%s', $requestScheme, $serverName, $serverPort, $requestUri);
+        }
+
+        return sprintf('%s://%s%s', $requestScheme, $serverName, $requestUri);
     }
 
     public function getRequestMethod()

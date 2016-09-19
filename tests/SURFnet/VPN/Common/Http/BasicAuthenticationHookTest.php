@@ -17,6 +17,8 @@
  */
 namespace SURFnet\VPN\Common\Http;
 
+require_once sprintf('%s/TestRequest.php', __DIR__);
+
 use PHPUnit_Framework_TestCase;
 
 class BasicAuthenticationHookTest extends PHPUnit_Framework_TestCase
@@ -29,10 +31,8 @@ class BasicAuthenticationHookTest extends PHPUnit_Framework_TestCase
             ]
         );
 
-        $request = new Request(
+        $request = new TestRequest(
             [
-                'REQUEST_METHOD' => 'GET',
-                'SERVER_NAME' => 'vpn.example',
                 'PHP_AUTH_USER' => 'foo',
                 'PHP_AUTH_PW' => 'bar',
             ]
@@ -53,10 +53,8 @@ class BasicAuthenticationHookTest extends PHPUnit_Framework_TestCase
             ]
         );
 
-        $request = new Request(
+        $request = new TestRequest(
             [
-                'REQUEST_METHOD' => 'GET',
-                'SERVER_NAME' => 'vpn.example',
                 'PHP_AUTH_USER' => 'foo',
                 'PHP_AUTH_PW' => 'wrong',
             ]
@@ -77,12 +75,7 @@ class BasicAuthenticationHookTest extends PHPUnit_Framework_TestCase
             ]
         );
 
-        $request = new Request(
-            [
-                'REQUEST_METHOD' => 'GET',
-                'SERVER_NAME' => 'vpn.example',
-            ]
-        );
+        $request = new TestRequest([]);
 
         $basicAuthentication->executeBefore($request);
     }
