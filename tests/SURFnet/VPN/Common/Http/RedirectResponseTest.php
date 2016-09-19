@@ -17,11 +17,14 @@
  */
 namespace SURFnet\VPN\Common\Http;
 
-class RedirectResponse extends Response
+use PHPUnit_Framework_TestCase;
+
+class RedirectResponseTest extends PHPUnit_Framework_TestCase
 {
-    public function __construct($redirectUri, $statusCode = 302)
+    public function testRedirect()
     {
-        parent::__construct($statusCode);
-        $this->addHeader('Location', $redirectUri);
+        $response = new RedirectResponse('http://vpn.example.org/foo');
+        $this->assertSame('http://vpn.example.org/foo', $response->getHeader('Location'));
+        $this->assertSame(302, $response->getStatusCode());
     }
 }
