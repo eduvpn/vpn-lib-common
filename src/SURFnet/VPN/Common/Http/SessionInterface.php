@@ -15,14 +15,13 @@
  *  You should have received a copy of the GNU Affero General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-namespace SURFnet\VPN\Common\Test;
+namespace SURFnet\VPN\Common\Http;
 
-use SURFnet\VPN\Common\TplInterface;
-
-class TestTpl implements TplInterface
+interface SessionInterface
 {
-    public function render($templateName, array $templateVariables)
-    {
-        return json_encode([$templateName => $templateVariables]);
-    }
+    public function set($key, $value);
+    public function delete($key);
+    public function has($key);
+    public function get($key);
+    public function destroy();
 }

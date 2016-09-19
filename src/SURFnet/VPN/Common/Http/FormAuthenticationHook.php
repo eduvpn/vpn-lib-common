@@ -15,14 +15,36 @@
  *  You should have received a copy of the GNU Affero General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-namespace SURFnet\VPN\Common\Test;
+namespace SURFnet\VPN\Common\Http;
 
 use SURFnet\VPN\Common\TplInterface;
 
-class TestTpl implements TplInterface
+class FormAuthenticationHook implements BeforeHookInterface
 {
-    public function render($templateName, array $templateVariables)
+    /** @var SessionInterface */
+    private $session;
+
+    /** @var SURFnet\VPN\Common\TplInterface */
+    private $tpl;
+
+    public function __construct(SessionInterface $session, TplInterface $tpl)
     {
-        return json_encode([$templateName => $templateVariables]);
+        $this->session = $session;
+        $this->tpl = $tpl;
+    }
+
+    public function executeBefore(Request $request)
+    {
+        if ($this->session->has('_form_auth_user')) {
+            return $this->session->get('_form_auth_user');
+        }
+
+        // not yet authenticated
+        $response = new Response(200, 'text/html');
+        $response->setBody(
+            $this->tpl->render('formAuthentication', [])
+        );
+
+        return $response;
     }
 }
