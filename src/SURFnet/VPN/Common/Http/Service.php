@@ -100,9 +100,8 @@ class Service
             }
 
             $response = $this->routes[$requestMethod][$pathInfo]($request, $hookData);
-            // after hooks
 
-            $hookData = [];
+            // after hooks
             foreach ($this->afterHooks as $k => $v) {
                 $response = $v->executeAfter($request, $response);
             }

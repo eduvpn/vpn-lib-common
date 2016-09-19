@@ -24,7 +24,7 @@ class FormAuthenticationHook implements BeforeHookInterface
     /** @var SessionInterface */
     private $session;
 
-    /** @var SURFnet\VPN\Common\TplInterface */
+    /** @var \SURFnet\VPN\Common\TplInterface */
     private $tpl;
 
     public function __construct(SessionInterface $session, TplInterface $tpl)

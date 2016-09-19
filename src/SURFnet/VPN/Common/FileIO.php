@@ -55,6 +55,6 @@ class FileIO
             throw new RuntimeException(sprintf('unable to encode JSON for file "%s"', $filePath));
         }
 
-        self::writeFile($filePath, json_encode($fileJsonData));
+        self::writeFile($filePath, $fileData);
     }
 }
