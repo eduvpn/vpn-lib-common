@@ -76,6 +76,11 @@ class Service
                 $hookResponse = $v->executeBefore($request);
                 // if we get back a Response object, return it immediately
                 if ($hookResponse instanceof Response) {
+                    // run afterHooks
+                    foreach ($this->afterHooks as $k => $v) {
+                        $hookResponse = $v->executeAfter($request, $hookResponse);
+                    }
+
                     return $hookResponse;
                 }
 
