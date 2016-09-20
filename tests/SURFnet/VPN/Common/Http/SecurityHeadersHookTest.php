@@ -26,11 +26,7 @@ class SecurityHeadersHookTest extends PHPUnit_Framework_TestCase
 {
     public function testBasicAuthentication()
     {
-        $request = new TestRequest(
-            [
-                'HTTP_ACCEPT' => 'text/html',
-            ]
-        );
+        $request = new TestRequest([]);
 
         $response = new Response();
         $securityHeadersHook = new SecurityHeadersHook();

@@ -21,17 +21,12 @@ class SecurityHeadersHook implements AfterHookInterface
 {
     public function executeAfter(Request $request, Response $response)
     {
-        $acceptHeader = $request->getHeader('HTTP_ACCEPT', false, null);
-        if (!is_null($acceptHeader)) {
-            if (false !== strpos($acceptHeader, 'text/html')) {
-                // CSP: https://developer.mozilla.org/en-US/docs/Security/CSP
-                $response->addHeader('Content-Security-Policy', "default-src 'self'");
-                // X-Frame-Options: https://developer.mozilla.org/en-US/docs/HTTP/X-Frame-Options
-                $response->addHeader('X-Frame-Options', 'DENY');
-                $response->addHeader('X-Content-Type-Options', 'nosniff');
-                $response->addHeader('X-Xss-Protection', '1; mode=block');
-            }
-        }
+        // CSP: https://developer.mozilla.org/en-US/docs/Security/CSP
+        $response->addHeader('Content-Security-Policy', "default-src 'self'");
+        // X-Frame-Options: https://developer.mozilla.org/en-US/docs/HTTP/X-Frame-Options
+        $response->addHeader('X-Frame-Options', 'DENY');
+        $response->addHeader('X-Content-Type-Options', 'nosniff');
+        $response->addHeader('X-Xss-Protection', '1; mode=block');
 
         return $response;
     }
