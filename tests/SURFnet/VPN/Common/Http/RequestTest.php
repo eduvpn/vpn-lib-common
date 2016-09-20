@@ -212,6 +212,20 @@ class RequestTest extends PHPUnit_Framework_TestCase
         $this->assertSame('/', $request->getRoot());
     }
 
+    public function testGetRootSame()
+    {
+        $request = new Request(
+            [
+                'SERVER_NAME' => 'vpn.example',
+                'SERVER_PORT' => 80,
+                'REQUEST_METHOD' => 'GET',
+                'REQUEST_URI' => '/connection',
+                'PATH_INFO' => '/connection',
+            ]
+        );
+        $this->assertSame('/', $request->getRoot());
+    }
+
     public function testGetRootPathInfo()
     {
         $request = new Request(
