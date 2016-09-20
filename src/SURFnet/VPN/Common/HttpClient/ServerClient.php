@@ -17,7 +17,7 @@
  */
 namespace SURFnet\VPN\Common\HttpClient;
 
-class ServerClient extends BaseClient implements ServerApiInterface
+class ServerClient extends BaseClient implements ServerClientInterface
 {
     public function __construct(HttpClientInterface $httpClient, $vpnCaApiUri)
     {
