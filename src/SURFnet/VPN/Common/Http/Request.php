@@ -51,7 +51,7 @@ class Request
         $this->postData = $postData;
     }
 
-    public function getUri()
+    public function getAuthority()
     {
         // scheme
         if (!array_key_exists('REQUEST_SCHEME', $this->serverData)) {
@@ -74,14 +74,18 @@ class Request
             $usePort = true;
         }
 
-        // request_uri
-        $requestUri = $this->serverData['REQUEST_URI'];
-
         if ($usePort) {
-            return sprintf('%s://%s:%d%s', $requestScheme, $serverName, $serverPort, $requestUri);
+            return sprintf('%s://%s:%d', $requestScheme, $serverName, $serverPort);
         }
 
-        return sprintf('%s://%s%s', $requestScheme, $serverName, $requestUri);
+        return sprintf('%s://%s', $requestScheme, $serverName);
+    }
+
+    public function getUri()
+    {
+        $requestUri = $this->serverData['REQUEST_URI'];
+
+        return sprintf('%s%s', $this->getAuthority(), $requestUri);
     }
 
     public function getRoot()
@@ -99,6 +103,11 @@ class Request
         }
 
         return $requestUri;
+    }
+
+    public function getRootUri()
+    {
+        return sprintf('%s%s', $this->getAuthority(), $this->getRoot());
     }
 
     public function getRequestMethod()
