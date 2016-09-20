@@ -35,7 +35,8 @@ class FormAuthenticationModuleTest extends PHPUnit_Framework_TestCase
         $service = new Service();
         $formAuthenticationModule = new FormAuthenticationModule(
             [
-                'foo' => 'bar',
+                // foo:bar
+                'foo' => '$2y$10$F4lt5FzX.wfr2s3jsTy9XuxU2T7J5R0bTnMbu.9MDjphIupbG54l6',
             ],
             $session,
             $tpl

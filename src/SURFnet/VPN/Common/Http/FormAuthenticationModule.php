@@ -48,9 +48,7 @@ class FormAuthenticationModule implements ServiceModuleInterface
                 $authPass = $request->getPostParameter('userPass');
 
                 if (array_key_exists($authUser, $this->userPass)) {
-                    // XXX here we MUST compare hashes!
-                    // time safe string compare, using polyfill on PHP < 5.6
-                    if (hash_equals($this->userPass[$authUser], $authPass)) {
+                    if (false !== password_verify($authPass, $this->userPass[$authUser])) {
                         $this->session->set('_form_auth_user', $authUser);
 
                         return new RedirectResponse($request->getHeader('HTTP_REFERER'));
