@@ -50,6 +50,6 @@ class FormAuthenticationHookTest extends PHPUnit_Framework_TestCase
         $request = new TestRequest([]);
 
         $response = $formAuthentication->executeBefore($request);
-        $this->assertSame('{"formAuthentication":[]}', $response->getBody());
+        $this->assertSame('{"formAuthentication":{"_form_auth_invalid_credentials":false}}', $response->getBody());
     }
 }

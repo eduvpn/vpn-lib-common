@@ -63,6 +63,8 @@ class FormAuthenticationModule implements ServiceModuleInterface
                     $this->tpl->render(
                         'formAuthentication',
                         [
+                            '_form_auth_invalid_credentials' => true,
+                            '_form_auth_invalid_credentials_user' => $authUser,
                             '_form_auth_redirect_to' => $request->getHeader('HTTP_REFERER'),
                         ]
                     )

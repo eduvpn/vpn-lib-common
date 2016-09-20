@@ -41,9 +41,7 @@ class FormAuthenticationHook implements BeforeHookInterface
 
         // not yet authenticated
         $response = new Response(200, 'text/html');
-        $response->setBody(
-            $this->tpl->render('formAuthentication', [])
-        );
+        $response->setBody($this->tpl->render('formAuthentication', ['_form_auth_invalid_credentials' => false]));
 
         return $response;
     }
