@@ -198,4 +198,58 @@ class RequestTest extends PHPUnit_Framework_TestCase
         );
         $this->assertSame('http://vpn.example:8080/', $request->getUri());
     }
+
+    public function testGetRootSimple()
+    {
+        $request = new Request(
+            [
+                'SERVER_NAME' => 'vpn.example',
+                'SERVER_PORT' => 80,
+                'REQUEST_METHOD' => 'GET',
+                'REQUEST_URI' => '/',
+            ]
+        );
+        $this->assertSame('/', $request->getRoot());
+    }
+
+    public function testGetRootPathInfo()
+    {
+        $request = new Request(
+            [
+                'SERVER_NAME' => 'vpn.example',
+                'SERVER_PORT' => 80,
+                'REQUEST_METHOD' => 'GET',
+                'REQUEST_URI' => '/admin/foo/bar',
+                'PATH_INFO' => '/foo/bar',
+            ]
+        );
+        $this->assertSame('/admin/', $request->getRoot());
+    }
+
+    public function testGetRootQueryString()
+    {
+        $request = new Request(
+            [
+                'SERVER_NAME' => 'vpn.example',
+                'SERVER_PORT' => 80,
+                'REQUEST_METHOD' => 'GET',
+                'REQUEST_URI' => '/?foo=bar',
+            ]
+        );
+        $this->assertSame('/', $request->getRoot());
+    }
+
+    public function testGetRootPathInfoQueryString()
+    {
+        $request = new Request(
+            [
+                'SERVER_NAME' => 'vpn.example',
+                'SERVER_PORT' => 80,
+                'REQUEST_METHOD' => 'GET',
+                'REQUEST_URI' => '/admin/foo/bar?foo=bar',
+                'PATH_INFO' => '/foo/bar',
+            ]
+        );
+        $this->assertSame('/admin/', $request->getRoot());
+    }
 }

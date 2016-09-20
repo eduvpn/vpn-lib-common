@@ -84,6 +84,23 @@ class Request
         return sprintf('%s://%s%s', $requestScheme, $serverName, $requestUri);
     }
 
+    public function getRoot()
+    {
+        $requestUri = $this->serverData['REQUEST_URI'];
+        $pathInfo = $this->getPathInfo();
+        // remove QUERY_STRING
+        $hasQueryString = strpos($requestUri, '?');
+        if (false !== $hasQueryString) {
+            $requestUri = substr($requestUri, 0, $hasQueryString);
+        }
+        // remove PATH_INFO
+        if ('/' !== $pathInfo) {
+            $requestUri = substr($requestUri, 0, strlen($pathInfo) - 1);
+        }
+
+        return $requestUri;
+    }
+
     public function getRequestMethod()
     {
         return $this->serverData['REQUEST_METHOD'];
