@@ -77,11 +77,7 @@ class Service
                 // if we get back a Response object, return it immediately
                 if ($hookResponse instanceof Response) {
                     // run afterHooks
-                    foreach ($this->afterHooks as $k => $v) {
-                        $hookResponse = $v->executeAfter($request, $hookResponse);
-                    }
-
-                    return $hookResponse;
+                    return $this->runAfterHooks($request, $hookResponse);
                 }
 
                 $hookData[$k] = $hookResponse;
@@ -107,11 +103,7 @@ class Service
             $response = $this->routes[$requestMethod][$pathInfo]($request, $hookData);
 
             // after hooks
-            foreach ($this->afterHooks as $k => $v) {
-                $response = $v->executeAfter($request, $response);
-            }
-
-            return $response;
+            return $this->runAfterHooks($request, $response);
         } catch (HttpException $e) {
             $response = new Response($e->getCode(), 'application/json');
             foreach ($e->getResponseHeaders() as $key => $value) {
@@ -121,5 +113,14 @@ class Service
 
             return $response;
         }
+    }
+
+    private function runAfterHooks(Request $request, Response $response)
+    {
+        foreach ($this->afterHooks as $k => $v) {
+            $response = $v->executeAfter($request, $response);
+        }
+
+        return $response;
     }
 }
