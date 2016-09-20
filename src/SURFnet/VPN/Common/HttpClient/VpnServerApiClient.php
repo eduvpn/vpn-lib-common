@@ -122,6 +122,11 @@ class VpnServerApiClient extends BaseClient
         return $this->post($requestUri, ['user_id' => $userId, 'voot_token' => $vootToken])['ok'];
     }
 
+    public function deleteOtpSecret($userId)
+    {
+        return $this->post('/users/delete_otp_secret', ['user_id' => $userId])['ok'];
+    }
+
     public function setOtpSecret($userId, $otpSecret)
     {
         return $this->post('/users/set_otp_secret', ['user_id' => $userId, 'otp_secret' => $otpSecret])['ok'];
