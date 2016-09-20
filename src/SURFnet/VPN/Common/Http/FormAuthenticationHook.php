@@ -39,7 +39,12 @@ class FormAuthenticationHook implements BeforeHookInterface
             return $this->session->get('_form_auth_user');
         }
 
-        // not yet authenticated
+        // if we actually try to POST to the verify endpoint, let it go...
+        if ('/_form/auth/verify' === $request->getPathInfo() && 'POST' === $request->getRequestMethod()) {
+            return;
+        }
+
+        // any other URL, enforce authentication
         $response = new Response(200, 'text/html');
         $response->setBody($this->tpl->render('formAuthentication', ['_form_auth_invalid_credentials' => false]));
 
