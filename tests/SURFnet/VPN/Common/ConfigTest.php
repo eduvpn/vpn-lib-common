@@ -108,4 +108,14 @@ class ConfigTest extends PHPUnit_Framework_TestCase
         $this->assertSame('bar', $c->v('foo'));
         $this->assertSame('b', $c->v('a'));
     }
+
+    /**
+     * @expectedException SURFnet\VPN\Common\Exception\ConfigException
+     * @expectedExceptionMessage the value of configuration field "a" does not pass validator "is_string"
+     */
+    public function testWrongType()
+    {
+        $c = new MyConfig(['a' => true]);
+        $c->s('a');
+    }
 }
