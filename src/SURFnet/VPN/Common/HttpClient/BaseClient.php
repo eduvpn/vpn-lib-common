@@ -42,8 +42,8 @@ class BaseClient
 
         $response = $this->httpClient->get($requestUri);
 
-        if (!isset($response['data'][$r])) {
-            throw new HttpClientException('invalid response data');
+        if (!is_array($response) || !array_key_exists('data', $response) || !array_key_exists($r, $response['data'])) {
+            throw new HttpClientException('invalid response data format');
         }
 
         return $response['data'][$r];
@@ -56,8 +56,8 @@ class BaseClient
             $postData
         );
 
-        if (!isset($response['data'][$r])) {
-            throw new HttpClientException('invalid response data');
+        if (!is_array($response) || !array_key_exists('data', $response) || !array_key_exists($r, $response['data'])) {
+            throw new HttpClientException('invalid response data format');
         }
 
         return $response['data'][$r];
