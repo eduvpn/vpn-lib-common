@@ -34,13 +34,22 @@ class CaClient extends BaseClient
         return $this->get('user_certificate_list', ['user_id' => $userId]);
     }
 
-    public function addCertificate($userId, $configName)
+    public function addClientCertificate($userId, $configName)
     {
         return $this->post(
-            'add_certificate',
+            'add_client_certificate',
             [
                 'common_name' => sprintf('%s_%s', $userId, $configName),
-                'cert_type' => 'client',
+            ]
+        );
+    }
+
+    public function addServerCertificate($commonName)
+    {
+        return $this->post(
+            'add_server_certificate',
+            [
+                'common_name' => $commonName,
             ]
         );
     }
