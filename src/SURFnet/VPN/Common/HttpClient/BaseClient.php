@@ -39,11 +39,10 @@ class BaseClient
         if (0 !== count($getData)) {
             $requestUri = sprintf('%s?%s', $requestUri, http_build_query($getData));
         }
-
         $response = $this->httpClient->get($requestUri);
 
         if (!is_array($response) || !array_key_exists('data', $response) || !array_key_exists($r, $response['data'])) {
-            throw new HttpClientException('invalid response data format');
+            throw new HttpClientException(sprintf('invalid response data format, GET to "%s"', $r));
         }
 
         return $response['data'][$r];
@@ -51,13 +50,11 @@ class BaseClient
 
     public function post($r, array $postData)
     {
-        $response = $this->httpClient->post(
-            sprintf('%s/%s', $this->baseUri, $r),
-            $postData
-        );
+        $requestUri = sprintf('%s/%s', $this->baseUri, $r);
+        $response = $this->httpClient->post($requestUri, $postData);
 
         if (!is_array($response) || !array_key_exists('data', $response) || !array_key_exists($r, $response['data'])) {
-            throw new HttpClientException('invalid response data format');
+            throw new HttpClientException(sprintf('invalid response data format, POST to "%s"', $r));
         }
 
         return $response['data'][$r];
