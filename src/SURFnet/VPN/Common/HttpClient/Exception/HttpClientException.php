@@ -15,11 +15,10 @@
  *  You should have received a copy of the GNU Affero General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-namespace SURFnet\VPN\Common\HttpClient;
+namespace SURFnet\VPN\Common\HttpClient\Exception;
 
-interface CaClientInterface
+use Exception;
+
+class HttpClientException extends Exception
 {
-    public function getCertList();
-    public function getUserCertList($userId);
-    public function addConfiguration($userId, $configName);
 }

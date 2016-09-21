@@ -17,118 +17,118 @@
  */
 namespace SURFnet\VPN\Common\HttpClient;
 
-class ServerClient extends BaseClient implements ServerClientInterface
+class ServerClient extends BaseClient
 {
-    public function __construct(HttpClientInterface $httpClient, $vpnCaApiUri)
+    public function __construct(HttpClientInterface $httpClient, $baseUri)
     {
-        parent::__construct($httpClient, $vpnCaApiUri);
+        parent::__construct($httpClient, $baseUri);
     }
 
-    public function getConnections()
+    public function clientConnections()
     {
-        return $this->get('/openvpn/connections')['connections'];
+        return $this->get('client_connections');
     }
 
-    public function getLog($dateTime, $ipAddress)
+    public function log($dataTime, $ipAddress)
     {
-        // XXX urlencode?!
-        $requestUri = sprintf('/log?date_time=%s&ip_address=%s', urlencode($dateTime), $ipAddress);
-
-        return $this->get($requestUri)['log'];
+        return $this->get(
+            'log',
+            [
+                'date_time' => $dataTime,
+                'ip_address' => $ipAddress,
+            ]
+        );
     }
 
-    public function getStats()
+    public function stats()
     {
-        return $this->get('/stats')['stats'];
+        return $this->get('stats');
     }
 
-    public function getDisabledUsers()
+    public function disabledUsers()
     {
-        // XXX -> ['users'] => ['disabled_users']
-        return $this->get('/users/disabled')['users'];
+        return $this->get('disabled_users');
     }
 
-    public function getIsDisabledUser($userId)
+    public function isDisabledUser($userId)
     {
-        $requestUri = sprintf('/users/is_disabled?user_id=%s', $userId);
-
-        // XXX is_disabled
-        return $this->get($requestUri)['disabled'];
+        return $this->get('is_disabled_user', ['user_id' => $userId]);
     }
 
     public function enableUser($userId)
     {
-        return $this->post('/users/enable', ['user_id' => $userId])['ok'];
+        return $this->post('enable_user', ['user_id' => $userId]);
     }
 
     public function disableUser($userId)
     {
-        return $this->post('/users/disable', ['user_id' => $userId])['ok'];
+        return $this->post('disable_user', ['user_id' => $userId]);
     }
 
-    public function getHasOtpSecret($userId)
+    public function hasOtpSecret($userId)
     {
-        $requestUri = sprintf('/users/has_otp_secret?user_id=%s', $userId);
-
-        // XXX has_otp_secret
-        return $this->get($requestUri)['otp_secret'];
+        return $this->get('has_otp_secret', ['user_id' => $userId]);
     }
 
-    public function getDisabledCommonNames()
+    public function disabledCommonNames()
     {
-        // XXX disabled_common_names
-        return $this->get('/common_names/disabled')['common_names'];
+        return $this->get('disabled_common_names');
     }
 
     public function disableCommonName($commonName)
     {
-        return $this->post('/common_names/disable', ['common_name' => $commonName])['ok'];
+        return $this->post('disable_common_name', ['common_name' => $commonName]);
     }
 
     public function enableCommonName($commonName)
     {
-        return $this->post('/common_names/enable', ['common_name' => $commonName])['ok'];
+        return $this->post('enable_common_name', ['common_name' => $commonName]);
     }
 
-    public function killCommonName($commonName)
+    public function killClient($commonName)
     {
-        return $this->post('/openvpn/kill', ['common_name' => $commonName])['ok'];
+        return $this->post('kill_client', ['common_name' => $commonName]);
     }
 
-    public function getServerPools()
+    public function serverPools()
     {
-        // XXX pools => ???
-        return $this->get('/info/server')['pools'];
+        return $this->get('server_pools');
     }
 
-    public function getUserGroups($userId)
+    public function userGroups($userId)
     {
-        $requestUri = sprintf('/groups?user_id=%s', $userId);
-
-        return $this->get($requestUri)['groups'];
+        return $this->get('user_groups', ['user_id' => $userId]);
     }
 
     public function hasVootToken($userId)
     {
-        $requestUri = sprintf('/users/has_voot_tokens?user_id=%s', $userId);
-
-        return $this->get($requestUri)['voot_token'];
+        return $this->get('has_voot_token', ['user_id' => $userId]);
     }
 
     public function setVootToken($userId, $vootToken)
     {
-        $requestUri = sprintf('/users/set_voot_token', $userId);
-
-        return $this->post($requestUri, ['user_id' => $userId, 'voot_token' => $vootToken])['ok'];
+        return $this->post(
+            'set_voot_token', 
+            [
+                'user_id' => $userId, 
+                'voot_token' => $vootToken]
+            ]   
+        );
     }
 
     public function deleteOtpSecret($userId)
     {
-        return $this->post('/users/delete_otp_secret', ['user_id' => $userId])['ok'];
+        return $this->post('delete_otp_secret', ['user_id' => $userId]);
     }
 
     public function setOtpSecret($userId, $otpSecret)
     {
-        return $this->post('/users/set_otp_secret', ['user_id' => $userId, 'otp_secret' => $otpSecret])['ok'];
+        return $this->post(
+            'set_otp_secret',
+            [
+                'user_id' => $userId, 
+                'otp_secret' => $otpSecret
+            ]
+        );
     }
 }

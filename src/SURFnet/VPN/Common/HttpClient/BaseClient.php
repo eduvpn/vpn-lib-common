@@ -17,6 +17,8 @@
  */
 namespace SURFnet\VPN\Common\HttpClient;
 
+use SURFnet\VPN\Common\HttpClient\Exception\HttpClientException;
+
 class BaseClient
 {
     /** @var HttpClientInterface */
@@ -31,22 +33,33 @@ class BaseClient
         $this->baseUri = $baseUri;
     }
 
-    public function get($requestUri)
+    public function get($r, array $getData)
     {
-        $response = $this->httpClient->get(
-            sprintf('%s%s', $this->baseUri, $requestUri)
-        );
+        $requestUri = sprintf('%s/%s', $this->baseUri, $r);
+        if (0 !== count($getData)) {
+            $requestUri = sprintf('%s?%s', $requestUri, http_build_query($getData));
+        }
 
-        return $response['data'];
+        $response = $this->httpClient->get($requestUri);
+
+        if (!isset($response['data'][$r])) {
+            throw new HttpClientException('invalid response data');
+        }
+
+        return $response['data'][$r];
     }
 
-    public function post($requestUri, array $postData)
+    public function post($r, array $postData)
     {
         $response = $this->httpClient->post(
-            sprintf('%s%s', $this->baseUri, $requestUri),
+            sprintf('%s/%s', $this->baseUri, $r),
             $postData
         );
 
-        return $response['data'];
+        if (!isset($response['data'][$r])) {
+            throw new HttpClientException('invalid response data');
+        }
+
+        return $response['data'][$r];
     }
 }

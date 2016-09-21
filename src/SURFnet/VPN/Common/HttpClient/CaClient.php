@@ -17,31 +17,31 @@
  */
 namespace SURFnet\VPN\Common\HttpClient;
 
-class CaClient extends BaseClient implements CaClientInterface
+class CaClient extends BaseClient
 {
-    public function __construct(HttpClientInterface $httpClient, $vpnCaApiUri)
+    public function __construct(HttpClientInterface $httpClient, $baseUri)
     {
-        parent::__construct($httpClient, $vpnCaApiUri);
+        parent::__construct($httpClient, $baseUri);
     }
 
-    public function getCertList()
+    public function getCertificateList()
     {
-        // vpn-user-portal should use the next one, getusercertlist!
-        // XXX cert_list ?
-        return $this->get('/certificate/');
+        return $this->get('certificate_list');
     }
 
-    public function getUserCertList($userId)
+    public function getUserCertificateList($userId)
     {
-        // XXX ['user_cert_list'] ??
-        return $this->get(sprintf('/certificate?user_id=%s', $userId));
+        return $this->get('user_certificate_list', ['user_id' => $userId]);
     }
 
-    public function addConfiguration($userId, $configName)
+    public function addCertificate($userId, $configName)
     {
-        $vpnConfigName = sprintf('%s_%s', $userId, $configName);
-
-        // XXX certificate?!
-        return $this->post('/certificate/', ['common_name' => $vpnConfigName, 'cert_type' => 'client']);
+        return $this->post(
+            'add_certificate',
+            [
+                'common_name' => sprintf('%s_%s', $userId, $configName),
+                'cert_type' => 'client',
+            ]
+        );
     }
 }
