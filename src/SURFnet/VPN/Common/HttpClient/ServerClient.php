@@ -108,11 +108,11 @@ class ServerClient extends BaseClient
     public function setVootToken($userId, $vootToken)
     {
         return $this->post(
-            'set_voot_token', 
+            'set_voot_token',
             [
-                'user_id' => $userId, 
-                'voot_token' => $vootToken]
-            ]   
+                'user_id' => $userId,
+                'voot_token' => $vootToken,
+            ]
         );
     }
 
@@ -126,8 +126,8 @@ class ServerClient extends BaseClient
         return $this->post(
             'set_otp_secret',
             [
-                'user_id' => $userId, 
-                'otp_secret' => $otpSecret
+                'user_id' => $userId,
+                'otp_secret' => $otpSecret,
             ]
         );
     }
