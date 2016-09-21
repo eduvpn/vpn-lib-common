@@ -33,7 +33,7 @@ class BaseClient
         $this->baseUri = $baseUri;
     }
 
-    public function get($r, array $getData)
+    public function get($r, array $getData = [])
     {
         $requestUri = sprintf('%s/%s', $this->baseUri, $r);
         if (0 !== count($getData)) {
