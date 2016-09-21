@@ -24,12 +24,12 @@ class CaClient extends BaseClient
         parent::__construct($httpClient, $baseUri);
     }
 
-    public function getCertificateList()
+    public function certificateList()
     {
         return $this->get('certificate_list');
     }
 
-    public function getUserCertificateList($userId)
+    public function userCertificateList($userId)
     {
         return $this->get('user_certificate_list', ['user_id' => $userId]);
     }
