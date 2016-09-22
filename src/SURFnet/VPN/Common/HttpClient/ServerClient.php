@@ -90,6 +90,11 @@ class ServerClient extends BaseClient
         return $this->post('kill_client', ['common_name' => $commonName]);
     }
 
+    public function serverPool($poolId)
+    {
+        return $this->get('server_pool', ['pool_id' => $poolId]);
+    }
+
     public function serverPools()
     {
         return $this->get('server_pools');
