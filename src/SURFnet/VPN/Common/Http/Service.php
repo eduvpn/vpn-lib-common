@@ -18,9 +18,13 @@
 namespace SURFnet\VPN\Common\Http;
 
 use SURFnet\VPN\Common\Http\Exception\HttpException;
+use SURFnet\VPN\Common\TplInterface;
 
 class Service
 {
+    /** @var SURFnet\VPN\Common\TplInterface|null */
+    private $tpl;
+
     /** @var array */
     private $routes;
 
@@ -30,8 +34,9 @@ class Service
     /** @var array */
     private $afterHooks;
 
-    public function __construct()
+    public function __construct(TplInterface $tpl = null)
     {
+        $this->tpl = $tpl;
         $this->routes = [];
         $this->beforeHooks = [];
         $this->afterHooks = [];
@@ -105,11 +110,34 @@ class Service
             // after hooks
             return $this->runAfterHooks($request, $response);
         } catch (HttpException $e) {
-            $response = new Response($e->getCode(), 'application/json');
+            $httpAccept = $request->getHeader('HTTP_ACCEPT', false);
+            if (!is_null($httpAccept) && false !== strpos($httpAccept, 'text/html')) {
+                if (!is_null($this->tpl)) {
+                    $responseBody = $this->tpl->render(
+                        'errorPage',
+                        [
+                            'code' => $e->getCode(),
+                            'message' => $e->getMessage(),
+                        ]
+                    );
+                } else {
+                    $responseBody = sprintf('%d: %s', $e->getCode(), $e->getMessage());
+                }
+
+                // assume browser, return HTML
+                $response = new HtmlResponse(
+                    $responseBody,
+                    $e->getCode()
+                );
+            } else {
+                // assume not browser, return JSON
+                $response = new Response($e->getCode(), 'application/json');
+                $response->setBody(json_encode(['error' => $e->getMessage()]));
+            }
+
             foreach ($e->getResponseHeaders() as $key => $value) {
                 $response->addHeader($key, $value);
             }
-            $response->setBody(json_encode(['error' => $e->getMessage()]));
 
             return $response;
         }

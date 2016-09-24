@@ -18,9 +18,11 @@
 namespace SURFnet\VPN\Common\Http;
 
 require_once sprintf('%s/Test/TestRequest.php', __DIR__);
+require_once sprintf('%s/Test/TestHtmlTpl.php', __DIR__);
 
 use PHPUnit_Framework_TestCase;
 use SURFnet\VPN\Common\Http\Test\TestRequest;
+use SURFnet\VPN\Common\Http\Test\TestHtmlTpl;
 
 class ServiceTest extends PHPUnit_Framework_TestCase
 {
@@ -148,5 +150,41 @@ class ServiceTest extends PHPUnit_Framework_TestCase
         $response = $service->run($request);
 
         $this->assertSame(201, $response->getStatusCode());
+    }
+
+    public function testBrowserNotFoundWithoutTpl()
+    {
+        $request = new TestRequest(
+            [
+                'PATH_INFO' => '/bar',
+                'HTTP_ACCEPT' => 'text/html',
+            ]
+        );
+
+        $service = new Service();
+        $service->get('/foo', function (Request $request) {
+            return new Response(200);
+        });
+        $response = $service->run($request);
+        $this->assertSame(404, $response->getStatusCode());
+        $this->assertSame('404: "/bar" not found', $response->getBody());
+    }
+
+    public function testBrowserNotFoundWithTpl()
+    {
+        $request = new TestRequest(
+            [
+                'PATH_INFO' => '/bar',
+                'HTTP_ACCEPT' => 'text/html',
+            ]
+        );
+
+        $service = new Service(new TestHtmlTpl());
+        $service->get('/foo', function (Request $request) {
+            return new Response(200);
+        });
+        $response = $service->run($request);
+        $this->assertSame(404, $response->getStatusCode());
+        $this->assertSame('<html><head><title>404</title></head><body><h1>Error (404)</h1><p>"/bar" not found</p></body></html>', $response->getBody());
     }
 }
