@@ -110,27 +110,26 @@ class Service
             // after hooks
             return $this->runAfterHooks($request, $response);
         } catch (HttpException $e) {
-            $httpAccept = $request->getHeader('HTTP_ACCEPT', false);
-            if (!is_null($httpAccept) && false !== strpos($httpAccept, 'text/html')) {
-                if (!is_null($this->tpl)) {
-                    $responseBody = $this->tpl->render(
-                        'errorPage',
-                        [
-                            'code' => $e->getCode(),
-                            'message' => $e->getMessage(),
-                        ]
-                    );
+            if ($request->isBrowser()) {
+                if (is_null($this->tpl)) {
+                    // template not available
+                    $response = new Response($e->getCode(), 'text/plain');
+                    $response->setBody(sprintf('%d: %s', $e->getCode(), $e->getMessage()));
                 } else {
-                    $responseBody = sprintf('%d: %s', $e->getCode(), $e->getMessage());
+                    // template available
+                    $response = new Response($e->getCode(), 'text/html');
+                    $response->setBody(
+                        $this->tpl->render(
+                            'errorPage',
+                            [
+                                'code' => $e->getCode(),
+                                'message' => $e->getMessage(),
+                            ]
+                        )
+                    );
                 }
-
-                // assume browser, return HTML
-                $response = new HtmlResponse(
-                    $responseBody,
-                    $e->getCode()
-                );
             } else {
-                // assume not browser, return JSON
+                // not a browser
                 $response = new Response($e->getCode(), 'application/json');
                 $response->setBody(json_encode(['error' => $e->getMessage()]));
             }
