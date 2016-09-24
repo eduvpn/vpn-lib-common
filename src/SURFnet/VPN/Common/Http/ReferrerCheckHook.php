@@ -23,8 +23,10 @@ class ReferrerCheckHook implements BeforeHookInterface
 {
     public function executeBefore(Request $request)
     {
-        if (false === strpos($request->getHeader('HTTP_ACCEPT'), 'text/html')) {
-            // does not come from browser
+        if (!$request->isBrowser()) {
+            // does not come from browser, so we do not care about CSRF. We
+            // assume because we have no CORS, with JS you cannot override the
+            // browser's Accept header to our endpoints
             return false;
         }
 

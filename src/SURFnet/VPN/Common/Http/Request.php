@@ -121,6 +121,15 @@ class Request
         return $this->serverData['SERVER_NAME'];
     }
 
+    public function isBrowser()
+    {
+        if (!array_key_exists('HTTP_ACCEPT', $this->serverData)) {
+            return false;
+        }
+
+        return false !== strpos($this->serverData['HTTP_ACCEPT'], 'text/html');
+    }
+
     public function getPathInfo()
     {
         if (!array_key_exists('PATH_INFO', $this->serverData)) {
