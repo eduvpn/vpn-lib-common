@@ -46,7 +46,15 @@ class FormAuthenticationHook implements BeforeHookInterface
 
         // any other URL, enforce authentication
         $response = new Response(200, 'text/html');
-        $response->setBody($this->tpl->render('formAuthentication', ['_form_auth_invalid_credentials' => false]));
+        $response->setBody(
+            $this->tpl->render(
+                'formAuthentication',
+                [
+                    '_form_auth_invalid_credentials' => false,
+                    '_form_auth_redirect_to' => $request->getHeader('HTTP_REFERER'),
+                ]
+            )
+        );
 
         return $response;
     }

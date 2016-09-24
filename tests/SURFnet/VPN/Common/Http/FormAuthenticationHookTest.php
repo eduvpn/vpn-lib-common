@@ -47,9 +47,13 @@ class FormAuthenticationHookTest extends PHPUnit_Framework_TestCase
         $tpl = new TestTpl();
         $formAuthentication = new FormAuthenticationHook($session, $tpl);
 
-        $request = new TestRequest([]);
+        $request = new TestRequest(
+            [
+                'HTTP_REFERER' => 'http://vpn.example/account',
+            ]
+        );
 
         $response = $formAuthentication->executeBefore($request);
-        $this->assertSame('{"formAuthentication":{"_form_auth_invalid_credentials":false}}', $response->getBody());
+        $this->assertSame('{"formAuthentication":{"_form_auth_invalid_credentials":false,"_form_auth_redirect_to":"http:\/\/vpn.example\/account"}}', $response->getBody());
     }
 }

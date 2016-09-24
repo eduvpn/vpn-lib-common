@@ -35,9 +35,13 @@ class ReferrerCheckHook implements BeforeHookInterface
         $safeMethods = ['GET', 'HEAD', 'OPTIONS'];
         if (!in_array($request->getRequestMethod(), $safeMethods)) {
             $referrer = $request->getHeader('HTTP_REFERER');
+            // validate the URL
+            if (false === filter_var($referrer, FILTER_VALIDATE_URL, FILTER_FLAG_SCHEME_REQUIRED | FILTER_FLAG_HOST_REQUIRED | FILTER_FLAG_PATH_REQUIRED)) {
+                throw new HttpException('invalid HTTP_REFERER', 400);
+            }
             // extract the "host" part of the URL
             if (false === $referrerHost = parse_url($referrer, PHP_URL_HOST)) {
-                throw new HttpException('invalid HTTP_REFERER', 400);
+                throw new HttpException('invalid HTTP_REFERER, unable to extract host', 400);
             }
 
             if ($request->getServerName() !== $referrerHost) {

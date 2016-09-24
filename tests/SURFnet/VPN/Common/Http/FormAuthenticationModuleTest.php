@@ -53,6 +53,7 @@ class FormAuthenticationModuleTest extends PHPUnit_Framework_TestCase
             [
                 'userName' => 'foo',
                 'userPass' => 'bar',
+                '_form_auth_redirect_to' => 'http://vpn.example/account',
             ]
         );
 
@@ -86,6 +87,7 @@ class FormAuthenticationModuleTest extends PHPUnit_Framework_TestCase
             [
                 'userName' => 'foo',
                 'userPass' => 'baz',
+                '_form_auth_redirect_to' => 'http://vpn.example/account',
             ]
         );
 
