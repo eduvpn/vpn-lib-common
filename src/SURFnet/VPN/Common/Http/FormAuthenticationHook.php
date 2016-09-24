@@ -51,7 +51,7 @@ class FormAuthenticationHook implements BeforeHookInterface
                 'formAuthentication',
                 [
                     '_form_auth_invalid_credentials' => false,
-                    '_form_auth_redirect_to' => $request->getHeader('HTTP_REFERER'),
+                    '_form_auth_redirect_to' => $request->getUri(),
                 ]
             )
         );
