@@ -52,6 +52,7 @@ class FormAuthenticationHook implements BeforeHookInterface
                 [
                     '_form_auth_invalid_credentials' => false,
                     '_form_auth_redirect_to' => $request->getUri(),
+                    '_form_auth_login_page' => true,
                 ]
             )
         );

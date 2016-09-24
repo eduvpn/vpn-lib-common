@@ -77,6 +77,7 @@ class FormAuthenticationModule implements ServiceModuleInterface
                             '_form_auth_invalid_credentials' => true,
                             '_form_auth_invalid_credentials_user' => $authUser,
                             '_form_auth_redirect_to' => $redirectTo,
+                            '_form_auth_login_page' => true,
                         ]
                     )
                 );
