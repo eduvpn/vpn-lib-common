@@ -64,7 +64,7 @@ class FormAuthenticationModule implements ServiceModuleInterface
                     if (false !== password_verify($authPass, $this->userPass[$authUser])) {
                         $this->session->set('_form_auth_user', $authUser);
 
-                        return new RedirectResponse($request->getHeader('HTTP_REFERER'));
+                        return new RedirectResponse($redirectTo, 302);
                     }
                 }
 
