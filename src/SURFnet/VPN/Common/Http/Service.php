@@ -138,7 +138,8 @@ class Service
                 $response->addHeader($key, $value);
             }
 
-            return $response;
+            // after hooks
+            return $this->runAfterHooks($request, $response);
         }
     }
 
