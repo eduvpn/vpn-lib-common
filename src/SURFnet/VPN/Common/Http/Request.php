@@ -94,13 +94,13 @@ class Request
         $requestUri = $this->serverData['REQUEST_URI'];
         $pathInfo = $this->getPathInfo();
         // remove QUERY_STRING
-        $hasQueryString = strpos($requestUri, '?');
+        $hasQueryString = mb_strpos($requestUri, '?');
         if (false !== $hasQueryString) {
-            $requestUri = substr($requestUri, 0, $hasQueryString);
+            $requestUri = mb_substr($requestUri, 0, $hasQueryString);
         }
         // remove PATH_INFO
         if ('/' !== $pathInfo) {
-            $requestUri = substr($requestUri, 0, strlen($requestUri) - strlen($pathInfo) + 1);
+            $requestUri = mb_substr($requestUri, 0, mb_strlen($requestUri) - mb_strlen($pathInfo) + 1);
         }
 
         return $requestUri;
@@ -127,7 +127,7 @@ class Request
             return false;
         }
 
-        return false !== strpos($this->serverData['HTTP_ACCEPT'], 'text/html');
+        return false !== mb_strpos($this->serverData['HTTP_ACCEPT'], 'text/html');
     }
 
     public function getPathInfo()

@@ -27,7 +27,7 @@ class ApiResponse extends Response
         if (!is_string($wrapperKey)) {
             throw new InvalidArgumentException('parameter must be string');
         }
-        if (0 >= strlen($wrapperKey)) {
+        if (0 >= mb_strlen($wrapperKey)) {
             throw new DomainException('string must not be empty');
         }
         parent::__construct($responseCode, 'application/json');
