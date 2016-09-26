@@ -90,7 +90,6 @@ class Request
 
     public function getRoot()
     {
-        // XXX is it safe to not use the mb_ variants?
         $requestUri = $this->serverData['REQUEST_URI'];
         $pathInfo = $this->getPathInfo();
         // remove QUERY_STRING
