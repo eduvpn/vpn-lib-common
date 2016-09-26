@@ -37,7 +37,10 @@ class Service
     public function __construct(TplInterface $tpl = null)
     {
         $this->tpl = $tpl;
-        $this->routes = [];
+        $this->routes = [
+            'GET' => [],
+            'POST' => [],
+        ];
         $this->beforeHooks = [];
         $this->afterHooks = [];
     }
