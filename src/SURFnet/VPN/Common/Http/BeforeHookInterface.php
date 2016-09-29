@@ -19,5 +19,5 @@ namespace SURFnet\VPN\Common\Http;
 
 interface BeforeHookInterface
 {
-    public function executeBefore(Request $request);
+    public function executeBefore(Request $request, array $hookData);
 }

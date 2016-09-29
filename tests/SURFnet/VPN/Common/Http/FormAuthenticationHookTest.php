@@ -38,7 +38,7 @@ class FormAuthenticationHookTest extends PHPUnit_Framework_TestCase
 
         $request = new TestRequest([]);
 
-        $this->assertSame('foo', $formAuthentication->executeBefore($request));
+        $this->assertSame('foo', $formAuthentication->executeBefore($request, []));
     }
 
     public function testNotAuthenticated()
@@ -52,7 +52,7 @@ class FormAuthenticationHookTest extends PHPUnit_Framework_TestCase
             ]
         );
 
-        $response = $formAuthentication->executeBefore($request);
+        $response = $formAuthentication->executeBefore($request, []);
         $this->assertSame('{"formAuthentication":{"_form_auth_invalid_credentials":false,"_form_auth_redirect_to":"http:\/\/vpn.example\/","_form_auth_login_page":true}}', $response->getBody());
     }
 }

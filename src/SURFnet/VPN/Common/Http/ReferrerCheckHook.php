@@ -21,7 +21,7 @@ use SURFnet\VPN\Common\Http\Exception\HttpException;
 
 class ReferrerCheckHook implements BeforeHookInterface
 {
-    public function executeBefore(Request $request)
+    public function executeBefore(Request $request, array $hookData)
     {
         if (!$request->isBrowser()) {
             // does not come from browser, so we do not care about CSRF. We

@@ -33,7 +33,7 @@ class FormAuthenticationHook implements BeforeHookInterface
         $this->tpl = $tpl;
     }
 
-    public function executeBefore(Request $request)
+    public function executeBefore(Request $request, array $hookData)
     {
         if ($this->session->has('_form_auth_user')) {
             return $this->session->get('_form_auth_user');

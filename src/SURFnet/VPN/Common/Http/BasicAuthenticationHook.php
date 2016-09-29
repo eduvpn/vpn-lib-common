@@ -33,7 +33,7 @@ class BasicAuthenticationHook implements BeforeHookInterface
         $this->realm = $realm;
     }
 
-    public function executeBefore(Request $request)
+    public function executeBefore(Request $request, array $hookData)
     {
         $authUser = $request->getHeader('PHP_AUTH_USER', false);
         $authPass = $request->getHeader('PHP_AUTH_PW', false);

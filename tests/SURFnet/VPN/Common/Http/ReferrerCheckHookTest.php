@@ -35,7 +35,7 @@ class ReferrerCheckHookTest extends PHPUnit_Framework_TestCase
         );
 
         $referrerCheckHook = new ReferrerCheckHook();
-        $this->assertTrue($referrerCheckHook->executeBefore($request));
+        $this->assertTrue($referrerCheckHook->executeBefore($request, []));
     }
 
     public function testGet()
@@ -47,7 +47,7 @@ class ReferrerCheckHookTest extends PHPUnit_Framework_TestCase
         );
 
         $referrerCheckHook = new ReferrerCheckHook();
-        $this->assertTrue($referrerCheckHook->executeBefore($request));
+        $this->assertTrue($referrerCheckHook->executeBefore($request, []));
     }
 
     /**
@@ -64,7 +64,7 @@ class ReferrerCheckHookTest extends PHPUnit_Framework_TestCase
         );
 
         $referrerCheckHook = new ReferrerCheckHook();
-        $referrerCheckHook->executeBefore($request);
+        $referrerCheckHook->executeBefore($request, []);
     }
 
     /**
@@ -82,7 +82,7 @@ class ReferrerCheckHookTest extends PHPUnit_Framework_TestCase
         );
 
         $referrerCheckHook = new ReferrerCheckHook();
-        $referrerCheckHook->executeBefore($request);
+        $referrerCheckHook->executeBefore($request, []);
     }
 
     public function testNonBrowser()
@@ -95,6 +95,6 @@ class ReferrerCheckHookTest extends PHPUnit_Framework_TestCase
         );
 
         $referrerCheckHook = new ReferrerCheckHook();
-        $referrerCheckHook->executeBefore($request);
+        $referrerCheckHook->executeBefore($request, []);
     }
 }

@@ -27,7 +27,7 @@ class NullAuthenticationHook implements BeforeHookInterface
         $this->authUser = $authUser;
     }
 
-    public function executeBefore(Request $request)
+    public function executeBefore(Request $request, array $hookData)
     {
         return $this->authUser;
     }

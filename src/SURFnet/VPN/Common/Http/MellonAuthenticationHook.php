@@ -27,7 +27,7 @@ class MellonAuthenticationHook implements BeforeHookInterface
         $this->userIdAttribute = $userIdAttribute;
     }
 
-    public function executeBefore(Request $request)
+    public function executeBefore(Request $request, array $hookData)
     {
         return $request->getHeader($this->userIdAttribute);
     }

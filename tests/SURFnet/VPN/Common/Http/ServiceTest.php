@@ -152,6 +152,34 @@ class ServiceTest extends PHPUnit_Framework_TestCase
         $this->assertSame(201, $response->getStatusCode());
     }
 
+    public function testHookDataPassing()
+    {
+        $request = new TestRequest([]);
+        $service = new Service();
+        $service->addBeforeHook(
+            'test',
+            new CallbackHook(
+                function (Request $request, array $hookData) {
+                    // this should be available in the next before hook
+                    return '12345';
+                }
+            )
+        );
+        $service->addBeforeHook(
+            'test2',
+            new CallbackHook(
+                function (Request $request, array $hookData) {
+                    $response = new Response();
+                    $response->setBody($hookData['test']);
+
+                    return $response;
+                }
+            )
+        );
+        $response = $service->run($request);
+        $this->assertSame('12345', $response->getBody());
+    }
+
     public function testBrowserNotFoundWithoutTpl()
     {
         $request = new TestRequest(
