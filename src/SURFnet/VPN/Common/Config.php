@@ -136,7 +136,7 @@ class Config
 
     public static function toFile($configFile, array $configData)
     {
-        $yamlData = Yaml::dump($configData);
+        $yamlData = Yaml::dump($configData, 3);
         FileIO::writeFile($configFile, $yamlData);
     }
 }
