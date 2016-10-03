@@ -1,3 +1,6 @@
 Test
 Options:
-  --instance instance		instance identifier (REQUIRED)
+  --foo foo		Foo (REQUIRED)
+  --bar		Bar
+  --baz		Baz (REQUIRED)
+  --xyz xyz		Xyz

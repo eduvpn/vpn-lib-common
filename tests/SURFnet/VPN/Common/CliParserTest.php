@@ -21,21 +21,24 @@ use PHPUnit_Framework_TestCase;
 
 class CliParserTest extends PHPUnit_Framework_TestCase
 {
-    public function testOne()
+    public function testRequiredArgumentWithValue()
     {
         $p = new CliParser(
             'Test',
             [
-                'instance' => ['instance identifier', true, true],
+                'foo' => ['Foo', true, true],
+                'bar' => ['Bar', false, false],
+                'baz' => ['Baz', false, true],
+                'xyz' => ['Xyz', true, false],
             ]
         );
 
-        $config = $p->parse(['name_of_program', '--instance', 'vpn.example']);
+        $config = $p->parse(['name_of_program', '--foo', 'foo', '--baz', 'baz']);
         $this->assertSame(file_get_contents(sprintf('%s/data/help.txt', __DIR__)), $p->help());
-        $this->assertSame('vpn.example',  $config->v('instance'));
+        $this->assertSame('foo',  $config->v('foo'));
     }
 
-    public function testTwo()
+    public function testTwoRequiredArgumentsWithValues()
     {
         $p = new CliParser(
             'Test',
@@ -49,7 +52,7 @@ class CliParserTest extends PHPUnit_Framework_TestCase
         $this->assertSame('vpn00.example', $config->v('generate'));
     }
 
-    public function testThree()
+    public function testRequiredArgument()
     {
         $p = new CliParser(
             'Test',
@@ -59,5 +62,52 @@ class CliParserTest extends PHPUnit_Framework_TestCase
         );
         $config = $p->parse(['name_of_program', '--install']);
         $this->assertSame([], $config->v('install'));
+    }
+
+    /**
+     * @expectedException SURFnet\VPN\Common\Exception\CliException
+     * @expectedExceptionMessage missing required parameter "--instance"
+     */
+    public function testMissingRequiredArgument()
+    {
+        $p = new CliParser(
+            'Test',
+            [
+                'instance' => ['instance identifier', true, true],
+            ]
+        );
+        $config = $p->parse(['name_of_program']);
+    }
+
+    /**
+     * @expectedException SURFnet\VPN\Common\Exception\CliException
+     * @expectedExceptionMessage missing required parameter value for option "--instance"
+     */
+    public function testMissingRequiredArgumentValue()
+    {
+        $p = new CliParser(
+            'Test',
+            [
+                'instance' => ['instance identifier', true, true],
+            ]
+        );
+        $config = $p->parse(['name_of_program', '--instance']);
+    }
+
+    public function testHelpCall()
+    {
+        $p = new CliParser(
+            'Test',
+            [
+                'instance' => ['instance identifier', true, true],
+            ]
+        );
+        $config = $p->parse(['name_of_program', '--help']);
+        $this->assertSame(
+            [
+                'help' => true,
+            ],
+            $config->v()
+        );
     }
 }

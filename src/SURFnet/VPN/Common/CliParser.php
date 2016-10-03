@@ -27,6 +27,34 @@ class CliParser
     /** @var array */
     private $optionList;
 
+    /**
+     * Create CliParser object.
+     *
+     * @param string $programDescription a short sentence indicating what the
+     *                                   program is about
+     * @param array  $optionList         an array with all options, whether
+     *                                   they are required and whether they
+     *                                   take values
+     *
+     * Examples:
+     * $optionList = [
+     *     ['foo', 'Foo Description', false, false], // no value, not required
+     *     ['bar', 'Bar Description', false, true ], // no value, required
+     *     ['baz', 'Baz Description', true,  false], // value, not required
+     *     ['xyz', 'Xyz Description', true,  true ], // value, required
+     * ];
+     *
+     * The first field indicates the name of the parameter, the user will have
+     * to provide --<OPT>, e.g. --foo, --bar, ...
+     *
+     * The second describes the parameter, that is used when the --help
+     * parameter is used.
+     *
+     * The third indicates whether or not the parameter requires a value, e.g.
+     * --baz abc where 'abc' is the value.
+     *
+     * The fourth indicates whether or not the parameter is required
+     */
     public function __construct($programDescription, array $optionList)
     {
         $this->programDescription = $programDescription;
