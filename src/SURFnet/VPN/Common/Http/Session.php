@@ -26,16 +26,7 @@ class Session implements SessionInterface
 
     public function __construct($serverName, $requestRoot, $secureOnly)
     {
-        session_set_cookie_params(
-            [
-                'lifetime' => 0,
-                'path' => $requestRoot,
-                'domain' => $serverName,
-                'secure' => $secureOnly,
-                'httponly' => true,
-            ]
-        );
-
+        session_set_cookie_params(0, $requestRoot, $serverName, $secureOnly, true);
         session_start();
 
         // Make sure we have a canary set
