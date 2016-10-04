@@ -28,17 +28,11 @@ class Session implements SessionInterface
 
         // Make sure we have a canary set
         if (!isset($_SESSION['canary'])) {
-            session_regenerate_id(true);
-            $_SESSION['canary'] = time();
-            $_SESSION['serverName'] = $serverName;
-            $_SESSION['requestRoot'] = $requestRoot;
+            $this->setCanary($serverName, $requestRoot);
         }
         // Regenerate session ID every five minutes:
         if ($_SESSION['canary'] < time() - 300) {
-            session_regenerate_id(true);
-            $_SESSION['canary'] = time();
-            $_SESSION['serverName'] = $serverName;
-            $_SESSION['requestRoot'] = $requestRoot;
+            $this->setCanary($serverName, $requestRoot);
         }
 
         if ($serverName !== $_SESSION['serverName']) {
@@ -48,6 +42,14 @@ class Session implements SessionInterface
         if ($requestRoot !== $_SESSION['requestRoot']) {
             throw new HttpException('session error (requestRoot)', 400);
         }
+    }
+
+    private function setCanary($serverName, $requestRoot)
+    {
+        session_regenerate_id(true);
+        $_SESSION['canary'] = time();
+        $_SESSION['serverName'] = $serverName;
+        $_SESSION['requestRoot'] = $requestRoot;
     }
 
     public function set($key, $value)
