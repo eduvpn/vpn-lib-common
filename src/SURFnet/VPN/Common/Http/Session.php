@@ -21,9 +21,6 @@ use SURFnet\VPN\Common\Http\Exception\HttpException;
 
 class Session implements SessionInterface
 {
-    /** @var array */
-    private $sessionOptions;
-
     public function __construct($serverName, $requestRoot, $secureOnly)
     {
         session_set_cookie_params(0, $requestRoot, $serverName, $secureOnly, true);
