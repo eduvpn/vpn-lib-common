@@ -17,79 +17,72 @@
  */
 namespace SURFnet\VPN\Common\Http;
 
+use SURFnet\VPN\Common\Http\Exception\HttpException;
+
 class Session implements SessionInterface
 {
-    /** @var string */
-    private $ns;
-
     /** @var array */
     private $sessionOptions;
 
-    public function __construct($ns = 'MySession', array $sessionOptions = [])
+    public function __construct($serverName, $requestRoot, $secureOnly)
     {
-        $this->ns = $ns;
+        session_set_cookie_params(
+            [
+                'lifetime' => 0,
+                'path' => $requestRoot,
+                'domain' => $serverName,
+                'secure' => $secureOnly,
+                'httponly' => true,
+            ]
+        );
 
-        $defaultOptions = [
-            'lifetime' => 0,
-            'path' => '/',
-            'domain' => '',
-            'secure' => true,
-            'httponly' => true,
-        ];
+        session_start();
 
-        $this->sessionOptions = array_merge($defaultOptions, $sessionOptions);
-    }
+        // Make sure we have a canary set
+        if (!isset($_SESSION['canary'])) {
+            session_regenerate_id(true);
+            $_SESSION['canary'] = time();
+            $_SESSION['serverName'] = $serverName;
+            $_SESSION['requestRoot'] = $requestRoot;
+        }
+        // Regenerate session ID every five minutes:
+        if ($_SESSION['canary'] < time() - 300) {
+            session_regenerate_id(true);
+            $_SESSION['canary'] = time();
+            $_SESSION['serverName'] = $serverName;
+            $_SESSION['requestRoot'] = $requestRoot;
+        }
 
-    /**
-     * Start the session.
-     *
-     * We only start the session when it is actually being used by any of the
-     * session methods.
-     */
-    private function startSession()
-    {
-        if ('' === session_id()) {
-            // no session active
-            session_set_cookie_params(
-                $this->sessionOptions['lifetime'],
-                $this->sessionOptions['path'],
-                $this->sessionOptions['domain'],
-                $this->sessionOptions['secure'],
-                $this->sessionOptions['httponly']
-            );
-            session_start();
+        if ($serverName !== $_SESSION['serverName']) {
+            throw new HttpException('session error (serverName)', 400);
+        }
+
+        if ($requestRoot !== $_SESSION['requestRoot']) {
+            throw new HttpException('session error (requestRoot)', 400);
         }
     }
 
     public function set($key, $value)
     {
-        $this->startSession();
-        $_SESSION[$this->ns][$key] = $value;
+        $_SESSION[$key] = $value;
     }
 
     public function delete($key)
     {
-        $this->startSession();
         if ($this->has($key)) {
-            unset($_SESSION[$this->ns][$key]);
+            unset($_SESSION[$key]);
         }
     }
 
     public function has($key)
     {
-        $this->startSession();
-        if (array_key_exists($this->ns, $_SESSION)) {
-            return array_key_exists($key, $_SESSION[$this->ns]);
-        }
-
-        return false;
+        return array_key_exists($key, $_SESSION);
     }
 
     public function get($key)
     {
-        $this->startSession();
         if ($this->has($key)) {
-            return $_SESSION[$this->ns][$key];
+            return $_SESSION[$key];
         }
 
         return;
@@ -97,9 +90,6 @@ class Session implements SessionInterface
 
     public function destroy()
     {
-        $this->startSession();
-        if (array_key_exists($this->ns, $_SESSION)) {
-            unset($_SESSION[$this->ns]);
-        }
+        session_destroy();
     }
 }
