@@ -57,4 +57,20 @@ class FileIO
 
         self::writeFile($filePath, $fileData);
     }
+
+    public static function deleteFile($filePath)
+    {
+        if (false === @unlink($filePath)) {
+            throw new RuntimeException(sprintf('unable to delete file "%s"', $filePath));
+        }
+    }
+
+    public static function createDir($dirPath, $mode = 0711)
+    {
+        if (!@file_exists($dirPath)) {
+            if (false === @mkdir($dirPath, $mode, true)) {
+                throw new RuntimeException(sprintf('unable to create directory "%s"', $dirPath));
+            }
+        }
+    }
 }
