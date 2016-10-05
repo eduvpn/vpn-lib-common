@@ -41,21 +41,24 @@ class FileIO
         return $jsonData;
     }
 
-    public static function writeFile($filePath, $fileData)
+    public static function writeFile($filePath, $fileData, $mode = 0600)
     {
         if (false === @file_put_contents($filePath, $fileData)) {
             throw new RuntimeException(sprintf('unable to write file "%s"', $filePath));
         }
+        if (false === chmod($filePath, $mode)) {
+            throw new RuntimeException(sprintf('unable to set permissions on file "%s"', $filePath));
+        }
     }
 
-    public static function writeJsonFile($filePath, $fileJsonData)
+    public static function writeJsonFile($filePath, $fileJsonData, $mode = 0600)
     {
         $fileData = json_encode($fileJsonData);
         if (JSON_ERROR_NONE !== json_last_error()) {
             throw new RuntimeException(sprintf('unable to encode JSON for file "%s"', $filePath));
         }
 
-        self::writeFile($filePath, $fileData);
+        self::writeFile($filePath, $fileData, $mode);
     }
 
     public static function deleteFile($filePath)
