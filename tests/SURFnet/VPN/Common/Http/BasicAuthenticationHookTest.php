@@ -43,7 +43,7 @@ class BasicAuthenticationHookTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException SURFnet\VPN\Common\Http\Exception\HttpException
+     * @expectedException \SURFnet\VPN\Common\Http\Exception\HttpException
      * @expectedExceptionMessage invalid authentication information
      */
     public function testBasicAuthenticationWrongPassword()
@@ -65,7 +65,7 @@ class BasicAuthenticationHookTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException SURFnet\VPN\Common\Http\Exception\HttpException
+     * @expectedException \SURFnet\VPN\Common\Http\Exception\HttpException
      * @expectedExceptionMessage missing authentication information
      */
     public function testBasicAuthenticationNoAuth()

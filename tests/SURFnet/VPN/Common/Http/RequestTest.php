@@ -48,12 +48,12 @@ class RequestTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException SURFnet\VPN\Common\Http\Exception\HttpException
+     * @expectedException \SURFnet\VPN\Common\Http\Exception\HttpException
      * @expectedExceptionMessage missing header "REQUEST_METHOD"
      */
     public function testMissingHeader()
     {
-        $request = new Request([]);
+        new Request([]);
     }
 
     public function testGetPathInfo()
@@ -100,7 +100,7 @@ class RequestTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException SURFnet\VPN\Common\Http\Exception\HttpException
+     * @expectedException \SURFnet\VPN\Common\Http\Exception\HttpException
      * @expectedExceptionMessage missing required field "user_id"
      */
     public function testGetMissingQueryParameter()

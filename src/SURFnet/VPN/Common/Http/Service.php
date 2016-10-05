@@ -22,7 +22,7 @@ use SURFnet\VPN\Common\TplInterface;
 
 class Service
 {
-    /** @var SURFnet\VPN\Common\TplInterface|null */
+    /** @var \SURFnet\VPN\Common\TplInterface|null */
     private $tpl;
 
     /** @var array */
@@ -148,7 +148,7 @@ class Service
 
     private function runAfterHooks(Request $request, Response $response)
     {
-        foreach ($this->afterHooks as $k => $v) {
+        foreach ($this->afterHooks as $v) {
             $response = $v->executeAfter($request, $response);
         }
 

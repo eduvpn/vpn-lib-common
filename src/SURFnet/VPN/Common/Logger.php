@@ -30,7 +30,7 @@ class Logger extends AbstractLogger
         }
     }
 
-    public function log($level, $message, array $context = array())
+    public function log($level, $message, array $context = [])
     {
         // convert level to syslog level
         $syslogPriority = self::levelToPriority($level);

@@ -61,7 +61,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException SURFnet\VPN\Common\Exception\ConfigException
+     * @expectedException \SURFnet\VPN\Common\Exception\ConfigException
      * @expectedExceptionMessage missing configuration field "foo"
      */
     public function testMissingConfig()
@@ -71,7 +71,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException SURFnet\VPN\Common\Exception\ConfigException
+     * @expectedException \SURFnet\VPN\Common\Exception\ConfigException
      * @expectedExceptionMessage missing configuration field "foo,baz"
      */
     public function testMissingNestedConfig()
@@ -110,7 +110,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException SURFnet\VPN\Common\Exception\ConfigException
+     * @expectedException \SURFnet\VPN\Common\Exception\ConfigException
      * @expectedExceptionMessage the value of configuration field "a" does not pass validator "is_string"
      */
     public function testWrongType()

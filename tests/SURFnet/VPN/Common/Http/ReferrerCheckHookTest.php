@@ -51,7 +51,7 @@ class ReferrerCheckHookTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException SURFnet\VPN\Common\Http\Exception\HttpException
+     * @expectedException \SURFnet\VPN\Common\Http\Exception\HttpException
      * @expectedExceptionMessage missing required field "HTTP_REFERER"
      */
     public function testCheckPostNoReferrer()
@@ -68,7 +68,7 @@ class ReferrerCheckHookTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException SURFnet\VPN\Common\Http\Exception\HttpException
+     * @expectedException \SURFnet\VPN\Common\Http\Exception\HttpException
      * @expectedExceptionMessage HTTP_REFERER does not match expected host
      */
     public function testCheckPostWrongReferrer()

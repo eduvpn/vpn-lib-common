@@ -99,7 +99,7 @@ class FormAuthenticationModuleTest extends PHPUnit_Framework_TestCase
 
     public function testLogout()
     {
-        $session = new TestSession();
-        $tpl = new TestTpl();
+        //        $session = new TestSession();
+//        $tpl = new TestTpl();
     }
 }

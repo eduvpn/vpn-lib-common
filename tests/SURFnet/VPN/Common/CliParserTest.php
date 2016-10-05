@@ -65,7 +65,7 @@ class CliParserTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException SURFnet\VPN\Common\Exception\CliException
+     * @expectedException \SURFnet\VPN\Common\Exception\CliException
      * @expectedExceptionMessage missing required parameter "--instance"
      */
     public function testMissingRequiredArgument()
@@ -76,11 +76,11 @@ class CliParserTest extends PHPUnit_Framework_TestCase
                 'instance' => ['instance identifier', true, true],
             ]
         );
-        $config = $p->parse(['name_of_program']);
+        $p->parse(['name_of_program']);
     }
 
     /**
-     * @expectedException SURFnet\VPN\Common\Exception\CliException
+     * @expectedException \SURFnet\VPN\Common\Exception\CliException
      * @expectedExceptionMessage missing required parameter value for option "--instance"
      */
     public function testMissingRequiredArgumentValue()
@@ -91,7 +91,7 @@ class CliParserTest extends PHPUnit_Framework_TestCase
                 'instance' => ['instance identifier', true, true],
             ]
         );
-        $config = $p->parse(['name_of_program', '--instance']);
+        $p->parse(['name_of_program', '--instance']);
     }
 
     public function testHelpCall()
