@@ -5,6 +5,7 @@ return [
         'src',
         'vendor/symfony/yaml',
         'vendor/psr/log',
+        'vendor/guzzlehttp',
     ],
     'exclude_analysis_directory_list' => [
         'vendor/',
