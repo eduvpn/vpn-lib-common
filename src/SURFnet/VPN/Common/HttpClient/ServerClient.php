@@ -126,13 +126,14 @@ class ServerClient extends BaseClient
         return $this->post('delete_otp_secret', ['user_id' => $userId]);
     }
 
-    public function setOtpSecret($userId, $otpSecret)
+    public function setOtpSecret($userId, $otpSecret, $otpKey)
     {
         return $this->post(
             'set_otp_secret',
             [
                 'user_id' => $userId,
                 'otp_secret' => $otpSecret,
+                'otp_key' => $otpKey,
             ]
         );
     }
