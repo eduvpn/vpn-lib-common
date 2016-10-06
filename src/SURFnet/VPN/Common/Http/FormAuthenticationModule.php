@@ -92,6 +92,7 @@ class FormAuthenticationModule implements ServiceModuleInterface
             function (Request $request) {
                 // delete authentication information
                 $this->session->delete('_form_auth_user');
+                $this->session->delete('_two_factor_verified');
 
                 return new RedirectResponse($request->getHeader('HTTP_REFERER'));
             }
