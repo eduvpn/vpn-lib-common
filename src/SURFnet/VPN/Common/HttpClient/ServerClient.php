@@ -137,4 +137,15 @@ class ServerClient extends BaseClient
             ]
         );
     }
+
+    public function verifyOtpKey($userId, $otpKey)
+    {
+        return $this->post(
+            'verify_otp_key',
+            [
+                'user_id' => $userId,
+                'otp_key' => $otpKey,
+            ]
+        );
+    }
 }
