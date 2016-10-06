@@ -19,5 +19,14 @@ namespace SURFnet\VPN\Common\Http;
 
 interface AfterHookInterface
 {
+    /**
+     * Execute a hook before returning the response to the client.
+     *
+     * @param Request  $request  the HTTP request
+     * @param Response $response the HTTP response so far, the hook can modify
+     *                           it
+     *
+     * @return Response the (modified) HTTP response
+     */
     public function executeAfter(Request $request, Response $response);
 }
