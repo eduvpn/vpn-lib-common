@@ -37,6 +37,12 @@ class TestHttpClient implements HttpClientInterface
     public function post($requestUri, array $postData)
     {
         switch ($requestUri) {
+            case 'serverClient/verify_otp_key':
+                if ('foo' === $postData['user_id']) {
+                    return self::wrap('verify_otp_key', true);
+                }
+
+                return self::wrap('verify_otp_key', false);
             default:
                 throw new RuntimeException(sprintf('unexpected requestUri "%s"', $requestUri));
         }

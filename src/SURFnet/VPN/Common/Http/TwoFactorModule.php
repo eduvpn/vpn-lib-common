@@ -44,6 +44,9 @@ class TwoFactorModule implements ServiceModuleInterface
         $service->post(
             '/_two_factor/auth/verify',
             function (Request $request, array $hookData) {
+                if (!array_key_exists('auth', $hookData)) {
+                    throw new HttpException('authentication hook did not run before', 500);
+                }
                 $userId = $hookData['auth'];
 
                 $this->session->delete('_two_factor_verified');
