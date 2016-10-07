@@ -69,6 +69,12 @@ class TwoFactorHookTest extends PHPUnit_Framework_TestCase
      */
     public function testNotBoundToAuth()
     {
+        // if you have access to two accounts using e.g. MellonAuth you could
+        // use the cookie from one OTP-authenticated account in the other
+        // without needing the OTP secret! So basically reducing the
+        // authentication to one factor for the (admin) portal. This binding
+        // makes sure that the authenticated user MUST be the same as the
+        // one used for the two_factor verification
         $serverClient = new ServerClient(new TestHttpClient(), 'serverClient');
         $session = new TestSession();
         $session->set('_two_factor_verified', 'bar');
