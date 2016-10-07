@@ -134,9 +134,9 @@ class Config
         return new static($parsedConfig);
     }
 
-    public static function toFile($configFile, array $configData)
+    public static function toFile($configFile, array $configData, $mode = 0600)
     {
         $yamlData = Yaml::dump($configData, 3);
-        FileIO::writeFile($configFile, $yamlData);
+        FileIO::writeFile($configFile, $yamlData, $mode);
     }
 }
