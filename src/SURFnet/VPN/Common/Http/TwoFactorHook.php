@@ -19,6 +19,7 @@ namespace SURFnet\VPN\Common\Http;
 
 use SURFnet\VPN\Common\HttpClient\ServerClient;
 use SURFnet\VPN\Common\TplInterface;
+use SURFnet\VPN\Common\Http\Exception\HttpException;
 
 class TwoFactorHook implements BeforeHookInterface
 {
@@ -40,6 +41,11 @@ class TwoFactorHook implements BeforeHookInterface
 
     public function executeBefore(Request $request, array $hookData)
     {
+        if (!array_key_exists('auth', $hookData)) {
+            throw new HttpException('authentication hook did not run before', 500);
+        }
+        $userId = $hookData['auth'];
+
         // some URIs are allowed as they are used for either logging in, or
         // verifying the OTP key
         $allowedUris = [
@@ -51,8 +57,6 @@ class TwoFactorHook implements BeforeHookInterface
         if (in_array($request->getPathInfo(), $allowedUris) && 'POST' === $request->getRequestMethod()) {
             return false;
         }
-
-        $userId = $hookData['auth'];
 
         if ($this->session->has('_two_factor_verified')) {
             return $this->session->get('_two_factor_verified');
