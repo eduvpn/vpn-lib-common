@@ -73,7 +73,7 @@ class TwoFactorModule implements ServiceModuleInterface
                 }
 
                 if ($this->serverClient->verifyOtpKey($userId, $otpKey)) {
-                    $this->session->set('_two_factor_verified', true);
+                    $this->session->set('_two_factor_verified', $userId);
 
                     return new RedirectResponse($redirectTo, 302);
                 }

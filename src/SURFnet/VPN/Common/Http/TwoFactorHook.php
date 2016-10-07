@@ -46,6 +46,14 @@ class TwoFactorHook implements BeforeHookInterface
         }
         $userId = $hookData['auth'];
 
+        if ($this->session->has('_two_factor_verified')) {
+            if ($userId !== $this->session->get('_two_factor_verified')) {
+                throw new HttpException('two-factor code not bound to authenticated user', 400);
+            }
+
+            return true;
+        }
+
         // some URIs are allowed as they are used for either logging in, or
         // verifying the OTP key
         $allowedUris = [
@@ -58,14 +66,10 @@ class TwoFactorHook implements BeforeHookInterface
             return false;
         }
 
-        if ($this->session->has('_two_factor_verified')) {
-            return $this->session->get('_two_factor_verified');
-        }
-
         // check if the user is enrolled for 2FA, if not we are fine, for this
         // session we assume we are verified!
         if (!$this->serverClient->hasOtpSecret($userId)) {
-            $this->session->set('_two_factor_verified', true);
+            $this->session->set('_two_factor_verified', $userId);
 
             return false;
         }

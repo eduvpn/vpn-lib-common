@@ -35,7 +35,7 @@ class TwoFactorHookTest extends PHPUnit_Framework_TestCase
     {
         $serverClient = new ServerClient(new TestHttpClient(), 'serverClient');
         $session = new TestSession();
-        $session->set('_two_factor_verified', true);
+        $session->set('_two_factor_verified', 'foo');
         $tpl = new TestTpl();
         $formAuthentication = new TwoFactorHook($session, $tpl, $serverClient);
         $request = new TestRequest([]);
@@ -61,5 +61,20 @@ class TwoFactorHookTest extends PHPUnit_Framework_TestCase
         $formAuthentication = new TwoFactorHook($session, $tpl, $serverClient);
         $request = new TestRequest([]);
         $this->assertFalse($formAuthentication->executeBefore($request, ['auth' => 'bar']));
+    }
+
+    /**
+     * @expectedException \SURFnet\VPN\Common\Http\Exception\HttpException
+     * @expectedExceptionMessage two-factor code not bound to authenticated user
+     */
+    public function testNotBoundToAuth()
+    {
+        $serverClient = new ServerClient(new TestHttpClient(), 'serverClient');
+        $session = new TestSession();
+        $session->set('_two_factor_verified', 'bar');
+        $tpl = new TestTpl();
+        $formAuthentication = new TwoFactorHook($session, $tpl, $serverClient);
+        $request = new TestRequest([]);
+        $this->assertTrue($formAuthentication->executeBefore($request, ['auth' => 'foo']));
     }
 }
