@@ -29,39 +29,6 @@ class TestHttpClient implements HttpClientInterface
                 return self::wrap('has_otp_secret', true);
             case 'serverClient/has_otp_secret?user_id=bar':
                 return self::wrap('has_otp_secret', false);
-
-#            case 'serverClient/server_pools':
-#                return self::wrap(
-#                    'server_pools',
-#                    [
-#                        'internet' => [
-#                            'enableAcl' => false,
-#                            'displayName' => 'Internet Access',
-#                            'twoFactor' => false,
-#                            'processCount' => 4,
-#                            'hostName' => 'vpn.example',
-#                        ],
-#                    ]
-#                );
-#            case 'serverClient/server_pool?pool_id=internet':
-#                return self::wrap(
-#                    'server_pool',
-#                    [
-#                        'enableAcl' => false,
-#                        'displayName' => 'Internet Access',
-#                        'twoFactor' => false,
-#                        'processCount' => 4,
-#                        'hostName' => 'vpn.example',
-#                    ]
-#                );
-#            case 'serverClient/has_otp_secret?user_id=foo':
-#                return self::wrap('has_otp_secret', false);
-#            case 'caClient/user_certificate_list?user_id=foo':
-#                return self::wrap('user_certificate_list', [['name' => 'FooConfig', 'user_id' => 'foo', 'state' => 'V']]);
-#            case 'serverClient/user_groups?user_id=foo':
-#                return self::wrap('user_groups', []);
-#            case 'serverClient/disabled_common_names':
-#                return self::wrap('disabled_common_names', []);
             default:
                 throw new RuntimeException(sprintf('unexpected requestUri "%s"', $requestUri));
         }
@@ -70,25 +37,6 @@ class TestHttpClient implements HttpClientInterface
     public function post($requestUri, array $postData)
     {
         switch ($requestUri) {
-#            case 'caClient/add_client_certificate':
-#                return self::wrap(
-#                    'add_client_certificate',
-#                    [
-#                        'cn' => 'foo_MyConfig',
-#                        'valid_from' => 12345678,
-#                        'valid_to' => '23456789',
-#                        'ca' => 'CAPEM',
-#                        'cert' => 'CERTPEM',
-#                        'key' => 'KEYPEM',
-#                        'ta' => 'TAKEY',
-#                    ]
-#                );
-#            case 'serverClient/disable_common_name':
-#                return self::wrap('disable_common_name', true);
-#            case 'serverClient/kill_client':
-#                return self::wrap('kill_client', true);
-#            case 'serverClient/set_voot_token':
-#                return self::wrap('set_voot_token', true);
             default:
                 throw new RuntimeException(sprintf('unexpected requestUri "%s"', $requestUri));
         }
