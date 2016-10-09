@@ -14,7 +14,7 @@
 
 Name:       php-%{composer_vendor}-%{composer_project}
 Version:    1.0.0
-Release:    0.19%{?dist}
+Release:    0.20%{?dist}
 Summary:    Common VPN library
 
 Group:      System Environment/Libraries
@@ -22,7 +22,6 @@ License:    AGPLv3+
 
 URL:        https://github.com/%{github_owner}/%{github_name}
 Source0:    %{url}/archive/%{github_commit}/%{name}-%{version}-%{github_short}.tar.gz
-Source1:    %{name}-autoload.php
 
 BuildArch:  noarch
 BuildRoot:  %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n) 
@@ -66,9 +65,38 @@ Common VPN library.
 
 %prep
 %setup -qn %{github_name}-%{github_commit}
-cp %{SOURCE1} src/%{composer_namespace}/autoload.php
 
 %build
+: Create autoloader
+cat <<'AUTOLOAD' | tee src/%{composer_namespace}/autoload.php
+<?php
+/**
+ * Autoloader for %{name} and its' dependencies
+ * (created by %{name}-%{version}-%{release}).
+ *
+ * @return \Symfony\Component\ClassLoader\ClassLoader
+ */
+
+if (!isset($fedoraClassLoader) || !($fedoraClassLoader instanceof \Symfony\Component\ClassLoader\ClassLoader)) {
+    if (!class_exists('Symfony\\Component\\ClassLoader\\ClassLoader', false)) {
+        require_once '%{phpdir}/Symfony/Component/ClassLoader/ClassLoader.php';
+    }
+
+    $fedoraClassLoader = new \Symfony\Component\ClassLoader\ClassLoader();
+    $fedoraClassLoader->register();
+}
+
+$fedoraClassLoader->addPrefix('SURFnet\\VPN\\Common\\', dirname(dirname(dirname(__DIR__))));
+
+// Required dependency
+require_once '%{phpdir}/GuzzleHttp/autoload.php';
+require_once '%{phpdir}/Psr/Log/autoload.php';
+require_once '%{phpdir}/Symfony/Polyfill/autoload.php';
+require_once '%{phpdir}/Symfony/Component/Yaml/autoload.php';
+
+return $fedoraClassLoader;
+AUTOLOAD
+
 
 %install
 rm -rf %{buildroot} 
@@ -94,6 +122,9 @@ rm -rf %{buildroot}
 %license LICENSE
 
 %changelog
+* Sun Oct 09 2016 François Kooman <fkooman@tuxed.net> - 1.0.0-0.20
+- rebuilt
+
 * Fri Oct 07 2016 François <fkooman@tuxed.net> - 1.0.0-0.19
 - rebuilt
 
