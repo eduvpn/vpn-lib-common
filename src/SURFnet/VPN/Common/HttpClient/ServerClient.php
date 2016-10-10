@@ -153,4 +153,14 @@ class ServerClient extends BaseClient
             ]
         );
     }
+
+    public function logConnect(array $logData)
+    {
+        return $this->post('log_connect', $logData);
+    }
+
+    public function logDisconnect(array $logData)
+    {
+        return $this->post('log_disconnect', $logData);
+    }
 }
