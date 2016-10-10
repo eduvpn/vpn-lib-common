@@ -77,7 +77,7 @@ class ServerClient extends BaseClient
 
     public function isDisabledCommonName($commonName)
     {
-        return $this->get('is_disabled_common_name');
+        return $this->get('is_disabled_common_name', ['common_name' => $commonName]);
     }
 
     public function disableCommonName($commonName)
