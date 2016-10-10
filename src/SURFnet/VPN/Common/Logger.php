@@ -42,8 +42,16 @@ class Logger extends AbstractLogger
         // convert level to syslog level
         $syslogPriority = self::levelToPriority($level);
 
-        // we ignore the context for now
-        syslog($syslogPriority, $message);
+        // we JSON-encode the context and add it to the message, but if it
+        // contains a 'password' key we empty it
+        if (array_key_exists('password', $context)) {
+            $context['password'] = '__HIDDEN__';
+        }
+
+        syslog(
+            $syslogPriority,
+            sprintf('%s: %s', $message, json_encode($context))
+        );
     }
 
     private static function levelToPriority($level)
