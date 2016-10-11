@@ -39,7 +39,7 @@ class GuzzleHttpClient implements HttpClientInterface
 
     public function get($requestUri)
     {
-        return $this->httpClient->get(sprintf($requestUri))->json();
+        return $this->httpClient->get($requestUri)->json();
     }
 
     public function post($requestUri, array $postData)
