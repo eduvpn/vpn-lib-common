@@ -29,12 +29,12 @@ class ServerClient extends BaseClient
         return $this->get('client_connections');
     }
 
-    public function log($dataTime, $ipAddress)
+    public function log($dateTime, $ipAddress)
     {
         return $this->get(
             'log',
             [
-                'date_time' => $dataTime,
+                'date_time' => $dateTime,
                 'ip_address' => $ipAddress,
             ]
         );
