@@ -14,10 +14,12 @@
     "license": "AGPL-3.0",
     "name": "eduvpn/common",
     "require": {
+        "ext-date": "*",
         "ext-filter": "*",
         "ext-hash": "*",
         "ext-json": "*",
         "ext-mbstring": "*",
+        "ext-pcre": "*",
         "ext-session": "*",
         "ext-spl": "*",
         "guzzlehttp/guzzle": "^5.3",

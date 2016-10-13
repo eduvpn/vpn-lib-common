@@ -26,20 +26,20 @@ class GuzzleHttpClient implements HttpClientInterface
     /** @var \GuzzleHttp\Client */
     private $httpClient;
 
-    public function __construct($authUser, $authPass)
+    public function __construct(array $guzzleOptions)
     {
-        $this->httpClient = new Client(
-            [
-                'defaults' => [
-                    'auth' => [$authUser, $authPass],
-                ],
-            ]
-        );
+        $this->httpClient = new Client($guzzleOptions);
     }
 
     public function get($requestUri)
     {
-        return $this->httpClient->get($requestUri)->json();
+        try {
+            return $this->httpClient->get($requestUri)->json();
+        } catch (BadResponseException $e) {
+            $responseData = $e->getResponse()->json();
+
+            throw new HttpClientException($responseData['error']);
+        }
     }
 
     public function post($requestUri, array $postData)
