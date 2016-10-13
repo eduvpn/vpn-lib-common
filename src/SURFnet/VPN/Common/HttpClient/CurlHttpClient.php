@@ -43,7 +43,7 @@ class CurlHttpClient implements HttpClientInterface
     private function setOptions(array $additionalOptions)
     {
         curl_reset($this->curlChannel);
-        $curlOptions =
+        $curlOptions = array_merge(
             [
                 CURLOPT_FOLLOWLOCATION => false,
                 CURLOPT_PROTOCOLS => CURLPROTO_HTTPS | CURLPROTO_HTTP,
@@ -52,16 +52,15 @@ class CurlHttpClient implements HttpClientInterface
                 CURLOPT_HTTPAUTH => CURLAUTH_BASIC,
                 CURLOPT_USERPWD => sprintf('%s:%s', $this->authUser, $this->authPass),
                 CURLOPT_RETURNTRANSFER => true,
-                CURLOPT_HTTPHEADER => [
+                CURLOPT_HTTPHEADER, [
                     'Accept: application/json',
                 ],
-            ];
+            ],
+            $additionalOptions
+        );
 
         if (false === curl_setopt_array($this->curlChannel, $curlOptions)) {
             throw new RuntimeException('unable to set cURL options');
-        }
-        if (false === curl_setopt_array($this->curlChannel, $additionalOptions)) {
-            throw new RuntimeException('unable to set additional cURL options');
         }
     }
 
@@ -118,7 +117,7 @@ class CurlHttpClient implements HttpClientInterface
         if (false === $curlResponse) {
             throw new RuntimeException(
                 sprintf(
-                    'cURL error: %s',
+                    'cURL error: %s (%s)',
                     curl_error($this->curlChannel)
                 )
             );
