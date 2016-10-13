@@ -19,6 +19,24 @@ namespace SURFnet\VPN\Common\HttpClient;
 
 interface HttpClientInterface
 {
+    /**
+     * Send a HTTP GET request.
+     *
+     * @param string $requestUri the request URI
+     *
+     * @throws HttpClientException if the response is a 4xx error with the
+     *                             JSON "error" field of the response body as the exception message
+     */
     public function get($requestUri);
+
+    /**
+     * Send a HTTP POST request.
+     *
+     * @param string $requestUri the request URI
+     * @param array  $postData   the HTTP POST fields to send
+     *
+     * @throws HttpClientException if the response is a 4xx error with the
+     *                             JSON "error" field of the response body as the exception message
+     */
     public function post($requestUri, array $postData);
 }
