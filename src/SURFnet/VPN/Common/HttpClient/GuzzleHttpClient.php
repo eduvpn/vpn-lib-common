@@ -19,7 +19,7 @@ namespace SURFnet\VPN\Common\HttpClient;
 
 use GuzzleHttp\Client;
 use SURFnet\VPN\Common\HttpClient\Exception\HttpClientException;
-use GuzzleHttp\Exception\ClientException;
+use GuzzleHttp\Exception\BadResponseException;
 
 class GuzzleHttpClient implements HttpClientInterface
 {
@@ -37,34 +37,11 @@ class GuzzleHttpClient implements HttpClientInterface
         );
     }
 
-    /**
-     * Send a HTTP GET request.
-     *
-     * @param string $requestUri the request URI
-     *
-     * @throws HttpClientException if the response is a 4xx error with the
-     *                             JSON "error" field of the response body as the exception message
-     */
     public function get($requestUri)
     {
-        try {
-            return $this->httpClient->get($requestUri)->json();
-        } catch (ClientException $e) {
-            $responseData = $e->getResponse()->json();
-
-            throw new HttpClientException($responseData['error']);
-        }
+        return $this->httpClient->get($requestUri)->json();
     }
 
-    /**
-     * Send a HTTP POST request.
-     *
-     * @param string $requestUri the request URI
-     * @param array  $postData   the HTTP POST fields to send
-     *
-     * @throws HttpClientException if the response is a 4xx error with the
-     *                             JSON "error" field of the response body as the exception message
-     */
     public function post($requestUri, array $postData)
     {
         try {
@@ -76,7 +53,7 @@ class GuzzleHttpClient implements HttpClientInterface
                     ],
                 ]
             )->json();
-        } catch (ClientException $e) {
+        } catch (BadResponseException $e) {
             $responseData = $e->getResponse()->json();
 
             throw new HttpClientException($responseData['error']);
