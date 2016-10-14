@@ -44,7 +44,7 @@ class GuzzleHttpClient implements HttpClientInterface
         );
     }
 
-    public function get($requestUri, array $requestOptions = [])
+    public function get($requestUri)
     {
         try {
             return $this->httpClient->get($requestUri, $requestOptions)->json();
@@ -53,7 +53,7 @@ class GuzzleHttpClient implements HttpClientInterface
         }
     }
 
-    public function post($requestUri, array $postData, array $requestOptions = [])
+    public function post($requestUri, array $postData)
     {
         try {
             return $this->httpClient->post(
@@ -78,11 +78,11 @@ class GuzzleHttpClient implements HttpClientInterface
             $responseData = $e->getResponse()->json();
         } catch (InvalidArgumentException $e) {
             // unable to decode JSON
-            throw new RuntimeException('expected JSON from HTTP endpoint');
+            throw new RuntimeException('unable to decode JSON in HTTP response');
         }
 
         if (!is_array($responseData) && !array_key_exists('error', $responseData)) {
-            throw new RuntimeException();
+            throw new RuntimeException('"error" field missing in HTTP response');
         }
 
         throw new HttpClientException($responseData['error']);
