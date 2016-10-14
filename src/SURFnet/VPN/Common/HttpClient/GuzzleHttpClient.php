@@ -47,7 +47,7 @@ class GuzzleHttpClient implements HttpClientInterface
     public function get($requestUri)
     {
         try {
-            return $this->httpClient->get($requestUri, $requestOptions)->json();
+            return $this->httpClient->get($requestUri)->json();
         } catch (BadResponseException $e) {
             $this->handleError($e);
         }
@@ -58,14 +58,11 @@ class GuzzleHttpClient implements HttpClientInterface
         try {
             return $this->httpClient->post(
                 $requestUri,
-                array_merge_recursive(
-                    $requestOptions,
-                    [
-                        'body' => [
-                            $postData,
-                        ],
-                    ]
-                )
+                [
+                    'body' => [
+                        $postData,
+                    ],
+                ]
             )->json();
         } catch (BadResponseException $e) {
             $this->handleError($e);
