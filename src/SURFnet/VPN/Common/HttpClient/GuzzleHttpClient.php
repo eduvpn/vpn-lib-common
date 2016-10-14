@@ -28,35 +28,61 @@ class GuzzleHttpClient implements HttpClientInterface
 
     public function __construct(array $guzzleOptions)
     {
-        $this->httpClient = new Client($guzzleOptions);
+        // http://docs.guzzlephp.org/en/5.3/clients.html#request-options
+        $defaultOptions = [
+            'allow_redirects' => false,
+            'timeout' => 5,
+            'headers' => [
+                'Accept' => 'application/json',
+            ],
+        ];
+
+        $this->httpClient = new Client(
+            array_merge_recursive($defaultOptions, $guzzleOptions)
+        );
     }
 
-    public function get($requestUri)
+    public function get($requestUri, array $requestOptions = [])
     {
         try {
-            return $this->httpClient->get($requestUri)->json();
+            return $this->httpClient->get($requestUri, $requestOptions)->json();
         } catch (BadResponseException $e) {
-            $responseData = $e->getResponse()->json();
-
-            throw new HttpClientException($responseData['error']);
+            $this->handleError($e);
         }
     }
 
-    public function post($requestUri, array $postData)
+    public function post($requestUri, array $postData, array $requestOptions = [])
     {
         try {
             return $this->httpClient->post(
                 $requestUri,
-                [
-                    'body' => [
-                        $postData,
-                    ],
-                ]
+                array_merge_recursive(
+                    $requestOptions,
+                    [
+                        'body' => [
+                            $postData,
+                        ],
+                    ]
+                )
             )->json();
         } catch (BadResponseException $e) {
-            $responseData = $e->getResponse()->json();
-
-            throw new HttpClientException($responseData['error']);
+            $this->handleError($e);
         }
+    }
+
+    public function handleError(BadResponseException $e)
+    {
+        try {
+            $responseData = $e->getResponse()->json();
+        } catch (InvalidArgumentException $e) {
+            // unable to decode JSON
+            throw new RuntimeException('expected JSON from HTTP endpoint');
+        }
+
+        if (!is_array($responseData) && !array_key_exists($responseData, 'error')) {
+            throw new RuntimeException();
+        }
+
+        throw new HttpClientException($responseData['error']);
     }
 }
