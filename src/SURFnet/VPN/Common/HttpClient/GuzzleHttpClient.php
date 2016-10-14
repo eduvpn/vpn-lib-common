@@ -20,6 +20,8 @@ namespace SURFnet\VPN\Common\HttpClient;
 use GuzzleHttp\Client;
 use SURFnet\VPN\Common\HttpClient\Exception\HttpClientException;
 use GuzzleHttp\Exception\BadResponseException;
+use InvalidArgumentException;
+use RuntimeException;
 
 class GuzzleHttpClient implements HttpClientInterface
 {
@@ -79,7 +81,7 @@ class GuzzleHttpClient implements HttpClientInterface
             throw new RuntimeException('expected JSON from HTTP endpoint');
         }
 
-        if (!is_array($responseData) && !array_key_exists($responseData, 'error')) {
+        if (!is_array($responseData) && !array_key_exists('error', $responseData)) {
             throw new RuntimeException();
         }
 
