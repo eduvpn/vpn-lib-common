@@ -100,14 +100,9 @@ class ServerClient extends BaseClient
         return $this->get('server_pool', ['pool_id' => $poolId]);
     }
 
-    public function serverPools()
+    public function instanceConfig()
     {
-        return $this->get('server_pools');
-    }
-
-    public function instanceNumber()
-    {
-        return $this->get('instance_number');
+        return $this->get('instance_config');
     }
 
     public function userGroups($userId)
