@@ -40,7 +40,7 @@ class ProfileConfig extends Config
             'blockSmb' => false,
             'forward6' => true,
             'processCount' => 4,
-            'hasProxy' => true,
+            'dedicatedNode' => false,
         ];
     }
 }
