@@ -27,20 +27,20 @@ class ProfileConfig extends Config
     public static function defaultConfig()
     {
         return [
-            'defaultGateway' => false,
+            'default_gateway' => false,
             'routes' => [],
             'dns' => [],
-            'useNat' => false,
-            'twoFactor' => false,
-            'clientToClient' => false,
+            'use_nat' => false,
+            'two_factor' => false,
+            'client_to_client' => false,
             'listen' => '0.0.0.0',
-            'enableLog' => false,
-            'enableAcl' => false,
-            'aclGroupList' => [],
-            'blockSmb' => false,
-            'forward6' => true,
-            'processCount' => 4,
-            'dedicatedNode' => false,
+            'enable_log' => false,
+            'enable_acl' => false,
+            'acl_group_list' => [],
+            'block_smb' => false,
+            'forward_6' => true,
+            'process_count' => 4,
+            'dedicated_node' => false,
         ];
     }
 }
