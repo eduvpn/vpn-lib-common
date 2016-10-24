@@ -33,7 +33,7 @@ class ProfileConfig extends Config
             'useNat' => false,
             'twoFactor' => false,
             'clientToClient' => false,
-            'listen' => '0.0.0.0',
+            'listen' => '::',
             'enableLog' => false,
             'enableAcl' => false,
             'aclGroupList' => [],
@@ -41,7 +41,7 @@ class ProfileConfig extends Config
             'forward6' => true,
             'processCount' => 4,
             'aclGroupProvider' => 'StaticProvider',
-            'dedicatedNode' => false,
+            'portShare' => true,
         ];
     }
 }
