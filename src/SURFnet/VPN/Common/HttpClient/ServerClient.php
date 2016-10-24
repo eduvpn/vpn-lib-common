@@ -168,7 +168,7 @@ class ServerClient extends BaseClient
         );
     }
 
-    public function disconnect($profileId, $commonName, $ip, $ip6, $connectedAt, $disconnectedAt, $bytesTransferred)
+    public function disconnect($profileId, $commonName, $ip4, $ip6, $connectedAt, $disconnectedAt, $bytesTransferred)
     {
         return $this->post(
             'disconnect',
