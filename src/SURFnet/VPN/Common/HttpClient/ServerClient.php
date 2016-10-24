@@ -153,4 +153,34 @@ class ServerClient extends BaseClient
             ]
         );
     }
+
+    public function connect($profileId, $commonName, $ip4, $ip6, $connectedAt)
+    {
+        return $this->post(
+            'connect',
+            [
+                'profile_id' => $profileId,
+                'common_name' => $commonName,
+                'ip4' => $ip4,
+                'ip6' => $ip6,
+                'connected_at' => $connectedAt,
+            ]
+        );
+    }
+
+    public function disconnect($profileId, $commonName, $ip, $ip6, $connectedAt, $disconnectedAt, $bytesTransferred)
+    {
+        return $this->post(
+            'disconnect',
+            [
+                'profile_id' => $profileId,
+                'common_name' => $commonName,
+                'ip4' => $ip4,
+                'ip6' => $ip6,
+                'connected_at' => $connectedAt,
+                'disconnected_at' => $disconnectedAt,
+                'bytes_transferred' => $bytesTransferred,
+            ]
+        );
+    }
 }
