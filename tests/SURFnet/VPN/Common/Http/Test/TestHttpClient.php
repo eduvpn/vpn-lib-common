@@ -22,6 +22,11 @@ use RuntimeException;
 
 class TestHttpClient implements HttpClientInterface
 {
+    public function addRequestHeader($key, $value)
+    {
+        // NOP
+    }
+
     public function get($requestUri)
     {
         switch ($requestUri) {

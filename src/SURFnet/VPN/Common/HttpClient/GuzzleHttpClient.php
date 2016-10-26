@@ -28,6 +28,9 @@ class GuzzleHttpClient implements HttpClientInterface
     /** @var \GuzzleHttp\Client */
     private $httpClient;
 
+    /** @var array */
+    private $requestHeaders;
+
     public function __construct(array $guzzleOptions)
     {
         // http://docs.guzzlephp.org/en/5.3/clients.html#request-options
@@ -42,12 +45,24 @@ class GuzzleHttpClient implements HttpClientInterface
         $this->httpClient = new Client(
             array_merge_recursive($defaultOptions, $guzzleOptions)
         );
+
+        $this->requestHeaders = [];
+    }
+
+    public function addRequestHeader($key, $value)
+    {
+        $this->requestHeaders[$key] = $value;
     }
 
     public function get($requestUri)
     {
         try {
-            return $this->httpClient->get($requestUri)->json();
+            return $this->httpClient->get(
+                $requestUri,
+                [
+                    'headers' => $this->requestHeaders,
+                ]
+            )->json();
         } catch (BadResponseException $e) {
             $this->handleError($e);
         }
@@ -62,6 +77,7 @@ class GuzzleHttpClient implements HttpClientInterface
                     'body' => [
                         $postData,
                     ],
+                    'headers' => $this->requestHeaders,
                 ]
             )->json();
         } catch (BadResponseException $e) {
