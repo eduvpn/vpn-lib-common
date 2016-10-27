@@ -15,7 +15,7 @@
  *  You should have received a copy of the GNU Affero General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-namespace SURFnet\VPN\Common\Http\Test;
+namespace SURFnet\VPN\Common\HttpClient\Test;
 
 use SURFnet\VPN\Common\HttpClient\HttpClientInterface;
 use RuntimeException;
@@ -25,10 +25,15 @@ class TestHttpClient implements HttpClientInterface
     public function get($requestUri, array $getData = [], array $requestHeaders = [])
     {
         switch ($requestUri) {
-            case 'serverClient/has_otp_secret?user_id=foo':
-                return [200, self::wrap('has_otp_secret', true)];
-            case 'serverClient/has_otp_secret?user_id=bar':
-                return [200, self::wrap('has_otp_secret', false)];
+            case 'baseClient/foo':
+                return [200, self::wrap('foo', true)];
+            case 'baseClient/foo?foo=bar':
+                return [200, self::wrap('foo', true)];
+            case 'baseClient/error':
+                return [400, ['error' => 'errorValue']];
+            case 'baseClient/unexpected_response':
+                return [400, ['foo' => 'bar']];
+
             default:
                 throw new RuntimeException(sprintf('unexpected requestUri "%s"', $requestUri));
         }
@@ -37,12 +42,8 @@ class TestHttpClient implements HttpClientInterface
     public function post($requestUri, array $postData, array $requestHeaders = [])
     {
         switch ($requestUri) {
-            case 'serverClient/verify_otp_key':
-                if ('foo' === $postData['user_id']) {
-                    return [200, self::wrap('verify_otp_key', true)];
-                }
-
-                return [200, self::wrap('verify_otp_key', false)];
+            case 'baseClient/foo':
+                return [200, self::wrap('foo', true)];
             default:
                 throw new RuntimeException(sprintf('unexpected requestUri "%s"', $requestUri));
         }

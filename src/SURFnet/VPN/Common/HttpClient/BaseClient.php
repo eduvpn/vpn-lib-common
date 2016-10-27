@@ -18,6 +18,7 @@
 namespace SURFnet\VPN\Common\HttpClient;
 
 use SURFnet\VPN\Common\HttpClient\Exception\HttpClientException;
+use SURFnet\VPN\Common\HttpClient\Exception\ApiException;
 
 class BaseClient
 {
@@ -33,30 +34,50 @@ class BaseClient
         $this->baseUri = $baseUri;
     }
 
-    public function get($r, array $getData = [])
+    public function get($requestPath, array $getData = [])
     {
-        $requestUri = sprintf('%s/%s', $this->baseUri, $r);
+        $requestUri = sprintf('%s/%s', $this->baseUri, $requestPath);
         if (0 !== count($getData)) {
             $requestUri = sprintf('%s?%s', $requestUri, http_build_query($getData));
         }
-        $response = $this->httpClient->get($requestUri);
 
-        if (!is_array($response) || !array_key_exists('data', $response) || !array_key_exists($r, $response['data'])) {
-            throw new HttpClientException(sprintf('invalid response data format, GET to "%s"', $r));
-        }
-
-        return $response['data'][$r];
+        return self::responseHandler(
+            'GET',
+            $requestPath,
+            $this->httpClient->get($requestUri)
+        );
     }
 
-    public function post($r, array $postData)
+    public function post($requestPath, array $postData)
     {
-        $requestUri = sprintf('%s/%s', $this->baseUri, $r);
-        $response = $this->httpClient->post($requestUri, $postData);
+        $requestUri = sprintf('%s/%s', $this->baseUri, $requestPath);
 
-        if (!is_array($response) || !array_key_exists('data', $response) || !array_key_exists($r, $response['data'])) {
-            throw new HttpClientException(sprintf('invalid response data format, POST to "%s"', $r));
+        return self::responseHandler(
+            'POST',
+            $requestPath,
+            $this->httpClient->post($requestUri, $postData)
+        );
+    }
+
+    private static function responseHandler($requestMethod, $requestPath, array $clientResponse)
+    {
+        list($statusCode, $responseData) = $clientResponse;
+
+        if (is_array($responseData)) {
+            // normal case
+            if (array_key_exists('data', $responseData)) {
+                if (array_key_exists($requestPath, $responseData['data'])) {
+                    return $responseData['data'][$requestPath];
+                }
+            }
+            // error case
+            if (array_key_exists('error', $responseData)) {
+                throw new ApiException(sprintf('[%d] %s', $statusCode, $responseData['error']));
+            }
         }
 
-        return $response['data'][$r];
+        throw new HttpClientException(
+            sprintf('[%d] malformed response for %s request to "%s"', $statusCode, $requestMethod, $requestPath)
+        );
     }
 }

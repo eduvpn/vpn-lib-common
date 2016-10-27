@@ -18,10 +18,7 @@
 namespace SURFnet\VPN\Common\HttpClient;
 
 use GuzzleHttp\Client;
-use SURFnet\VPN\Common\HttpClient\Exception\HttpClientException;
-use GuzzleHttp\Exception\BadResponseException;
-use InvalidArgumentException;
-use RuntimeException;
+use GuzzleHttp\Exception\ClientException;
 
 class GuzzleHttpClient implements HttpClientInterface
 {
@@ -44,24 +41,27 @@ class GuzzleHttpClient implements HttpClientInterface
         );
     }
 
-    public function get($requestUri, array $requestHeaders = [])
+    public function get($requestUri, array $getData = [], array $requestHeaders = [])
     {
         try {
-            return $this->httpClient->get(
+            $response = $this->httpClient->get(
                 $requestUri,
                 [
                     'headers' => $requestHeaders,
                 ]
-            )->json();
-        } catch (BadResponseException $e) {
-            $this->handleError($e);
+            );
+
+            return [$response->getStatusCode(), $response->json()];
+        } catch (ClientException $e) {
+            // 4xx response
+            return [$e->getResponse()->getStatusCode(), $e->getResponse()->json()];
         }
     }
 
     public function post($requestUri, array $postData, array $requestHeaders = [])
     {
         try {
-            return $this->httpClient->post(
+            $response = $this->httpClient->post(
                 $requestUri,
                 [
                     'body' => [
@@ -69,31 +69,12 @@ class GuzzleHttpClient implements HttpClientInterface
                     ],
                     'headers' => $requestHeaders,
                 ]
-            )->json();
-        } catch (BadResponseException $e) {
-            $this->handleError($e);
-        }
-    }
-
-    public function handleError(BadResponseException $e)
-    {
-        try {
-            $responseData = $e->getResponse()->json();
-        } catch (InvalidArgumentException $e) {
-            // unable to decode JSON
-            throw new RuntimeException('unable to decode JSON in HTTP response');
-        }
-
-        if (!is_array($responseData) && !array_key_exists('error', $responseData)) {
-            throw new RuntimeException(
-                sprintf(
-                    'unexpected response with code "%s" from "%s"',
-                    $e->getResponse()->getStatusCode(),
-                    $e->getResponse()->getEffectiveUrl()
-                )
             );
-        }
 
-        throw new HttpClientException($responseData['error']);
+            return [$response->getStatusCode(), $response->json()];
+        } catch (ClientException $e) {
+            // 4xx response
+            return [$e->getResponse()->getStatusCode(), $e->getResponse()->json()];
+        }
     }
 }
