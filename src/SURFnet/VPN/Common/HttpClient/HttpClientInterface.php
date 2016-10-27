@@ -19,7 +19,6 @@ namespace SURFnet\VPN\Common\HttpClient;
 
 interface HttpClientInterface
 {
-    public function addRequestHeader($key, $value);
-    public function get($requestUri);
-    public function post($requestUri, array $postData);
+    public function get($requestUri, array $requestHeaders = []);
+    public function post($requestUri, array $postData, array $requestHeaders = []);
 }

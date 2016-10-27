@@ -28,9 +28,6 @@ class GuzzleHttpClient implements HttpClientInterface
     /** @var \GuzzleHttp\Client */
     private $httpClient;
 
-    /** @var array */
-    private $requestHeaders;
-
     public function __construct(array $guzzleOptions)
     {
         // http://docs.guzzlephp.org/en/5.3/clients.html#request-options
@@ -45,22 +42,15 @@ class GuzzleHttpClient implements HttpClientInterface
         $this->httpClient = new Client(
             array_merge_recursive($defaultOptions, $guzzleOptions)
         );
-
-        $this->requestHeaders = [];
     }
 
-    public function addRequestHeader($key, $value)
-    {
-        $this->requestHeaders[$key] = $value;
-    }
-
-    public function get($requestUri)
+    public function get($requestUri, array $requestHeaders = [])
     {
         try {
             return $this->httpClient->get(
                 $requestUri,
                 [
-                    'headers' => $this->requestHeaders,
+                    'headers' => $requestHeaders,
                 ]
             )->json();
         } catch (BadResponseException $e) {
@@ -68,7 +58,7 @@ class GuzzleHttpClient implements HttpClientInterface
         }
     }
 
-    public function post($requestUri, array $postData)
+    public function post($requestUri, array $postData, array $requestHeaders = [])
     {
         try {
             return $this->httpClient->post(
@@ -77,7 +67,7 @@ class GuzzleHttpClient implements HttpClientInterface
                     'body' => [
                         $postData,
                     ],
-                    'headers' => $this->requestHeaders,
+                    'headers' => $requestHeaders,
                 ]
             )->json();
         } catch (BadResponseException $e) {
@@ -95,7 +85,13 @@ class GuzzleHttpClient implements HttpClientInterface
         }
 
         if (!is_array($responseData) && !array_key_exists('error', $responseData)) {
-            throw new RuntimeException('"error" field missing in HTTP response');
+            throw new RuntimeException(
+                sprintf(
+                    'unexpected response with code "%s" from "%s"',
+                    $e->getResponse()->getStatusCode(),
+                    $e->getResponse()->getEffectiveUrl()
+                )
+            );
         }
 
         throw new HttpClientException($responseData['error']);
