@@ -43,6 +43,7 @@ class ProfileConfig extends Config
             'processCount' => 4,
             'aclGroupProvider' => 'StaticProvider',
             'portShare' => true,
+            'hideProfile' => false,
         ];
     }
 }

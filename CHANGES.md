@@ -1,5 +1,8 @@
 # Changes
 
+## 1.0.4 (2016-11-14)
+- add `hideProfile` option
+
 ## 1.0.3 (2016-11-10)
 - no longer need to delete the cached user groups on logout
 
