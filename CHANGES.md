@@ -1,5 +1,8 @@
 # Changes
 
+## 1.0.5 (2016-11-15)
+- add default value for `managementIp`
+
 ## 1.0.4 (2016-11-14)
 - add `hideProfile` option
 
