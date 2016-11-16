@@ -1,5 +1,8 @@
 # Changes
 
+## 1.0.6 (2016-11-16)
+- add MOTD API calls
+
 ## 1.0.5 (2016-11-15)
 - add default value for `managementIp`
 

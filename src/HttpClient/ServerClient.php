@@ -111,6 +111,21 @@ class ServerClient extends BaseClient
         return $this->get('user_groups', ['user_id' => $userId]);
     }
 
+    public function motd()
+    {
+        return $this->get('motd');
+    }
+
+    public function setMotd($motdMessage)
+    {
+        return $this->post('set_motd', ['motd_message' => $motdMessage]);
+    }
+
+    public function deleteMotd()
+    {
+        return $this->post('delete_motd', []);
+    }
+
     public function hasVootToken($userId)
     {
         return $this->get('has_voot_token', ['user_id' => $userId]);
