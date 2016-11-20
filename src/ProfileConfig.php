@@ -40,6 +40,7 @@ class ProfileConfig extends Config
             'aclGroupList' => [],
             'managementIp' => 'auto',
             'blockSmb' => false,
+            'forward4' => true,
             'forward6' => true,
             'processCount' => 4,
             'aclGroupProvider' => 'StaticProvider',
