@@ -1,5 +1,8 @@
 # Changes
 
+## 1.0.7 (2016-11-20)
+- remove `forward6` and introduce `reject4` and `reject6` instead
+
 ## 1.0.6 (2016-11-16)
 - add MOTD API calls
 
