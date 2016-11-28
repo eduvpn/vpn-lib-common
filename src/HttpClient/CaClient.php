@@ -25,7 +25,7 @@ class CaClient extends BaseClient
         parent::__construct($httpClient, $baseUri);
     }
 
-    public function userList()
+    public function certificateList()
     {
         return $this->get('certificate_list');
     }
@@ -35,13 +35,12 @@ class CaClient extends BaseClient
         return $this->get('user_certificate_list', ['user_id' => $userId]);
     }
 
-    public function addUserCertificate($userId, $displayName)
+    public function addClientCertificate($userId, $configName)
     {
         return $this->post(
-            'add_user_certificate',
+            'add_client_certificate',
             [
-                'user_id' => $userId,
-                'display_name' => $displayName,
+                'common_name' => sprintf('%s_%s', $userId, $configName),
             ]
         );
     }
