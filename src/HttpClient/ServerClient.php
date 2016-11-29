@@ -67,6 +67,11 @@ class ServerClient extends BaseClient
         );
     }
 
+    public function listClientCertificates($userId)
+    {
+        return $this->get('list_client_certificates', ['user_id' => $userId]);
+    }
+
     public function enableUser($userId)
     {
         return $this->post('enable_user', ['user_id' => $userId]);
