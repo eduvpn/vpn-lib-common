@@ -119,10 +119,7 @@ class ServerClient extends BaseClient
 
     public function userGroups($userId)
     {
-        // XXX not yet implemented
-        // return $this->get('user_groups', ['user_id' => $userId]);
-
-        return [];
+        return $this->get('user_groups', ['user_id' => $userId]);
     }
 
     public function motd()
