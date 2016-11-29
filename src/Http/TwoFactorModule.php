@@ -73,7 +73,7 @@ class TwoFactorModule implements ServiceModuleInterface
                     throw new HttpException('redirect_to does not match expected host', 400);
                 }
 
-                if ($this->serverClient->verifyOtpKey($userId, $otpKey)) {
+                if ($this->serverClient->verifyTotpKey($userId, $otpKey)) {
                     $this->session->set('_two_factor_verified', $userId);
 
                     return new RedirectResponse($redirectTo, 302);

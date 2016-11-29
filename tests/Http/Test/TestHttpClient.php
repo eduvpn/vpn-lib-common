@@ -26,10 +26,10 @@ class TestHttpClient implements HttpClientInterface
     public function get($requestUri, array $getData = [], array $requestHeaders = [])
     {
         switch ($requestUri) {
-            case 'serverClient/has_otp_secret?user_id=foo':
-                return [200, self::wrap('has_otp_secret', true)];
-            case 'serverClient/has_otp_secret?user_id=bar':
-                return [200, self::wrap('has_otp_secret', false)];
+            case 'serverClient/has_totp_secret?user_id=foo':
+                return [200, self::wrap('has_totp_secret', true)];
+            case 'serverClient/has_totp_secret?user_id=bar':
+                return [200, self::wrap('has_totp_secret', false)];
             default:
                 throw new RuntimeException(sprintf('unexpected requestUri "%s"', $requestUri));
         }
@@ -38,12 +38,12 @@ class TestHttpClient implements HttpClientInterface
     public function post($requestUri, array $postData, array $requestHeaders = [])
     {
         switch ($requestUri) {
-            case 'serverClient/verify_otp_key':
+            case 'serverClient/verify_totp_key':
                 if ('foo' === $postData['user_id']) {
-                    return [200, self::wrap('verify_otp_key', true)];
+                    return [200, self::wrap('verify_totp_key', true)];
                 }
 
-                return [200, self::wrap('verify_otp_key', false)];
+                return [200, self::wrap('verify_totp_key', false)];
             default:
                 throw new RuntimeException(sprintf('unexpected requestUri "%s"', $requestUri));
         }
