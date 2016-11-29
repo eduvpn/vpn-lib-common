@@ -110,7 +110,7 @@ class ServerClient extends BaseClient
     public function hasOtpSecret($userId)
     {
         // XXX not yet implemented
-        return ['data' => ['has_otp_secret' => false]];
+        return false;
     }
 
     public function userGroups($userId)
@@ -118,7 +118,7 @@ class ServerClient extends BaseClient
         // XXX not yet implemented
         // return $this->get('user_groups', ['user_id' => $userId]);
 
-        return ['data' => ['user_groups' => []]];
+        return [];
     }
 
     public function motd()
