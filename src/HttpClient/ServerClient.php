@@ -84,7 +84,7 @@ class ServerClient extends BaseClient
 
     public function isDisabledUser($userId)
     {
-        return $this->post('is_disabled_user', ['user_id' => $userId]);
+        return $this->get('is_disabled_user', ['user_id' => $userId]);
     }
 
     public function disableClientCertificate($commonName)
@@ -107,10 +107,19 @@ class ServerClient extends BaseClient
         return $this->get('profile_info', ['profile_id' => $profileId]);
     }
 
-//    public function userGroups($userId)
-//    {
-//        return $this->get('user_groups', ['user_id' => $userId]);
-//    }
+    public function hasOtpSecret($userId)
+    {
+        // XXX not yet implemented
+        return ['data' => ['has_otp_secret' => false]];
+    }
+
+    public function userGroups($userId)
+    {
+        // XXX not yet implemented
+        // return $this->get('user_groups', ['user_id' => $userId]);
+
+        return ['data' => ['user_groups' => []]];
+    }
 
     public function motd()
     {
