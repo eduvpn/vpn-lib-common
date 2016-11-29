@@ -77,6 +77,11 @@ class ServerClient extends BaseClient
         return $this->post('enable_user', ['user_id' => $userId]);
     }
 
+    public function userList()
+    {
+        return $this->get('user_list');
+    }
+
     public function disableUser($userId)
     {
         return $this->post('disable_user', ['user_id' => $userId]);
