@@ -46,14 +46,25 @@ class ServerClient extends BaseClient
         return $this->get('stats');
     }
 
-    public function disabledUsers()
+    public function addClientCertificate($userId, $displayName)
     {
-        return $this->get('disabled_users');
+        return $this->post(
+            'add_client_certificate',
+            [
+                'user_id' => $userId,
+                'display_name' => $displayName,
+            ]
+        );
     }
 
-    public function isDisabledUser($userId)
+    public function addServerCertificate($commonName)
     {
-        return $this->get('is_disabled_user', ['user_id' => $userId]);
+        return $this->post(
+            'add_server_certificate',
+            [
+                'common_name' => $commonName,
+            ]
+        );
     }
 
     public function enableUser($userId)
@@ -66,29 +77,14 @@ class ServerClient extends BaseClient
         return $this->post('disable_user', ['user_id' => $userId]);
     }
 
-    public function hasOtpSecret($userId)
+    public function disableClientCertificate($commonName)
     {
-        return $this->get('has_otp_secret', ['user_id' => $userId]);
+        return $this->post('disable_client_certificate', ['common_name' => $commonName]);
     }
 
-    public function disabledCommonNames()
+    public function enableClientCertificate($commonName)
     {
-        return $this->get('disabled_common_names');
-    }
-
-    public function isDisabledCommonName($commonName)
-    {
-        return $this->get('is_disabled_common_name', ['common_name' => $commonName]);
-    }
-
-    public function disableCommonName($commonName)
-    {
-        return $this->post('disable_common_name', ['common_name' => $commonName]);
-    }
-
-    public function enableCommonName($commonName)
-    {
-        return $this->post('enable_common_name', ['common_name' => $commonName]);
+        return $this->post('enable_client_certificate', ['common_name' => $commonName]);
     }
 
     public function killClient($commonName)
@@ -96,40 +92,30 @@ class ServerClient extends BaseClient
         return $this->post('kill_client', ['common_name' => $commonName]);
     }
 
-    public function serverProfile($profileId)
+    public function profileInfo($profileId)
     {
-        return $this->get('server_profile', ['profile_id' => $profileId]);
+        return $this->get('profile_info', ['profile_id' => $profileId]);
     }
 
-    public function instanceConfig()
-    {
-        return $this->get('instance_config');
-    }
+//    public function userGroups($userId)
+//    {
+//        return $this->get('user_groups', ['user_id' => $userId]);
+//    }
 
-    public function userGroups($userId)
-    {
-        return $this->get('user_groups', ['user_id' => $userId]);
-    }
+//    public function motd()
+//    {
+//        return $this->get('motd');
+//    }
 
-    public function motd()
-    {
-        return $this->get('motd');
-    }
+//    public function setMotd($motdMessage)
+//    {
+//        return $this->post('set_motd', ['motd_message' => $motdMessage]);
+//    }
 
-    public function setMotd($motdMessage)
-    {
-        return $this->post('set_motd', ['motd_message' => $motdMessage]);
-    }
-
-    public function deleteMotd()
-    {
-        return $this->post('delete_motd', []);
-    }
-
-    public function hasVootToken($userId)
-    {
-        return $this->get('has_voot_token', ['user_id' => $userId]);
-    }
+//    public function deleteMotd()
+//    {
+//        return $this->post('delete_motd', []);
+//    }
 
     public function setVootToken($userId, $vootToken)
     {
@@ -147,28 +133,28 @@ class ServerClient extends BaseClient
         return $this->post('delete_otp_secret', ['user_id' => $userId]);
     }
 
-    public function setOtpSecret($userId, $otpSecret, $otpKey)
-    {
-        return $this->post(
-            'set_otp_secret',
-            [
-                'user_id' => $userId,
-                'otp_secret' => $otpSecret,
-                'otp_key' => $otpKey,
-            ]
-        );
-    }
+//    public function setOtpSecret($userId, $otpSecret, $otpKey)
+//    {
+//        return $this->post(
+//            'set_otp_secret',
+//            [
+//                'user_id' => $userId,
+//                'otp_secret' => $otpSecret,
+//                'otp_key' => $otpKey,
+//            ]
+//        );
+//    }
 
-    public function verifyOtpKey($userId, $otpKey)
-    {
-        return $this->post(
-            'verify_otp_key',
-            [
-                'user_id' => $userId,
-                'otp_key' => $otpKey,
-            ]
-        );
-    }
+//    public function verifyOtpKey($userId, $otpKey)
+//    {
+//        return $this->post(
+//            'verify_otp_key',
+//            [
+//                'user_id' => $userId,
+//                'otp_key' => $otpKey,
+//            ]
+//        );
+//    }
 
     public function connect($profileId, $commonName, $ip4, $ip6, $connectedAt)
     {
