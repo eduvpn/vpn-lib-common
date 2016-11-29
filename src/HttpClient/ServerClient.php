@@ -102,9 +102,9 @@ class ServerClient extends BaseClient
         return $this->post('kill_client', ['common_name' => $commonName]);
     }
 
-    public function profileInfo($profileId)
+    public function profileList()
     {
-        return $this->get('profile_info', ['profile_id' => $profileId]);
+        return $this->get('profile_list');
     }
 
     public function hasOtpSecret($userId)
