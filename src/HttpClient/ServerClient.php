@@ -82,6 +82,11 @@ class ServerClient extends BaseClient
         return $this->post('disable_user', ['user_id' => $userId]);
     }
 
+    public function isDisabledUser($userId)
+    {
+        return $this->post('is_disabled_user', ['user_id' => $userId]);
+    }
+
     public function disableClientCertificate($commonName)
     {
         return $this->post('disable_client_certificate', ['common_name' => $commonName]);
@@ -107,20 +112,20 @@ class ServerClient extends BaseClient
 //        return $this->get('user_groups', ['user_id' => $userId]);
 //    }
 
-//    public function motd()
-//    {
-//        return $this->get('motd');
-//    }
+    public function motd()
+    {
+        return $this->get('motd');
+    }
 
-//    public function setMotd($motdMessage)
-//    {
-//        return $this->post('set_motd', ['motd_message' => $motdMessage]);
-//    }
+    public function setMotd($motdMessage)
+    {
+        return $this->post('set_motd', ['motd_message' => $motdMessage]);
+    }
 
-//    public function deleteMotd()
-//    {
-//        return $this->post('delete_motd', []);
-//    }
+    public function deleteMotd()
+    {
+        return $this->post('delete_motd', []);
+    }
 
     public function setVootToken($userId, $vootToken)
     {
