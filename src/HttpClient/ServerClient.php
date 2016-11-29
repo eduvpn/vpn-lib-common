@@ -112,10 +112,9 @@ class ServerClient extends BaseClient
         return $this->get('profile_list');
     }
 
-    public function hasOtpSecret($userId)
+    public function hasTotpSecret($userId)
     {
-        // XXX not yet implemented
-        return false;
+        return $this->get('has_totp_secret', ['user_id' => $userId]);
     }
 
     public function userGroups($userId)
@@ -152,33 +151,33 @@ class ServerClient extends BaseClient
         );
     }
 
-    public function deleteOtpSecret($userId)
+    public function deleteTotpSecret($userId)
     {
-        return $this->post('delete_otp_secret', ['user_id' => $userId]);
+        return $this->post('delete_totp_secret', ['user_id' => $userId]);
     }
 
-//    public function setOtpSecret($userId, $otpSecret, $otpKey)
-//    {
-//        return $this->post(
-//            'set_otp_secret',
-//            [
-//                'user_id' => $userId,
-//                'otp_secret' => $otpSecret,
-//                'otp_key' => $otpKey,
-//            ]
-//        );
-//    }
+    public function setTotpSecret($userId, $totpSecret, $totpKey)
+    {
+        return $this->post(
+            'set_totp_secret',
+            [
+                'user_id' => $userId,
+                'totp_secret' => $totpSecret,
+                'totp_key' => $totpKey,
+            ]
+        );
+    }
 
-//    public function verifyOtpKey($userId, $otpKey)
-//    {
-//        return $this->post(
-//            'verify_otp_key',
-//            [
-//                'user_id' => $userId,
-//                'otp_key' => $otpKey,
-//            ]
-//        );
-//    }
+    public function verifyTotpKey($userId, $totpKey)
+    {
+        return $this->post(
+            'verify_totp_key',
+            [
+                'user_id' => $userId,
+                'totp_key' => $totpKey,
+            ]
+        );
+    }
 
     public function connect($profileId, $commonName, $ip4, $ip6, $connectedAt)
     {
