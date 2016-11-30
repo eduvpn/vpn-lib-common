@@ -51,6 +51,18 @@ class InputValidation
     /**
      * @return string
      */
+    public static function serverCommonName($serverCommonName)
+    {
+        if (1 !== preg_match('/^[a-zA-Z0-9-.]+$/', $serverCommonName)) {
+            throw new HttpException('invalid "server_common_name"', 400);
+        }
+
+        return $serverCommonName;
+    }
+
+    /**
+     * @return string
+     */
     public static function profileId($profileId)
     {
         if (1 !== preg_match('/^[a-zA-Z0-9]+$/', $profileId)) {
