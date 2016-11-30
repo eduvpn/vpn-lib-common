@@ -66,7 +66,7 @@ class InputValidation
     public static function languageCode($languageCode)
     {
         $supportedLanguages = ['en_US', 'nl_NL', 'de_DE', 'fr_FR'];
-        if (!in_array($setLanguage, $supportedLanguages)) {
+        if (!in_array($languageCode, $supportedLanguages)) {
             throw new HttpException('invalid "language_code"', 400);
         }
 
@@ -158,6 +158,80 @@ class InputValidation
             throw new HttpException('invalid "ip_address"', 400);
         }
 
-        return $ipAddress;
+        // normalize the IP address (only makes a difference for IPv6)
+        return inet_ntop(inet_pton($ipAddress));
+    }
+
+    /**
+     * @return string
+     */
+    public static function vootToken($vootToken)
+    {
+        if (1 !== preg_match('/^[a-zA-Z0-9-]+$/', $vootToken)) {
+            throw new HttpException('invalid "voot_token"', 400);
+        }
+
+        return $vootToken;
+    }
+
+    /**
+     * @return string
+     */
+    public static function ip4($ip4)
+    {
+        if (false === filter_var($ip4, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4)) {
+            throw new HttpException('invalid "ip4"', 400);
+        }
+
+        return $ip4;
+    }
+
+    /**
+     * @return string
+     */
+    public static function ip6($ip6)
+    {
+        if (false === filter_var($ip6, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6)) {
+            throw new HttpException('invalid "ip6"', 400);
+        }
+
+        // normalize the IPv6 address
+        return inet_ntop(inet_pton($ip6));
+    }
+
+    /**
+     * @return int
+     */
+    public static function connectedAt($connectedAt)
+    {
+        if (!is_numeric($connectedAt) || 0 > intval($connectedAt)) {
+            throw new HttpException('invalid "connected_at"', 400);
+        }
+
+        return intval($connectedAt);
+    }
+
+    /**
+     * @return int
+     */
+    public static function disconnectedAt($disconnectedAt)
+    {
+        if (!is_numeric($disconnectedAt) || 0 > intval($disconnectedAt)) {
+            throw new HttpException('invalid "disconnected_at"', 400);
+        }
+
+        return intval($disconnectedAt);
+    }
+
+    /**
+     * @return int
+     */
+    public static function bytesTransferred($bytesTransferred)
+    {
+        if (!is_numeric($bytesTransferred) || 0 > intval($bytesTransferred)) {
+            throw new HttpException('invalid "bytes_transferred"', 400);
+        }
+
+        return intval($bytesTransferred);
     }
 }
