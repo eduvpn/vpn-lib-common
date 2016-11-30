@@ -18,8 +18,8 @@
 
 namespace SURFnet\VPN\Common\Http\Test;
 
-use SURFnet\VPN\Common\HttpClient\HttpClientInterface;
 use RuntimeException;
+use SURFnet\VPN\Common\HttpClient\HttpClientInterface;
 
 class TestHttpClient implements HttpClientInterface
 {

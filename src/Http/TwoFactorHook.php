@@ -18,9 +18,9 @@
 
 namespace SURFnet\VPN\Common\Http;
 
+use SURFnet\VPN\Common\Http\Exception\HttpException;
 use SURFnet\VPN\Common\HttpClient\ServerClient;
 use SURFnet\VPN\Common\TplInterface;
-use SURFnet\VPN\Common\Http\Exception\HttpException;
 
 class TwoFactorHook implements BeforeHookInterface
 {

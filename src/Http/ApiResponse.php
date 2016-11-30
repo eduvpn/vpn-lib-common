@@ -18,8 +18,8 @@
 
 namespace SURFnet\VPN\Common\Http;
 
-use InvalidArgumentException;
 use DomainException;
+use InvalidArgumentException;
 
 class ApiResponse extends Response
 {

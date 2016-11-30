@@ -18,10 +18,10 @@
 
 namespace SURFnet\VPN\Common;
 
-use Symfony\Component\Yaml\Yaml;
-use SURFnet\VPN\Common\Exception\ConfigException;
 use InvalidArgumentException;
 use RuntimeException;
+use SURFnet\VPN\Common\Exception\ConfigException;
+use Symfony\Component\Yaml\Yaml;
 
 class Config
 {

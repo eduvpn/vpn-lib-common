@@ -18,8 +18,8 @@
 
 namespace SURFnet\VPN\Common\Http;
 
-use SURFnet\VPN\Common\TplInterface;
 use SURFnet\VPN\Common\Http\Exception\HttpException;
+use SURFnet\VPN\Common\TplInterface;
 
 class FormAuthenticationModule implements ServiceModuleInterface
 {

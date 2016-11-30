@@ -20,8 +20,8 @@ namespace SURFnet\VPN\Common\HttpClient;
 
 require_once sprintf('%s/Test/TestHttpClient.php', __DIR__);
 
-use SURFnet\VPN\Common\HttpClient\Test\TestHttpClient;
 use PHPUnit_Framework_TestCase;
+use SURFnet\VPN\Common\HttpClient\Test\TestHttpClient;
 
 class BaseClientTest extends PHPUnit_Framework_TestCase
 {

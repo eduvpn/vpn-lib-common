@@ -18,8 +18,8 @@
 
 namespace SURFnet\VPN\Common\HttpClient;
 
-use SURFnet\VPN\Common\HttpClient\Exception\HttpClientException;
 use SURFnet\VPN\Common\HttpClient\Exception\ApiException;
+use SURFnet\VPN\Common\HttpClient\Exception\HttpClientException;
 
 class BaseClient
 {

@@ -22,8 +22,8 @@ require_once sprintf('%s/Test/TestRequest.php', __DIR__);
 require_once sprintf('%s/Test/TestHtmlTpl.php', __DIR__);
 
 use PHPUnit_Framework_TestCase;
-use SURFnet\VPN\Common\Http\Test\TestRequest;
 use SURFnet\VPN\Common\Http\Test\TestHtmlTpl;
+use SURFnet\VPN\Common\Http\Test\TestRequest;
 
 class ServiceTest extends PHPUnit_Framework_TestCase
 {

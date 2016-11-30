@@ -20,8 +20,8 @@ namespace SURFnet\VPN\Common;
 
 require_once sprintf('%s/Test/MyConfig.php', __DIR__);
 
-use SURFnet\VPN\Common\Test\MyConfig;
 use PHPUnit_Framework_TestCase;
+use SURFnet\VPN\Common\Test\MyConfig;
 
 class ConfigTest extends PHPUnit_Framework_TestCase
 {
