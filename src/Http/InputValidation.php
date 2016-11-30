@@ -77,7 +77,7 @@ class InputValidation
      */
     public static function instanceId($instanceId)
     {
-        if (1 !== preg_match('/^[a-zA-Z0-9-.]+$/', $serverCommonName)) {
+        if (1 !== preg_match('/^[a-zA-Z0-9-.]+$/', $instanceId)) {
             throw new HttpException('invalid "instance_id"', 400);
         }
 
@@ -265,7 +265,7 @@ class InputValidation
     public static function userName($userName)
     {
         if ('totp' !== $userName) {
-            throw new InputValidationException('invalid "user_name"');
+            throw new HttpException('invalid "user_name"', 400);
         }
 
         return $userName;
