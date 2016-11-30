@@ -75,6 +75,18 @@ class InputValidation
     /**
      * @return string
      */
+    public static function instanceId($instanceId)
+    {
+        if (1 !== preg_match('/^[a-zA-Z0-9-.]+$/', $serverCommonName)) {
+            throw new HttpException('invalid "instance_id"', 400);
+        }
+
+        return $instanceId;
+    }
+
+    /**
+     * @return string
+     */
     public static function languageCode($languageCode)
     {
         $supportedLanguages = ['en_US', 'nl_NL', 'de_DE', 'fr_FR'];
@@ -245,5 +257,17 @@ class InputValidation
         }
 
         return intval($bytesTransferred);
+    }
+
+    /**
+     * @return string
+     */
+    public static function userName($userName)
+    {
+        if ('totp' !== $userName) {
+            throw new InputValidationException('invalid "user_name"');
+        }
+
+        return $userName;
     }
 }
