@@ -108,4 +108,56 @@ class InputValidation
 
         return $clientId;
     }
+
+    /**
+     * @return string
+     */
+    public static function userId($userId)
+    {
+        if (1 !== preg_match('/^[a-zA-Z0-9-.@]+$/', $userId)) {
+            throw new HttpException('invalid "user_id"', 400);
+        }
+
+        return $userId;
+    }
+
+    /**
+     * @return string
+     */
+    public static function motdMessage($motdMessage)
+    {
+        // we accept everything...
+        return $motdMessage;
+    }
+
+    /**
+     * @return int
+     */
+    public static function dateTime($dateTime)
+    {
+        // try to parse first
+        if (false === $unixTime = strtotime($dateTime)) {
+            // if that fails, check if it is already unixTime
+            $unixTime = intval($dateTime);
+            if (0 <= $unixTime) {
+                return $unixTime;
+            }
+
+            throw new HttpException('invalid "date_time"', 400);
+        }
+
+        return $unixTime;
+    }
+
+    /**
+     * @return string
+     */
+    public static function ipAddress($ipAddress)
+    {
+        if (false === filter_var($ipAddress, FILTER_VALIDATE_IP)) {
+            throw new HttpException('invalid "ip_address"', 400);
+        }
+
+        return $ipAddress;
+    }
 }
