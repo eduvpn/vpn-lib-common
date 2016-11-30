@@ -122,6 +122,11 @@ class ServerClient extends BaseClient
         return $this->get('has_totp_secret', ['user_id' => $userId]);
     }
 
+    public function hasVootToken($userId)
+    {
+        return $this->get('has_voot_token', ['user_id' => $userId]);
+    }
+
     public function userGroups($userId)
     {
         return $this->get('user_groups', ['user_id' => $userId]);
