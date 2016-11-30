@@ -107,6 +107,11 @@ class ServerClient extends BaseClient
         return $this->post('kill_client', ['common_name' => $commonName]);
     }
 
+    public function instanceNumber()
+    {
+        return $this->get('instance_number');
+    }
+
     public function profileList()
     {
         return $this->get('profile_list');
