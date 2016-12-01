@@ -18,7 +18,7 @@
 
 namespace SURFnet\VPN\Common\Http;
 
-use SURFnet\VPN\Common\Http\Exception\HttpException;
+use SURFnet\VPN\Common\Http\Exception\InputValidationException;
 
 class InputValidation
 {
@@ -30,7 +30,7 @@ class InputValidation
         $displayName = filter_var($displayName, FILTER_UNSAFE_RAW, FILTER_FLAG_STRIP_LOW);
 
         if (0 === mb_strlen($displayName)) {
-            throw new HttpException('invalid "display_name"', 400);
+            throw new InputValidationException('invalid "display_name"');
         }
 
         return $displayName;
@@ -42,7 +42,7 @@ class InputValidation
     public static function commonName($commonName)
     {
         if (1 !== preg_match('/^[a-fA-F0-9]{32}$/', $commonName)) {
-            throw new HttpException('invalid "common_name"', 400);
+            throw new InputValidationException('invalid "common_name"');
         }
 
         return $commonName;
@@ -54,7 +54,7 @@ class InputValidation
     public static function serverCommonName($serverCommonName)
     {
         if (1 !== preg_match('/^[a-zA-Z0-9-.]+$/', $serverCommonName)) {
-            throw new HttpException('invalid "server_common_name"', 400);
+            throw new InputValidationException('invalid "server_common_name"');
         }
 
         return $serverCommonName;
@@ -66,7 +66,7 @@ class InputValidation
     public static function profileId($profileId)
     {
         if (1 !== preg_match('/^[a-zA-Z0-9]+$/', $profileId)) {
-            throw new HttpException('invalid "profile_id"', 400);
+            throw new InputValidationException('invalid "profile_id"');
         }
 
         return $profileId;
@@ -78,7 +78,7 @@ class InputValidation
     public static function instanceId($instanceId)
     {
         if (1 !== preg_match('/^[a-zA-Z0-9-.]+$/', $instanceId)) {
-            throw new HttpException('invalid "instance_id"', 400);
+            throw new InputValidationException('invalid "instance_id"');
         }
 
         return $instanceId;
@@ -91,7 +91,7 @@ class InputValidation
     {
         $supportedLanguages = ['en_US', 'nl_NL', 'de_DE', 'fr_FR'];
         if (!in_array($languageCode, $supportedLanguages)) {
-            throw new HttpException('invalid "language_code"', 400);
+            throw new InputValidationException('invalid "language_code"');
         }
 
         return $languageCode;
@@ -103,7 +103,7 @@ class InputValidation
     public static function totpSecret($totpSecret)
     {
         if (1 !== preg_match('/^[A-Z0-9]{16}$/', $totpSecret)) {
-            throw new HttpException('invalid "totp_secret"', 400);
+            throw new InputValidationException('invalid "totp_secret"');
         }
 
         return $totpSecret;
@@ -115,7 +115,7 @@ class InputValidation
     public static function totpKey($totpKey)
     {
         if (1 !== preg_match('/^[0-9]{6}$/', $totpKey)) {
-            throw new HttpException('invalid "totp_key"', 400);
+            throw new InputValidationException('invalid "totp_key"');
         }
 
         return $totpKey;
@@ -127,7 +127,7 @@ class InputValidation
     public static function clientId($clientId)
     {
         if (1 !== preg_match('/^(?:[\x20-\x7E])+$/', $clientId)) {
-            throw new HttpException('invalid "client_id"', 400);
+            throw new InputValidationException('invalid "client_id"');
         }
 
         return $clientId;
@@ -139,7 +139,7 @@ class InputValidation
     public static function userId($userId)
     {
         if (1 !== preg_match('/^[a-zA-Z0-9-.@]+$/', $userId)) {
-            throw new HttpException('invalid "user_id"', 400);
+            throw new InputValidationException('invalid "user_id"');
         }
 
         return $userId;
@@ -167,7 +167,7 @@ class InputValidation
                 return $unixTime;
             }
 
-            throw new HttpException('invalid "date_time"', 400);
+            throw new InputValidationException('invalid "date_time"');
         }
 
         return $unixTime;
@@ -179,7 +179,7 @@ class InputValidation
     public static function ipAddress($ipAddress)
     {
         if (false === filter_var($ipAddress, FILTER_VALIDATE_IP)) {
-            throw new HttpException('invalid "ip_address"', 400);
+            throw new InputValidationException('invalid "ip_address"');
         }
 
         // normalize the IP address (only makes a difference for IPv6)
@@ -192,7 +192,7 @@ class InputValidation
     public static function vootToken($vootToken)
     {
         if (1 !== preg_match('/^[a-zA-Z0-9-]+$/', $vootToken)) {
-            throw new HttpException('invalid "voot_token"', 400);
+            throw new InputValidationException('invalid "voot_token"');
         }
 
         return $vootToken;
@@ -204,7 +204,7 @@ class InputValidation
     public static function ip4($ip4)
     {
         if (false === filter_var($ip4, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4)) {
-            throw new HttpException('invalid "ip4"', 400);
+            throw new InputValidationException('invalid "ip4"');
         }
 
         return $ip4;
@@ -216,7 +216,7 @@ class InputValidation
     public static function ip6($ip6)
     {
         if (false === filter_var($ip6, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6)) {
-            throw new HttpException('invalid "ip6"', 400);
+            throw new InputValidationException('invalid "ip6"');
         }
 
         // normalize the IPv6 address
@@ -229,7 +229,7 @@ class InputValidation
     public static function connectedAt($connectedAt)
     {
         if (!is_numeric($connectedAt) || 0 > intval($connectedAt)) {
-            throw new HttpException('invalid "connected_at"', 400);
+            throw new InputValidationException('invalid "connected_at"');
         }
 
         return intval($connectedAt);
@@ -241,7 +241,7 @@ class InputValidation
     public static function disconnectedAt($disconnectedAt)
     {
         if (!is_numeric($disconnectedAt) || 0 > intval($disconnectedAt)) {
-            throw new HttpException('invalid "disconnected_at"', 400);
+            throw new InputValidationException('invalid "disconnected_at"');
         }
 
         return intval($disconnectedAt);
@@ -253,7 +253,7 @@ class InputValidation
     public static function bytesTransferred($bytesTransferred)
     {
         if (!is_numeric($bytesTransferred) || 0 > intval($bytesTransferred)) {
-            throw new HttpException('invalid "bytes_transferred"', 400);
+            throw new InputValidationException('invalid "bytes_transferred"');
         }
 
         return intval($bytesTransferred);
@@ -265,7 +265,7 @@ class InputValidation
     public static function userName($userName)
     {
         if ('totp' !== $userName) {
-            throw new HttpException('invalid "user_name"', 400);
+            throw new InputValidationException('invalid "user_name"');
         }
 
         return $userName;
