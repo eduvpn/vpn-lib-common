@@ -63,22 +63,56 @@ class BaseClient
     private static function responseHandler($requestMethod, $requestPath, array $clientResponse)
     {
         list($statusCode, $responseData) = $clientResponse;
+        self::validateClientResponse($requestMethod, $requestPath, $statusCode, $responseData);
 
-        if (is_array($responseData)) {
-            // normal case
-            if (array_key_exists('data', $responseData)) {
-                if (array_key_exists($requestPath, $responseData['data'])) {
-                    return $responseData['data'][$requestPath];
-                }
-            }
-            // error case
-            if (array_key_exists('error', $responseData)) {
-                throw new ApiException(sprintf('[%d] %s', $statusCode, $responseData['error']));
-            }
+        if (400 <= $statusCode) {
+            // either we sent an incorrect request, or there is a server error
+            throw new HttpClientException(sprintf('[%d] %s "/%s": %s', $statusCode, $requestMethod, $requestPath, $responseData['error']));
         }
 
-        throw new HttpClientException(
-            sprintf('[%d] malformed response for %s request to "%s"', $statusCode, $requestMethod, $requestPath)
-        );
+        // the request was correct, and there was not a server error
+        if ($responseData[$requestPath]['ok']) {
+            // our request was handled correctly
+            if (array_key_exists('data', $responseData[$requestPath])) {
+                return $responseData[$requestPath]['data'];
+            }
+
+            return true;
+        }
+
+        // our request was not handled correctly, something went wrong...
+        throw new ApiException($responseData[$requestPath]['error']);
+    }
+
+    private static function validateClientResponse($requestMethod, $requestPath, $statusCode, $responseData)
+    {
+        // responseData MUST be array
+        if (!is_array($responseData)) {
+            throw new HttpClientException(sprintf('[%d] %s "/%s": responseData MUST be array', $statusCode, $requestMethod, $requestPath));
+        }
+
+        if (400 <= $statusCode) {
+            // if status code is 4xx or 5xx it MUST have an 'error' field
+            if (!array_key_exists('error', $responseData)) {
+                throw new HttpClientException(sprintf('[%d] %s "/%s": responseData MUST contain "error" field', $statusCode, $requestMethod, $requestPath));
+            }
+
+            return;
+        }
+
+        if (!array_key_exists($requestPath, $responseData)) {
+            throw new HttpClientException(sprintf('[%d] %s "/%s": responseData MUST contain "%s" field', $statusCode, $requestMethod, $requestPath, $requestPath));
+        }
+
+        if (!array_key_exists('ok', $responseData[$requestPath])) {
+            throw new HttpClientException(sprintf('[%d] %s "/%s": responseData MUST contain "%s/ok" field', $statusCode, $requestMethod, $requestPath, $requestPath));
+        }
+
+        if (!$responseData[$requestPath]['ok']) {
+            // not OK response, MUST contain error field
+            if (!array_key_exists('error', $responseData[$requestPath])) {
+                throw new HttpClientException(sprintf('[%d] %s "/%s": responseData MUST contain "%s/error" field', $statusCode, $requestMethod, $requestPath, $requestPath));
+            }
+        }
     }
 }

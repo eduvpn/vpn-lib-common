@@ -40,8 +40,8 @@ class BaseClientTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException SURFnet\VPN\Common\HttpClient\Exception\ApiException
-     * @expectedExceptionMessage [400] errorValue
+     * @expectedException SURFnet\VPN\Common\HttpClient\Exception\HttpClientException
+     * @expectedExceptionMessage [400] GET "/error": errorValue
      */
     public function testError()
     {
@@ -55,16 +55,5 @@ class BaseClientTest extends PHPUnit_Framework_TestCase
         $httpClient = new TestHttpClient();
         $baseClient = new BaseClient($httpClient, 'baseClient');
         $this->assertSame(true, $baseClient->post('foo', ['foo' => 'bar']));
-    }
-
-    /**
-     * @expectedException SURFnet\VPN\Common\HttpClient\Exception\HttpClientException
-     * @expectedExceptionMessage [400] malformed response for GET request to "unexpected_response"
-     */
-    public function testUnexpectedResponse()
-    {
-        $httpClient = new TestHttpClient();
-        $baseClient = new BaseClient($httpClient, 'baseClient');
-        $baseClient->get('unexpected_response');
     }
 }

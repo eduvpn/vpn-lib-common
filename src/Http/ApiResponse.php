@@ -18,28 +18,40 @@
 
 namespace SURFnet\VPN\Common\Http;
 
-use DomainException;
 use InvalidArgumentException;
 
 class ApiResponse extends Response
 {
-    public function __construct($wrapperKey, $responseData, $responseCode = 200)
+    /**
+     * @param string $wrapperKey
+     * @param bool   $isOkay
+     * @param mixed  $responseData
+     * @param int    $responseCode
+     */
+    public function __construct($wrapperKey, $isOkay, $responseData = null, $responseCode = 200)
     {
         if (!is_string($wrapperKey)) {
             throw new InvalidArgumentException('parameter must be string');
         }
-        if (0 >= mb_strlen($wrapperKey)) {
-            throw new DomainException('string must not be empty');
+        if (!is_bool($isOkay)) {
+            throw new InvalidArgumentException('parameter must be boolean');
         }
+        if (!is_int($responseCode)) {
+            throw new InvalidArgumentException('parameter must be integer');
+        }
+
         parent::__construct($responseCode, 'application/json');
-        $this->setBody(
-            json_encode(
-                [
-                    'data' => [
-                        $wrapperKey => $responseData,
-                    ],
-                ]
-            )
-        );
+
+        $responseBody = [
+            $wrapperKey => [
+                'ok' => $isOkay,
+            ],
+        ];
+
+        if (!is_null($responseData)) {
+            $responseBody[$wrapperKey]['data'] = $responseData;
+        }
+
+        $this->setBody(json_encode($responseBody));
     }
 }

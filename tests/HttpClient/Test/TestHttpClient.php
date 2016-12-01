@@ -27,13 +27,11 @@ class TestHttpClient implements HttpClientInterface
     {
         switch ($requestUri) {
             case 'baseClient/foo':
-                return [200, self::wrap('foo', true)];
+                return [200, self::wrap('foo', true, true)];
             case 'baseClient/foo?foo=bar':
-                return [200, self::wrap('foo', true)];
+                return [200, self::wrap('foo', true, true)];
             case 'baseClient/error':
                 return [400, ['error' => 'errorValue']];
-            case 'baseClient/unexpected_response':
-                return [400, ['foo' => 'bar']];
 
             default:
                 throw new RuntimeException(sprintf('unexpected requestUri "%s"', $requestUri));
@@ -44,17 +42,18 @@ class TestHttpClient implements HttpClientInterface
     {
         switch ($requestUri) {
             case 'baseClient/foo':
-                return [200, self::wrap('foo', true)];
+                return [200, self::wrap('foo', true, true)];
             default:
                 throw new RuntimeException(sprintf('unexpected requestUri "%s"', $requestUri));
         }
     }
 
-    private static function wrap($key, $response)
+    private static function wrap($key, $isOkay, $responseData)
     {
         return [
-            'data' => [
-                $key => $response,
+            $key => [
+                'ok' => $isOkay,
+                'data' => $responseData,
             ],
         ];
     }

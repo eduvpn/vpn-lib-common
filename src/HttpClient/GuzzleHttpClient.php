@@ -19,7 +19,7 @@
 namespace SURFnet\VPN\Common\HttpClient;
 
 use GuzzleHttp\Client;
-use GuzzleHttp\Exception\ClientException;
+use GuzzleHttp\Exception\BadResponseException;
 
 class GuzzleHttpClient implements HttpClientInterface
 {
@@ -53,8 +53,8 @@ class GuzzleHttpClient implements HttpClientInterface
             );
 
             return [$response->getStatusCode(), $response->json()];
-        } catch (ClientException $e) {
-            // 4xx response
+        } catch (BadResponseException $e) {
+            // 4xx/5xx response
             return [$e->getResponse()->getStatusCode(), $e->getResponse()->json()];
         }
     }
@@ -73,8 +73,8 @@ class GuzzleHttpClient implements HttpClientInterface
             );
 
             return [$response->getStatusCode(), $response->json()];
-        } catch (ClientException $e) {
-            // 4xx response
+        } catch (BadResponseException $e) {
+            // 4xx/5xx response
             return [$e->getResponse()->getStatusCode(), $e->getResponse()->json()];
         }
     }
