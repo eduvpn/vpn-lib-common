@@ -79,9 +79,7 @@ class TwoFactorModuleTest extends PHPUnit_Framework_TestCase
             $tpl
         );
         $service->addBeforeHook('auth', new NullAuthenticationHook('bar'));
-
         $service->addModule($twoFactorModule);
-
         $request = new TestRequest(
             [
                 'REQUEST_METHOD' => 'POST',

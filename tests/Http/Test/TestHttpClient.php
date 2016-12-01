@@ -27,9 +27,9 @@ class TestHttpClient implements HttpClientInterface
     {
         switch ($requestUri) {
             case 'serverClient/has_totp_secret?user_id=foo':
-                return [200, self::wrap('has_totp_secret', true, true)];
+                return [200, self::wrap('has_totp_secret', true)];
             case 'serverClient/has_totp_secret?user_id=bar':
-                return [200, self::wrap('has_totp_secret', true, false)];
+                return [200, self::wrap('has_totp_secret', false)];
             default:
                 throw new RuntimeException(sprintf('unexpected requestUri "%s"', $requestUri));
         }
@@ -40,21 +40,31 @@ class TestHttpClient implements HttpClientInterface
         switch ($requestUri) {
             case 'serverClient/verify_totp_key':
                 if ('foo' === $postData['user_id']) {
-                    return [200, self::wrap('verify_totp_key', true, true)];
+                    return [200, self::wrap('verify_totp_key', true)];
                 }
 
-                return [200, self::wrap('verify_totp_key', true, false)];
+                return [200, self::wrapError('verify_totp_key', 'invalid OTP key')];
             default:
                 throw new RuntimeException(sprintf('unexpected requestUri "%s"', $requestUri));
         }
     }
 
-    private static function wrap($key, $isOkay, $responseData)
+    private static function wrap($key, $responseData)
     {
         return [
             $key => [
-                'ok' => $isOkay,
+                'ok' => true,
                 'data' => $responseData,
+            ],
+        ];
+    }
+
+    private static function wrapError($key, $errorMessage)
+    {
+        return [
+            $key => [
+                'ok' => false,
+                'error' => $errorMessage,
             ],
         ];
     }

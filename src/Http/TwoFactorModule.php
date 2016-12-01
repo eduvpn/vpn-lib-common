@@ -19,6 +19,7 @@
 namespace SURFnet\VPN\Common\Http;
 
 use SURFnet\VPN\Common\Http\Exception\HttpException;
+use SURFnet\VPN\Common\HttpClient\Exception\ApiException;
 use SURFnet\VPN\Common\HttpClient\ServerClient;
 use SURFnet\VPN\Common\TplInterface;
 
@@ -52,13 +53,8 @@ class TwoFactorModule implements ServiceModuleInterface
 
                 $this->session->delete('_two_factor_verified');
 
-                $otpKey = $request->getPostParameter('otpKey');
+                $otpKey = InputValidation::otpKey($request->getPostParameter('otpKey'));
                 $redirectTo = $request->getPostParameter('_two_factor_auth_redirect_to');
-
-                // validate OTP key
-                if (0 === preg_match('/^[0-9]{6}$/', $otpKey)) {
-                    throw new HttpException('invalid OTP key format', 400);
-                }
 
                 // validate the URL
                 if (false === filter_var($redirectTo, FILTER_VALIDATE_URL, FILTER_FLAG_SCHEME_REQUIRED | FILTER_FLAG_HOST_REQUIRED | FILTER_FLAG_PATH_REQUIRED)) {
@@ -73,25 +69,26 @@ class TwoFactorModule implements ServiceModuleInterface
                     throw new HttpException('redirect_to does not match expected host', 400);
                 }
 
-                if ($this->serverClient->verifyTotpKey($userId, $otpKey)) {
+                try {
+                    $this->serverClient->verifyTotpKey($userId, $otpKey);
                     $this->session->set('_two_factor_verified', $userId);
 
                     return new RedirectResponse($redirectTo, 302);
+                } catch (ApiException $e) {
+                    // unable to validate the OTP
+                    $response = new Response(200, 'text/html');
+                    $response->setBody(
+                        $this->tpl->render(
+                            'twoFactorAuthentication',
+                            [
+                                '_two_factor_auth_invalid_key' => true,
+                                '_two_factor_auth_redirect_to' => $redirectTo,
+                            ]
+                        )
+                    );
+
+                    return $response;
                 }
-
-                // invalid otp
-                $response = new Response(200, 'text/html');
-                $response->setBody(
-                    $this->tpl->render(
-                        'twoFactorAuthentication',
-                        [
-                            '_two_factor_auth_invalid_key' => true,
-                            '_two_factor_auth_redirect_to' => $redirectTo,
-                        ]
-                    )
-                );
-
-                return $response;
             }
         );
     }
