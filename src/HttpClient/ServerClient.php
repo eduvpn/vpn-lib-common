@@ -216,14 +216,14 @@ class ServerClient extends BaseClient
         );
     }
 
-    public function verifyOtp($commonName, $userName, $totpKey)
+    public function verifyOtp($commonName, $otpType, $otpKey)
     {
         return $this->post(
             'verify_otp',
             [
                 'common_name' => $commonName,
-                'user_name' => $userName,
-                'totp_key' => $totpKey,
+                'otp_type' => $otpType,
+                'otp_key' => $otpKey,
             ]
         );
     }
