@@ -20,7 +20,7 @@ namespace SURFnet\VPN\Common\Http;
 
 use InvalidArgumentException;
 
-class ApiResponse extends Response
+class ApiErrorResponse extends Response
 {
     /**
      * @param string $wrapperKey
@@ -28,26 +28,27 @@ class ApiResponse extends Response
      * @param mixed  $responseData
      * @param int    $responseCode
      */
-    public function __construct($wrapperKey, $responseData = null, $responseCode = 200)
+    public function __construct($wrapperKey, $errorMessage, $responseCode = 200)
     {
         if (!is_string($wrapperKey)) {
+            throw new InvalidArgumentException('parameter must be string');
+        }
+        if (!is_string($errorMessage)) {
             throw new InvalidArgumentException('parameter must be string');
         }
         if (!is_int($responseCode)) {
             throw new InvalidArgumentException('parameter must be integer');
         }
 
+        parent::__construct($responseCode, 'application/json');
+
         $responseBody = [
             $wrapperKey => [
-                'ok' => true,
+                'ok' => false,
+                'error' => $errorMessage,
             ],
         ];
 
-        if (!is_null($responseData)) {
-            $responseBody[$wrapperKey]['data'] = $responseData;
-        }
-
-        parent::__construct($responseCode, 'application/json');
         $this->setBody(json_encode($responseBody));
     }
 }
