@@ -162,9 +162,11 @@ class InputValidation
         // try to parse first
         if (false === $unixTime = strtotime($dateTime)) {
             // if that fails, check if it is already unixTime
-            $unixTime = intval($dateTime);
-            if (0 <= $unixTime) {
-                return $unixTime;
+            if (is_numeric($dateTime)) {
+                $unixTime = (int) $dateTime;
+                if (0 <= $unixTime) {
+                    return $unixTime;
+                }
             }
 
             throw new InputValidationException('invalid "date_time"');
