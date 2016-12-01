@@ -40,7 +40,7 @@ class BaseClientTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException SURFnet\VPN\Common\HttpClient\Exception\HttpClientException
+     * @expectedException \SURFnet\VPN\Common\HttpClient\Exception\HttpClientException
      * @expectedExceptionMessage [400] GET "/error": errorValue
      */
     public function testError()
