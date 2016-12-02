@@ -55,7 +55,7 @@ class TwoFactorModuleTest extends PHPUnit_Framework_TestCase
             ],
             [],
             [
-                'otpKey' => '123456',
+                'totpKey' => '123456',
                 '_two_factor_auth_redirect_to' => 'http://vpn.example/account',
             ]
         );
@@ -87,7 +87,7 @@ class TwoFactorModuleTest extends PHPUnit_Framework_TestCase
             ],
             [],
             [
-                'otpKey' => '123456',
+                'totpKey' => '123456',
                 '_two_factor_auth_redirect_to' => 'http://vpn.example/account',
             ]
         );

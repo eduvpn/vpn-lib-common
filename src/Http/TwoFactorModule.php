@@ -53,7 +53,7 @@ class TwoFactorModule implements ServiceModuleInterface
 
                 $this->session->delete('_two_factor_verified');
 
-                $otpKey = InputValidation::otpKey($request->getPostParameter('otpKey'));
+                $totpKey = InputValidation::totpKey($request->getPostParameter('totpKey'));
                 $redirectTo = $request->getPostParameter('_two_factor_auth_redirect_to');
 
                 // validate the URL
@@ -70,7 +70,7 @@ class TwoFactorModule implements ServiceModuleInterface
                 }
 
                 try {
-                    $this->serverClient->verifyTotpKey($userId, $otpKey);
+                    $this->serverClient->verifyTotpKey($userId, $totpKey);
                     $this->session->set('_two_factor_verified', $userId);
 
                     return new RedirectResponse($redirectTo, 302);

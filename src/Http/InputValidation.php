@@ -100,25 +100,25 @@ class InputValidation
     /**
      * @return string
      */
-    public static function otpSecret($otpSecret)
+    public static function totpSecret($totpSecret)
     {
-        if (1 !== preg_match('/^[A-Z0-9]{16}$/', $otpSecret)) {
-            throw new InputValidationException('invalid "otp_secret"');
+        if (1 !== preg_match('/^[A-Z0-9]{16}$/', $totpSecret)) {
+            throw new InputValidationException('invalid "totp_secret"');
         }
 
-        return $otpSecret;
+        return $totpSecret;
     }
 
     /**
      * @return string
      */
-    public static function otpKey($otpKey)
+    public static function totpKey($totpKey)
     {
-        if (1 !== preg_match('/^[0-9]{6}$/', $otpKey)) {
-            throw new InputValidationException('invalid "otp_key"');
+        if (1 !== preg_match('/^[0-9]{6}$/', $totpKey)) {
+            throw new InputValidationException('invalid "totp_key"');
         }
 
-        return $otpKey;
+        return $totpKey;
     }
 
     /**
