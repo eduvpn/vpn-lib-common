@@ -43,7 +43,6 @@ class ProfileConfig extends Config
             'reject4' => false,
             'reject6' => false,
             'processCount' => 4,
-            'aclGroupProvider' => 'StaticProvider',
             'portShare' => true,
             'hideProfile' => false,
         ];
