@@ -25,211 +25,148 @@ class ServerClient extends BaseClient
         parent::__construct($httpClient, $baseUri);
     }
 
-    public function clientConnections()
+    public function getClientConnections()
     {
         return $this->get('client_connections');
     }
 
-    public function log($dateTime, $ipAddress)
+    public function getLog(array $p)
     {
-        return $this->get(
-            'log',
-            [
-                'date_time' => $dateTime,
-                'ip_address' => $ipAddress,
-            ]
-        );
+        return $this->get('log', $p);
     }
 
-    public function stats()
+    public function getStats()
     {
         return $this->get('stats');
     }
 
-    public function addClientCertificate($userId, $displayName)
+    public function postAddClientCertificate(array $p)
     {
-        return $this->post(
-            'add_client_certificate',
-            [
-                'user_id' => $userId,
-                'display_name' => $displayName,
-            ]
-        );
+        return $this->post('add_client_certificate', $p);
     }
 
-    public function addServerCertificate($commonName)
+    public function postAddServerCertificate(array $p)
     {
-        return $this->post(
-            'add_server_certificate',
-            [
-                'common_name' => $commonName,
-            ]
-        );
+        return $this->post('add_server_certificate', $p);
     }
 
-    public function listClientCertificates($userId)
+    public function getClientCertificateList(array $p)
     {
-        return $this->get('list_client_certificates', ['user_id' => $userId]);
+        return $this->get('client_certificate_list', $p);
     }
 
-    public function clientCertificateInfo($commonName)
+    public function getClientCertificateInfo(array $p)
     {
-        return $this->get('client_certificate_info', ['common_name' => $commonName]);
+        return $this->get('client_certificate_info', $p);
     }
 
-    public function enableUser($userId)
+    public function postEnableUser(array $p)
     {
-        return $this->post('enable_user', ['user_id' => $userId]);
+        return $this->post('enable_user', $p);
     }
 
-    public function userList()
+    public function getUserList()
     {
         return $this->get('user_list');
     }
 
-    public function disableUser($userId)
+    public function postDisableUser(array $p)
     {
-        return $this->post('disable_user', ['user_id' => $userId]);
+        return $this->post('disable_user', $p);
     }
 
-    public function isDisabledUser($userId)
+    public function getIsDisabledUser(array $p)
     {
-        return $this->get('is_disabled_user', ['user_id' => $userId]);
+        return $this->get('is_disabled_user', $p);
     }
 
-    public function disableClientCertificate($commonName)
+    public function postDisableClientCertificate(array $p)
     {
-        return $this->post('disable_client_certificate', ['common_name' => $commonName]);
+        return $this->post('disable_client_certificate', $p);
     }
 
-    public function enableClientCertificate($commonName)
+    public function postEnableClientCertificate(array $p)
     {
-        return $this->post('enable_client_certificate', ['common_name' => $commonName]);
+        return $this->post('enable_client_certificate', $p);
     }
 
-    public function killClient($commonName)
+    public function postKillClient(array $p)
     {
-        return $this->post('kill_client', ['common_name' => $commonName]);
+        return $this->post('kill_client', $p);
     }
 
-    public function instanceNumber()
+    public function getInstanceNumber()
     {
         return $this->get('instance_number');
     }
 
-    public function profileList()
+    public function getProfileList()
     {
         return $this->get('profile_list');
     }
 
-    public function hasTotpSecret($userId)
+    public function getHasTotpSecret(array $p)
     {
-        return $this->get('has_totp_secret', ['user_id' => $userId]);
+        return $this->get('has_totp_secret', $p);
     }
 
-    public function hasVootToken($userId)
+    public function getHasVootToken(array $p)
     {
-        return $this->get('has_voot_token', ['user_id' => $userId]);
+        return $this->get('has_voot_token', $p);
     }
 
-    public function userGroups($userId)
+    public function getUserGroups(array $p)
     {
-        return $this->get('user_groups', ['user_id' => $userId]);
+        return $this->get('user_groups', $p);
     }
 
-    public function motd()
+    public function getMotd()
     {
         return $this->get('motd');
     }
 
-    public function setMotd($motdMessage)
+    public function postSetMotd(array $p)
     {
-        return $this->post('set_motd', ['motd_message' => $motdMessage]);
+        return $this->post('set_motd', $p);
     }
 
-    public function deleteMotd()
+    public function postDeleteMotd()
     {
         return $this->post('delete_motd', []);
     }
 
-    public function setVootToken($userId, $vootToken)
+    public function postSetVootToken(array $p)
     {
-        return $this->post(
-            'set_voot_token',
-            [
-                'user_id' => $userId,
-                'voot_token' => $vootToken,
-            ]
-        );
+        return $this->post('set_voot_token', $p);
     }
 
-    public function deleteTotpSecret($userId)
+    public function postDeleteTotpSecret(array $p)
     {
-        return $this->post('delete_totp_secret', ['user_id' => $userId]);
+        return $this->post('delete_totp_secret', $p);
     }
 
-    public function setTotpSecret($userId, $totpSecret, $totpKey)
+    public function postSetTotpSecret(array $p)
     {
-        return $this->post(
-            'set_totp_secret',
-            [
-                'user_id' => $userId,
-                'totp_secret' => $totpSecret,
-                'totp_key' => $totpKey,
-            ]
-        );
+        return $this->post('set_totp_secret', $p);
     }
 
-    public function verifyTotpKey($userId, $totpKey)
+    public function postVerifyTotpKey(array $p)
     {
-        return $this->post(
-            'verify_totp_key',
-            [
-                'user_id' => $userId,
-                'totp_key' => $totpKey,
-            ]
-        );
+        return $this->post('verify_totp_key', $p);
     }
 
-    public function connect($profileId, $commonName, $ip4, $ip6, $connectedAt)
+    public function postConnect(array $p)
     {
-        return $this->post(
-            'connect',
-            [
-                'profile_id' => $profileId,
-                'common_name' => $commonName,
-                'ip4' => $ip4,
-                'ip6' => $ip6,
-                'connected_at' => $connectedAt,
-            ]
-        );
+        return $this->post('connect', $p);
     }
 
-    public function disconnect($profileId, $commonName, $ip4, $ip6, $connectedAt, $disconnectedAt, $bytesTransferred)
+    public function postDisconnect(array $p)
     {
-        return $this->post(
-            'disconnect',
-            [
-                'profile_id' => $profileId,
-                'common_name' => $commonName,
-                'ip4' => $ip4,
-                'ip6' => $ip6,
-                'connected_at' => $connectedAt,
-                'disconnected_at' => $disconnectedAt,
-                'bytes_transferred' => $bytesTransferred,
-            ]
-        );
+        return $this->post('disconnect', $p);
     }
 
-    public function verifyOtp($commonName, $otpType, $totpKey)
+    public function postVerifyOtp(array $p)
     {
-        return $this->post(
-            'verify_otp',
-            [
-                'common_name' => $commonName,
-                'otp_type' => $otpType,
-                'totp_key' => $totpKey,
-            ]
-        );
+        return $this->post('verify_otp', $p);
     }
 }
