@@ -85,6 +85,11 @@ class ServerClient extends BaseClient
         return $this->post('disable_client_certificate', $p);
     }
 
+    public function postDeleteClientCertificate(array $p)
+    {
+        return $this->post('delete_client_certificate', $p);
+    }
+
     public function postEnableClientCertificate(array $p)
     {
         return $this->post('enable_client_certificate', $p);
