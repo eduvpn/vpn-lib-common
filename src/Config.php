@@ -86,6 +86,23 @@ class Config
         return $this->getValue(func_get_args(), null, true);
     }
 
+    public static function fromFile($configFile)
+    {
+        $fileContent = FileIO::readFile($configFile);
+        $parsedConfig = Yaml::parse($fileContent);
+        if (!is_array($parsedConfig)) {
+            throw new RuntimeException(sprintf('invalid configuration file format in "%s"', $configFile));
+        }
+
+        return new static($parsedConfig);
+    }
+
+    public static function toFile($configFile, array $configData, $mode = 0600)
+    {
+        $yamlData = Yaml::dump($configData, 3);
+        FileIO::writeFile($configFile, $yamlData, $mode);
+    }
+
     /**
      * Get a configuration value.
      */
@@ -122,22 +139,5 @@ class Config
         }
 
         return $configPointer;
-    }
-
-    public static function fromFile($configFile)
-    {
-        $fileContent = FileIO::readFile($configFile);
-        $parsedConfig = Yaml::parse($fileContent);
-        if (!is_array($parsedConfig)) {
-            throw new RuntimeException(sprintf('invalid configuration file format in "%s"', $configFile));
-        }
-
-        return new static($parsedConfig);
-    }
-
-    public static function toFile($configFile, array $configData, $mode = 0600)
-    {
-        $yamlData = Yaml::dump($configData, 3);
-        FileIO::writeFile($configFile, $yamlData, $mode);
     }
 }

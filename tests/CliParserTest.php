@@ -36,7 +36,7 @@ class CliParserTest extends PHPUnit_Framework_TestCase
 
         $config = $p->parse(['name_of_program', '--foo', 'foo', '--baz', 'baz']);
         $this->assertSame(file_get_contents(sprintf('%s/data/help.txt', __DIR__)), $p->help());
-        $this->assertSame('foo',  $config->v('foo'));
+        $this->assertSame('foo', $config->v('foo'));
     }
 
     public function testTwoRequiredArgumentsWithValues()

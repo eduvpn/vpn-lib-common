@@ -45,14 +45,6 @@ class Session implements SessionInterface
         }
     }
 
-    private function setCanary($serverName, $requestRoot)
-    {
-        session_regenerate_id(true);
-        $_SESSION['canary'] = time();
-        $_SESSION['serverName'] = $serverName;
-        $_SESSION['requestRoot'] = $requestRoot;
-    }
-
     public function set($key, $value)
     {
         $_SESSION[$key] = $value;
@@ -82,5 +74,13 @@ class Session implements SessionInterface
     public function destroy()
     {
         session_destroy();
+    }
+
+    private function setCanary($serverName, $requestRoot)
+    {
+        session_regenerate_id(true);
+        $_SESSION['canary'] = time();
+        $_SESSION['serverName'] = $serverName;
+        $_SESSION['requestRoot'] = $requestRoot;
     }
 }

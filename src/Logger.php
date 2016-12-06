@@ -31,6 +31,13 @@ class Logger extends AbstractLogger
         }
     }
 
+    public function __destruct()
+    {
+        if (false === closelog()) {
+            throw new RuntimeException('unable to close syslog');
+        }
+    }
+
     /**
      * Logs with an arbitrary level.
      *
@@ -70,13 +77,6 @@ class Logger extends AbstractLogger
                 return LOG_DEBUG;
             default:
                 throw new RuntimeException('unknown log level');
-        }
-    }
-
-    public function __destruct()
-    {
-        if (false === closelog()) {
-            throw new RuntimeException('unable to close syslog');
         }
     }
 }
