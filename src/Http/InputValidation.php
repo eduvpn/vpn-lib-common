@@ -136,13 +136,13 @@ class InputValidation
     /**
      * @return string
      */
-    public static function userName($userName)
+    public static function userId($userId)
     {
-        if (1 !== preg_match('/^[a-zA-Z0-9-.@]+$/', $userName)) {
-            throw new InputValidationException('invalid "user_name"');
+        if (1 !== preg_match('/^[a-zA-Z0-9-.@]+$/', $userId)) {
+            throw new InputValidationException('invalid "user_id"');
         }
 
-        return $userName;
+        return $userId;
     }
 
     /**
