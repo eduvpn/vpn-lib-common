@@ -266,7 +266,7 @@ class InputValidation
      */
     public static function otpType($otpType)
     {
-        if ('totp' !== $otpType) {
+        if ('totp' !== $otpType && 'yubi' !== $otpType) {
             throw new InputValidationException('invalid "otp_type"');
         }
 
