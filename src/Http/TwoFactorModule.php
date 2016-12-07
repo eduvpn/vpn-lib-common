@@ -82,6 +82,7 @@ class TwoFactorModule implements ServiceModuleInterface
                             'twoFactorAuthentication',
                             [
                                 '_two_factor_auth_invalid_key' => true,
+                                '_two_factor_auth_error_msg' => $e->getMessage(),
                                 '_two_factor_auth_redirect_to' => $redirectTo,
                             ]
                         )
