@@ -272,4 +272,28 @@ class InputValidation
 
         return $otpType;
     }
+
+    /**
+     * @return int
+     */
+    public static function messageId($messageId)
+    {
+        if (!is_numeric($messageId) || 0 >= $messageId) {
+            throw new InputValidationException('invalid "message_id"');
+        }
+
+        return (int) $messageId;
+    }
+
+    /**
+     * @return string
+     */
+    public static function messageType($messageType)
+    {
+        if ('motd' !== $messageType && 'notification' !== $messageType && 'maintenance' !== $messageType) {
+            throw new InputValidationException('invalid "message_type"');
+        }
+
+        return $messageType;
+    }
 }
