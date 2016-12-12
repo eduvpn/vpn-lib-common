@@ -125,19 +125,19 @@ class ServerClient extends BaseClient
         return $this->get('user_groups', $p);
     }
 
-    public function getMotd()
+    public function getSystemMessages($messageType)
     {
-        return $this->get('motd');
+        return $this->get('system_messages', ['message_type' => $messageType]);
     }
 
-    public function postSetMotd(array $p)
+    public function postAddSystemMessage($messageType, $messageBody)
     {
-        return $this->post('set_motd', $p);
+        return $this->post('add_system_message', ['message_type' => $messageType, 'message_body' => $messageBody]);
     }
 
-    public function postDeleteMotd()
+    public function postDeleteSystemMessage($messageId)
     {
-        return $this->post('delete_motd', []);
+        return $this->post('delete_system_message', ['message_id' => $messageId]);
     }
 
     public function postSetVootToken(array $p)
