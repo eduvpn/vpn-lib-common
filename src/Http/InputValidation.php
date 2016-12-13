@@ -146,15 +146,6 @@ class InputValidation
     }
 
     /**
-     * @return string
-     */
-    public static function motdMessage($motdMessage)
-    {
-        // we accept everything...
-        return $motdMessage;
-    }
-
-    /**
      * @return int
      */
     public static function dateTime($dateTime)

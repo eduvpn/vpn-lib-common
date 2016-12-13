@@ -140,6 +140,11 @@ class ServerClient extends BaseClient
         return $this->post('delete_system_message', ['message_id' => $messageId]);
     }
 
+    public function getUserMessages($userId)
+    {
+        return $this->get('user_messages', ['user_id' => $userId]);
+    }
+
     public function postSetVootToken(array $p)
     {
         return $this->post('set_voot_token', $p);
