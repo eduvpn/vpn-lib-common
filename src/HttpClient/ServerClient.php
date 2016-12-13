@@ -125,24 +125,24 @@ class ServerClient extends BaseClient
         return $this->get('user_groups', $p);
     }
 
-    public function getSystemMessages($messageType)
+    public function getSystemMessages(array $p)
     {
-        return $this->get('system_messages', ['message_type' => $messageType]);
+        return $this->get('system_messages', $p);
     }
 
-    public function postAddSystemMessage($messageType, $messageBody)
+    public function postAddSystemMessage(array $p)
     {
-        return $this->post('add_system_message', ['message_type' => $messageType, 'message_body' => $messageBody]);
+        return $this->post('add_system_message', $p);
     }
 
-    public function postDeleteSystemMessage($messageId)
+    public function postDeleteSystemMessage(array $p)
     {
-        return $this->post('delete_system_message', ['message_id' => $messageId]);
+        return $this->post('delete_system_message', $p);
     }
 
-    public function getUserMessages($userId)
+    public function getUserMessages(array $p)
     {
-        return $this->get('user_messages', ['user_id' => $userId]);
+        return $this->get('user_messages', $p);
     }
 
     public function postSetVootToken(array $p)
