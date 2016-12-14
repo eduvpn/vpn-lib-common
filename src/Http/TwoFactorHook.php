@@ -69,7 +69,7 @@ class TwoFactorHook implements BeforeHookInterface
 
         // check if the user is enrolled for 2FA, if not we are fine, for this
         // session we assume we are verified!
-        if (!$this->serverClient->getHasTotpSecret(['user_id' => $userId])) {
+        if (!$this->serverClient->get('has_totp_secret', ['user_id' => $userId])) {
             $this->session->set('_two_factor_verified', $userId);
 
             return false;

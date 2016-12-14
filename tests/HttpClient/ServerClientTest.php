@@ -23,20 +23,20 @@ require_once sprintf('%s/Test/TestHttpClient.php', __DIR__);
 use PHPUnit_Framework_TestCase;
 use SURFnet\VPN\Common\HttpClient\Test\TestHttpClient;
 
-class BaseClientTest extends PHPUnit_Framework_TestCase
+class ServerClientTest extends PHPUnit_Framework_TestCase
 {
     public function testGet()
     {
         $httpClient = new TestHttpClient();
-        $baseClient = new BaseClient($httpClient, 'baseClient');
-        $this->assertSame(true, $baseClient->get('foo'));
+        $serverClient = new ServerClient($httpClient, 'serverClient');
+        $this->assertSame(true, $serverClient->get('foo'));
     }
 
     public function testQueryParameter()
     {
         $httpClient = new TestHttpClient();
-        $baseClient = new BaseClient($httpClient, 'baseClient');
-        $this->assertSame(true, $baseClient->get('foo', ['foo' => 'bar']));
+        $serverClient = new ServerClient($httpClient, 'serverClient');
+        $this->assertSame(true, $serverClient->get('foo', ['foo' => 'bar']));
     }
 
     /**
@@ -46,14 +46,14 @@ class BaseClientTest extends PHPUnit_Framework_TestCase
     public function testError()
     {
         $httpClient = new TestHttpClient();
-        $baseClient = new BaseClient($httpClient, 'baseClient');
-        $baseClient->get('error');
+        $serverClient = new ServerClient($httpClient, 'serverClient');
+        $serverClient->get('error');
     }
 
     public function testPost()
     {
         $httpClient = new TestHttpClient();
-        $baseClient = new BaseClient($httpClient, 'baseClient');
-        $this->assertSame(true, $baseClient->post('foo', ['foo' => 'bar']));
+        $serverClient = new ServerClient($httpClient, 'serverClient');
+        $this->assertSame(true, $serverClient->post('foo', ['foo' => 'bar']));
     }
 }

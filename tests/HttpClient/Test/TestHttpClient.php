@@ -26,11 +26,11 @@ class TestHttpClient implements HttpClientInterface
     public function get($requestUri, array $getData = [], array $requestHeaders = [])
     {
         switch ($requestUri) {
-            case 'baseClient/foo':
+            case 'serverClient/foo':
                 return [200, self::wrap('foo', true)];
-            case 'baseClient/foo?foo=bar':
+            case 'serverClient/foo?foo=bar':
                 return [200, self::wrap('foo', true)];
-            case 'baseClient/error':
+            case 'serverClient/error':
                 return [400, ['error' => 'errorValue']];
 
             default:
@@ -41,7 +41,7 @@ class TestHttpClient implements HttpClientInterface
     public function post($requestUri, array $postData, array $requestHeaders = [])
     {
         switch ($requestUri) {
-            case 'baseClient/foo':
+            case 'serverClient/foo':
                 return [200, self::wrap('foo', true)];
             default:
                 throw new RuntimeException(sprintf('unexpected requestUri "%s"', $requestUri));

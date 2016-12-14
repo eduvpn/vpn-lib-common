@@ -18,165 +18,101 @@
 
 namespace SURFnet\VPN\Common\HttpClient;
 
-class ServerClient extends BaseClient
+use SURFnet\VPN\Common\HttpClient\Exception\ApiException;
+use SURFnet\VPN\Common\HttpClient\Exception\HttpClientException;
+
+class ServerClient
 {
+    /** @var HttpClientInterface */
+    private $httpClient;
+
+    /** @var string */
+    private $baseUri;
+
     public function __construct(HttpClientInterface $httpClient, $baseUri)
     {
-        parent::__construct($httpClient, $baseUri);
+        $this->httpClient = $httpClient;
+        $this->baseUri = $baseUri;
     }
 
-    public function getClientConnections()
+    public function get($requestPath, array $getData = [])
     {
-        return $this->get('client_connections');
+        $requestUri = sprintf('%s/%s', $this->baseUri, $requestPath);
+        if (0 !== count($getData)) {
+            $requestUri = sprintf('%s?%s', $requestUri, http_build_query($getData));
+        }
+
+        return self::responseHandler(
+            'GET',
+            $requestPath,
+            $this->httpClient->get($requestUri)
+        );
     }
 
-    public function getLog(array $p)
+    public function post($requestPath, array $postData)
     {
-        return $this->get('log', $p);
+        $requestUri = sprintf('%s/%s', $this->baseUri, $requestPath);
+
+        return self::responseHandler(
+            'POST',
+            $requestPath,
+            $this->httpClient->post($requestUri, $postData)
+        );
     }
 
-    public function getStats()
+    private static function responseHandler($requestMethod, $requestPath, array $clientResponse)
     {
-        return $this->get('stats');
+        list($statusCode, $responseData) = $clientResponse;
+        self::validateClientResponse($requestMethod, $requestPath, $statusCode, $responseData);
+
+        if (400 <= $statusCode) {
+            // either we sent an incorrect request, or there is a server error
+            throw new HttpClientException(sprintf('[%d] %s "/%s": %s', $statusCode, $requestMethod, $requestPath, $responseData['error']));
+        }
+
+        // the request was correct, and there was not a server error
+        if ($responseData[$requestPath]['ok']) {
+            // our request was handled correctly
+            if (array_key_exists('data', $responseData[$requestPath])) {
+                return $responseData[$requestPath]['data'];
+            }
+
+            return true;
+        }
+
+        // our request was not handled correctly, something went wrong...
+        throw new ApiException($responseData[$requestPath]['error']);
     }
 
-    public function postAddClientCertificate(array $p)
+    private static function validateClientResponse($requestMethod, $requestPath, $statusCode, $responseData)
     {
-        return $this->post('add_client_certificate', $p);
-    }
+        // responseData MUST be array
+        if (!is_array($responseData)) {
+            throw new HttpClientException(sprintf('[%d] %s "/%s": responseData MUST be array', $statusCode, $requestMethod, $requestPath));
+        }
 
-    public function postAddServerCertificate(array $p)
-    {
-        return $this->post('add_server_certificate', $p);
-    }
+        if (400 <= $statusCode) {
+            // if status code is 4xx or 5xx it MUST have an 'error' field
+            if (!array_key_exists('error', $responseData)) {
+                throw new HttpClientException(sprintf('[%d] %s "/%s": responseData MUST contain "error" field', $statusCode, $requestMethod, $requestPath));
+            }
 
-    public function getClientCertificateList(array $p)
-    {
-        return $this->get('client_certificate_list', $p);
-    }
+            return;
+        }
 
-    public function getClientCertificateInfo(array $p)
-    {
-        return $this->get('client_certificate_info', $p);
-    }
+        if (!array_key_exists($requestPath, $responseData)) {
+            throw new HttpClientException(sprintf('[%d] %s "/%s": responseData MUST contain "%s" field', $statusCode, $requestMethod, $requestPath, $requestPath));
+        }
 
-    public function postEnableUser(array $p)
-    {
-        return $this->post('enable_user', $p);
-    }
+        if (!array_key_exists('ok', $responseData[$requestPath])) {
+            throw new HttpClientException(sprintf('[%d] %s "/%s": responseData MUST contain "%s/ok" field', $statusCode, $requestMethod, $requestPath, $requestPath));
+        }
 
-    public function getUserList()
-    {
-        return $this->get('user_list');
-    }
-
-    public function postDisableUser(array $p)
-    {
-        return $this->post('disable_user', $p);
-    }
-
-    public function getIsDisabledUser(array $p)
-    {
-        return $this->get('is_disabled_user', $p);
-    }
-
-    public function postDisableClientCertificate(array $p)
-    {
-        return $this->post('disable_client_certificate', $p);
-    }
-
-    public function postDeleteClientCertificate(array $p)
-    {
-        return $this->post('delete_client_certificate', $p);
-    }
-
-    public function postEnableClientCertificate(array $p)
-    {
-        return $this->post('enable_client_certificate', $p);
-    }
-
-    public function postKillClient(array $p)
-    {
-        return $this->post('kill_client', $p);
-    }
-
-    public function getInstanceNumber()
-    {
-        return $this->get('instance_number');
-    }
-
-    public function getProfileList()
-    {
-        return $this->get('profile_list');
-    }
-
-    public function getHasTotpSecret(array $p)
-    {
-        return $this->get('has_totp_secret', $p);
-    }
-
-    public function getHasVootToken(array $p)
-    {
-        return $this->get('has_voot_token', $p);
-    }
-
-    public function getUserGroups(array $p)
-    {
-        return $this->get('user_groups', $p);
-    }
-
-    public function getSystemMessages(array $p)
-    {
-        return $this->get('system_messages', $p);
-    }
-
-    public function postAddSystemMessage(array $p)
-    {
-        return $this->post('add_system_message', $p);
-    }
-
-    public function postDeleteSystemMessage(array $p)
-    {
-        return $this->post('delete_system_message', $p);
-    }
-
-    public function getUserMessages(array $p)
-    {
-        return $this->get('user_messages', $p);
-    }
-
-    public function postSetVootToken(array $p)
-    {
-        return $this->post('set_voot_token', $p);
-    }
-
-    public function postDeleteTotpSecret(array $p)
-    {
-        return $this->post('delete_totp_secret', $p);
-    }
-
-    public function postSetTotpSecret(array $p)
-    {
-        return $this->post('set_totp_secret', $p);
-    }
-
-    public function postVerifyTotpKey(array $p)
-    {
-        return $this->post('verify_totp_key', $p);
-    }
-
-    public function postConnect(array $p)
-    {
-        return $this->post('connect', $p);
-    }
-
-    public function postDisconnect(array $p)
-    {
-        return $this->post('disconnect', $p);
-    }
-
-    public function postVerifyOtp(array $p)
-    {
-        return $this->post('verify_otp', $p);
+        if (!$responseData[$requestPath]['ok']) {
+            // not OK response, MUST contain error field
+            if (!array_key_exists('error', $responseData[$requestPath])) {
+                throw new HttpClientException(sprintf('[%d] %s "/%s": responseData MUST contain "%s/error" field', $statusCode, $requestMethod, $requestPath, $requestPath));
+            }
+        }
     }
 }

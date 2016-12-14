@@ -70,7 +70,7 @@ class TwoFactorModule implements ServiceModuleInterface
                 }
 
                 try {
-                    $this->serverClient->postVerifyTotpKey(['user_id' => $userId, 'totp_key' => $totpKey]);
+                    $this->serverClient->post('verify_totp_key', ['user_id' => $userId, 'totp_key' => $totpKey]);
                     $this->session->set('_two_factor_verified', $userId);
 
                     return new RedirectResponse($redirectTo, 302);
