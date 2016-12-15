@@ -31,7 +31,7 @@ class TestRequest extends Request
                 'REQUEST_SCHEME' => 'http',
                 'REQUEST_METHOD' => 'GET',
                 'REQUEST_URI' => '/',
-                'PATH_INFO' => '/',
+                'SCRIPT_NAME' => '/index.php',
             ],
             $serverData
         );

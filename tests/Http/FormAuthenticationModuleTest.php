@@ -48,7 +48,7 @@ class FormAuthenticationModuleTest extends PHPUnit_Framework_TestCase
             [
                 'HTTP_REFERER' => 'http://vpn.example/account',
                 'REQUEST_METHOD' => 'POST',
-                'PATH_INFO' => '/_form/auth/verify',
+                'REQUEST_URI' => '/_form/auth/verify',
             ],
             [],
             [
@@ -82,7 +82,7 @@ class FormAuthenticationModuleTest extends PHPUnit_Framework_TestCase
             [
                 'HTTP_REFERER' => 'http://vpn.example/account',
                 'REQUEST_METHOD' => 'POST',
-                'PATH_INFO' => '/_form/auth/verify',
+                'REQUEST_URI' => '/_form/auth/verify',
             ],
             [],
             [

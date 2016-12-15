@@ -31,7 +31,7 @@ class ServiceTest extends PHPUnit_Framework_TestCase
     {
         $request = new TestRequest(
             [
-                'PATH_INFO' => '/foo',
+                'REQUEST_URI' => '/foo',
             ]
         );
 
@@ -55,7 +55,7 @@ class ServiceTest extends PHPUnit_Framework_TestCase
     {
         $request = new TestRequest(
             [
-                'PATH_INFO' => '/bar',
+                'REQUEST_URI' => '/bar',
             ]
         );
 
@@ -77,7 +77,7 @@ class ServiceTest extends PHPUnit_Framework_TestCase
         $request = new TestRequest(
             [
                 'REQUEST_METHOD' => 'DELETE',
-                'PATH_INFO' => '/bar',
+                'REQUEST_URI' => '/bar',
             ]
         );
 
@@ -99,7 +99,7 @@ class ServiceTest extends PHPUnit_Framework_TestCase
     {
         $request = new TestRequest(
             [
-                'PATH_INFO' => '/foo',
+                'REQUEST_URI' => '/foo',
             ]
         );
 
@@ -134,7 +134,7 @@ class ServiceTest extends PHPUnit_Framework_TestCase
     {
         $request = new TestRequest(
             [
-                'PATH_INFO' => '/foo',
+                'REQUEST_URI' => '/foo',
             ]
         );
         $service = new Service();
@@ -185,7 +185,7 @@ class ServiceTest extends PHPUnit_Framework_TestCase
     {
         $request = new TestRequest(
             [
-                'PATH_INFO' => '/bar',
+                'REQUEST_URI' => '/bar',
                 'HTTP_ACCEPT' => 'text/html',
             ]
         );
@@ -203,7 +203,7 @@ class ServiceTest extends PHPUnit_Framework_TestCase
     {
         $request = new TestRequest(
             [
-                'PATH_INFO' => '/bar',
+                'REQUEST_URI' => '/bar',
                 'HTTP_ACCEPT' => 'text/html',
             ]
         );

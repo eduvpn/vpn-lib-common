@@ -51,7 +51,7 @@ class TwoFactorModuleTest extends PHPUnit_Framework_TestCase
         $request = new TestRequest(
             [
                 'REQUEST_METHOD' => 'POST',
-                'PATH_INFO' => '/_two_factor/auth/verify',
+                'REQUEST_URI' => '/_two_factor/auth/verify',
             ],
             [],
             [
@@ -83,7 +83,7 @@ class TwoFactorModuleTest extends PHPUnit_Framework_TestCase
         $request = new TestRequest(
             [
                 'REQUEST_METHOD' => 'POST',
-                'PATH_INFO' => '/_two_factor/auth/verify',
+                'REQUEST_URI' => '/_two_factor/auth/verify',
             ],
             [],
             [

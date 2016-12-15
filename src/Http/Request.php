@@ -38,6 +38,7 @@ class Request
             'SERVER_NAME',
             'SERVER_PORT',
             'REQUEST_URI',
+            'SCRIPT_NAME',
         ];
 
         foreach ($requiredHeaders as $key) {
@@ -91,19 +92,12 @@ class Request
 
     public function getRoot()
     {
-        $requestUri = $this->serverData['REQUEST_URI'];
-        $pathInfo = $this->getPathInfo();
-        // remove QUERY_STRING
-        $hasQueryString = mb_strpos($requestUri, '?');
-        if (false !== $hasQueryString) {
-            $requestUri = mb_substr($requestUri, 0, $hasQueryString);
-        }
-        // remove PATH_INFO
-        if ('/' !== $pathInfo) {
-            $requestUri = mb_substr($requestUri, 0, mb_strlen($requestUri) - mb_strlen($pathInfo) + 1);
+        $rootDir = dirname($this->serverData['SCRIPT_NAME']);
+        if ('/' !== $rootDir) {
+            return sprintf('%s/', $rootDir);
         }
 
-        return $requestUri;
+        return $rootDir;
     }
 
     public function getRootUri()
@@ -132,11 +126,17 @@ class Request
 
     public function getPathInfo()
     {
-        if (!array_key_exists('PATH_INFO', $this->serverData)) {
-            return '/';
+        // remove the query string
+        $requestUri = $this->serverData['REQUEST_URI'];
+        if (false !== $pos = mb_strpos($requestUri, '?')) {
+            $requestUri = mb_substr($requestUri, 0, $pos);
+        }
+        // remove the root
+        if ('/' !== $this->getRoot()) {
+            $requestUri = mb_substr($requestUri, mb_strlen($this->getRoot()));
         }
 
-        return $this->serverData['PATH_INFO'];
+        return $requestUri;
     }
 
     public function getQueryParameter($key, $isRequired = true, $defaultValue = null)
