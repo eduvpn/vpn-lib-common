@@ -66,7 +66,7 @@ class Request
         $serverName = $this->serverData['SERVER_NAME'];
 
         // port
-        $serverPort = $this->serverData['SERVER_PORT'];
+        $serverPort = (int) $this->serverData['SERVER_PORT'];
 
         $usePort = false;
         if ('https' === $requestScheme && 443 !== $serverPort) {
@@ -133,13 +133,13 @@ class Request
         }
 
         // remove script_name (if it is part of request_uri
-        if (0 === strpos($requestUri, $this->serverData['SCRIPT_NAME'])) {
+        if (0 === mb_strpos($requestUri, $this->serverData['SCRIPT_NAME'])) {
             return substr($requestUri, mb_strlen($this->serverData['SCRIPT_NAME']));
         }
 
         // remove the root
         if ('/' !== $this->getRoot()) {
-            return mb_substr($requestUri, mb_strlen($this->getRoot()));
+            return mb_substr($requestUri, mb_strlen($this->getRoot()) - 1);
         }
 
         return $requestUri;

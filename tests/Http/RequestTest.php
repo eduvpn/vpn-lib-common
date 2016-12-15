@@ -281,6 +281,7 @@ class RequestTest extends PHPUnit_Framework_TestCase
             ]
         );
         $this->assertSame('/', $request->getRoot());
+        $this->assertSame('/', $request->getPathInfo());
     }
 
     public function testGetRootPathInfoQueryString()
@@ -295,5 +296,6 @@ class RequestTest extends PHPUnit_Framework_TestCase
             ]
         );
         $this->assertSame('/admin/', $request->getRoot());
+        $this->assertSame('/foo/bar', $request->getPathInfo());
     }
 }
