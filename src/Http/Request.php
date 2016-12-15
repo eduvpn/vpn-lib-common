@@ -131,9 +131,15 @@ class Request
         if (false !== $pos = mb_strpos($requestUri, '?')) {
             $requestUri = mb_substr($requestUri, 0, $pos);
         }
+
+        // remove script_name (if it is part of request_uri
+        if (0 === strpos($requestUri, $this->serverData['SCRIPT_NAME'])) {
+            return substr($requestUri, mb_strlen($this->serverData['SCRIPT_NAME']));
+        }
+
         // remove the root
         if ('/' !== $this->getRoot()) {
-            $requestUri = mb_substr($requestUri, mb_strlen($this->getRoot()));
+            return mb_substr($requestUri, mb_strlen($this->getRoot()));
         }
 
         return $requestUri;

@@ -234,7 +234,6 @@ class RequestTest extends PHPUnit_Framework_TestCase
                 'SERVER_PORT' => 80,
                 'REQUEST_METHOD' => 'GET',
                 'REQUEST_URI' => '/connection',
-                'PATH_INFO' => '/connection',
                 'SCRIPT_NAME' => '/index.php',
             ]
         );
@@ -249,11 +248,25 @@ class RequestTest extends PHPUnit_Framework_TestCase
                 'SERVER_PORT' => 80,
                 'REQUEST_METHOD' => 'GET',
                 'REQUEST_URI' => '/admin/foo/bar',
-                'PATH_INFO' => '/foo/bar',
                 'SCRIPT_NAME' => '/admin/index.php',
             ]
         );
         $this->assertSame('/admin/', $request->getRoot());
+    }
+
+    public function testScriptNameInRequestUri()
+    {
+        $request = new Request(
+            [
+                'SERVER_NAME' => 'vpn.example',
+                'SERVER_PORT' => 80,
+                'REQUEST_METHOD' => 'GET',
+                'REQUEST_URI' => '/admin/index.php/foo/bar',
+                'SCRIPT_NAME' => '/admin/index.php',
+            ]
+        );
+        $this->assertSame('/admin/', $request->getRoot());
+        $this->assertSame('/foo/bar', $request->getPathInfo());
     }
 
     public function testGetRootQueryString()
@@ -278,7 +291,6 @@ class RequestTest extends PHPUnit_Framework_TestCase
                 'SERVER_PORT' => 80,
                 'REQUEST_METHOD' => 'GET',
                 'REQUEST_URI' => '/admin/foo/bar?foo=bar',
-                'PATH_INFO' => '/foo/bar',
                 'SCRIPT_NAME' => '/admin/index.php',
             ]
         );
