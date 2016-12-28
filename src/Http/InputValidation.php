@@ -112,6 +112,30 @@ class InputValidation
     /**
      * @return string
      */
+    public static function yubiId($yubiId)
+    {
+        if (1 !== preg_match('/^[a-z]{12}$/', $yubiId)) {
+            throw new InputValidationException('invalid "yubi_id"');
+        }
+
+        return $yubiId;
+    }
+
+    /**
+     * @return string
+     */
+    public static function yubiOtp($yubiOtp)
+    {
+        if (1 !== preg_match('/^[a-z]{44}$/', $yubiOtp)) {
+            throw new InputValidationException('invalid "yubi_otp"');
+        }
+
+        return $yubiOtp;
+    }
+
+    /**
+     * @return string
+     */
     public static function totpKey($totpKey)
     {
         if (1 !== preg_match('/^[0-9]{6}$/', $totpKey)) {
