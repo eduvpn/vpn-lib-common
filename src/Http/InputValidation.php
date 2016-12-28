@@ -112,18 +112,6 @@ class InputValidation
     /**
      * @return string
      */
-    public static function yubiId($yubiId)
-    {
-        if (1 !== preg_match('/^[a-z]{12}$/', $yubiId)) {
-            throw new InputValidationException('invalid "yubi_id"');
-        }
-
-        return $yubiId;
-    }
-
-    /**
-     * @return string
-     */
     public static function yubiOtp($yubiOtp)
     {
         if (1 !== preg_match('/^[a-z]{44}$/', $yubiOtp)) {
@@ -286,6 +274,18 @@ class InputValidation
         }
 
         return $otpType;
+    }
+
+    /**
+     * @return string
+     */
+    public static function otpValue($otpValue)
+    {
+        if (!is_string($otpValue) || 0 >= strlen($otpValue)) {
+            throw new InputValidationException('invalid "otp_value"');
+        }
+
+        return $otpValue;
     }
 
     /**
