@@ -112,13 +112,13 @@ class InputValidation
     /**
      * @return string
      */
-    public static function yubiOtp($yubiOtp)
+    public static function yubiKeyOtp($yubiKeyOtp)
     {
-        if (1 !== preg_match('/^[a-z]{44}$/', $yubiOtp)) {
-            throw new InputValidationException('invalid "yubi_otp"');
+        if (1 !== preg_match('/^[a-z]{44}$/', $yubiKeyOtp)) {
+            throw new InputValidationException('invalid "yubi_key_otp"');
         }
 
-        return $yubiOtp;
+        return $yubiKeyOtp;
     }
 
     /**
@@ -267,25 +267,25 @@ class InputValidation
     /**
      * @return string
      */
-    public static function otpType($otpType)
+    public static function twoFactorType($twoFactorType)
     {
-        if ('totp' !== $otpType && 'yubi' !== $otpType) {
-            throw new InputValidationException('invalid "otp_type"');
+        if ('totp' !== $twoFactorType && 'yubi' !== $twoFactorType) {
+            throw new InputValidationException('invalid "two_factor_type"');
         }
 
-        return $otpType;
+        return $twoFactorType;
     }
 
     /**
      * @return string
      */
-    public static function otpValue($otpValue)
+    public static function twoFactorValue($twoFactorValue)
     {
-        if (!is_string($otpValue) || 0 >= strlen($otpValue)) {
-            throw new InputValidationException('invalid "otp_value"');
+        if (!is_string($twoFactorValue) || 0 >= strlen($twoFactorValue)) {
+            throw new InputValidationException('invalid "two_factor_value"');
         }
 
-        return $otpValue;
+        return $twoFactorValue;
     }
 
     /**

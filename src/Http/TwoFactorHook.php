@@ -67,21 +67,27 @@ class TwoFactorHook implements BeforeHookInterface
             return false;
         }
 
+        $hasTotpSecret = $this->serverClient->get('has_totp_secret', ['user_id' => $userId]);
+        $hasYubiId = $this->serverClient->get('has_yubi_id', ['user_id' => $userId]);
+
         // check if the user is enrolled for 2FA, if not we are fine, for this
         // session we assume we are verified!
-        if (!$this->serverClient->get('has_totp_secret', ['user_id' => $userId])) {
+        if (!$hasTotpSecret && !$hasYubiId) {
             $this->session->set('_two_factor_verified', $userId);
 
             return false;
         }
 
+        // if not Yubi, then TOTP
+        $templateName = $hasYubiId ? 'twoFactorYubiKeyOtp' : 'twoFactorTotp';
+
         // any other URL, enforce 2FA
         $response = new Response(200, 'text/html');
         $response->setBody(
             $this->tpl->render(
-                'twoFactorAuthentication',
+                $templateName,
                 [
-                    '_two_factor_auth_invalid_key' => false,
+                    '_two_factor_auth_invalid' => false,
                     '_two_factor_auth_redirect_to' => $request->getUri(),
                 ]
             )

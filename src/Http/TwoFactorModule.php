@@ -44,7 +44,7 @@ class TwoFactorModule implements ServiceModuleInterface
     public function init(Service $service)
     {
         $service->post(
-            '/_two_factor/auth/verify',
+            '/_two_factor/auth/verify/totp',
             function (Request $request, array $hookData) {
                 if (!array_key_exists('auth', $hookData)) {
                     throw new HttpException('authentication hook did not run before', 500);
@@ -53,21 +53,9 @@ class TwoFactorModule implements ServiceModuleInterface
 
                 $this->session->delete('_two_factor_verified');
 
-                $totpKey = InputValidation::totpKey($request->getPostParameter('totpKey'));
+                $totpKey = InputValidation::totpKey($request->getPostParameter('_two_factor_auth_totp_key'));
                 $redirectTo = $request->getPostParameter('_two_factor_auth_redirect_to');
-
-                // validate the URL
-                if (false === filter_var($redirectTo, FILTER_VALIDATE_URL, FILTER_FLAG_SCHEME_REQUIRED | FILTER_FLAG_HOST_REQUIRED | FILTER_FLAG_PATH_REQUIRED)) {
-                    throw new HttpException('invalid redirect_to URL', 400);
-                }
-
-                // extract the "host" part of the URL
-                if (false === $redirectToHost = parse_url($redirectTo, PHP_URL_HOST)) {
-                    throw new HttpException('invalid redirect_to URL, unable to extract host', 400);
-                }
-                if ($request->getServerName() !== $redirectToHost) {
-                    throw new HttpException('redirect_to does not match expected host', 400);
-                }
+                self::validateRedirectTo($request, $redirectTo);
 
                 try {
                     $this->serverClient->post('verify_totp_key', ['user_id' => $userId, 'totp_key' => $totpKey]);
@@ -79,9 +67,9 @@ class TwoFactorModule implements ServiceModuleInterface
                     $response = new Response(200, 'text/html');
                     $response->setBody(
                         $this->tpl->render(
-                            'twoFactorAuthentication',
+                            'twoFactorTotp',
                             [
-                                '_two_factor_auth_invalid_key' => true,
+                                '_two_factor_auth_invalid' => true,
                                 '_two_factor_auth_error_msg' => $e->getMessage(),
                                 '_two_factor_auth_redirect_to' => $redirectTo,
                             ]
@@ -92,5 +80,59 @@ class TwoFactorModule implements ServiceModuleInterface
                 }
             }
         );
+
+        $service->post(
+            '/_two_factor/auth/verify/yubi',
+            function (Request $request, array $hookData) {
+                if (!array_key_exists('auth', $hookData)) {
+                    throw new HttpException('authentication hook did not run before', 500);
+                }
+                $userId = $hookData['auth'];
+
+                $this->session->delete('_two_factor_verified');
+
+                $yubiKeyOtp = InputValidation::yubiKeyOtp($request->getPostParameter('_two_factor_auth_yubi_key_otp'));
+                $redirectTo = $request->getPostParameter('_two_factor_auth_redirect_to');
+                self::validateRedirectTo($request, $redirectTo);
+
+                try {
+                    $this->serverClient->post('verify_yubi_key_otp', ['user_id' => $userId, 'yubi_key_otp' => $yubiKeyOtp]);
+                    $this->session->set('_two_factor_verified', $userId);
+
+                    return new RedirectResponse($redirectTo, 302);
+                } catch (ApiException $e) {
+                    // unable to validate the OTP
+                    $response = new Response(200, 'text/html');
+                    $response->setBody(
+                        $this->tpl->render(
+                            'twoFactorYubiKeyOtp',
+                            [
+                                '_two_factor_auth_invalid' => true,
+                                '_two_factor_auth_error_msg' => $e->getMessage(),
+                                '_two_factor_auth_redirect_to' => $redirectTo,
+                            ]
+                        )
+                    );
+
+                    return $response;
+                }
+            }
+        );
+    }
+
+    private static function validateRedirectTo(Request $request, $redirectTo)
+    {
+        // validate the URL
+        if (false === filter_var($redirectTo, FILTER_VALIDATE_URL, FILTER_FLAG_SCHEME_REQUIRED | FILTER_FLAG_HOST_REQUIRED | FILTER_FLAG_PATH_REQUIRED)) {
+            throw new HttpException('invalid redirect_to URL', 400);
+        }
+
+        // extract the "host" part of the URL
+        if (false === $redirectToHost = parse_url($redirectTo, PHP_URL_HOST)) {
+            throw new HttpException('invalid redirect_to URL, unable to extract host', 400);
+        }
+        if ($request->getServerName() !== $redirectToHost) {
+            throw new HttpException('redirect_to does not match expected host', 400);
+        }
     }
 }

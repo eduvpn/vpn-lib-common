@@ -51,7 +51,7 @@ class TwoFactorHookTest extends PHPUnit_Framework_TestCase
         $formAuthentication = new TwoFactorHook($session, $tpl, $serverClient);
         $request = new TestRequest([]);
         $response = $formAuthentication->executeBefore($request, ['auth' => 'foo']);
-        $this->assertSame('{"twoFactorAuthentication":{"_two_factor_auth_invalid_key":false,"_two_factor_auth_redirect_to":"http:\/\/vpn.example\/"}}', $response->getBody());
+        $this->assertSame('{"twoFactorTotp":{"_two_factor_auth_invalid":false,"_two_factor_auth_redirect_to":"http:\/\/vpn.example\/"}}', $response->getBody());
     }
 
     public function testNotAuthenticatedNotEnrolled()

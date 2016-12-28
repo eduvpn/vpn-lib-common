@@ -26,6 +26,10 @@ class TestHttpClient implements HttpClientInterface
     public function get($requestUri, array $getData = [], array $requestHeaders = [])
     {
         switch ($requestUri) {
+            case 'serverClient/has_yubi_id?user_id=foo':
+                return [200, self::wrap('has_yubi_id', false)];
+            case 'serverClient/has_yubi_id?user_id=bar':
+                return [200, self::wrap('has_yubi_id', false)];
             case 'serverClient/has_totp_secret?user_id=foo':
                 return [200, self::wrap('has_totp_secret', true)];
             case 'serverClient/has_totp_secret?user_id=bar':

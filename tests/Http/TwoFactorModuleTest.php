@@ -51,11 +51,11 @@ class TwoFactorModuleTest extends PHPUnit_Framework_TestCase
         $request = new TestRequest(
             [
                 'REQUEST_METHOD' => 'POST',
-                'REQUEST_URI' => '/_two_factor/auth/verify',
+                'REQUEST_URI' => '/_two_factor/auth/verify/totp',
             ],
             [],
             [
-                'totpKey' => '123456',
+                '_two_factor_auth_totp_key' => '123456',
                 '_two_factor_auth_redirect_to' => 'http://vpn.example/account',
             ]
         );
@@ -83,11 +83,11 @@ class TwoFactorModuleTest extends PHPUnit_Framework_TestCase
         $request = new TestRequest(
             [
                 'REQUEST_METHOD' => 'POST',
-                'REQUEST_URI' => '/_two_factor/auth/verify',
+                'REQUEST_URI' => '/_two_factor/auth/verify/totp',
             ],
             [],
             [
-                'totpKey' => '123456',
+                '_two_factor_auth_totp_key' => '123456',
                 '_two_factor_auth_redirect_to' => 'http://vpn.example/account',
             ]
         );
@@ -95,6 +95,6 @@ class TwoFactorModuleTest extends PHPUnit_Framework_TestCase
         $response = $service->run($request);
         $this->assertNull($session->get('_two_factor_verified'));
         $this->assertSame(200, $response->getStatusCode());
-        $this->assertSame('{"twoFactorAuthentication":{"_two_factor_auth_invalid_key":true,"_two_factor_auth_error_msg":"invalid OTP key","_two_factor_auth_redirect_to":"http:\/\/vpn.example\/account"}}', $response->getBody());
+        $this->assertSame('{"twoFactorTotp":{"_two_factor_auth_invalid":true,"_two_factor_auth_error_msg":"invalid OTP key","_two_factor_auth_redirect_to":"http:\/\/vpn.example\/account"}}', $response->getBody());
     }
 }
