@@ -69,7 +69,7 @@ class TwoFactorHook implements BeforeHookInterface
         }
 
         $hasTotpSecret = $this->serverClient->get('has_totp_secret', ['user_id' => $userId]);
-        $hasYubiId = $this->serverClient->get('has_yubi_id', ['user_id' => $userId]);
+        $hasYubiId = $this->serverClient->get('has_yubi_key_id', ['user_id' => $userId]);
 
         // check if the user is enrolled for 2FA, if not we are fine, for this
         // session we assume we are verified!
