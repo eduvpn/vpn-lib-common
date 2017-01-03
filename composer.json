@@ -14,6 +14,7 @@
     "license": "AGPL-3.0",
     "name": "eduvpn/common",
     "require": {
+        "ext-curl": "*",
         "ext-date": "*",
         "ext-filter": "*",
         "ext-hash": "*",
@@ -22,10 +23,9 @@
         "ext-pcre": "*",
         "ext-session": "*",
         "ext-spl": "*",
-        "guzzlehttp/guzzle": "^5.3",
         "php": ">= 5.4.0",
         "psr/log": "^1.0",
-        "symfony/intl": "~2.8",
-        "symfony/polyfill": "^1.2"
+        "symfony/polyfill-php56": "^1.3",
+        "symfony/polyfill-php70": "^1.3"
     }
 }
