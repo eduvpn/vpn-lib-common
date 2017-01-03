@@ -3,7 +3,6 @@
 return [
     'directory_list' => [
         'src',
-        'vendor/symfony/yaml',
         'vendor/psr/log',
         'vendor/guzzlehttp',
     ],
