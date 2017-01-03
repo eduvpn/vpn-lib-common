@@ -83,6 +83,7 @@ class Config
 
     public static function toFile($configFile, array $configData, $mode = 0600)
     {
-        FileIO::writeFile($configFile, $configData, $mode);
+        $fileData = sprintf('<?php return %s;', var_export($configData, true));
+        FileIO::writeFile($configFile, $fileData, $mode);
     }
 }
