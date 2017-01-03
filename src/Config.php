@@ -18,10 +18,7 @@
 
 namespace SURFnet\VPN\Common;
 
-use InvalidArgumentException;
-use RuntimeException;
 use SURFnet\VPN\Common\Exception\ConfigException;
-use Symfony\Component\Yaml\Yaml;
 
 class Config
 {
@@ -38,106 +35,54 @@ class Config
         return [];
     }
 
-    /**
-     * Get value (do not check type).
-     */
-    public function v()
+    public function hasSection($key)
     {
-        return $this->getValue(func_get_args());
+        if (!array_key_exists($key, $this->configData)) {
+            throw new ConfigException(sprintf('section "%s" not available', $key));
+        }
+
+        return is_array($this->configData[$key]);
     }
 
-    /**
-     * Get string.
-     */
-    public function s()
+    public function getSection($key)
     {
-        return $this->getValue(func_get_args(), 'is_string');
+        if (false === $this->hasSection($key)) {
+            throw new ConfigException(sprintf('"%s" is not a section', $key));
+        }
+
+        return new static($this->configData[$key]);
     }
 
-    /**
-     * Get integer.
-     */
-    public function i()
+    public function hasItem($key)
     {
-        return $this->getValue(func_get_args(), 'is_int');
+        return array_key_exists($key, $this->configData);
     }
 
-    /**
-     * Get boolean.
-     */
-    public function b()
+    public function getItem($key)
     {
-        return $this->getValue(func_get_args(), 'is_bool');
-    }
+        if (false === $this->hasItem($key)) {
+            throw new ConfigException(sprintf('item "%s" not available', $key));
+        }
 
-    /**
-     * Get array.
-     */
-    public function a()
-    {
-        return $this->getValue(func_get_args(), 'is_array');
-    }
-
-    /**
-     * Check if a configuration value exists.
-     */
-    public function e()
-    {
-        return $this->getValue(func_get_args(), null, true);
+        return $this->configData[$key];
     }
 
     public static function fromFile($configFile)
     {
-        $fileContent = FileIO::readFile($configFile);
-        $parsedConfig = Yaml::parse($fileContent);
-        if (!is_array($parsedConfig)) {
-            throw new RuntimeException(sprintf('invalid configuration file format in "%s"', $configFile));
+        if (false === @file_exists($configFile)) {
+            throw new ConfigException(sprintf('unable to read "%s"', $configFile));
         }
 
-        return new static($parsedConfig);
+        return new static(require $configFile);
+    }
+
+    public function toArray()
+    {
+        return $this->configData;
     }
 
     public static function toFile($configFile, array $configData, $mode = 0600)
     {
-        $yamlData = Yaml::dump($configData, 3);
-        FileIO::writeFile($configFile, $yamlData, $mode);
-    }
-
-    /**
-     * Get a configuration value.
-     */
-    private function getValue(array $argv, $typeValidator = null, $checkOnly = false)
-    {
-        // if no parameters are requested, return everything
-        if (0 === count($argv)) {
-            return $this->configData;
-        }
-
-        $configPointer = $this->configData;
-        foreach ($argv as $arg) {
-            if (!is_string($arg)) {
-                throw new InvalidArgumentException('requested configuration field must be string');
-            }
-            if (!is_array($configPointer) || !array_key_exists($arg, $configPointer)) {
-                if ($checkOnly) {
-                    return false;
-                }
-
-                throw new ConfigException(sprintf('missing configuration field "%s"', implode(',', $argv)));
-            }
-            $configPointer = $configPointer[$arg];
-        }
-
-        // check if the value is of the expected type, if we only check if it
-        // exists, the typeValidator is 'null' so we do not check the type
-        if (!is_null($typeValidator) && !$typeValidator($configPointer)) {
-            throw new ConfigException(sprintf('the value of configuration field "%s" does not pass validator "%s"', implode(',', $argv), $typeValidator));
-        }
-
-        if ($checkOnly) {
-            return true;
-        }
-
-        return $configPointer;
+        FileIO::writeFile($configFile, $configData, $mode);
     }
 }

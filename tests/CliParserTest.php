@@ -36,7 +36,7 @@ class CliParserTest extends PHPUnit_Framework_TestCase
 
         $config = $p->parse(['name_of_program', '--foo', 'foo', '--baz', 'baz']);
         $this->assertSame(file_get_contents(sprintf('%s/data/help.txt', __DIR__)), $p->help());
-        $this->assertSame('foo', $config->v('foo'));
+        $this->assertSame('foo', $config->getItem('foo'));
     }
 
     public function testTwoRequiredArgumentsWithValues()
@@ -49,8 +49,8 @@ class CliParserTest extends PHPUnit_Framework_TestCase
             ]
         );
         $config = $p->parse(['name_of_program', '--instance', 'vpn.example', '--generate', 'vpn00.example']);
-        $this->assertSame('vpn.example', $config->v('instance'));
-        $this->assertSame('vpn00.example', $config->v('generate'));
+        $this->assertSame('vpn.example', $config->getItem('instance'));
+        $this->assertSame('vpn00.example', $config->getItem('generate'));
     }
 
     public function testRequiredArgument()
@@ -62,7 +62,7 @@ class CliParserTest extends PHPUnit_Framework_TestCase
             ]
         );
         $config = $p->parse(['name_of_program', '--install']);
-        $this->assertSame([], $config->v('install'));
+        $this->assertSame([], $config->getItem('install'));
     }
 
     /**
@@ -108,7 +108,7 @@ class CliParserTest extends PHPUnit_Framework_TestCase
             [
                 'help' => true,
             ],
-            $config->v()
+            $config->toArray()
         );
     }
 }

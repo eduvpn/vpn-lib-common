@@ -32,7 +32,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
                 'foo' => 'bar',
             ]
         );
-        $this->assertSame('bar', $c->v('foo'));
+        $this->assertSame('bar', $c->getItem('foo'));
     }
 
     public function testNestedConfig()
@@ -44,36 +44,36 @@ class ConfigTest extends PHPUnit_Framework_TestCase
                 ],
             ]
         );
-        $this->assertSame('baz', $c->v('foo', 'bar'));
+        $this->assertSame('baz', $c->getSection('foo')->getItem('bar'));
     }
 
     public function testNoParameters()
     {
         $configData = ['foo' => 'bar'];
         $c = new Config($configData);
-        $this->assertSame($configData, $c->v());
+        $this->assertSame($configData, $c->toArray());
     }
 
     public function testExists()
     {
         $c = new Config(['foo' => 'bar']);
-        $this->assertTrue($c->e('foo'));
-        $this->assertFalse($c->e('bar'));
+        $this->assertTrue($c->hasItem('foo'));
+        $this->assertFalse($c->hasItem('bar'));
     }
 
     /**
      * @expectedException \SURFnet\VPN\Common\Exception\ConfigException
-     * @expectedExceptionMessage missing configuration field "foo"
+     * @expectedExceptionMessage item "foo" not available
      */
     public function testMissingConfig()
     {
         $c = new Config([]);
-        $c->v('foo');
+        $c->getItem('foo');
     }
 
     /**
      * @expectedException \SURFnet\VPN\Common\Exception\ConfigException
-     * @expectedExceptionMessage missing configuration field "foo,baz"
+     * @expectedExceptionMessage item "baz" not available
      */
     public function testMissingNestedConfig()
     {
@@ -84,39 +84,19 @@ class ConfigTest extends PHPUnit_Framework_TestCase
                 ],
             ]
         );
-        $c->v('foo', 'baz');
-    }
-
-    /**
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage requested configuration field must be string
-     */
-    public function testNonString()
-    {
-        $c = new Config([]);
-        $c->v(5);
+        $c->getSection('foo')->getItem('baz');
     }
 
     public function testFromFile()
     {
-        $c = Config::fromFile(sprintf('%s/data/config.yml', __DIR__));
-        $this->assertSame('b', $c->v('bar', 'a'));
+        $c = Config::fromFile(sprintf('%s/data/config.php', __DIR__));
+        $this->assertSame('b', $c->getSection('bar')->getItem('a'));
     }
 
     public function testMyConfigDefaultValues()
     {
         $c = new MyConfig(['a' => 'b']);
-        $this->assertSame('bar', $c->v('foo'));
-        $this->assertSame('b', $c->v('a'));
-    }
-
-    /**
-     * @expectedException \SURFnet\VPN\Common\Exception\ConfigException
-     * @expectedExceptionMessage the value of configuration field "a" does not pass validator "is_string"
-     */
-    public function testWrongType()
-    {
-        $c = new MyConfig(['a' => true]);
-        $c->s('a');
+        $this->assertSame('bar', $c->getItem('foo'));
+        $this->assertSame('b', $c->getItem('a'));
     }
 }
