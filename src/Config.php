@@ -25,9 +25,12 @@ class Config
     /** @var array */
     protected $configData;
 
-    public function __construct(array $configData)
+    public function __construct(array $configData, $mergeDefaults = true)
     {
-        $this->configData = array_merge(static::defaultConfig(), $configData);
+        $this->configData = $configData;
+        if ($mergeDefaults) {
+            $this->configData = array_merge(static::defaultConfig(), $configData);
+        }
     }
 
     public static function defaultConfig()
@@ -50,7 +53,7 @@ class Config
             throw new ConfigException(sprintf('"%s" is not a section', $key));
         }
 
-        return new static($this->configData[$key]);
+        return new static($this->configData[$key], false);
     }
 
     public function hasItem($key)
