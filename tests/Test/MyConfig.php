@@ -24,6 +24,10 @@ class MyConfig extends Config
 {
     public static function defaultConfig()
     {
-        return ['foo' => 'bar'];
+        return [
+            'foo' => [
+                'bar' => ['baz'],
+            ],
+        ];
     }
 }

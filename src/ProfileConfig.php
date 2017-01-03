@@ -20,9 +20,9 @@ namespace SURFnet\VPN\Common;
 
 class ProfileConfig extends Config
 {
-    public function __construct(array $configData)
+    public function __construct(array $configData, $mergeDefaults = true)
     {
-        parent::__construct($configData);
+        parent::__construct($configData, $mergeDefaults);
     }
 
     public static function defaultConfig()
