@@ -62,11 +62,14 @@ class CurlHttpClient implements HttpClientInterface
 
     private function exec(array $curlOptions)
     {
+        // reset all cURL options
+        $this->curlReset();
+
         $defaultCurlOptions = [
             CURLOPT_USERPWD => sprintf('%s:%s', $this->authInfo[0], $this->authInfo[1]),
-            CURLOPT_HEADER => 0,
-            CURLOPT_RETURNTRANSFER => 1,
-            CURLOPT_FOLLOWLOCATION => 0,
+            CURLOPT_HEADER => false,
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_FOLLOWLOCATION => false,
             CURLOPT_PROTOCOLS => CURLPROTO_HTTP | CURLPROTO_HTTPS,
         ];
 
@@ -83,5 +86,21 @@ class CurlHttpClient implements HttpClientInterface
             curl_getinfo($this->curlChannel, CURLINFO_HTTP_CODE),
             json_decode($responseData, true),
         ];
+    }
+
+    private function curlReset()
+    {
+        // requires PHP >= 5.5 for curl_reset
+        if (function_exists('curl_reset')) {
+            curl_reset($this->curlChannel);
+
+            return;
+        }
+
+        // reset the request method to GET, that is enough to allow for
+        // multiple requests using the same cURL channel
+        if (false === curl_setopt($this->curlChannel, CURLOPT_HTTPGET, true)) {
+            throw new RuntimeException('unable to set cURL options');
+        }
     }
 }
