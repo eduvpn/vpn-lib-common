@@ -62,23 +62,21 @@ class CurlHttpClient implements HttpClientInterface
 
     private function exec(array $curlOptions)
     {
-        $curlOptions = array_merge(
-            [
-                CURLOPT_USERPWD => sprintf('%s:%s', $this->authInfo[0], $this->authInfo[1]),
-                CURLOPT_HEADER => 0,
-                CURLOPT_RETURNTRANSFER => 1,
-                CURLOPT_FOLLOWLOCATION => 0,
-                CURLOPT_PROTOCOLS => CURLPROTO_HTTP | CURLPROTO_HTTPS,
-            ],
-            $curlOptions
-        );
+        $defaultCurlOptions = [
+            CURLOPT_USERPWD => sprintf('%s:%s', $this->authInfo[0], $this->authInfo[1]),
+            CURLOPT_HEADER => 0,
+            CURLOPT_RETURNTRANSFER => 1,
+            CURLOPT_FOLLOWLOCATION => 0,
+            CURLOPT_PROTOCOLS => CURLPROTO_HTTP | CURLPROTO_HTTPS,
+        ];
 
-        if (false === curl_setopt_array($this->curlChannel, $curlOptions)) {
+        if (false === curl_setopt_array($this->curlChannel, $curlOptions + $defaultCurlOptions)) {
             throw new RuntimeException('unable to set cURL options');
         }
 
         if (false === $responseData = curl_exec($this->curlChannel)) {
-            throw new RuntimeException('failure performing the HTTP request');
+            $curlError = curl_error($this->curlChannel);
+            throw new RuntimeException(sprintf('failure performing the HTTP request: "%s"', $curlError));
         }
 
         return [
