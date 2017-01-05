@@ -95,8 +95,8 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
     public function testMyConfigDefaultValues()
     {
-        $c = new MyConfig(['a' => 'b']);
+        $c = new MyConfig(['a' => ['b' => ['c' => 'd']]]);
         $this->assertSame(['baz'], $c->getSection('foo')->getSection('bar')->toArray());
-        $this->assertSame('b', $c->getItem('a'));
+        $this->assertSame(['b' => ['c' => 'd']], $c->getSection('a')->toArray());
     }
 }

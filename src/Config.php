@@ -25,12 +25,10 @@ class Config
     /** @var array */
     protected $configData;
 
-    public function __construct(array $configData, $mergeDefaults = true)
+    public function __construct(array $configData)
     {
         $this->configData = $configData;
-        if ($mergeDefaults) {
-            $this->configData = array_merge(static::defaultConfig(), $configData);
-        }
+        $this->configData = array_merge(static::defaultConfig(), $configData);
     }
 
     public static function defaultConfig()
@@ -53,7 +51,9 @@ class Config
             throw new ConfigException(sprintf('"%s" is not a section', $key));
         }
 
-        return new static($this->configData[$key], false);
+        // do not return the parent object if we were subclassed, but an actual
+        // "Config" object to avoid copying in the defaults if set
+        return new self($this->configData[$key]);
     }
 
     public function hasItem($key)
