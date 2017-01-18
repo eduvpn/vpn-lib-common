@@ -145,9 +145,19 @@ class Request
         return $requestUri;
     }
 
+    public function getQueryParameters()
+    {
+        return $this->getData;
+    }
+
     public function getQueryParameter($key, $isRequired = true, $defaultValue = null)
     {
         return Utils::getValueFromArray($this->getData, $key, $isRequired, $defaultValue);
+    }
+
+    public function getPostParameters()
+    {
+        return $this->postData;
     }
 
     public function getPostParameter($key, $isRequired = true, $defaultValue = null)
