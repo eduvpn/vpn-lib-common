@@ -40,9 +40,15 @@ class FormAuthenticationHook implements BeforeHookInterface
             return $this->session->get('_form_auth_user');
         }
 
-        // if we actually try to POST to the verify endpoint, let it go...
-        if ('/_form/auth/verify' === $request->getPathInfo() && 'POST' === $request->getRequestMethod()) {
-            return;
+        if('POST' === $request->getRequestMethod()) {
+            // ignore POST to verify endpoint
+            if ('/_form/auth/verify' === $request->getPathInfo()) {
+                return;
+            }
+            // ignore POST to token endpoint
+            if ('/_oauth/token' === $request->getPathInfo()) {
+                return;
+            }
         }
 
         // any other URL, enforce authentication
