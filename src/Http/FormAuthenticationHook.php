@@ -40,7 +40,7 @@ class FormAuthenticationHook implements BeforeHookInterface
             return $this->session->get('_form_auth_user');
         }
 
-        if('POST' === $request->getRequestMethod()) {
+        if ('POST' === $request->getRequestMethod()) {
             // ignore POST to verify endpoint
             if ('/_form/auth/verify' === $request->getPathInfo()) {
                 return;
