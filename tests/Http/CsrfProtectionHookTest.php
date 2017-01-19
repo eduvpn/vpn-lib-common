@@ -23,9 +23,9 @@ require_once sprintf('%s/Test/TestRequest.php', __DIR__);
 use PHPUnit_Framework_TestCase;
 use SURFnet\VPN\Common\Http\Test\TestRequest;
 
-class ReferrerCheckHookTest extends PHPUnit_Framework_TestCase
+class CsrfProtectionHookTest extends PHPUnit_Framework_TestCase
 {
-    public function testGoodPost()
+    public function testGoodPostReferrer()
     {
         $request = new TestRequest(
             [
@@ -35,7 +35,21 @@ class ReferrerCheckHookTest extends PHPUnit_Framework_TestCase
             ]
         );
 
-        $referrerCheckHook = new ReferrerCheckHook();
+        $referrerCheckHook = new CsrfProtectionHook();
+        $this->assertTrue($referrerCheckHook->executeBefore($request, []));
+    }
+
+    public function testGoodPostOrigin()
+    {
+        $request = new TestRequest(
+            [
+                'HTTP_ACCEPT' => 'text/html',
+                'REQUEST_METHOD' => 'POST',
+                'HTTP_ORIGIN' => 'http://vpn.example',
+            ]
+        );
+
+        $referrerCheckHook = new CsrfProtectionHook();
         $this->assertTrue($referrerCheckHook->executeBefore($request, []));
     }
 
@@ -47,13 +61,13 @@ class ReferrerCheckHookTest extends PHPUnit_Framework_TestCase
             ]
         );
 
-        $referrerCheckHook = new ReferrerCheckHook();
-        $this->assertTrue($referrerCheckHook->executeBefore($request, []));
+        $referrerCheckHook = new CsrfProtectionHook();
+        $this->assertFalse($referrerCheckHook->executeBefore($request, []));
     }
 
     /**
      * @expectedException \SURFnet\VPN\Common\Http\Exception\HttpException
-     * @expectedExceptionMessage missing required field "HTTP_REFERER"
+     * @expectedExceptionMessage CSRF protection failed, no HTTP_ORIGIN or HTTP_REFERER
      */
     public function testCheckPostNoReferrer()
     {
@@ -64,13 +78,13 @@ class ReferrerCheckHookTest extends PHPUnit_Framework_TestCase
             ]
         );
 
-        $referrerCheckHook = new ReferrerCheckHook();
+        $referrerCheckHook = new CsrfProtectionHook();
         $referrerCheckHook->executeBefore($request, []);
     }
 
     /**
      * @expectedException \SURFnet\VPN\Common\Http\Exception\HttpException
-     * @expectedExceptionMessage HTTP_REFERER does not match expected host
+     * @expectedExceptionMessage CSRF protection failed: unexpected HTTP_REFERER
      */
     public function testCheckPostWrongReferrer()
     {
@@ -82,7 +96,25 @@ class ReferrerCheckHookTest extends PHPUnit_Framework_TestCase
             ]
         );
 
-        $referrerCheckHook = new ReferrerCheckHook();
+        $referrerCheckHook = new CsrfProtectionHook();
+        $referrerCheckHook->executeBefore($request, []);
+    }
+
+    /**
+     * @expectedException \SURFnet\VPN\Common\Http\Exception\HttpException
+     * @expectedExceptionMessage CSRF protection failed: unexpected HTTP_ORIGIN
+     */
+    public function testCheckPostWrongOrigin()
+    {
+        $request = new TestRequest(
+            [
+            'REQUEST_METHOD' => 'POST',
+            'HTTP_ORIGIN' => 'http://www.attacker.org',
+            'HTTP_ACCEPT' => 'text/html',
+            ]
+        );
+
+        $referrerCheckHook = new CsrfProtectionHook();
         $referrerCheckHook->executeBefore($request, []);
     }
 
@@ -95,7 +127,7 @@ class ReferrerCheckHookTest extends PHPUnit_Framework_TestCase
             ]
         );
 
-        $referrerCheckHook = new ReferrerCheckHook();
+        $referrerCheckHook = new CsrfProtectionHook();
         $referrerCheckHook->executeBefore($request, []);
     }
 }
