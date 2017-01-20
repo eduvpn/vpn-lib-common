@@ -36,10 +36,6 @@ class FormAuthenticationHook implements BeforeHookInterface
 
     public function executeBefore(Request $request, array $hookData)
     {
-        if ($this->session->has('_form_auth_user')) {
-            return $this->session->get('_form_auth_user');
-        }
-
         if ('POST' === $request->getRequestMethod()) {
             // ignore POST to verify endpoint
             if ('/_form/auth/verify' === $request->getPathInfo()) {
@@ -49,6 +45,10 @@ class FormAuthenticationHook implements BeforeHookInterface
             if ('/_oauth/token' === $request->getPathInfo()) {
                 return;
             }
+        }
+
+        if ($this->session->has('_form_auth_user')) {
+            return $this->session->get('_form_auth_user');
         }
 
         // any other URL, enforce authentication

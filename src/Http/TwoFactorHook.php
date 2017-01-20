@@ -42,19 +42,6 @@ class TwoFactorHook implements BeforeHookInterface
 
     public function executeBefore(Request $request, array $hookData)
     {
-        if (!array_key_exists('auth', $hookData)) {
-            throw new HttpException('authentication hook did not run before', 500);
-        }
-        $userId = $hookData['auth'];
-
-        if ($this->session->has('_two_factor_verified')) {
-            if ($userId !== $this->session->get('_two_factor_verified')) {
-                throw new HttpException('two-factor code not bound to authenticated user', 400);
-            }
-
-            return true;
-        }
-
         // some URIs are allowed as they are used for either logging in, or
         // verifying the OTP key
         $allowedUris = [
@@ -67,6 +54,19 @@ class TwoFactorHook implements BeforeHookInterface
 
         if (in_array($request->getPathInfo(), $allowedUris) && 'POST' === $request->getRequestMethod()) {
             return false;
+        }
+
+        if (!array_key_exists('auth', $hookData)) {
+            throw new HttpException('authentication hook did not run before', 500);
+        }
+        $userId = $hookData['auth'];
+
+        if ($this->session->has('_two_factor_verified')) {
+            if ($userId !== $this->session->get('_two_factor_verified')) {
+                throw new HttpException('two-factor code not bound to authenticated user', 400);
+            }
+
+            return true;
         }
 
         $hasTotpSecret = $this->serverClient->get('has_totp_secret', ['user_id' => $userId]);

@@ -22,36 +22,31 @@ use SURFnet\VPN\Common\Http\Exception\HttpException;
 
 class Session implements SessionInterface
 {
+    /** @var string */
+    private $serverName;
+
+    /** @var string */
+    private $requestRoot;
+
+    /** @var bool */
+    private $secureOnly;
+
     public function __construct($serverName, $requestRoot, $secureOnly)
     {
-        session_set_cookie_params(0, $requestRoot, $serverName, $secureOnly, true);
-        session_start();
-
-        // Make sure we have a canary set
-        if (!isset($_SESSION['canary'])) {
-            $this->setCanary($serverName, $requestRoot);
-        }
-        // Regenerate session ID every five minutes:
-        if ($_SESSION['canary'] < time() - 300) {
-            $this->setCanary($serverName, $requestRoot);
-        }
-
-        if ($serverName !== $_SESSION['serverName']) {
-            throw new HttpException('session error (serverName)', 400);
-        }
-
-        if ($requestRoot !== $_SESSION['requestRoot']) {
-            throw new HttpException('session error (requestRoot)', 400);
-        }
+        $this->serverName = $serverName;
+        $this->requestRoot = $requestRoot;
+        $this->secureOnly = $secureOnly;
     }
 
     public function set($key, $value)
     {
+        $this->startSession();
         $_SESSION[$key] = $value;
     }
 
     public function delete($key)
     {
+        $this->startSession();
         if ($this->has($key)) {
             unset($_SESSION[$key]);
         }
@@ -59,21 +54,54 @@ class Session implements SessionInterface
 
     public function has($key)
     {
+        $this->startSession();
+
         return array_key_exists($key, $_SESSION);
     }
 
     public function get($key)
     {
+        $this->startSession();
         if ($this->has($key)) {
             return $_SESSION[$key];
         }
-
-        return;
     }
 
     public function destroy()
     {
+        if ('' !== session_id()) {
+            // session already started
+            return;
+        }
         session_destroy();
+    }
+
+    private function startSession()
+    {
+        if ('' !== session_id()) {
+            // session already started
+            return;
+        }
+
+        session_set_cookie_params(0, $this->requestRoot, $this->serverName, $this->secureOnly, true);
+        session_start();
+
+        // Make sure we have a canary set
+        if (!isset($_SESSION['canary'])) {
+            $this->setCanary($this->serverName, $this->requestRoot);
+        }
+        // Regenerate session ID every five minutes:
+        if ($_SESSION['canary'] < time() - 300) {
+            $this->setCanary($this->serverName, $this->requestRoot);
+        }
+
+        if ($this->serverName !== $_SESSION['serverName']) {
+            throw new HttpException('session error (serverName)', 400);
+        }
+
+        if ($this->requestRoot !== $_SESSION['requestRoot']) {
+            throw new HttpException('session error (requestRoot)', 400);
+        }
     }
 
     private function setCanary($serverName, $requestRoot)
