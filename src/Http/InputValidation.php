@@ -18,6 +18,7 @@
 
 namespace SURFnet\VPN\Common\Http;
 
+use DateTime;
 use SURFnet\VPN\Common\Http\Exception\InputValidationException;
 
 class InputValidation
@@ -158,24 +159,17 @@ class InputValidation
     }
 
     /**
-     * @return int
+     * @param string $dateTime
+     *
+     * @return DateTime
      */
     public static function dateTime($dateTime)
     {
-        // try to parse first
-        if (false === $unixTime = strtotime($dateTime)) {
-            // if that fails, check if it is already unixTime
-            if (is_numeric($dateTime)) {
-                $unixTime = (int) $dateTime;
-                if (0 <= $unixTime) {
-                    return $unixTime;
-                }
-            }
-
+        if (false === $dateTimeObj = DateTime::createFromFormat('Y-m-d H:i:s', $dateTime)) {
             throw new InputValidationException('invalid "date_time"');
         }
 
-        return $unixTime;
+        return $dateTimeObj;
     }
 
     /**
