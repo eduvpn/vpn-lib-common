@@ -23,19 +23,19 @@ class Response
     /** @var int */
     private $statusCode;
 
+    /** @var string */
+    private $contentType;
+
     /** @var array */
-    private $headers;
+    private $headers = [];
 
     /** @var string */
-    private $body;
+    private $body = null;
 
     public function __construct($statusCode = 200, $contentType = 'text/plain')
     {
         $this->statusCode = $statusCode;
-        $this->headers = [
-            'Content-Type' => $contentType,
-        ];
-        $this->body = '';
+        $this->contentType = $contentType;
     }
 
     public function addHeader($key, $value)
@@ -71,7 +71,9 @@ class Response
         foreach ($this->headers as $key => $value) {
             header(sprintf('%s: %s', $key, $value));
         }
-
-        echo $this->body;
+        if (!is_null($this->body)) {
+            header(sprintf('Content-Type: %s', $this->contentType));
+            echo $this->body;
+        }
     }
 }
