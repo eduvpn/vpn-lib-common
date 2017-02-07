@@ -47,8 +47,7 @@ class BasicAuthenticationHook implements BeforeHookInterface
         }
 
         if (array_key_exists($authUser, $this->userPass)) {
-            // time safe string compare, using polyfill on PHP < 5.6
-            if (hash_equals($this->userPass[$authUser], $authPass)) {
+            if (0 === \Sodium\compare($authPass, $this->userPass[$authUser])) {
                 return $authUser;
             }
         }

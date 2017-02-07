@@ -58,7 +58,7 @@ class BasicAuthenticationHookTest extends PHPUnit_Framework_TestCase
         $request = new TestRequest(
             [
                 'PHP_AUTH_USER' => 'foo',
-                'PHP_AUTH_PW' => 'wrong',
+                'PHP_AUTH_PW' => 'baz',
             ]
         );
 

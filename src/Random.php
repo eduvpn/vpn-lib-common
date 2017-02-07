@@ -18,15 +18,10 @@
 
 namespace SURFnet\VPN\Common;
 
-/**
- * Random implementation using `random_bytes`.
- *
- * Uses polyfill on PHP < 7.
- */
 class Random implements RandomInterface
 {
     public function get($len)
     {
-        return bin2hex(random_bytes($len));
+        return bin2hex(\Sodium\randombytes_buf($len));
     }
 }
