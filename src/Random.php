@@ -20,8 +20,10 @@ namespace SURFnet\VPN\Common;
 
 class Random implements RandomInterface
 {
-    public function get($len)
+    public function get($length)
     {
-        return bin2hex(\Sodium\randombytes_buf($len));
+        return \Sodium\bin2hex(
+            \Sodium\randombytes_buf($length)
+        );
     }
 }
