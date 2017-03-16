@@ -29,6 +29,9 @@ class TwigTpl implements TplInterface
     /** @var string */
     private $localeDir;
 
+    /** @var string */
+    private $appName;
+
     /** @var Twig_Environment */
     private $twig;
 
@@ -42,7 +45,7 @@ class TwigTpl implements TplInterface
      *                             paths override the earlier paths
      * @param string $cacheDir     the writable directory to store the cache
      */
-    public function __construct(array $templateDirs, $localeDir, $cacheDir = null)
+    public function __construct(array $templateDirs, $localeDir, $appName, $cacheDir = null)
     {
         $existingTemplateDirs = [];
         foreach ($templateDirs as $templateDir) {
@@ -65,6 +68,7 @@ class TwigTpl implements TplInterface
             $environmentOptions['cache'] = $cacheDir;
         }
         $this->localeDir = $localeDir;
+        $this->appName = $appName;
         $this->twig = new Twig_Environment(
             new Twig_Loader_Filesystem(
                 $existingTemplateDirs
@@ -87,7 +91,7 @@ class TwigTpl implements TplInterface
         );
     }
 
-    public function setI18n($appName, $languageStr, $localeDir)
+    public function setI18n($languageStr, $localeDir)
     {
         putenv(sprintf('LC_ALL=%s', $languageStr));
 
@@ -95,15 +99,15 @@ class TwigTpl implements TplInterface
             throw new RuntimeException(sprintf('unable to set locale "%s"', $languageStr));
         }
 
-        if ($localeDir !== bindtextdomain($appName, $localeDir)) {
+        if ($localeDir !== bindtextdomain($this->appName, $localeDir)) {
             throw new RuntimeException('unable to bind text domain');
         }
 
-        if (!is_string(bind_textdomain_codeset($appName, 'UTF-8'))) {
+        if (!is_string(bind_textdomain_codeset($this->appName, 'UTF-8'))) {
             throw new RuntimeException('unable to bind text domain codeset');
         }
 
-        if ($appName !== textdomain($appName)) {
+        if ($this->appName !== textdomain($this->appName)) {
             throw new RuntimeException('unable to set text domain');
         }
 
@@ -141,7 +145,7 @@ class TwigTpl implements TplInterface
             }
         }
 
-        $this->setI18n('VpnUserPortal', $uiLanguage, $this->localeDir);
+        $this->setI18n($uiLanguage, $this->localeDir);
         $templateVariables = array_merge($this->defaultVariables, $templateVariables);
 
         return $this->twig->render(
