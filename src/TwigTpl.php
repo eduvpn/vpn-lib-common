@@ -126,8 +126,13 @@ class TwigTpl implements TplInterface
      */
     public function render($templateName, array $templateVariables)
     {
-        // get the language
         $uiLanguage = 'en_US';
+        // determine default language
+        if (array_key_exists('supportedLanguages', $this->defaultVariables)) {
+            // take the first language of the supported languages as the default
+            $uiLanguage = array_keys($this->defaultVariables['supportedLanguages'])[0];
+        }
+
         if (array_key_exists('uiLanguage', $_COOKIE)) {
             if (array_key_exists('supportedLanguages', $this->defaultVariables)) {
                 if (array_key_exists($_COOKIE['uiLanguage'], $this->defaultVariables['supportedLanguages'])) {
