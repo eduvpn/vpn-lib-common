@@ -24,8 +24,10 @@
         "ext-pcre": "*",
         "ext-session": "*",
         "ext-spl": "*",
+        "ircmaxell/password-compat": "^1.0",
         "php": ">= 5.4.0",
         "psr/log": "^1.0",
-        "ircmaxell/password-compat": "^1.0"
+        "twig/extensions": "^1",
+        "twig/twig": "^1"
     }
 }
