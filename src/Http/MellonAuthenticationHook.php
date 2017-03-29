@@ -23,13 +23,30 @@ class MellonAuthenticationHook implements BeforeHookInterface
     /** @var string */
     private $userIdAttribute;
 
-    public function __construct($userIdAttribute)
+    /** @var bool */
+    private $addEntityId;
+
+    public function __construct($userIdAttribute, $addEntityId = true)
     {
         $this->userIdAttribute = $userIdAttribute;
+        $this->addEntityId = $addEntityId;
     }
 
     public function executeBefore(Request $request, array $hookData)
     {
+        if ($this->addEntityId) {
+            // add the entity ID to the user ID, this is used when we have
+            // different IdPs that do not guarantee uniqueness among the used
+            // user identifier attribute, e.g. NAME_ID or uid
+            return sprintf(
+                '%s|%s',
+                // strip out all "special" characters from the entityID, just
+                // like mod_auth_mellon does
+                preg_replace('/__*/', '_', preg_replace('/[^A-Za-z.]/', '_', $request->getHeader('MELLON_IDP'))),
+                $request->getHeader($this->userIdAttribute)
+            );
+        }
+
         return $request->getHeader($this->userIdAttribute);
     }
 }
