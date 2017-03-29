@@ -151,7 +151,7 @@ class InputValidation
      */
     public static function userId($userId)
     {
-        if (1 !== preg_match('/^[a-zA-Z0-9-_.@]+$/', $userId)) {
+        if (1 !== preg_match('/^[a-zA-Z0-9-_.|@]+$/', $userId)) {
             throw new InputValidationException('invalid "user_id"');
         }
 
