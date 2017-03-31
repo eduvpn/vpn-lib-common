@@ -188,18 +188,6 @@ class InputValidation
     /**
      * @return string
      */
-    public static function vootToken($vootToken)
-    {
-        if (1 !== preg_match('/^[a-zA-Z0-9-]+$/', $vootToken)) {
-            throw new InputValidationException('invalid "voot_token"');
-        }
-
-        return $vootToken;
-    }
-
-    /**
-     * @return string
-     */
     public static function ip4($ip4)
     {
         if (false === filter_var($ip4, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4)) {
