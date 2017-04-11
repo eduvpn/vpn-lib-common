@@ -26,7 +26,7 @@ class MellonAuthenticationHook implements BeforeHookInterface
     /** @var bool */
     private $addEntityId;
 
-    public function __construct($userIdAttribute, $addEntityId = true)
+    public function __construct($userIdAttribute, $addEntityId)
     {
         $this->userIdAttribute = $userIdAttribute;
         $this->addEntityId = $addEntityId;
