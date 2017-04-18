@@ -27,7 +27,9 @@ class TestSession implements SessionInterface
 
     public function __construct()
     {
-        $this->s = [];
+        $this->s = [
+            'destroyed' => false,
+        ];
     }
 
     public function set($key, $value)
@@ -56,6 +58,9 @@ class TestSession implements SessionInterface
 
     public function destroy()
     {
-        $this->s = [];
+        // remove everything, indicate we were destroyed
+        $this->s = [
+            'destroyed' => true,
+        ];
     }
 }

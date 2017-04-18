@@ -19,22 +19,27 @@
 namespace SURFnet\VPN\Common\Http;
 
 require_once sprintf('%s/Test/TestRequest.php', __DIR__);
+require_once sprintf('%s/Test/TestSession.php', __DIR__);
 
 use PHPUnit_Framework_TestCase;
 use SURFnet\VPN\Common\Http\Test\TestRequest;
+use SURFnet\VPN\Common\Http\Test\TestSession;
 
 class MellonAuthenticationHookTest extends PHPUnit_Framework_TestCase
 {
     public function testNoEntityID()
     {
-        $auth = new MellonAuthenticationHook('MELLON_NAME_ID', false);
+        $session = new TestSession();
+        $auth = new MellonAuthenticationHook($session, 'MELLON_NAME_ID', false);
         $request = new TestRequest(['MELLON_NAME_ID' => 'foo']);
         $this->assertSame('foo', $auth->executeBefore($request, []));
+        $this->assertFalse($session->get('destroyed'));
     }
 
     public function testEntityID()
     {
-        $auth = new MellonAuthenticationHook('MELLON_NAME_ID', true);
+        $session = new TestSession();
+        $auth = new MellonAuthenticationHook($session, 'MELLON_NAME_ID', true);
         $request = new TestRequest(['MELLON_NAME_ID' => 'foo', 'MELLON_IDP' => 'https://idp.example.org/saml']);
         $this->assertSame('https_idp.example.org_saml|foo', $auth->executeBefore($request, []));
     }
@@ -45,7 +50,8 @@ class MellonAuthenticationHookTest extends PHPUnit_Framework_TestCase
      */
     public function testAttributeMissing()
     {
-        $auth = new MellonAuthenticationHook('MELLON_NAME_ID', false);
+        $session = new TestSession();
+        $auth = new MellonAuthenticationHook($session, 'MELLON_NAME_ID', false);
         $request = new TestRequest([]);
         $auth->executeBefore($request, []);
     }
@@ -56,8 +62,29 @@ class MellonAuthenticationHookTest extends PHPUnit_Framework_TestCase
      */
     public function testEntityIDMissing()
     {
-        $auth = new MellonAuthenticationHook('MELLON_NAME_ID', true);
+        $session = new TestSession();
+        $auth = new MellonAuthenticationHook($session, 'MELLON_NAME_ID', true);
         $request = new TestRequest(['MELLON_NAME_ID' => 'foo']);
         $auth->executeBefore($request, []);
+    }
+
+    public function testUserIdMatch()
+    {
+        $session = new TestSession();
+        $session->set('_mellon_auth_user', 'foo');
+        $auth = new MellonAuthenticationHook($session, 'MELLON_NAME_ID', false);
+        $request = new TestRequest(['MELLON_NAME_ID' => 'foo']);
+        $this->assertSame('foo', $auth->executeBefore($request, []));
+        $this->assertFalse($session->get('destroyed'));
+    }
+
+    public function testUserIdMismatch()
+    {
+        $session = new TestSession();
+        $session->set('_mellon_auth_user', 'bar');
+        $auth = new MellonAuthenticationHook($session, 'MELLON_NAME_ID', false);
+        $request = new TestRequest(['MELLON_NAME_ID' => 'foo']);
+        $this->assertSame('foo', $auth->executeBefore($request, []));
+        $this->assertTrue($session->get('destroyed'));
     }
 }
