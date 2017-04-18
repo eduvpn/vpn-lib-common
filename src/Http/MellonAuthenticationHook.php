@@ -52,15 +52,15 @@ class MellonAuthenticationHook implements BeforeHookInterface
         }
 
         $userId = $request->getHeader($this->userIdAttribute);
-        if ($this->session->has('_mellon_auth_user_id')) {
-            if ($userId !== $this->session->get('_mellon_auth_user_id')) {
+        if ($this->session->has('_mellon_auth_user')) {
+            if ($userId !== $this->session->get('_mellon_auth_user')) {
                 // if we have an application session where the user_id does not
                 // match the Mellon user_id we destroy the current session and
                 // regenerate it below.
                 $this->session->destroy();
             }
         }
-        $this->session->set('_mellon_auth_user_id', $userId);
+        $this->session->set('_mellon_auth_user', $userId);
 
         return $userId;
     }
