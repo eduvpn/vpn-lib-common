@@ -20,14 +20,18 @@ namespace SURFnet\VPN\Common\Http;
 
 class MellonAuthenticationHook implements BeforeHookInterface
 {
+    /** @var SessionInterface */
+    private $session;
+
     /** @var string */
     private $userIdAttribute;
 
     /** @var bool */
     private $addEntityId;
 
-    public function __construct($userIdAttribute, $addEntityId)
+    public function __construct(SessionInterface $session, $userIdAttribute, $addEntityId)
     {
+        $this->session = $session;
         $this->userIdAttribute = $userIdAttribute;
         $this->addEntityId = $addEntityId;
     }
@@ -47,6 +51,17 @@ class MellonAuthenticationHook implements BeforeHookInterface
             );
         }
 
-        return $request->getHeader($this->userIdAttribute);
+        $userId = $request->getHeader($this->userIdAttribute);
+        if ($this->session->has('_mellon_auth_user_id')) {
+            if ($userId !== $this->session->get('_mellon_auth_user_id')) {
+                // if we have an application session where the user_id does not
+                // match the Mellon user_id we destroy the current session and
+                // regenerate it below.
+                $this->session->destroy();
+            }
+        }
+        $this->session->set('_mellon_auth_user_id', $userId);
+
+        return $userId;
     }
 }
