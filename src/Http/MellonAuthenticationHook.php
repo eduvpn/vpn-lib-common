@@ -38,20 +38,20 @@ class MellonAuthenticationHook implements BeforeHookInterface
 
     public function executeBefore(Request $request, array $hookData)
     {
+        $userId = $request->getHeader($this->userIdAttribute);
         if ($this->addEntityId) {
             // add the entity ID to the user ID, this is used when we have
             // different IdPs that do not guarantee uniqueness among the used
             // user identifier attribute, e.g. NAME_ID or uid
-            return sprintf(
+            $userId = sprintf(
                 '%s|%s',
                 // strip out all "special" characters from the entityID, just
                 // like mod_auth_mellon does
                 preg_replace('/__*/', '_', preg_replace('/[^A-Za-z.]/', '_', $request->getHeader('MELLON_IDP'))),
-                $request->getHeader($this->userIdAttribute)
+                $userId
             );
         }
 
-        $userId = $request->getHeader($this->userIdAttribute);
         if ($this->session->has('_mellon_auth_user')) {
             if ($userId !== $this->session->get('_mellon_auth_user')) {
                 // if we have an application session where the user_id does not
