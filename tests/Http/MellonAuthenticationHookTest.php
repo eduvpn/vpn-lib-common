@@ -41,7 +41,7 @@ class MellonAuthenticationHookTest extends PHPUnit_Framework_TestCase
         $session = new TestSession();
         $auth = new MellonAuthenticationHook($session, 'MELLON_NAME_ID', true);
         $request = new TestRequest(['MELLON_NAME_ID' => 'foo', 'MELLON_IDP' => 'https://idp.example.org/saml']);
-        $this->assertSame('https_idp.example.org_saml|foo', $auth->executeBefore($request, []));
+        $this->assertSame('https_idp.example.org_saml_foo', $auth->executeBefore($request, []));
     }
 
     /**

@@ -44,7 +44,7 @@ class MellonAuthenticationHook implements BeforeHookInterface
             // different IdPs that do not guarantee uniqueness among the used
             // user identifier attribute, e.g. NAME_ID or uid
             $userId = sprintf(
-                '%s|%s',
+                '%s_%s',
                 // strip out all "special" characters from the entityID, just
                 // like mod_auth_mellon does
                 preg_replace('/__*/', '_', preg_replace('/[^A-Za-z.]/', '_', $request->getHeader('MELLON_IDP'))),
