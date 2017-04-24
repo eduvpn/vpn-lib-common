@@ -69,8 +69,8 @@ class Session implements SessionInterface
 
     public function destroy()
     {
-        if ('' !== session_id()) {
-            // session already started
+        if ('' === session_id()) {
+            // no session available
             return;
         }
         session_destroy();
