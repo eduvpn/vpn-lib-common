@@ -18,7 +18,7 @@
         "ext-curl": "*",
         "ext-date": "*",
         "ext-filter": "*",
-        "ext-hash": "*",
+        "ext-gettext": "*",
         "ext-json": "*",
         "ext-libsodium": "*",
         "ext-mbstring": "*",
