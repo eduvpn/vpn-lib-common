@@ -7,7 +7,8 @@
     ],
     "autoload": {
         "psr-4": {
-            "SURFnet\\VPN\\Common\\": "src/"
+            "SURFnet\\VPN\\Common\\": "src/",
+            "SURFnet\\VPN\\Common\\Tests\\": "tests/"
         }
     },
     "description": "Common VPN library",

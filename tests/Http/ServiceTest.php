@@ -16,14 +16,13 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace SURFnet\VPN\Common\Http;
-
-require_once sprintf('%s/Test/TestRequest.php', __DIR__);
-require_once sprintf('%s/Test/TestHtmlTpl.php', __DIR__);
+namespace SURFnet\VPN\Common\Tests\Http;
 
 use PHPUnit_Framework_TestCase;
-use SURFnet\VPN\Common\Http\Test\TestHtmlTpl;
-use SURFnet\VPN\Common\Http\Test\TestRequest;
+use SURFnet\VPN\Common\Http\CallbackHook;
+use SURFnet\VPN\Common\Http\Request;
+use SURFnet\VPN\Common\Http\Response;
+use SURFnet\VPN\Common\Http\Service;
 
 class ServiceTest extends PHPUnit_Framework_TestCase
 {

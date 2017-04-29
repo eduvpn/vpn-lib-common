@@ -16,12 +16,10 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace SURFnet\VPN\Common\Http;
-
-require_once sprintf('%s/Test/TestRequest.php', __DIR__);
+namespace SURFnet\VPN\Common\Tests\Http;
 
 use PHPUnit_Framework_TestCase;
-use SURFnet\VPN\Common\Http\Test\TestRequest;
+use SURFnet\VPN\Common\Http\CsrfProtectionHook;
 
 class CsrfProtectionHookTest extends PHPUnit_Framework_TestCase
 {

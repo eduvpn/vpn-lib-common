@@ -16,14 +16,19 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace SURFnet\VPN\Common\Test;
+namespace SURFnet\VPN\Common\Tests\Http;
 
 use SURFnet\VPN\Common\TplInterface;
 
-class TestTpl implements TplInterface
+class TestHtmlTpl implements TplInterface
 {
     public function render($templateName, array $templateVariables)
     {
-        return json_encode([$templateName => $templateVariables]);
+        $str = '<html><head><title>{{code}}</title></head><body><h1>Error ({{code}})</h1><p>{{message}}</p></body></html>';
+        foreach ($templateVariables as $k => $v) {
+            $str = str_replace(sprintf('{{%s}}', $k), $v, $str);
+        }
+
+        return $str;
     }
 }

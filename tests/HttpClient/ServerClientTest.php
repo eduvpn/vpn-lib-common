@@ -16,12 +16,10 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace SURFnet\VPN\Common\HttpClient;
-
-require_once sprintf('%s/Test/TestHttpClient.php', __DIR__);
+namespace SURFnet\VPN\Common\Tests\HttpClient;
 
 use PHPUnit_Framework_TestCase;
-use SURFnet\VPN\Common\HttpClient\Test\TestHttpClient;
+use SURFnet\VPN\Common\HttpClient\ServerClient;
 
 class ServerClientTest extends PHPUnit_Framework_TestCase
 {

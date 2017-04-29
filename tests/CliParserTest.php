@@ -16,9 +16,10 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace SURFnet\VPN\Common;
+namespace SURFnet\VPN\Common\Tests;
 
 use PHPUnit_Framework_TestCase;
+use SURFnet\VPN\Common\CliParser;
 
 class CliParserTest extends PHPUnit_Framework_TestCase
 {

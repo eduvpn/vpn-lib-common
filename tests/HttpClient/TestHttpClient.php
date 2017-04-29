@@ -16,7 +16,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace SURFnet\VPN\Common\HttpClient\Test;
+namespace SURFnet\VPN\Common\Tests\HttpClient;
 
 use RuntimeException;
 use SURFnet\VPN\Common\HttpClient\HttpClientInterface;

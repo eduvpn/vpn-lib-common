@@ -16,19 +16,18 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace SURFnet\VPN\Common\Http\Test;
+namespace SURFnet\VPN\Common\Tests;
 
-use SURFnet\VPN\Common\TplInterface;
+use SURFnet\VPN\Common\Config;
 
-class TestHtmlTpl implements TplInterface
+class MyConfig extends Config
 {
-    public function render($templateName, array $templateVariables)
+    public static function defaultConfig()
     {
-        $str = '<html><head><title>{{code}}</title></head><body><h1>Error ({{code}})</h1><p>{{message}}</p></body></html>';
-        foreach ($templateVariables as $k => $v) {
-            $str = str_replace(sprintf('{{%s}}', $k), $v, $str);
-        }
-
-        return $str;
+        return [
+            'foo' => [
+                'bar' => ['baz'],
+            ],
+        ];
     }
 }

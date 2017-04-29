@@ -16,12 +16,10 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace SURFnet\VPN\Common;
-
-require_once sprintf('%s/Test/MyConfig.php', __DIR__);
+namespace SURFnet\VPN\Common\Tests;
 
 use PHPUnit_Framework_TestCase;
-use SURFnet\VPN\Common\Test\MyConfig;
+use SURFnet\VPN\Common\Config;
 
 class ConfigTest extends PHPUnit_Framework_TestCase
 {

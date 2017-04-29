@@ -16,18 +16,14 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace SURFnet\VPN\Common\Test;
+namespace SURFnet\VPN\Common\Tests;
 
-use SURFnet\VPN\Common\Config;
+use SURFnet\VPN\Common\TplInterface;
 
-class MyConfig extends Config
+class TestTpl implements TplInterface
 {
-    public static function defaultConfig()
+    public function render($templateName, array $templateVariables)
     {
-        return [
-            'foo' => [
-                'bar' => ['baz'],
-            ],
-        ];
+        return json_encode([$templateName => $templateVariables]);
     }
 }

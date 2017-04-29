@@ -16,9 +16,10 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace SURFnet\VPN\Common\Http;
+namespace SURFnet\VPN\Common\Tests\Http;
 
 use PHPUnit_Framework_TestCase;
+use SURFnet\VPN\Common\Http\RedirectResponse;
 
 class RedirectResponseTest extends PHPUnit_Framework_TestCase
 {

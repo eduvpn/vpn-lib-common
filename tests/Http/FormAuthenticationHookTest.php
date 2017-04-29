@@ -16,16 +16,11 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace SURFnet\VPN\Common\Http;
-
-require_once sprintf('%s/Test/TestRequest.php', __DIR__);
-require_once sprintf('%s/Test/TestSession.php', __DIR__);
-require_once sprintf('%s/Test/TestTpl.php', dirname(__DIR__));
+namespace SURFnet\VPN\Common\Tests\Http;
 
 use PHPUnit_Framework_TestCase;
-use SURFnet\VPN\Common\Http\Test\TestRequest;
-use SURFnet\VPN\Common\Http\Test\TestSession;
-use SURFnet\VPN\Common\Test\TestTpl;
+use SURFnet\VPN\Common\Http\FormAuthenticationHook;
+use SURFnet\VPN\Common\Tests\TestTpl;
 
 class FormAuthenticationHookTest extends PHPUnit_Framework_TestCase
 {
