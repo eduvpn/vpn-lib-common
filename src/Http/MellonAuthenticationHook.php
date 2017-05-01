@@ -18,6 +18,8 @@
 
 namespace SURFnet\VPN\Common\Http;
 
+use SURFnet\VPN\Common\Http\Exception\HttpException;
+
 class MellonAuthenticationHook implements BeforeHookInterface
 {
     /** @var SessionInterface */
@@ -29,11 +31,31 @@ class MellonAuthenticationHook implements BeforeHookInterface
     /** @var bool */
     private $addEntityId;
 
+    /** @var array|null */
+    private $userIdAuthorization = null;
+
+    /** @var string|null */
+    private $entitlementAttribute = null;
+
+    /** @var array|null */
+    private $entitlementAuthorization = null;
+
     public function __construct(SessionInterface $session, $userIdAttribute, $addEntityId)
     {
         $this->session = $session;
         $this->userIdAttribute = $userIdAttribute;
         $this->addEntityId = $addEntityId;
+    }
+
+    public function enableUserIdAuthorization(array $userIdAuthorization)
+    {
+        $this->userIdAuthorization = $userIdAuthorization;
+    }
+
+    public function enableEntitlementAuthorization($entitlementAttribute, array $entitlementAuthorization)
+    {
+        $this->entitlementAttribute = $entitlementAttribute;
+        $this->entitlementAuthorization = $entitlementAuthorization;
     }
 
     public function executeBefore(Request $request, array $hookData)
@@ -52,6 +74,9 @@ class MellonAuthenticationHook implements BeforeHookInterface
             );
         }
 
+        $this->verifyUserIdAuthorization($request);
+        $this->verifyEntitlementAuthorization($request);
+
         if ($this->session->has('_mellon_auth_user')) {
             if ($userId !== $this->session->get('_mellon_auth_user')) {
                 // if we have an application session where the user_id does not
@@ -63,5 +88,36 @@ class MellonAuthenticationHook implements BeforeHookInterface
         $this->session->set('_mellon_auth_user', $userId);
 
         return $userId;
+    }
+
+    private function verifyUserIdAuthorization(Request $request)
+    {
+        if (!is_null($this->userIdAuthorization)) {
+            $userIdCheck = sprintf(
+                '%s|%s',
+                $request->getHeader('MELLON_IDP'),
+                $request->getHeader($this->userIdAttribute)
+            );
+
+            if (!in_array($userIdCheck, $this->userIdAuthorization)) {
+                throw new HttpException('access forbidden (not allowed)', 403);
+            }
+        }
+    }
+
+    private function verifyEntitlementAuthorization(Request $request)
+    {
+        if (!is_null($this->entitlementAttribute)) {
+            // XXX is this an array?! string? single value? multi value?
+            $entitlementCheck = sprintf(
+                '%s|%s',
+                $request->getHeader('MELLON_IDP'),
+                $request->getHeader($this->entitlementAttribute, false, 'NO_ENTITLEMENT')
+            );
+
+            if (!in_array($entitlementCheck, $this->entitlementAuthorization)) {
+                throw new HttpException('access forbidden (not entitled)', 403);
+            }
+        }
     }
 }
