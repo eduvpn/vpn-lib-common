@@ -115,6 +115,15 @@ class MellonAuthenticationHookTest extends PHPUnit_Framework_TestCase
         $this->assertSame('foo', $auth->executeBefore($request, []));
     }
 
+    public function testEntitlementAuthorizationMultipleEntitlements()
+    {
+        $session = new TestSession();
+        $auth = new MellonAuthenticationHook($session, 'MELLON_NAME_ID', false);
+        $auth->enableEntitlementAuthorization('MELLON_ENTITLEMENT', ['https://idp.tuxed.net/saml|urn:x:admin']);
+        $request = new TestRequest(['MELLON_IDP' => 'https://idp.tuxed.net/saml', 'MELLON_ENTITLEMENT' => 'urn:x:foo;urn:x:admin', 'MELLON_NAME_ID' => 'foo']);
+        $this->assertSame('foo', $auth->executeBefore($request, []));
+    }
+
     /**
      * @expectedException \SURFnet\VPN\Common\Http\Exception\HttpException
      * @expectedExceptionMessage access forbidden (not entitled)

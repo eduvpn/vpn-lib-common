@@ -20,6 +20,12 @@ namespace SURFnet\VPN\Common\Http;
 
 use SURFnet\VPN\Common\Http\Exception\HttpException;
 
+/**
+ * The following mod_auth_mellon configuration flags MUST be set:.
+ *
+ *     MellonIdP "IDP"
+ *     MellonMergeEnvVars On
+ */
 class MellonAuthenticationHook implements BeforeHookInterface
 {
     /** @var SessionInterface */
@@ -108,16 +114,17 @@ class MellonAuthenticationHook implements BeforeHookInterface
     private function verifyEntitlementAuthorization(Request $request)
     {
         if (!is_null($this->entitlementAttribute)) {
-            // XXX is this an array?! string? single value? multi value?
-            $entitlementCheck = sprintf(
-                '%s|%s',
-                $request->getHeader('MELLON_IDP'),
-                $request->getHeader($this->entitlementAttribute, false, 'NO_ENTITLEMENT')
-            );
-
-            if (!in_array($entitlementCheck, $this->entitlementAuthorization)) {
-                throw new HttpException('access forbidden (not entitled)', 403);
+            $entityID = $request->getHeader('MELLON_IDP');
+            $entitlementValue = $request->getHeader($this->entitlementAttribute, false, 'NO_ENTITLEMENT');
+            $entitlementList = explode(';', $entitlementValue);
+            foreach ($entitlementList as $entitlement) {
+                $entitlementCheck = sprintf('%s|%s', $entityID, $entitlement);
+                if (in_array($entitlementCheck, $this->entitlementAuthorization)) {
+                    return;
+                }
             }
+
+            throw new HttpException('access forbidden (not entitled)', 403);
         }
     }
 }
