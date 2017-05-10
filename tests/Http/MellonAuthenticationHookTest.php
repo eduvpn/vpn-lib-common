@@ -95,7 +95,7 @@ class MellonAuthenticationHookTest extends PHPUnit_Framework_TestCase
 
     /**
      * @expectedException \SURFnet\VPN\Common\Http\Exception\HttpException
-     * @expectedExceptionMessage access forbidden (not allowed)
+     * @expectedExceptionMessage access forbidden
      */
     public function testUserIdAuthorizationNotAuthorized()
     {
@@ -126,7 +126,7 @@ class MellonAuthenticationHookTest extends PHPUnit_Framework_TestCase
 
     /**
      * @expectedException \SURFnet\VPN\Common\Http\Exception\HttpException
-     * @expectedExceptionMessage access forbidden (not entitled)
+     * @expectedExceptionMessage access forbidden
      */
     public function testEntitlementAuthorizationNotAuthorized()
     {
@@ -139,7 +139,7 @@ class MellonAuthenticationHookTest extends PHPUnit_Framework_TestCase
 
     /**
      * @expectedException \SURFnet\VPN\Common\Http\Exception\HttpException
-     * @expectedExceptionMessage access forbidden (not entitled)
+     * @expectedExceptionMessage access forbidden
      */
     public function testEntitlementAuthorizationNoEntitlementAttribute()
     {
@@ -148,5 +148,39 @@ class MellonAuthenticationHookTest extends PHPUnit_Framework_TestCase
         $auth->enableEntitlementAuthorization('MELLON_ENTITLEMENT', ['https://idp.tuxed.net/saml|urn:x:admin']);
         $request = new TestRequest(['MELLON_IDP' => 'https://idp.tuxed.net/saml', 'MELLON_NAME_ID' => 'foo']);
         $auth->executeBefore($request, []);
+    }
+
+    public function testBothAuthorizationMethodsMatchesEntitlement()
+    {
+        $session = new TestSession();
+        $auth = new MellonAuthenticationHook($session, 'MELLON_NAME_ID', false);
+        $auth->enableUserIdAuthorization(['https://idp.tuxed.net/saml|abc', 'https://idp.tuxed.net/saml|def']);
+        $auth->enableEntitlementAuthorization('MELLON_ENTITLEMENT', ['https://idp.tuxed.net/saml|urn:x:admin']);
+        $request = new TestRequest(['MELLON_IDP' => 'https://idp.tuxed.net/saml', 'MELLON_ENTITLEMENT' => 'urn:x:admin', 'MELLON_NAME_ID' => 'foo']);
+        $this->assertSame('foo', $auth->executeBefore($request, []));
+    }
+
+    public function testBothAuthorizationMethodsMatchesUserId()
+    {
+        $session = new TestSession();
+        $auth = new MellonAuthenticationHook($session, 'MELLON_NAME_ID', false);
+        $auth->enableUserIdAuthorization(['https://idp.tuxed.net/saml|foo', 'https://idp.tuxed.net/saml|def']);
+        $auth->enableEntitlementAuthorization('MELLON_ENTITLEMENT', ['https://idp.tuxed.net/saml|urn:x:admin']);
+        $request = new TestRequest(['MELLON_IDP' => 'https://idp.tuxed.net/saml', 'MELLON_ENTITLEMENT' => 'urn:x:admin', 'MELLON_NAME_ID' => 'foo']);
+        $this->assertSame('foo', $auth->executeBefore($request, []));
+    }
+
+    /**
+     * @expectedException \SURFnet\VPN\Common\Http\Exception\HttpException
+     * @expectedExceptionMessage access forbidden
+     */
+    public function testBothAuthorizationMethodsMatchesNeither()
+    {
+        $session = new TestSession();
+        $auth = new MellonAuthenticationHook($session, 'MELLON_NAME_ID', false);
+        $auth->enableUserIdAuthorization(['https://idp.tuxed.net/saml|abc', 'https://idp.tuxed.net/saml|def']);
+        $auth->enableEntitlementAuthorization('MELLON_ENTITLEMENT', ['https://idp.tuxed.net/saml|urn:x:admin']);
+        $request = new TestRequest(['MELLON_IDP' => 'https://idp.tuxed.net/saml', 'MELLON_ENTITLEMENT' => 'urn:x:foo', 'MELLON_NAME_ID' => 'foo']);
+        $this->assertSame('foo', $auth->executeBefore($request, []));
     }
 }

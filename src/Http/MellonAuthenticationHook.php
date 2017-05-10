@@ -80,8 +80,9 @@ class MellonAuthenticationHook implements BeforeHookInterface
             );
         }
 
-        $this->verifyUserIdAuthorization($request);
-        $this->verifyEntitlementAuthorization($request);
+        if (!$this->verifyAuthorization($request)) {
+            throw new HttpException('access forbidden', 403);
+        }
 
         if ($this->session->has('_mellon_auth_user')) {
             if ($userId !== $this->session->get('_mellon_auth_user')) {
@@ -96,35 +97,56 @@ class MellonAuthenticationHook implements BeforeHookInterface
         return $userId;
     }
 
+    private function verifyAuthorization(Request $request)
+    {
+        if (is_null($this->userIdAuthorization) && is_null($this->entitlementAuthorization)) {
+            // authorization disabled, allow user
+            return true;
+        }
+
+        // if either of these succeeds now, we allow the user
+        if ($this->verifyUserIdAuthorization($request)) {
+            return true;
+        }
+
+        if ($this->verifyEntitlementAuthorization($request)) {
+            return true;
+        }
+
+        return false;
+    }
+
     private function verifyUserIdAuthorization(Request $request)
     {
-        if (!is_null($this->userIdAuthorization)) {
-            $userIdCheck = sprintf(
-                '%s|%s',
-                $request->getHeader('MELLON_IDP'),
-                $request->getHeader($this->userIdAttribute)
-            );
-
-            if (!in_array($userIdCheck, $this->userIdAuthorization)) {
-                throw new HttpException('access forbidden (not allowed)', 403);
-            }
+        if (is_null($this->userIdAuthorization)) {
+            return false;
         }
+
+        $userId = sprintf(
+            '%s|%s',
+            $request->getHeader('MELLON_IDP'),
+            $request->getHeader($this->userIdAttribute)
+        );
+
+        return in_array($userId, $this->userIdAuthorization);
     }
 
     private function verifyEntitlementAuthorization(Request $request)
     {
-        if (!is_null($this->entitlementAttribute)) {
-            $entityID = $request->getHeader('MELLON_IDP');
-            $entitlementValue = $request->getHeader($this->entitlementAttribute, false, 'NO_ENTITLEMENT');
-            $entitlementList = explode(';', $entitlementValue);
-            foreach ($entitlementList as $entitlement) {
-                $entitlementCheck = sprintf('%s|%s', $entityID, $entitlement);
-                if (in_array($entitlementCheck, $this->entitlementAuthorization)) {
-                    return;
-                }
-            }
-
-            throw new HttpException('access forbidden (not entitled)', 403);
+        if (is_null($this->entitlementAuthorization)) {
+            return false;
         }
+
+        $entityID = $request->getHeader('MELLON_IDP');
+        $entitlementValue = $request->getHeader($this->entitlementAttribute, false, 'NO_ENTITLEMENT');
+        $entitlementList = explode(';', $entitlementValue);
+        foreach ($entitlementList as $entitlement) {
+            $entitlementCheck = sprintf('%s|%s', $entityID, $entitlement);
+            if (in_array($entitlementCheck, $this->entitlementAuthorization)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }
