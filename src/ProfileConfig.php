@@ -44,9 +44,7 @@ class ProfileConfig extends Config
             'reject6' => false,
             'vpnProtoPorts' => [
                 'udp/1194',
-                'udp/1195',
                 'tcp/1194',
-                'tcp/1195',
             ],
             'hideProfile' => false,
         ];
