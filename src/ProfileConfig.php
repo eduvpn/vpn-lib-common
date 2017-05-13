@@ -48,7 +48,6 @@ class ProfileConfig extends Config
                 'tcp/1194',
                 'tcp/1195',
             ],
-            'portShare' => true,
             'hideProfile' => false,
         ];
     }
