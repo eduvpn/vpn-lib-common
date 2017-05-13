@@ -42,7 +42,7 @@ class ProfileConfig extends Config
             'blockSmb' => false,
             'reject4' => false,
             'reject6' => false,
-            'vpnProtoPort' => [
+            'vpnProtoPorts' => [
                 'udp/1194',
                 'udp/1195',
                 'tcp/1194',
