@@ -66,7 +66,7 @@ class InputValidation
      */
     public static function profileId($profileId)
     {
-        if (1 !== preg_match('/^[a-zA-Z0-9]+$/', $profileId)) {
+        if (1 !== preg_match('/^[a-zA-Z0-9-.]+$/', $profileId)) {
             throw new InputValidationException('invalid "profile_id"');
         }
 
