@@ -1,6 +1,6 @@
 <?php
 /**
- *  Copyright (C) 2016 SURFnet.
+ *  Copyright (C) 2017 SURFnet.
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Affero General Public License as
@@ -18,97 +18,120 @@
 
 namespace SURFnet\VPN\Common\Http;
 
+use DateInterval;
+use DateTime;
 use SURFnet\VPN\Common\Http\Exception\HttpException;
 
-class Session implements SessionInterface
+class Session extends Cookie
 {
-    /** @var string */
-    private $serverName;
+    /** @var array */
+    private $sessionOptions;
 
-    /** @var string */
-    private $requestRoot;
-
-    /** @var bool */
-    private $secureOnly;
-
-    public function __construct($serverName, $requestRoot, $secureOnly)
+    /**
+     * @param array $sessionOptions
+     */
+    public function __construct(array $sessionOptions = [])
     {
-        $this->serverName = $serverName;
-        $this->requestRoot = $requestRoot;
-        $this->secureOnly = $secureOnly;
+        $this->sessionOptions = array_merge(
+            [
+                'DomainBinding' => null,       // also bind session to Domain
+                'PathBinding' => null,         // also bind session to Path
+            ],
+            $sessionOptions
+        );
+
+        parent::__construct($sessionOptions);
+
+        if (PHP_SESSION_ACTIVE !== session_status()) {
+            session_start();
+        }
+
+        $this->sessionCanary();
+        $this->domainBinding();
+        $this->pathBinding();
+
+        $this->replace(session_name(), session_id());
+    }
+
+    public function regenerate($deleteOldSession = false)
+    {
+        session_regenerate_id($deleteOldSession);
+        $this->replace(session_name(), session_id());
     }
 
     public function set($key, $value)
     {
-        $this->startSession();
         $_SESSION[$key] = $value;
     }
 
     public function delete($key)
     {
-        $this->startSession();
-        if ($this->has($key)) {
-            unset($_SESSION[$key]);
+        if (!$this->has($key)) {
+            throw new HttpException(sprintf('key "%s" not available in session', $key), 500);
         }
+
+        unset($_SESSION[$key]);
     }
 
     public function has($key)
     {
-        $this->startSession();
-
         return array_key_exists($key, $_SESSION);
     }
 
     public function get($key)
     {
-        $this->startSession();
-        if ($this->has($key)) {
-            return $_SESSION[$key];
+        if (!$this->has($key)) {
+            throw new HttpException(sprintf('key "%s" not available in session', $key), 500);
         }
+
+        return $_SESSION[$key];
     }
 
     public function destroy()
     {
-        if ('' === session_id()) {
-            // no session available
-            return;
-        }
-        session_destroy();
+        $_SESSION = [];
+        $this->regenerate(true);
     }
 
-    private function startSession()
+    private function sessionCanary()
     {
-        if ('' !== session_id()) {
-            // session already started
-            return;
-        }
-
-        session_set_cookie_params(0, $this->requestRoot, $this->serverName, $this->secureOnly, true);
-        session_start();
-
-        // Make sure we have a canary set
-        if (!isset($_SESSION['canary'])) {
-            $this->setCanary($this->serverName, $this->requestRoot);
-        }
-        // Regenerate session ID every five minutes:
-        if ($_SESSION['canary'] < time() - 300) {
-            $this->setCanary($this->serverName, $this->requestRoot);
-        }
-
-        if ($this->serverName !== $_SESSION['serverName']) {
-            throw new HttpException('session error (serverName)', 400);
-        }
-
-        if ($this->requestRoot !== $_SESSION['requestRoot']) {
-            throw new HttpException('session error (requestRoot)', 400);
+        $dateTime = new DateTime();
+        if (!array_key_exists('Canary', $_SESSION)) {
+            $_SESSION = [];
+            $this->regenerate(true);
+            $_SESSION['Canary'] = $dateTime->format('Y-m-d H:i:s');
+        } else {
+            $canaryDateTime = new DateTime($_SESSION['Canary']);
+            $canaryDateTime->add(new DateInterval('PT01H'));
+            if ($canaryDateTime < $dateTime) {
+                $this->regenerate(true);
+                $_SESSION['Canary'] = $dateTime->format('Y-m-d H:i:s');
+            }
         }
     }
 
-    private function setCanary($serverName, $requestRoot)
+    private function domainBinding()
     {
-        session_regenerate_id(true);
-        $_SESSION['canary'] = time();
-        $_SESSION['serverName'] = $serverName;
-        $_SESSION['requestRoot'] = $requestRoot;
+        $this->sessionBinding('DomainBinding');
+    }
+
+    private function pathBinding()
+    {
+        $this->sessionBinding('PathBinding');
+    }
+
+    private function sessionBinding($key)
+    {
+        if (!is_null($this->sessionOptions[$key])) {
+            if (!array_key_exists($key, $_SESSION)) {
+                $_SESSION[$key] = $this->sessionOptions[$key];
+            }
+            if ($this->sessionOptions[$key] !== $_SESSION[$key]) {
+                throw new HttpException(
+                    sprintf('session bound to %s "%s", expected "%s"', $key, $_SESSION[$key], $this->sessionOptions[$key]),
+                    400
+                );
+            }
+        }
     }
 }
