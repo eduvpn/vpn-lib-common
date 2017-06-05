@@ -22,7 +22,7 @@ use DateInterval;
 use DateTime;
 use SURFnet\VPN\Common\Http\Exception\HttpException;
 
-class Session extends Cookie
+class Session extends Cookie implements SessionInterface
 {
     /** @var array */
     private $sessionOptions;
