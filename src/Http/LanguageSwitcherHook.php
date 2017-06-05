@@ -28,16 +28,16 @@ use SURFnet\VPN\Common\Http\Exception\HttpException;
  */
 class LanguageSwitcherHook implements BeforeHookInterface
 {
-    /** @var bool */
-    private $secureCookie;
+    /** @var Cookie */
+    private $cookie;
 
     /** @var array */
     private $supportedLanguages;
 
-    public function __construct(array $supportedLanguages, $secureCookie = true)
+    public function __construct(array $supportedLanguages, Cookie $cookie)
     {
         $this->supportedLanguages = $supportedLanguages;
-        $this->secureCookie = (bool) $secureCookie;
+        $this->cookie = $cookie;
     }
 
     public function executeBefore(Request $request, array $hookData)
@@ -55,17 +55,8 @@ class LanguageSwitcherHook implements BeforeHookInterface
             throw new HttpException('invalid language', 400);
         }
 
-        setcookie(
-            'uiLanguage',
-            $language,
-            time() + 60 * 60 * 24 * 365,    // remember for 1 year
-            $request->getRoot(),
-            $request->getServerName(),
-            $this->secureCookie,
-            true
-        );
+        $this->cookie->set('uiLanguage', $language);
 
-        // XXX do we need to validate HTTP_REFERER here?
         return new RedirectResponse($request->getHeader('HTTP_REFERER'), 302);
     }
 }
