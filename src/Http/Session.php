@@ -66,10 +66,6 @@ class Session extends Cookie implements SessionInterface
 
     public function delete($key)
     {
-        if (!$this->has($key)) {
-            throw new HttpException(sprintf('key "%s" not available in session', $key), 500);
-        }
-
         unset($_SESSION[$key]);
     }
 
@@ -81,7 +77,7 @@ class Session extends Cookie implements SessionInterface
     public function get($key)
     {
         if (!$this->has($key)) {
-            throw new HttpException(sprintf('key "%s" not available in session', $key), 500);
+            return null;
         }
 
         return $_SESSION[$key];
