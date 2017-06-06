@@ -16,7 +16,6 @@
     "name": "eduvpn/common",
     "repositories": [
         {
-            "no-api": true,
             "type": "vcs",
             "url": "https://github.com/fkooman/php-secookie"
         }
