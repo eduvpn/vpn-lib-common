@@ -14,12 +14,6 @@
     "description": "Common VPN library",
     "license": "AGPL-3.0",
     "name": "eduvpn/common",
-    "repositories": [
-        {
-            "type": "vcs",
-            "url": "https://github.com/fkooman/php-secookie"
-        }
-    ],
     "require": {
         "ext-curl": "*",
         "ext-date": "*",
@@ -31,7 +25,6 @@
         "ext-pcre": "*",
         "ext-session": "*",
         "ext-spl": "*",
-        "fkooman/secookie": "dev-master",
         "ircmaxell/password-compat": "^1.0",
         "php": ">= 5.4.0",
         "psr/log": "^1.0",
