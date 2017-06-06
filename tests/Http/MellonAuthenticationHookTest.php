@@ -29,7 +29,6 @@ class MellonAuthenticationHookTest extends PHPUnit_Framework_TestCase
         $auth = new MellonAuthenticationHook($session, 'MELLON_NAME_ID', false);
         $request = new TestRequest(['MELLON_NAME_ID' => 'foo']);
         $this->assertSame('foo', $auth->executeBefore($request, []));
-        $this->assertFalse($session->get('destroyed'));
     }
 
     public function testEntityID()
@@ -71,7 +70,6 @@ class MellonAuthenticationHookTest extends PHPUnit_Framework_TestCase
         $auth = new MellonAuthenticationHook($session, 'MELLON_NAME_ID', false);
         $request = new TestRequest(['MELLON_NAME_ID' => 'foo']);
         $this->assertSame('foo', $auth->executeBefore($request, []));
-        $this->assertFalse($session->get('destroyed'));
     }
 
     public function testUserIdMismatch()
@@ -81,7 +79,6 @@ class MellonAuthenticationHookTest extends PHPUnit_Framework_TestCase
         $auth = new MellonAuthenticationHook($session, 'MELLON_NAME_ID', false);
         $request = new TestRequest(['MELLON_NAME_ID' => 'foo']);
         $this->assertSame('foo', $auth->executeBefore($request, []));
-        $this->assertTrue($session->get('destroyed'));
     }
 
     public function testUserIdAuthorization()

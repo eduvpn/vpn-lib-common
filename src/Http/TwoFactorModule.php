@@ -60,6 +60,7 @@ class TwoFactorModule implements ServiceModuleInterface
 
                 try {
                     $this->serverClient->post('verify_totp_key', ['user_id' => $userId, 'totp_key' => $totpKey]);
+                    $this->session->regenerate(true);
                     $this->session->set('_two_factor_verified', $userId);
 
                     return new RedirectResponse($redirectTo, 302);
@@ -98,6 +99,7 @@ class TwoFactorModule implements ServiceModuleInterface
 
                 try {
                     $this->serverClient->post('verify_yubi_key_otp', ['user_id' => $userId, 'yubi_key_otp' => $yubiKeyOtp]);
+                    $this->session->regenerate(true);
                     $this->session->set('_two_factor_verified', $userId);
 
                     return new RedirectResponse($redirectTo, 302);

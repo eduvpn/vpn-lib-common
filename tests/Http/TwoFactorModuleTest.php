@@ -88,7 +88,7 @@ class TwoFactorModuleTest extends PHPUnit_Framework_TestCase
         );
 
         $response = $service->run($request);
-        $this->assertNull($session->get('_two_factor_verified'));
+        $this->assertFalse($session->has('_two_factor_verified'));
         $this->assertSame(200, $response->getStatusCode());
         $this->assertSame('{"twoFactorTotp":{"_two_factor_auth_invalid":true,"_two_factor_auth_error_msg":"invalid OTP key","_two_factor_auth_redirect_to":"http:\/\/vpn.example\/account"}}', $response->getBody());
     }
