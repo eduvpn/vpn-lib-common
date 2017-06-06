@@ -32,7 +32,7 @@
         "ext-pcre": "*",
         "ext-session": "*",
         "ext-spl": "*",
-        "fkooman/secookie": "~0.1.0",
+        "fkooman/secookie": "dev-master",
         "ircmaxell/password-compat": "^1.0",
         "php": ">= 5.4.0",
         "psr/log": "^1.0",
