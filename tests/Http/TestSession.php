@@ -18,7 +18,7 @@
 
 namespace SURFnet\VPN\Common\Tests\Http;
 
-use SURFnet\VPN\Common\Http\SessionInterface;
+use fkooman\SeCookie\SessionInterface;
 
 class TestSession implements SessionInterface
 {
@@ -30,6 +30,15 @@ class TestSession implements SessionInterface
         $this->s = [
             'destroyed' => false,
         ];
+    }
+
+    public function id()
+    {
+        return '12345';
+    }
+
+    public function regenerate($deleteOldSession = false)
+    {
     }
 
     public function set($key, $value)

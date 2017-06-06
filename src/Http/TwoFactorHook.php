@@ -18,13 +18,14 @@
 
 namespace SURFnet\VPN\Common\Http;
 
+use fkooman\SeCookie\SessionInterface;
 use SURFnet\VPN\Common\Http\Exception\HttpException;
 use SURFnet\VPN\Common\HttpClient\ServerClient;
 use SURFnet\VPN\Common\TplInterface;
 
 class TwoFactorHook implements BeforeHookInterface
 {
-    /** @var SessionInterface */
+    /** @var \fkooman\SeCookie\SessionInterface; */
     private $session;
 
     /** @var \SURFnet\VPN\Common\TplInterface */

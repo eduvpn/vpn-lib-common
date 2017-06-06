@@ -18,6 +18,7 @@
 
 namespace SURFnet\VPN\Common\Http;
 
+use fkooman\SeCookie\SessionInterface;
 use SURFnet\VPN\Common\Http\Exception\HttpException;
 use SURFnet\VPN\Common\TplInterface;
 
@@ -26,7 +27,7 @@ class FormAuthenticationModule implements ServiceModuleInterface
     /** @var array */
     private $userPass;
 
-    /** @var SessionInterface */
+    /** @var \fkooman\SeCookie\SessionInterface; */
     private $session;
 
     /** @var \SURFnet\VPN\Common\TplInterface */

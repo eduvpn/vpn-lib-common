@@ -18,6 +18,7 @@
 
 namespace SURFnet\VPN\Common\Http;
 
+use fkooman\SeCookie\SessionInterface;
 use SURFnet\VPN\Common\Http\Exception\HttpException;
 use SURFnet\VPN\Common\HttpClient\Exception\ApiException;
 use SURFnet\VPN\Common\HttpClient\ServerClient;
@@ -28,7 +29,7 @@ class TwoFactorModule implements ServiceModuleInterface
     /** @var \SURFnet\VPN\Common\HttpClient\ServerClient */
     private $serverClient;
 
-    /** @var SessionInterface */
+    /** @var \fkooman\SeCookie\SessionInterface; */
     private $session;
 
     /** @var \SURFnet\VPN\Common\TplInterface */

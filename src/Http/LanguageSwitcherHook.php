@@ -18,6 +18,7 @@
 
 namespace SURFnet\VPN\Common\Http;
 
+use fkooman\SeCookie\Cookie;
 use SURFnet\VPN\Common\Http\Exception\HttpException;
 
 /**
@@ -28,7 +29,7 @@ use SURFnet\VPN\Common\Http\Exception\HttpException;
  */
 class LanguageSwitcherHook implements BeforeHookInterface
 {
-    /** @var Cookie */
+    /** @var \fkooman\SeCookie\Cookie */
     private $cookie;
 
     /** @var array */

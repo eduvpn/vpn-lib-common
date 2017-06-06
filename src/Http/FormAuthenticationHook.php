@@ -18,11 +18,12 @@
 
 namespace SURFnet\VPN\Common\Http;
 
+use fkooman\SeCookie\SessionInterface;
 use SURFnet\VPN\Common\TplInterface;
 
 class FormAuthenticationHook implements BeforeHookInterface
 {
-    /** @var SessionInterface */
+    /** @var \fkooman\SeCookie\SessionInterface */
     private $session;
 
     /** @var \SURFnet\VPN\Common\TplInterface */

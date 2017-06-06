@@ -18,6 +18,7 @@
 
 namespace SURFnet\VPN\Common\Http;
 
+use fkooman\SeCookie\SessionInterface;
 use SURFnet\VPN\Common\Http\Exception\HttpException;
 
 /**
@@ -28,7 +29,7 @@ use SURFnet\VPN\Common\Http\Exception\HttpException;
  */
 class MellonAuthenticationHook implements BeforeHookInterface
 {
-    /** @var SessionInterface */
+    /** @var \fkooman\SeCookie\SessionInterface */
     private $session;
 
     /** @var string */
