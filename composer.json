@@ -14,13 +14,6 @@
     "description": "Common VPN library",
     "license": "AGPL-3.0",
     "name": "eduvpn/common",
-    "repositories": [
-        {
-            "no-api": true,
-            "type": "vcs",
-            "url": "https://github.com/fkooman/php-secookie"
-        }
-    ],
     "require": {
         "ext-curl": "*",
         "ext-date": "*",
