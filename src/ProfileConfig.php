@@ -38,7 +38,7 @@ class ProfileConfig extends Config
             'enableLog' => false,
             'enableAcl' => false,
             'aclGroupList' => [],
-            'managementIp' => 'auto',
+            'managementIp' => '127.0.0.1',
             'blockSmb' => false,
             'reject4' => false,
             'reject6' => false,
