@@ -65,6 +65,7 @@ class FormAuthenticationModule implements ServiceModuleInterface
 
                 if (array_key_exists($authUser, $this->userPass)) {
                     if (false !== password_verify($authPass, $this->userPass[$authUser])) {
+                        $this->session->regenerate(true);
                         $this->session->set('_form_auth_user', $authUser);
 
                         return new RedirectResponse($redirectTo, 302);
@@ -95,6 +96,7 @@ class FormAuthenticationModule implements ServiceModuleInterface
                 // delete authentication information
                 $this->session->delete('_form_auth_user');
                 $this->session->delete('_two_factor_verified');
+                $this->session->regenerate(true);
 
                 return new RedirectResponse($request->getHeader('HTTP_REFERER'));
             }
