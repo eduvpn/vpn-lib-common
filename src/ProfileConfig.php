@@ -47,6 +47,7 @@ class ProfileConfig extends Config
                 'tcp/1194',
             ],
             'hideProfile' => false,
+            'tlsCrypt' => false,
         ];
     }
 }
