@@ -30,7 +30,7 @@ class Config
     public function hasSection($key)
     {
         if (!array_key_exists($key, $this->configData)) {
-            throw new ConfigException(sprintf('section "%s" not available', $key));
+            return false;
         }
 
         return is_array($this->configData[$key]);
