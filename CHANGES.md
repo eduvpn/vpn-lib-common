@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.0.2 (2017-09-10)
+- update `fkooman/secookie`
+
 ## 1.0.1 (2017-08-17)
 - small bugfix in `Config::hasSection()`
 
