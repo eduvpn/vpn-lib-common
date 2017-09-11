@@ -47,7 +47,7 @@ class LanguageSwitcherHook implements BeforeHookInterface
             throw new HttpException('invalid language', 400);
         }
 
-        $this->cookie->set('uiLanguage', $language);
+        $this->cookie->set('ui_lang', $language);
 
         return new RedirectResponse($request->getHeader('HTTP_REFERER'), 302);
     }

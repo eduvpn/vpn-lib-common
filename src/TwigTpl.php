@@ -128,10 +128,10 @@ class TwigTpl implements TplInterface
             $uiLanguage = array_keys($this->defaultVariables['supportedLanguages'])[0];
         }
 
-        if (array_key_exists('uiLanguage', $_COOKIE)) {
+        if (array_key_exists('ui_lang', $_COOKIE)) {
             if (array_key_exists('supportedLanguages', $this->defaultVariables)) {
-                if (array_key_exists($_COOKIE['uiLanguage'], $this->defaultVariables['supportedLanguages'])) {
-                    $uiLanguage = $_COOKIE['uiLanguage'];
+                if (array_key_exists($_COOKIE['ui_lang'], $this->defaultVariables['supportedLanguages'])) {
+                    $uiLanguage = $_COOKIE['ui_lang'];
                 }
             }
         }
