@@ -18,14 +18,14 @@ class ServerClientTest extends PHPUnit_Framework_TestCase
     {
         $httpClient = new TestHttpClient();
         $serverClient = new ServerClient($httpClient, 'serverClient');
-        $this->assertSame(true, $serverClient->get('foo'));
+        $this->assertTrue($serverClient->get('foo'));
     }
 
     public function testQueryParameter()
     {
         $httpClient = new TestHttpClient();
         $serverClient = new ServerClient($httpClient, 'serverClient');
-        $this->assertSame(true, $serverClient->get('foo', ['foo' => 'bar']));
+        $this->assertTrue($serverClient->get('foo', ['foo' => 'bar']));
     }
 
     /**
@@ -43,6 +43,6 @@ class ServerClientTest extends PHPUnit_Framework_TestCase
     {
         $httpClient = new TestHttpClient();
         $serverClient = new ServerClient($httpClient, 'serverClient');
-        $this->assertSame(true, $serverClient->post('foo', ['foo' => 'bar']));
+        $this->assertTrue($serverClient->post('foo', ['foo' => 'bar']));
     }
 }

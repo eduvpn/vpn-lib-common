@@ -91,7 +91,7 @@ class MellonAuthenticationHook implements BeforeHookInterface
 
     private function verifyAuthorization(Request $request)
     {
-        if (is_null($this->userIdAuthorization) && is_null($this->entitlementAuthorization)) {
+        if (null === $this->userIdAuthorization && null === $this->entitlementAuthorization) {
             // authorization disabled, allow user
             return true;
         }
@@ -110,7 +110,7 @@ class MellonAuthenticationHook implements BeforeHookInterface
 
     private function verifyUserIdAuthorization(Request $request)
     {
-        if (is_null($this->userIdAuthorization)) {
+        if (null === $this->userIdAuthorization) {
             return false;
         }
 
@@ -120,12 +120,12 @@ class MellonAuthenticationHook implements BeforeHookInterface
             $request->getHeader($this->userIdAttribute)
         );
 
-        return in_array($userId, $this->userIdAuthorization);
+        return in_array($userId, $this->userIdAuthorization, true);
     }
 
     private function verifyEntitlementAuthorization(Request $request)
     {
-        if (is_null($this->entitlementAuthorization)) {
+        if (null === $this->entitlementAuthorization) {
             return false;
         }
 
@@ -134,7 +134,7 @@ class MellonAuthenticationHook implements BeforeHookInterface
         $entitlementList = explode(';', $entitlementValue);
         foreach ($entitlementList as $entitlement) {
             $entitlementCheck = sprintf('%s|%s', $entityID, $entitlement);
-            if (in_array($entitlementCheck, $this->entitlementAuthorization)) {
+            if (in_array($entitlementCheck, $this->entitlementAuthorization, true)) {
                 return true;
             }
         }

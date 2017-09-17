@@ -35,6 +35,8 @@ class TwigTpl implements TplInterface
      * @param array  $templateDirs template directories to look in where later
      *                             paths override the earlier paths
      * @param string $cacheDir     the writable directory to store the cache
+     * @param string  $localeDir
+     * @param string  $appName
      */
     public function __construct(array $templateDirs, $localeDir, $appName, $cacheDir = null)
     {

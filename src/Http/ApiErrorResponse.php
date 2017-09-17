@@ -15,8 +15,7 @@ class ApiErrorResponse extends Response
 {
     /**
      * @param string $wrapperKey
-     * @param bool   $isOkay
-     * @param mixed  $responseData
+     * @param string $errorMessage
      * @param int    $responseCode
      */
     public function __construct($wrapperKey, $errorMessage, $responseCode = 200)

@@ -62,7 +62,7 @@ class Response
         foreach ($this->headers as $key => $value) {
             header(sprintf('%s: %s', $key, $value));
         }
-        if (!is_null($this->body)) {
+        if (null !== $this->body) {
             header(sprintf('Content-Type: %s', $this->contentType));
             echo $this->body;
         }

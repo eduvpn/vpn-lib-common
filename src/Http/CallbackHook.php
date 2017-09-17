@@ -25,14 +25,14 @@ class CallbackHook implements BeforeHookInterface, AfterHookInterface
 
     public function executeBefore(Request $request, array $hookData)
     {
-        if (!is_null($this->before)) {
+        if (null !== $this->before) {
             return call_user_func($this->before, $request, $hookData);
         }
     }
 
     public function executeAfter(Request $request, Response $response)
     {
-        if (!is_null($this->after)) {
+        if (null !== $this->after) {
             return call_user_func($this->after, $request, $response);
         }
 

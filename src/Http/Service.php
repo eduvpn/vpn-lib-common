@@ -111,7 +111,7 @@ class Service
             throw new HttpException($e->getMessage(), 400);
         } catch (HttpException $e) {
             if ($request->isBrowser()) {
-                if (is_null($this->tpl)) {
+                if (null === $this->tpl) {
                     // template not available
                     $response = new Response($e->getCode(), 'text/plain');
                     $response->setBody(sprintf('%d: %s', $e->getCode(), $e->getMessage()));

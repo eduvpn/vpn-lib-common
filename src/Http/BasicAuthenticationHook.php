@@ -29,7 +29,7 @@ class BasicAuthenticationHook implements BeforeHookInterface
     {
         $authUser = $request->getHeader('PHP_AUTH_USER', false);
         $authPass = $request->getHeader('PHP_AUTH_PW', false);
-        if (is_null($authUser) || is_null($authPass)) {
+        if (null === $authUser || null === $authPass) {
             throw new HttpException(
                 'missing authentication information',
                 401,

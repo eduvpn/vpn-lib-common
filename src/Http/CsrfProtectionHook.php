@@ -26,18 +26,18 @@ class CsrfProtectionHook implements BeforeHookInterface
         }
 
         // safe methods
-        if (in_array($request->getRequestMethod(), ['GET', 'HEAD', 'OPTIONS'])) {
+        if (in_array($request->getRequestMethod(), ['GET', 'HEAD', 'OPTIONS'], true)) {
             return false;
         }
 
         $uriAuthority = $request->getAuthority();
         $httpOrigin = $request->getHeader('HTTP_ORIGIN', false, null);
-        if (!is_null($httpOrigin)) {
+        if (null !== $httpOrigin) {
             return $this->verifyOrigin($uriAuthority, $httpOrigin);
         }
 
         $httpReferrer = $request->getHeader('HTTP_REFERER', false, null);
-        if (!is_null($httpReferrer)) {
+        if (null !== $httpReferrer) {
             return $this->verifyReferrer($uriAuthority, $httpReferrer);
         }
 

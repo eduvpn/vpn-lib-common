@@ -15,6 +15,8 @@ use SURFnet\VPN\Common\Http\Exception\InputValidationException;
 class InputValidation
 {
     /**
+     * @param string $displayName
+     *
      * @return string
      */
     public static function displayName($displayName)
@@ -29,6 +31,8 @@ class InputValidation
     }
 
     /**
+     * @param mixed $commonName
+     *
      * @return string
      */
     public static function commonName($commonName)
@@ -41,6 +45,8 @@ class InputValidation
     }
 
     /**
+     * @param mixed $serverCommonName
+     *
      * @return string
      */
     public static function serverCommonName($serverCommonName)
@@ -53,6 +59,8 @@ class InputValidation
     }
 
     /**
+     * @param mixed $profileId
+     *
      * @return string
      */
     public static function profileId($profileId)
@@ -65,6 +73,8 @@ class InputValidation
     }
 
     /**
+     * @param mixed $instanceId
+     *
      * @return string
      */
     public static function instanceId($instanceId)
@@ -77,12 +87,14 @@ class InputValidation
     }
 
     /**
+     * @param mixed $languageCode
+     *
      * @return string
      */
     public static function languageCode($languageCode)
     {
         $supportedLanguages = ['en_US', 'nl_NL', 'de_DE', 'fr_FR'];
-        if (!in_array($languageCode, $supportedLanguages)) {
+        if (!in_array($languageCode, $supportedLanguages, true)) {
             throw new InputValidationException('invalid "language_code"');
         }
 
@@ -90,6 +102,8 @@ class InputValidation
     }
 
     /**
+     * @param mixed $totpSecret
+     *
      * @return string
      */
     public static function totpSecret($totpSecret)
@@ -102,6 +116,8 @@ class InputValidation
     }
 
     /**
+     * @param mixed $yubiKeyOtp
+     *
      * @return string
      */
     public static function yubiKeyOtp($yubiKeyOtp)
@@ -114,6 +130,8 @@ class InputValidation
     }
 
     /**
+     * @param mixed $totpKey
+     *
      * @return string
      */
     public static function totpKey($totpKey)
@@ -126,6 +144,8 @@ class InputValidation
     }
 
     /**
+     * @param mixed $clientId
+     *
      * @return string
      */
     public static function clientId($clientId)
@@ -138,6 +158,8 @@ class InputValidation
     }
 
     /**
+     * @param mixed $userId
+     *
      * @return string
      */
     public static function userId($userId)
@@ -164,6 +186,8 @@ class InputValidation
     }
 
     /**
+     * @param mixed $ipAddress
+     *
      * @return string
      */
     public static function ipAddress($ipAddress)
@@ -177,6 +201,8 @@ class InputValidation
     }
 
     /**
+     * @param mixed $ip4
+     *
      * @return string
      */
     public static function ip4($ip4)
@@ -189,6 +215,8 @@ class InputValidation
     }
 
     /**
+     * @param mixed $ip6
+     *
      * @return string
      */
     public static function ip6($ip6)
@@ -202,42 +230,50 @@ class InputValidation
     }
 
     /**
+     * @param mixed $connectedAt
+     *
      * @return int
      */
     public static function connectedAt($connectedAt)
     {
-        if (!is_numeric($connectedAt) || 0 > intval($connectedAt)) {
+        if (!is_numeric($connectedAt) || 0 > (int) $connectedAt) {
             throw new InputValidationException('invalid "connected_at"');
         }
 
-        return intval($connectedAt);
+        return (int) $connectedAt;
     }
 
     /**
+     * @param mixed $disconnectedAt
+     *
      * @return int
      */
     public static function disconnectedAt($disconnectedAt)
     {
-        if (!is_numeric($disconnectedAt) || 0 > intval($disconnectedAt)) {
+        if (!is_numeric($disconnectedAt) || 0 > (int) $disconnectedAt) {
             throw new InputValidationException('invalid "disconnected_at"');
         }
 
-        return intval($disconnectedAt);
+        return (int) $disconnectedAt;
     }
 
     /**
+     * @param mixed $bytesTransferred
+     *
      * @return int
      */
     public static function bytesTransferred($bytesTransferred)
     {
-        if (!is_numeric($bytesTransferred) || 0 > intval($bytesTransferred)) {
+        if (!is_numeric($bytesTransferred) || 0 > (int) $bytesTransferred) {
             throw new InputValidationException('invalid "bytes_transferred"');
         }
 
-        return intval($bytesTransferred);
+        return (int) $bytesTransferred;
     }
 
     /**
+     * @param mixed $twoFactorType
+     *
      * @return string
      */
     public static function twoFactorType($twoFactorType)
@@ -250,6 +286,8 @@ class InputValidation
     }
 
     /**
+     * @param mixed $twoFactorValue
+     *
      * @return string
      */
     public static function twoFactorValue($twoFactorValue)
@@ -262,6 +300,8 @@ class InputValidation
     }
 
     /**
+     * @param mixed $messageId
+     *
      * @return int
      */
     public static function messageId($messageId)
@@ -274,6 +314,8 @@ class InputValidation
     }
 
     /**
+     * @param mixed $messageType
+     *
      * @return string
      */
     public static function messageType($messageType)

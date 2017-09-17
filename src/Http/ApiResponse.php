@@ -34,7 +34,7 @@ class ApiResponse extends Response
             ],
         ];
 
-        if (!is_null($responseData)) {
+        if (null !== $responseData) {
             $responseBody[$wrapperKey]['data'] = $responseData;
         }
 

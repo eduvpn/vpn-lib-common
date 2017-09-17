@@ -44,7 +44,7 @@ class TwoFactorHook implements BeforeHookInterface
             '/_oauth/token',
         ];
 
-        if (in_array($request->getPathInfo(), $allowedUris) && 'POST' === $request->getRequestMethod()) {
+        if (in_array($request->getPathInfo(), $allowedUris, true) && 'POST' === $request->getRequestMethod()) {
             return false;
         }
 
