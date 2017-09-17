@@ -13,6 +13,14 @@ use SURFnet\VPN\Common\Http\Exception\HttpException;
 
 class Utils
 {
+    /**
+     * @param array  $sourceData
+     * @param string $key
+     * @param bool   $isRequired
+     * @param mixed  $defaultValue
+     *
+     * @return mixed
+     */
     public static function getValueFromArray(array $sourceData, $key, $isRequired, $defaultValue)
     {
         if (array_key_exists($key, $sourceData)) {

@@ -19,12 +19,18 @@ class BasicAuthenticationHook implements BeforeHookInterface
     /** @var string */
     private $realm;
 
+    /**
+     * @param string $realm
+     */
     public function __construct(array $userPass, $realm = 'Protected Area')
     {
         $this->userPass = $userPass;
         $this->realm = $realm;
     }
 
+    /**
+     * @return string
+     */
     public function executeBefore(Request $request, array $hookData)
     {
         $authUser = $request->getHeader('PHP_AUTH_USER', false);

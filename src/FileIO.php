@@ -13,6 +13,11 @@ use RuntimeException;
 
 class FileIO
 {
+    /**
+     * @param string $filePath
+     *
+     * @return string
+     */
     public static function readFile($filePath)
     {
         if (false === $fileData = @file_get_contents($filePath)) {
@@ -22,6 +27,11 @@ class FileIO
         return $fileData;
     }
 
+    /**
+     * @param string $filePath
+     *
+     * @return mixed
+     */
     public static function readJsonFile($filePath)
     {
         $fileData = self::readFile($filePath);
@@ -33,6 +43,13 @@ class FileIO
         return $jsonData;
     }
 
+    /**
+     * @param string $filePath
+     * @param string $fileData
+     * @param int    $mode
+     *
+     * @return void
+     */
     public static function writeFile($filePath, $fileData, $mode = 0600)
     {
         if (false === @file_put_contents($filePath, $fileData)) {
@@ -43,6 +60,13 @@ class FileIO
         }
     }
 
+    /**
+     * @param string $filePath
+     * @param mixed  $fileJsonData
+     * @param int    $mode
+     *
+     * @return void
+     */
     public static function writeJsonFile($filePath, $fileJsonData, $mode = 0600)
     {
         $fileData = json_encode($fileJsonData);
@@ -53,6 +77,11 @@ class FileIO
         self::writeFile($filePath, $fileData, $mode);
     }
 
+    /**
+     * @param string $filePath
+     *
+     * @return void
+     */
     public static function deleteFile($filePath)
     {
         if (false === @unlink($filePath)) {
@@ -60,6 +89,12 @@ class FileIO
         }
     }
 
+    /**
+     * @param string $dirPath
+     * @param int    $mode
+     *
+     * @return void
+     */
     public static function createDir($dirPath, $mode = 0711)
     {
         if (!@file_exists($dirPath)) {

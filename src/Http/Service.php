@@ -38,36 +38,68 @@ class Service
         $this->afterHooks = [];
     }
 
+    /**
+     * @param string $name
+     *
+     * @return void
+     */
     public function addBeforeHook($name, BeforeHookInterface $beforeHook)
     {
         $this->beforeHooks[$name] = $beforeHook;
     }
 
+    /**
+     * @param string $name
+     *
+     * @return void
+     */
     public function addAfterHook($name, AfterHookInterface $afterHook)
     {
         $this->afterHooks[$name] = $afterHook;
     }
 
+    /**
+     * @param string $requestMethod
+     * @param string $pathInfo
+     *
+     * @return void
+     */
     public function addRoute($requestMethod, $pathInfo, callable $callback)
     {
         $this->routes[$requestMethod][$pathInfo] = $callback;
     }
 
+    /**
+     * @param string $pathInfo
+     *
+     * @return void
+     */
     public function get($pathInfo, callable $callback)
     {
         $this->addRoute('GET', $pathInfo, $callback);
     }
 
+    /**
+     * @param string $pathInfo
+     *
+     * @return void
+     */
     public function post($pathInfo, callable $callback)
     {
         $this->addRoute('POST', $pathInfo, $callback);
     }
 
+    /**
+     * @return void
+     */
     public function addModule(ServiceModuleInterface $module)
     {
         $module->init($this);
     }
 
+    /**
+     * @return Response
+     */
     public function run(Request $request)
     {
         try {
@@ -143,6 +175,9 @@ class Service
         }
     }
 
+    /**
+     * @return Response
+     */
     private function runAfterHooks(Request $request, Response $response)
     {
         foreach ($this->afterHooks as $v) {

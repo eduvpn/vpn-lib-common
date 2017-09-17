@@ -11,6 +11,10 @@ namespace SURFnet\VPN\Common\Http;
 
 class JsonResponse extends Response
 {
+    /**
+     * @param array $responseData
+     * @param int   $responseCode
+     */
     public function __construct(array $responseData, $responseCode = 200)
     {
         parent::__construct($responseCode, 'application/json');

@@ -11,6 +11,10 @@ namespace SURFnet\VPN\Common\Http;
 
 class RedirectResponse extends Response
 {
+    /**
+     * @param string $redirectUri
+     * @param int    $statusCode
+     */
     public function __construct($redirectUri, $statusCode = 302)
     {
         parent::__construct($statusCode);

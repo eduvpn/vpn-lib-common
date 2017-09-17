@@ -33,6 +33,9 @@ class TwoFactorModule implements ServiceModuleInterface
         $this->tpl = $tpl;
     }
 
+    /**
+     * @return void
+     */
     public function init(Service $service)
     {
         $service->post(
@@ -114,6 +117,12 @@ class TwoFactorModule implements ServiceModuleInterface
         );
     }
 
+    /**
+     * @param Request $request
+     * @param string  $redirectTo
+     *
+     * @return void
+     */
     private static function validateRedirectTo(Request $request, $redirectTo)
     {
         // validate the URL

@@ -11,6 +11,11 @@ namespace SURFnet\VPN\Common;
 
 class Random implements RandomInterface
 {
+    /**
+     * @param int $length
+     *
+     * @return string
+     */
     public function get($length)
     {
         return \Sodium\bin2hex(

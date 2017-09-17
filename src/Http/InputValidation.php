@@ -31,7 +31,7 @@ class InputValidation
     }
 
     /**
-     * @param mixed $commonName
+     * @param string $commonName
      *
      * @return string
      */
@@ -45,7 +45,7 @@ class InputValidation
     }
 
     /**
-     * @param mixed $serverCommonName
+     * @param string $serverCommonName
      *
      * @return string
      */
@@ -59,7 +59,7 @@ class InputValidation
     }
 
     /**
-     * @param mixed $profileId
+     * @param string $profileId
      *
      * @return string
      */
@@ -73,7 +73,7 @@ class InputValidation
     }
 
     /**
-     * @param mixed $instanceId
+     * @param string $instanceId
      *
      * @return string
      */
@@ -87,7 +87,7 @@ class InputValidation
     }
 
     /**
-     * @param mixed $languageCode
+     * @param string $languageCode
      *
      * @return string
      */
@@ -102,7 +102,7 @@ class InputValidation
     }
 
     /**
-     * @param mixed $totpSecret
+     * @param string $totpSecret
      *
      * @return string
      */
@@ -116,7 +116,7 @@ class InputValidation
     }
 
     /**
-     * @param mixed $yubiKeyOtp
+     * @param string $yubiKeyOtp
      *
      * @return string
      */
@@ -130,7 +130,7 @@ class InputValidation
     }
 
     /**
-     * @param mixed $totpKey
+     * @param string $totpKey
      *
      * @return string
      */
@@ -144,7 +144,7 @@ class InputValidation
     }
 
     /**
-     * @param mixed $clientId
+     * @param string $clientId
      *
      * @return string
      */
@@ -158,7 +158,7 @@ class InputValidation
     }
 
     /**
-     * @param mixed $userId
+     * @param string $userId
      *
      * @return string
      */
@@ -186,7 +186,7 @@ class InputValidation
     }
 
     /**
-     * @param mixed $ipAddress
+     * @param string $ipAddress
      *
      * @return string
      */
@@ -201,7 +201,7 @@ class InputValidation
     }
 
     /**
-     * @param mixed $ip4
+     * @param string $ip4
      *
      * @return string
      */
@@ -215,7 +215,7 @@ class InputValidation
     }
 
     /**
-     * @param mixed $ip6
+     * @param string $ip6
      *
      * @return string
      */
@@ -230,7 +230,7 @@ class InputValidation
     }
 
     /**
-     * @param mixed $connectedAt
+     * @param string $connectedAt
      *
      * @return int
      */
@@ -244,7 +244,7 @@ class InputValidation
     }
 
     /**
-     * @param mixed $disconnectedAt
+     * @param string $disconnectedAt
      *
      * @return int
      */
@@ -258,7 +258,7 @@ class InputValidation
     }
 
     /**
-     * @param mixed $bytesTransferred
+     * @param string $bytesTransferred
      *
      * @return int
      */
@@ -272,7 +272,7 @@ class InputValidation
     }
 
     /**
-     * @param mixed $twoFactorType
+     * @param string $twoFactorType
      *
      * @return string
      */
@@ -286,7 +286,7 @@ class InputValidation
     }
 
     /**
-     * @param mixed $twoFactorValue
+     * @param string $twoFactorValue
      *
      * @return string
      */
@@ -300,7 +300,7 @@ class InputValidation
     }
 
     /**
-     * @param mixed $messageId
+     * @param string $messageId
      *
      * @return int
      */
@@ -314,7 +314,7 @@ class InputValidation
     }
 
     /**
-     * @param mixed $messageType
+     * @param string $messageType
      *
      * @return string
      */

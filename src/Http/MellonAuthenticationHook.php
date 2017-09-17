@@ -38,6 +38,11 @@ class MellonAuthenticationHook implements BeforeHookInterface
     /** @var array|null */
     private $entitlementAuthorization = null;
 
+    /**
+     * @param SessionInterface $session
+     * @param string           $userIdAttribute
+     * @param bool             $addEntityId
+     */
     public function __construct(SessionInterface $session, $userIdAttribute, $addEntityId)
     {
         $this->session = $session;
@@ -45,11 +50,19 @@ class MellonAuthenticationHook implements BeforeHookInterface
         $this->addEntityId = $addEntityId;
     }
 
+    /**
+     * @return void
+     */
     public function enableUserIdAuthorization(array $userIdAuthorization)
     {
         $this->userIdAuthorization = $userIdAuthorization;
     }
 
+    /**
+     * @param string $entitlementAttribute
+     *
+     * @return void
+     */
     public function enableEntitlementAuthorization($entitlementAttribute, array $entitlementAuthorization)
     {
         $this->entitlementAttribute = $entitlementAttribute;
@@ -89,6 +102,9 @@ class MellonAuthenticationHook implements BeforeHookInterface
         return $userId;
     }
 
+    /**
+     * @return bool
+     */
     private function verifyAuthorization(Request $request)
     {
         if (null === $this->userIdAuthorization && null === $this->entitlementAuthorization) {
@@ -108,6 +124,9 @@ class MellonAuthenticationHook implements BeforeHookInterface
         return false;
     }
 
+    /**
+     * @return bool
+     */
     private function verifyUserIdAuthorization(Request $request)
     {
         if (null === $this->userIdAuthorization) {
@@ -123,9 +142,12 @@ class MellonAuthenticationHook implements BeforeHookInterface
         return in_array($userId, $this->userIdAuthorization, true);
     }
 
+    /**
+     * @return bool
+     */
     private function verifyEntitlementAuthorization(Request $request)
     {
-        if (null === $this->entitlementAuthorization) {
+        if (null === $this->entitlementAuthorization || null === $this->entitlementAttribute) {
             return false;
         }
 

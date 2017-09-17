@@ -13,6 +13,9 @@ use SURFnet\VPN\Common\Http\Exception\HttpException;
 
 class AuthUtils
 {
+    /**
+     * @return void
+     */
     public static function requireUser(array $hookData, array $userList)
     {
         if (!in_array($hookData['auth'], $userList, true)) {

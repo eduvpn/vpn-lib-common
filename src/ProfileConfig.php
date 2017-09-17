@@ -16,6 +16,9 @@ class ProfileConfig extends Config
         parent::__construct($configData);
     }
 
+    /**
+     * @return array
+     */
     public static function defaultConfig()
     {
         return [

@@ -11,6 +11,10 @@ namespace SURFnet\VPN\Common\Http;
 
 class HtmlResponse extends Response
 {
+    /**
+     * @param string $responsePage
+     * @param int    $responseCode
+     */
     public function __construct($responsePage, $responseCode = 200)
     {
         parent::__construct($responseCode, 'text/html');

@@ -32,6 +32,11 @@ class CurlHttpClient implements HttpClientInterface
         curl_close($this->curlChannel);
     }
 
+    /**
+     * @param string $requestUri
+     *
+     * @return array
+     */
     public function get($requestUri)
     {
         return $this->exec(
@@ -41,6 +46,12 @@ class CurlHttpClient implements HttpClientInterface
         );
     }
 
+    /**
+     * @param string $requestUri
+     * @param array  $postData
+     *
+     * @return array
+     */
     public function post($requestUri, array $postData = [])
     {
         return $this->exec(
@@ -51,6 +62,9 @@ class CurlHttpClient implements HttpClientInterface
         );
     }
 
+    /**
+     * @return array
+     */
     private function exec(array $curlOptions)
     {
         // reset all cURL options
@@ -79,6 +93,9 @@ class CurlHttpClient implements HttpClientInterface
         ];
     }
 
+    /**
+     * @return void
+     */
     private function curlReset()
     {
         // requires PHP >= 5.5 for curl_reset

@@ -44,6 +44,12 @@ class CsrfProtectionHook implements BeforeHookInterface
         throw new HttpException('CSRF protection failed, no HTTP_ORIGIN or HTTP_REFERER', 400);
     }
 
+    /**
+     * @param string $uriAuthority
+     * @param string $httpOrigin
+     *
+     * @return bool
+     */
     public function verifyOrigin($uriAuthority, $httpOrigin)
     {
         // the HTTP_ORIGIN MUST be equal to uriAuthority
@@ -54,6 +60,12 @@ class CsrfProtectionHook implements BeforeHookInterface
         return true;
     }
 
+    /**
+     * @param string $uriAuthority
+     * @param string $httpReferrer
+     *
+     * @return bool
+     */
     public function verifyReferrer($uriAuthority, $httpReferrer)
     {
         // the HTTP_REFERER MUST start with uriAuthority

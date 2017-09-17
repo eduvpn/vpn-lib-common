@@ -20,12 +20,20 @@ class ServerClient
     /** @var string */
     private $baseUri;
 
+    /**
+     * @param string $baseUri
+     */
     public function __construct(HttpClientInterface $httpClient, $baseUri)
     {
         $this->httpClient = $httpClient;
         $this->baseUri = $baseUri;
     }
 
+    /**
+     * @param string $requestPath
+     *
+     * @return array|bool
+     */
     public function get($requestPath, array $getData = [])
     {
         $requestUri = sprintf('%s/%s', $this->baseUri, $requestPath);
@@ -40,6 +48,11 @@ class ServerClient
         );
     }
 
+    /**
+     * @param string $requestPath
+     *
+     * @return array|bool
+     */
     public function post($requestPath, array $postData)
     {
         $requestUri = sprintf('%s/%s', $this->baseUri, $requestPath);
@@ -51,6 +64,12 @@ class ServerClient
         );
     }
 
+    /**
+     * @param string $requestMethod
+     * @param string $requestPath
+     *
+     * @return true|array
+     */
     private static function responseHandler($requestMethod, $requestPath, array $clientResponse)
     {
         list($statusCode, $responseData) = $clientResponse;
@@ -75,6 +94,14 @@ class ServerClient
         throw new ApiException($responseData[$requestPath]['error']);
     }
 
+    /**
+     * @param string $requestMethod
+     * @param string $requestPath
+     * @param int    $statusCode
+     * @param array  $responseData
+     *
+     * @return void
+     */
     private static function validateClientResponse($requestMethod, $requestPath, $statusCode, $responseData)
     {
         // responseData MUST be array

@@ -15,6 +15,9 @@ use RuntimeException;
 
 class Logger extends AbstractLogger
 {
+    /**
+     * @param string $ident
+     */
     public function __construct($ident)
     {
         if (false === openlog($ident, LOG_PERROR | LOG_ODELAY, LOG_USER)) {
@@ -32,7 +35,7 @@ class Logger extends AbstractLogger
     /**
      * Logs with an arbitrary level.
      *
-     * @param mixed  $level
+     * @param int    $level
      * @param string $message
      * @param array  $context
      */
@@ -47,6 +50,11 @@ class Logger extends AbstractLogger
         );
     }
 
+    /**
+     * @param int $level
+     *
+     * @return int
+     */
     private static function levelToPriority($level)
     {
         switch ($level) {

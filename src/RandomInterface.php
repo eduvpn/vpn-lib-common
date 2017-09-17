@@ -14,7 +14,7 @@ interface RandomInterface
     /**
      * Get a randomly generated crypto secure string.
      *
-     * @param $length int the length (in bytes) of the random string
+     * @param int $length the length (in bytes) of the random string
      */
     public function get($length);
 }

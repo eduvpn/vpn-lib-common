@@ -53,6 +53,9 @@ class CliParser
         $this->optionList = $optionList;
     }
 
+    /**
+     * @return string
+     */
     public function help()
     {
         $helpText = $this->programDescription.PHP_EOL;
@@ -72,6 +75,9 @@ class CliParser
         return $helpText;
     }
 
+    /**
+     * @return \SURFnet\VPN\Common\Config
+     */
     public function parse(array $argv)
     {
         $argc = count($argv);

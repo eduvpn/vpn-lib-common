@@ -44,6 +44,9 @@ class Request
         $this->postData = $postData;
     }
 
+    /**
+     * @return string
+     */
     public function getAuthority()
     {
         // scheme
@@ -74,6 +77,9 @@ class Request
         return sprintf('%s://%s', $requestScheme, $serverName);
     }
 
+    /**
+     * @return string
+     */
     public function getUri()
     {
         $requestUri = $this->serverData['REQUEST_URI'];
@@ -81,6 +87,9 @@ class Request
         return sprintf('%s%s', $this->getAuthority(), $requestUri);
     }
 
+    /**
+     * @return string
+     */
     public function getRoot()
     {
         $rootDir = dirname($this->serverData['SCRIPT_NAME']);
@@ -91,21 +100,33 @@ class Request
         return $rootDir;
     }
 
+    /**
+     * @return string
+     */
     public function getRootUri()
     {
         return sprintf('%s%s', $this->getAuthority(), $this->getRoot());
     }
 
+    /**
+     * @return string
+     */
     public function getRequestMethod()
     {
         return $this->serverData['REQUEST_METHOD'];
     }
 
+    /**
+     * @return string
+     */
     public function getServerName()
     {
         return $this->serverData['SERVER_NAME'];
     }
 
+    /**
+     * @return bool
+     */
     public function isBrowser()
     {
         if (!array_key_exists('HTTP_ACCEPT', $this->serverData)) {
@@ -115,6 +136,9 @@ class Request
         return false !== mb_strpos($this->serverData['HTTP_ACCEPT'], 'text/html');
     }
 
+    /**
+     * @return string
+     */
     public function getPathInfo()
     {
         // remove the query string
@@ -136,26 +160,53 @@ class Request
         return $requestUri;
     }
 
+    /**
+     * @return array
+     */
     public function getQueryParameters()
     {
         return $this->getData;
     }
 
+    /**
+     * @param string $key
+     * @param bool   $isRequired
+     * @param mixed  $defaultValue
+     *
+     * @return mixed
+     */
     public function getQueryParameter($key, $isRequired = true, $defaultValue = null)
     {
         return Utils::getValueFromArray($this->getData, $key, $isRequired, $defaultValue);
     }
 
+    /**
+     * @return array
+     */
     public function getPostParameters()
     {
         return $this->postData;
     }
 
+    /**
+     * @param string $key
+     * @param bool   $isRequired
+     * @param mixed  $defaultValue
+     *
+     * @return mixed
+     */
     public function getPostParameter($key, $isRequired = true, $defaultValue = null)
     {
         return Utils::getValueFromArray($this->postData, $key, $isRequired, $defaultValue);
     }
 
+    /**
+     * @param string $key
+     * @param bool   $isRequired
+     * @param mixed  $defaultValue
+     *
+     * @return mixed
+     */
     public function getHeader($key, $isRequired = true, $defaultValue = null)
     {
         return Utils::getValueFromArray($this->serverData, $key, $isRequired, $defaultValue);

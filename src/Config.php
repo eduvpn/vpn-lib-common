@@ -22,11 +22,19 @@ class Config
         $this->configData = array_merge(static::defaultConfig(), $configData);
     }
 
+    /**
+     * @return array
+     */
     public static function defaultConfig()
     {
         return [];
     }
 
+    /**
+     * @param string $key
+     *
+     * @return bool
+     */
     public function hasSection($key)
     {
         if (!array_key_exists($key, $this->configData)) {
@@ -36,6 +44,11 @@ class Config
         return is_array($this->configData[$key]);
     }
 
+    /**
+     * @param string $key
+     *
+     * @return Config
+     */
     public function getSection($key)
     {
         if (false === $this->hasSection($key)) {
@@ -47,11 +60,21 @@ class Config
         return new self($this->configData[$key]);
     }
 
+    /**
+     * @param string $key
+     *
+     * @return bool
+     */
     public function hasItem($key)
     {
         return array_key_exists($key, $this->configData);
     }
 
+    /**
+     * @param string $key
+     *
+     * @return mixed
+     */
     public function getItem($key)
     {
         if (false === $this->hasItem($key)) {
@@ -61,6 +84,11 @@ class Config
         return $this->configData[$key];
     }
 
+    /**
+     * @param string $configFile
+     *
+     * @return Config
+     */
     public static function fromFile($configFile)
     {
         if (false === @file_exists($configFile)) {
@@ -70,11 +98,20 @@ class Config
         return new static(require $configFile);
     }
 
+    /**
+     * @return array
+     */
     public function toArray()
     {
         return $this->configData;
     }
 
+    /**
+     * @param string $configFile
+     * @param int    $mode
+     *
+     * @return void
+     */
     public static function toFile($configFile, array $configData, $mode = 0600)
     {
         $fileData = sprintf('<?php return %s;', var_export($configData, true));
