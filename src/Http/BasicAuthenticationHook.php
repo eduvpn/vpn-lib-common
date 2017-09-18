@@ -44,7 +44,7 @@ class BasicAuthenticationHook implements BeforeHookInterface
         }
 
         if (array_key_exists($authUser, $this->userPass)) {
-            if (0 === \Sodium\compare($authPass, $this->userPass[$authUser])) {
+            if (hash_equals($authPass, $this->userPass[$authUser])) {
                 return $authUser;
             }
         }

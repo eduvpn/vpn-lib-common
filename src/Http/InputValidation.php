@@ -174,7 +174,7 @@ class InputValidation
     /**
      * @param string $dateTime
      *
-     * @return DateTime
+     * @return \DateTime
      */
     public static function dateTime($dateTime)
     {
