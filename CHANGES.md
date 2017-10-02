@@ -1,8 +1,8 @@
 # Changelog
 
 ## 1.0.4 (2017-10-02)
-- remove `InputValidation::userId`, all UTF-8 characters should be allowed as
-  userId
+- make `InputValidation::userId` a NOP, all UTF-8 characters should be allowed 
+  as `userId`
 - no longer require `libsodium` as this library has no crypto needs
 
 ## 1.0.3 (2017-09-11)

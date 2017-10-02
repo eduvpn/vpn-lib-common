@@ -172,6 +172,20 @@ class InputValidation
     }
 
     /**
+     * @param string $userId
+     *
+     * @return string
+     */
+    public static function userId($userId)
+    {
+        // NOP
+        // XXX remove in next major release, we accept all UTF-8 characters
+        // now for userIds
+
+        return $userId;
+    }
+
+    /**
      * @param string $ipAddress
      *
      * @return string
