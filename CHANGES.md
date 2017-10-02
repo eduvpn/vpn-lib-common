@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.0.4 (2017-10-02)
+- remove `InputValidation::userId`, all UTF-8 characters should be allowed as
+  userId
+- no longer require `libsodium` as this library has no crypto needs
+
 ## 1.0.3 (2017-09-11)
 - rename UI language cookie to no longer need to explicitly bind it to Path and 
   Domain without breaking language selector
