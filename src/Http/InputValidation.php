@@ -21,6 +21,8 @@ class InputValidation
      */
     public static function displayName($displayName)
     {
+        self::requireUtf8($displayName, 'displayName');
+
         $displayName = filter_var($displayName, FILTER_UNSAFE_RAW, FILTER_FLAG_STRIP_LOW);
 
         if (0 === mb_strlen($displayName)) {
@@ -84,21 +86,6 @@ class InputValidation
         }
 
         return $instanceId;
-    }
-
-    /**
-     * @param string $languageCode
-     *
-     * @return string
-     */
-    public static function languageCode($languageCode)
-    {
-        $supportedLanguages = ['en_US', 'nl_NL', 'de_DE', 'fr_FR'];
-        if (!in_array($languageCode, $supportedLanguages, true)) {
-            throw new InputValidationException('invalid "language_code"');
-        }
-
-        return $languageCode;
     }
 
     /**
@@ -178,9 +165,12 @@ class InputValidation
      */
     public static function userId($userId)
     {
-        // NOP
-        // XXX remove in next major release, we accept all UTF-8 characters
-        // now for userIds
+        self::requireUtf8($userId, 'userId');
+
+        $userIdLength = mb_strlen($userId);
+        if (0 >= $userIdLength || 256 < $userIdLength) {
+            throw new InputValidationException('invalid length: 0 < userId <= 256');
+        }
 
         return $userId;
     }
@@ -325,5 +315,19 @@ class InputValidation
         }
 
         return $messageType;
+    }
+
+    /**
+     * @param string $inputString
+     * @param string $inputName
+     *
+     * @return void
+     */
+    private static function requireUtf8($inputString, $inputName)
+    {
+        // we want valid UTF-8
+        if (!mb_check_encoding($inputString, 'UTF-8')) {
+            throw new InputValidationException(sprintf('invalid encoding for "%s"', $inputName));
+        }
     }
 }
