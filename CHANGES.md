@@ -4,6 +4,8 @@
 - make `InputValidation::userId` validate the string is actually valid UTF-8 
   and check the length of the userId
 - remove `InputValidation::languageCode` as it is not used anywhere
+- add `authPlugin` configuration option to use external plugin to validate 
+  2FA
 
 ## 1.0.4 (2017-10-02)
 - make `InputValidation::userId` a NOP, all UTF-8 characters should be allowed 
