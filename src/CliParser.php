@@ -120,8 +120,10 @@ class CliParser
                 // check if it is actually there
                 if (array_key_exists($opt, $optionValues)) {
                     // must have value
-                    if (0 === count($optionValues[$opt])) {
-                        throw new CliException(sprintf('missing required parameter value for option "--%s"', $opt));
+                    if (is_array($optionValues[$opt])) {
+                        if (0 === count($optionValues[$opt])) {
+                            throw new CliException(sprintf('missing required parameter value for option "--%s"', $opt));
+                        }
                     }
                 }
             }
