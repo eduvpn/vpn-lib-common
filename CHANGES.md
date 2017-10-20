@@ -1,6 +1,6 @@
 # Changelog
 
-## 1.0.5 (TBD)
+## 1.0.5 (2017-10-20)
 - make `InputValidation::userId` validate the string is actually valid UTF-8 
   and check the length of the userId
 - remove `InputValidation::languageCode` as it is not used anywhere
