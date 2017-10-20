@@ -118,5 +118,6 @@ class CsrfProtectionHookTest extends PHPUnit_Framework_TestCase
 
         $referrerCheckHook = new CsrfProtectionHook();
         $referrerCheckHook->executeBefore($request, []);
+        $this->assertTrue(true);
     }
 }

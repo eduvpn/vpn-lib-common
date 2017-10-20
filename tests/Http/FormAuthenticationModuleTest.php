@@ -84,10 +84,4 @@ class FormAuthenticationModuleTest extends PHPUnit_Framework_TestCase
 
         $this->assertSame('{"formAuthentication":{"_form_auth_invalid_credentials":true,"_form_auth_invalid_credentials_user":"foo","_form_auth_redirect_to":"http:\/\/vpn.example\/account","_form_auth_login_page":true}}', $response->getBody());
     }
-
-    public function testLogout()
-    {
-        //        $session = new TestSession();
-//        $tpl = new TestTpl();
-    }
 }
