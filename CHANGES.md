@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.0.6 (...)
+- fix PHP >= 7.2 compatibility with `count()`
+- fix risky tests
+
 ## 1.0.5 (2017-10-20)
 - make `InputValidation::userId` validate the string is actually valid UTF-8 
   and check the length of the userId
