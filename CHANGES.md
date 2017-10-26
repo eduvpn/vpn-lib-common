@@ -1,6 +1,6 @@
 # Changelog
 
-## 1.0.6 (...)
+## 1.0.6 (2017-10-26)
 - fix PHP >= 7.2 compatibility with `count()`
 - fix risky tests
 
