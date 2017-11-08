@@ -14,14 +14,11 @@ class Response
     /** @var int */
     private $statusCode;
 
-    /** @var string */
-    private $contentType;
-
     /** @var array */
     private $headers = [];
 
     /** @var string */
-    private $body = null;
+    private $body = '';
 
     /**
      * @param int    $statusCode
@@ -30,7 +27,9 @@ class Response
     public function __construct($statusCode = 200, $contentType = 'text/plain')
     {
         $this->statusCode = $statusCode;
-        $this->contentType = $contentType;
+        $this->headers = [
+            'Content-Type' => $contentType,
+        ];
     }
 
     /**
@@ -54,6 +53,14 @@ class Response
         if (array_key_exists($key, $this->headers)) {
             return $this->headers[$key];
         }
+    }
+
+    /**
+     * @return array
+     */
+    public function getHeaders()
+    {
+        return $this->headers;
     }
 
     /**
@@ -83,17 +90,33 @@ class Response
     }
 
     /**
+     * @param array $responseData
+     *
+     * @return self
+     */
+    public static function import(array $responseData)
+    {
+        $response = new self(
+            $responseData['statusCode'],
+            $responseData['responseHeaders']['Content-Type']
+        );
+        $response->setBody($responseData['responseBody']);
+
+        return $response;
+    }
+
+    /**
      * @return void
      */
     public function send()
     {
         http_response_code($this->statusCode);
+        if ('' === $this->body) {
+            unset($this->headers['Content-Type']);
+        }
         foreach ($this->headers as $key => $value) {
             header(sprintf('%s: %s', $key, $value));
         }
-        if (null !== $this->body) {
-            header(sprintf('Content-Type: %s', $this->contentType));
-            echo $this->body;
-        }
+        echo $this->body;
     }
 }

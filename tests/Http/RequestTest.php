@@ -79,6 +79,20 @@ class RequestTest extends PHPUnit_Framework_TestCase
         $this->assertSame('/', $request->getPathInfo());
     }
 
+    public function testNoPathInfo()
+    {
+        $request = new Request(
+            [
+                'SERVER_NAME' => 'vpn.example',
+                'SERVER_PORT' => 80,
+                'REQUEST_METHOD' => 'GET',
+                'REQUEST_URI' => '/index.php',
+                'SCRIPT_NAME' => '/index.php',
+            ]
+        );
+        $this->assertSame('/', $request->getPathInfo());
+    }
+
     public function testGetQueryParameter()
     {
         $request = new Request(

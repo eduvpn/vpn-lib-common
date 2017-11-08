@@ -147,6 +147,11 @@ class Request
             $requestUri = mb_substr($requestUri, 0, $pos);
         }
 
+        // if requestUri === scriptName
+        if ($this->serverData['REQUEST_URI'] === $this->serverData['SCRIPT_NAME']) {
+            return '/';
+        }
+
         // remove script_name (if it is part of request_uri
         if (0 === mb_strpos($requestUri, $this->serverData['SCRIPT_NAME'])) {
             return substr($requestUri, mb_strlen($this->serverData['SCRIPT_NAME']));

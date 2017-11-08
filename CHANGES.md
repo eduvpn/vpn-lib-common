@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.0.7 (...)
+- fix missing PATH_INFO and add test for it (issue #5)
+- add `Response::import` to allow easy contruction of `Response` object, 
+  working around shitty API
+- cleanup `Response` a little bit without breaking API
+
 ## 1.0.6 (2017-10-26)
 - fix PHP >= 7.2 compatibility with `count()`
 - fix risky tests
