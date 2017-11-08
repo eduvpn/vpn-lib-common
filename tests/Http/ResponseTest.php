@@ -9,17 +9,17 @@
 
 namespace SURFnet\VPN\Common\Tests\Http;
 
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 use SURFnet\VPN\Common\Http\Response;
 
-class ResponseTest extends PHPUnit_Framework_TestCase
+class ResponseTest extends TestCase
 {
     public function testImport()
     {
         $response = Response::import(
             [
                 'statusCode' => 200,
-                'responseHeaders' => ['Content-Type' => 'application/json'],
+                'responseHeaders' => ['Content-Type' => 'application/json', 'X-Foo' => 'Bar'],
                 'responseBody' => '{"a": "b"}',
             ]
         );
@@ -28,6 +28,7 @@ class ResponseTest extends PHPUnit_Framework_TestCase
         $this->assertSame(
             [
                 'Content-Type' => 'application/json',
+                'X-Foo' => 'Bar',
             ],
             $response->getHeaders()
         );

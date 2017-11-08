@@ -9,10 +9,10 @@
 
 namespace SURFnet\VPN\Common\Tests\Http;
 
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 use SURFnet\VPN\Common\Http\BasicAuthenticationHook;
 
-class BasicAuthenticationHookTest extends PHPUnit_Framework_TestCase
+class BasicAuthenticationHookTest extends TestCase
 {
     public function testBasicAuthentication()
     {

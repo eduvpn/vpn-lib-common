@@ -9,10 +9,10 @@
 
 namespace SURFnet\VPN\Common\Tests\Http;
 
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 use SURFnet\VPN\Common\Http\CsrfProtectionHook;
 
-class CsrfProtectionHookTest extends PHPUnit_Framework_TestCase
+class CsrfProtectionHookTest extends TestCase
 {
     public function testGoodPostReferrer()
     {

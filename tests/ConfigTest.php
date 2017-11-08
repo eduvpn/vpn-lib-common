@@ -9,10 +9,10 @@
 
 namespace SURFnet\VPN\Common\Tests;
 
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 use SURFnet\VPN\Common\Config;
 
-class ConfigTest extends PHPUnit_Framework_TestCase
+class ConfigTest extends TestCase
 {
     public function testSimpleConfig()
     {

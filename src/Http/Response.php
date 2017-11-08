@@ -100,6 +100,10 @@ class Response
             $responseData['statusCode'],
             $responseData['responseHeaders']['Content-Type']
         );
+        unset($responseData['responseHeaders']['Content-Type']);
+        foreach ($responseData['responseHeaders'] as $key => $value) {
+            $response->addHeader($key, $value);
+        }
         $response->setBody($responseData['responseBody']);
 
         return $response;

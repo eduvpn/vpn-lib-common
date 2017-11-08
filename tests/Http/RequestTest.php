@@ -9,10 +9,10 @@
 
 namespace SURFnet\VPN\Common\Tests\Http;
 
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 use SURFnet\VPN\Common\Http\Request;
 
-class RequestTest extends PHPUnit_Framework_TestCase
+class RequestTest extends TestCase
 {
     public function testGetServerName()
     {

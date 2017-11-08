@@ -9,12 +9,12 @@
 
 namespace SURFnet\VPN\Common\Tests\Http;
 
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 use SURFnet\VPN\Common\Http\FormAuthenticationModule;
 use SURFnet\VPN\Common\Http\Service;
 use SURFnet\VPN\Common\Tests\TestTpl;
 
-class FormAuthenticationModuleTest extends PHPUnit_Framework_TestCase
+class FormAuthenticationModuleTest extends TestCase
 {
     public function testVerifyCorrect()
     {

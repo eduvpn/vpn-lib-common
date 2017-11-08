@@ -9,11 +9,11 @@
 
 namespace SURFnet\VPN\Common\Tests\Http;
 
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 use SURFnet\VPN\Common\Http\FormAuthenticationHook;
 use SURFnet\VPN\Common\Tests\TestTpl;
 
-class FormAuthenticationHookTest extends PHPUnit_Framework_TestCase
+class FormAuthenticationHookTest extends TestCase
 {
     public function testAuthenticated()
     {

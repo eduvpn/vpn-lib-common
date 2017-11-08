@@ -9,14 +9,14 @@
 
 namespace SURFnet\VPN\Common\Tests\Http;
 
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 use SURFnet\VPN\Common\Http\NullAuthenticationHook;
 use SURFnet\VPN\Common\Http\Service;
 use SURFnet\VPN\Common\Http\TwoFactorModule;
 use SURFnet\VPN\Common\HttpClient\ServerClient;
 use SURFnet\VPN\Common\Tests\TestTpl;
 
-class TwoFactorModuleTest extends PHPUnit_Framework_TestCase
+class TwoFactorModuleTest extends TestCase
 {
     public function testVerifyCorrect()
     {

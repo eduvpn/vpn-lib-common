@@ -9,10 +9,10 @@
 
 namespace SURFnet\VPN\Common\Tests;
 
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 use SURFnet\VPN\Common\CliParser;
 
-class CliParserTest extends PHPUnit_Framework_TestCase
+class CliParserTest extends TestCase
 {
     public function testRequiredArgumentWithValue()
     {

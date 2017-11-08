@@ -9,12 +9,12 @@
 
 namespace SURFnet\VPN\Common\Tests\Http;
 
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 use SURFnet\VPN\Common\Http\TwoFactorHook;
 use SURFnet\VPN\Common\HttpClient\ServerClient;
 use SURFnet\VPN\Common\Tests\TestTpl;
 
-class TwoFactorHookTest extends PHPUnit_Framework_TestCase
+class TwoFactorHookTest extends TestCase
 {
     public function testAuthenticated()
     {

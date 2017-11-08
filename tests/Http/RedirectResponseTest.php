@@ -9,10 +9,10 @@
 
 namespace SURFnet\VPN\Common\Tests\Http;
 
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 use SURFnet\VPN\Common\Http\RedirectResponse;
 
-class RedirectResponseTest extends PHPUnit_Framework_TestCase
+class RedirectResponseTest extends TestCase
 {
     public function testRedirect()
     {
