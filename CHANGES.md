@@ -1,9 +1,9 @@
 # Changelog
 
-## 1.0.7 (...)
+## 1.0.7 (2017-11-08)
 - fix missing PATH_INFO and add test for it (issue #5)
-- add `Response::import` to allow easy contruction of `Response` object, 
-  working around shitty API
+- add `Response::import` to allow easy construction of `Response` object, 
+  working around sub-optimal API
 - cleanup `Response` a little bit without breaking API
 - support PHPUnit 6
 
