@@ -5,6 +5,7 @@
 - add `Response::import` to allow easy contruction of `Response` object, 
   working around shitty API
 - cleanup `Response` a little bit without breaking API
+- support PHPUnit 6
 
 ## 1.0.6 (2017-10-26)
 - fix PHP >= 7.2 compatibility with `count()`
