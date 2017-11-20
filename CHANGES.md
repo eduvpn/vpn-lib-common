@@ -1,6 +1,6 @@
 # Changelog
 
-## 1.0.8 (...)
+## 1.0.8 (2017-11-20)
 - make compression (`--comp-lzo`) configurable
 
 ## 1.0.7 (2017-11-08)
