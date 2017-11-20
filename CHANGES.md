@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.0.8 (...)
+- make compression (`--comp-lzo`) configurable
+
 ## 1.0.7 (2017-11-08)
 - fix missing PATH_INFO and add test for it (issue #5)
 - add `Response::import` to allow easy construction of `Response` object, 

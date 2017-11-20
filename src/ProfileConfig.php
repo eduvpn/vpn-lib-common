@@ -43,6 +43,7 @@ class ProfileConfig extends Config
             'hideProfile' => false,
             'tlsCrypt' => false,
             'authPlugin' => false,
+            'enableCompression' => true,    // comp-lzo
         ];
     }
 }
