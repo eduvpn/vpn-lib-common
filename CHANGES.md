@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.1.0 (...)
+- implement `CredentialValidatorInterface` for verifying username/password
+- switch `FormAuthentication` to use `CredentialValidatorInterface`
+- implement `SimpleAuth` that verifies static username/password list used so
+  far with `FormAuthentication`
+
 ## 1.0.8 (2017-11-20)
 - make compression (`--comp-lzo`) configurable
 

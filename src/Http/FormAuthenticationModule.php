@@ -15,8 +15,8 @@ use SURFnet\VPN\Common\TplInterface;
 
 class FormAuthenticationModule implements ServiceModuleInterface
 {
-    /** @var array */
-    private $userPass;
+    /** @var CredentialValidatorInterface */
+    private $credentialValidator;
 
     /** @var \fkooman\SeCookie\SessionInterface; */
     private $session;
@@ -24,9 +24,12 @@ class FormAuthenticationModule implements ServiceModuleInterface
     /** @var \SURFnet\VPN\Common\TplInterface */
     private $tpl;
 
-    public function __construct(array $userPass, SessionInterface $session, TplInterface $tpl)
-    {
-        $this->userPass = $userPass;
+    public function __construct(
+        CredentialValidatorInterface $credentialValidator,
+        SessionInterface $session,
+        TplInterface $tpl
+    ) {
+        $this->credentialValidator = $credentialValidator;
         $this->session = $session;
         $this->tpl = $tpl;
     }
@@ -57,13 +60,11 @@ class FormAuthenticationModule implements ServiceModuleInterface
                     throw new HttpException('redirect_to does not match expected host', 400);
                 }
 
-                if (array_key_exists($authUser, $this->userPass)) {
-                    if (false !== password_verify($authPass, $this->userPass[$authUser])) {
-                        $this->session->regenerate(true);
-                        $this->session->set('_form_auth_user', $authUser);
+                if ($this->credentialValidator->isValid($authUser, $authPass)) {
+                    $this->session->regenerate(true);
+                    $this->session->set('_form_auth_user', $authUser);
 
-                        return new RedirectResponse($redirectTo, 302);
-                    }
+                    return new RedirectResponse($redirectTo, 302);
                 }
 
                 // invalid authentication

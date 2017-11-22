@@ -12,6 +12,7 @@ namespace SURFnet\VPN\Common\Tests\Http;
 use PHPUnit\Framework\TestCase;
 use SURFnet\VPN\Common\Http\FormAuthenticationModule;
 use SURFnet\VPN\Common\Http\Service;
+use SURFnet\VPN\Common\Http\SimpleAuth;
 use SURFnet\VPN\Common\Tests\TestTpl;
 
 class FormAuthenticationModuleTest extends TestCase
@@ -22,10 +23,12 @@ class FormAuthenticationModuleTest extends TestCase
         $tpl = new TestTpl();
         $service = new Service();
         $formAuthenticationModule = new FormAuthenticationModule(
-            [
-                // foo:bar
-                'foo' => '$2y$10$F4lt5FzX.wfr2s3jsTy9XuxU2T7J5R0bTnMbu.9MDjphIupbG54l6',
-            ],
+            new SimpleAuth(
+                [
+                    // foo:bar
+                    'foo' => '$2y$10$F4lt5FzX.wfr2s3jsTy9XuxU2T7J5R0bTnMbu.9MDjphIupbG54l6',
+                ]
+            ),
             $session,
             $tpl
         );
@@ -57,9 +60,11 @@ class FormAuthenticationModuleTest extends TestCase
 
         $service = new Service();
         $formAuthenticationModule = new FormAuthenticationModule(
-            [
-                'foo' => 'bar',
-            ],
+            new SimpleAuth(
+                [
+                    'foo' => 'bar',
+                ]
+            ),
             $session,
             $tpl
         );
