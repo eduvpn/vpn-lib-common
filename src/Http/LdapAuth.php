@@ -48,7 +48,7 @@ class LdapAuth implements CredentialValidatorInterface
 
             return true;
         } catch (LdapClientException $e) {
-            $this->logger->warn(sprintf('authentication failed: DN "%s" was unable to bind to LDAP server', $userDn));
+            $this->logger->warning(sprintf('authentication failed: DN "%s" was unable to bind to LDAP server', $userDn));
 
             return false;
         }
