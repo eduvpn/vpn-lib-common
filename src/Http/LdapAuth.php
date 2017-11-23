@@ -9,11 +9,15 @@
 
 namespace SURFnet\VPN\Common\Http;
 
+use Psr\Log\LoggerInterface;
 use SURFnet\VPN\Common\Exception\LdapClientException;
 use SURFnet\VPN\Common\LdapClient;
 
 class LdapAuth implements CredentialValidatorInterface
 {
+    /** @var \Psr\Log\LoggerInterface */
+    private $logger;
+
     /** @var \SURFnet\VPN\Common\LdapClient */
     private $ldapClient;
 
@@ -23,8 +27,9 @@ class LdapAuth implements CredentialValidatorInterface
     /**
      * @param string $userDnTemplate
      */
-    public function __construct(LdapClient $ldapClient, $userDnTemplate)
+    public function __construct(LoggerInterface $logger, LdapClient $ldapClient, $userDnTemplate)
     {
+        $this->logger = $logger;
         $this->ldapClient = $ldapClient;
         $this->userDnTemplate = $userDnTemplate;
     }
@@ -37,12 +42,14 @@ class LdapAuth implements CredentialValidatorInterface
      */
     public function isValid($authUser, $authPass)
     {
-        $userDn = str_replace('{{UID}}', $authUser, $this->userDnTemplate);
+        $userDn = str_replace('{{UID}}', LdapClient::escapeDn($authUser), $this->userDnTemplate);
         try {
             $this->ldapClient->bind($userDn, $authPass);
 
             return true;
         } catch (LdapClientException $e) {
+            $this->logger->warn(sprintf('authentication failed: DN "%s" was unable to bind to LDAP server', $userDn));
+
             return false;
         }
     }

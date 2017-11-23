@@ -29,7 +29,9 @@ class LdapClient
     }
 
     /**
-     * @param string|null $bindUser
+     * Bind to an LDAP server.
+     *
+     * @param string|null $bindUser you MUST use LdapClient::escapeDn on any user input used to contruct the DN!
      * @param string|null $bindPass
      *
      * @return void
@@ -45,6 +47,28 @@ class LdapClient
                 )
             );
         }
+    }
+
+    /**
+     * @param string $str
+     *
+     * @return string
+     */
+    public static function escapeDn($str)
+    {
+        // ldap_escape in PHP >= 5.6 (or symfony/polyfill-php56)
+        return ldap_escape($str, '', LDAP_ESCAPE_DN);
+    }
+
+    /**
+     * @param string $str
+     *
+     * @return string
+     */
+    public static function escapeFilter($str)
+    {
+        // ldap_escape in PHP >= 5.6 (or symfony/polyfill-php56)
+        return ldap_escape($str, '', LDAP_ESCAPE_FILTER);
     }
 
     /**
