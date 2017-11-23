@@ -1,6 +1,6 @@
 # Changelog
 
-## 1.1.0 (...)
+## 1.1.0 (2017-11-23)
 - implement `CredentialValidatorInterface` for verifying username/password
 - switch `FormAuthentication` to use `CredentialValidatorInterface`
 - implement `SimpleAuth` that verifies static username/password list used so
