@@ -76,7 +76,7 @@ class LdapClient
      * @param string $searchFilter
      * @param array  $attributeList
      *
-     * @return array|false
+     * @return array
      */
     public function search($baseDn, $searchFilter, array $attributeList = [])
     {
