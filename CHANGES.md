@@ -5,6 +5,8 @@
 - switch `FormAuthentication` to use `CredentialValidatorInterface`
 - implement `SimpleAuth` that verifies static username/password list used so
   far with `FormAuthentication`
+- implement `LdapAuth`
+- add `LdapClient` implementation
 
 ## 1.0.8 (2017-11-20)
 - make compression (`--comp-lzo`) configurable
