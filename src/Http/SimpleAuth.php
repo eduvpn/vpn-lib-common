@@ -20,10 +20,7 @@ class SimpleAuth implements CredentialValidatorInterface
     }
 
     /**
-     * @param string $authUser
-     * @param string $authPass
-     *
-     * @return bool
+     * {@inheritdoc}
      */
     public function isValid($authUser, $authPass)
     {

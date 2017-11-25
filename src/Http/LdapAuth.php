@@ -35,10 +35,7 @@ class LdapAuth implements CredentialValidatorInterface
     }
 
     /**
-     * @param string $authUser
-     * @param string $authPass
-     *
-     * @return bool
+     * {@inheritdoc}
      */
     public function isValid($authUser, $authPass)
     {
@@ -48,7 +45,9 @@ class LdapAuth implements CredentialValidatorInterface
 
             return true;
         } catch (LdapClientException $e) {
-            $this->logger->warning(sprintf('authentication failed: DN "%s" was unable to bind to LDAP server', $userDn));
+            $this->logger->warning(
+                sprintf('unable to bind with DN "%s" (%s)', $userDn, $e->getMessage())
+            );
 
             return false;
         }
