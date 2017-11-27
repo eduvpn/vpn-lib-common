@@ -26,6 +26,9 @@ class LdapClient
             // only with very old OpenLDAP will it ever return false...
             throw new LdapClientException(sprintf('unacceptable LDAP URI "%s"', $ldapUri));
         }
+        if (false === ldap_set_option($this->ldapResource, LDAP_OPT_PROTOCOL_VERSION, 3)) {
+            throw new LdapClientException('unable to set LDAP option');
+        }
     }
 
     /**

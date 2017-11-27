@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.1.1 (...)
+- make sure we use LDAPv3
+- better LDAP error messages
+
 ## 1.1.0 (2017-11-23)
 - implement `CredentialValidatorInterface` for verifying username/password
 - switch `FormAuthentication` to use `CredentialValidatorInterface`
