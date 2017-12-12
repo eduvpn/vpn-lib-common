@@ -10,7 +10,6 @@
 namespace SURFnet\VPN\Common\Http;
 
 use SURFnet\VPN\Common\Http\Exception\HttpException;
-use SURFnet\VPN\Common\Http\Exception\InputValidationException;
 use SURFnet\VPN\Common\TplInterface;
 
 class Service
@@ -137,10 +136,6 @@ class Service
 
             // after hooks
             return $this->runAfterHooks($request, $response);
-        } catch (InputValidationException $e) {
-            // in case an InputValidationException is encountered, convert it
-            // into a Bad Request HTTP response
-            throw new HttpException($e->getMessage(), 400);
         } catch (HttpException $e) {
             if ($request->isBrowser()) {
                 if (null === $this->tpl) {

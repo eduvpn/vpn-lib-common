@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.1.2 (...)
+- `Service` class did not catch `InputValidationException` properly
+- make `InputValidationException` extend `HttpException` now
+
 ## 1.1.1 (2017-11-27)
 - make sure we use LDAPv3
 - better LDAP error messages

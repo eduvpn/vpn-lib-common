@@ -11,6 +11,14 @@ namespace SURFnet\VPN\Common\Http\Exception;
 
 use Exception;
 
-class InputValidationException extends Exception
+class InputValidationException extends HttpException
 {
+    /**
+     * @param string $message
+     * @param int    $code
+     */
+    public function __construct($message, $code = 400, Exception $previous = null)
+    {
+        parent::__construct($message, $code, [], $previous);
+    }
 }

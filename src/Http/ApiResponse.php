@@ -15,7 +15,6 @@ class ApiResponse extends Response
 {
     /**
      * @param string $wrapperKey
-     * @param bool   $isOkay
      * @param mixed  $responseData
      * @param int    $responseCode
      */
