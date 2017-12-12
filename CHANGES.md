@@ -1,6 +1,6 @@
 # Changelog
 
-## 1.1.2 (...)
+## 1.1.2 (2017-12-12)
 - `Service` class did not catch `InputValidationException` properly
 - make `InputValidationException` extend `HttpException` now
 
