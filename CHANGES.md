@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.1.3 (...)
+- support 160 bits TOTP secrets
+
 ## 1.1.2 (2017-12-12)
 - `Service` class did not catch `InputValidationException` properly
 - make `InputValidationException` extend `HttpException` now
