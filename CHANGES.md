@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.1.4 (...)
+- add `PdoAuth` class for storing users and password hashes in a database
+
 ## 1.1.3 (2017-12-14)
 - support 160 bits TOTP secrets
 
