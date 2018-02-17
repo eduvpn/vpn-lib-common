@@ -1,6 +1,6 @@
 # Changelog
 
-## 1.1.4 (...)
+## 1.1.4 (2018-02-17)
 - add `PdoAuth` class for storing users and password hashes in a database
 
 ## 1.1.3 (2017-12-14)
