@@ -24,6 +24,7 @@
         "ext-ldap": "*",
         "ext-mbstring": "*",
         "ext-pcre": "*",
+        "ext-pdo": "*",
         "ext-spl": "*",
         "fkooman/secookie": "^2",
         "ircmaxell/password-compat": "^1",
