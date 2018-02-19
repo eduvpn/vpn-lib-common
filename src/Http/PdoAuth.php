@@ -93,6 +93,31 @@ class PdoAuth implements CredentialValidatorInterface
     }
 
     /**
+     * @param string $userId
+     * @param string $newUserPass
+     *
+     * @return bool
+     */
+    public function updatePassword($userId, $newUserPass)
+    {
+        $stmt = $this->db->prepare(
+            'UPDATE
+                users
+             SET
+                password_hash = :password_hash
+             WHERE
+                user_id = :user_id'
+        );
+
+        $passwordHash = password_hash($newUserPass, PASSWORD_DEFAULT);
+        $stmt->bindValue(':user_id', $userId, PDO::PARAM_STR);
+        $stmt->bindValue(':password_hash', $passwordHash, PDO::PARAM_STR);
+        $stmt->execute();
+
+        return 1 === $stmt->rowCount();
+    }
+
+    /**
      * @return void
      */
     public function init()

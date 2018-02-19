@@ -50,4 +50,18 @@ class PdoAuthTest extends TestCase
         $this->pdoAuth->add('foo', 'bar');
         $this->assertFalse($this->pdoAuth->isValid('fop', 'baz'));
     }
+
+    public function testUpdatePasswordExistingUser()
+    {
+        $this->pdoAuth->add('foo', 'bar');
+        $this->assertTrue($this->pdoAuth->updatePassword('foo', 'baz'));
+        $this->assertTrue($this->pdoAuth->isValid('foo', 'baz'));
+    }
+
+    public function testUpdatePasswordNonExistingUser()
+    {
+        $this->pdoAuth->add('foo', 'bar');
+        $this->assertFalse($this->pdoAuth->updatePassword('bar', 'baz'));
+        $this->assertTrue($this->pdoAuth->isValid('foo', 'bar'));
+    }
 }
