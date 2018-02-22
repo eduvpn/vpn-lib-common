@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.1.6 (...)
+- implement `PdoAuth` method to check if user exists
+
 ## 1.1.5 (2018-02-19)
 - implement method to update password in `PdoAuth`
 

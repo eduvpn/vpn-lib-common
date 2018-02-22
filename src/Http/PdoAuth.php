@@ -93,6 +93,27 @@ class PdoAuth implements CredentialValidatorInterface
     }
 
     /**
+     * @param string $authUser
+     *
+     * @return bool
+     */
+    public function userExists($authUser)
+    {
+        $stmt = $this->db->prepare(
+            'SELECT
+                COUNT(*)
+             FROM users
+             WHERE
+                user_id = :user_id'
+        );
+
+        $stmt->bindValue(':user_id', $authUser, PDO::PARAM_STR);
+        $stmt->execute();
+
+        return 1 === (int) $stmt->fetchColumn();
+    }
+
+    /**
      * @param string $userId
      * @param string $newUserPass
      *
