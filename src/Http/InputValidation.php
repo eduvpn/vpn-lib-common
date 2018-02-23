@@ -320,6 +320,20 @@ class InputValidation
     }
 
     /**
+     * @param string $voucherCode
+     *
+     * @return string
+     */
+    public static function voucherCode($voucherCode)
+    {
+        if (1 !== preg_match('/^[a-fA-F0-9]{32}$/', $voucherCode)) {
+            throw new InputValidationException('invalid "voucherCode"');
+        }
+
+        return $voucherCode;
+    }
+
+    /**
      * @param string $inputString
      * @param string $inputName
      *
