@@ -40,6 +40,7 @@ class ProfileConfig extends Config
                 'udp/1194',
                 'tcp/1194',
             ],
+            'exposedVpnProtoPorts' => [],
             'hideProfile' => false,
             'tlsCrypt' => false,
             'authPlugin' => false,

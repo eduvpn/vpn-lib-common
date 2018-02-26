@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.1.7 (...)
+- introduce `exposedVpnProtoPorts`
+
 ## 1.1.6 (2018-02-23)
 - implement `PdoAuth` method to check if user exists
 - implement `InputValidation::voucherCode`
