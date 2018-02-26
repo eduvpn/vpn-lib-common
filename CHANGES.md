@@ -1,6 +1,6 @@
 # Changelog
 
-## 1.1.7 (...)
+## 1.1.7 (2018-02-26)
 - introduce `exposedVpnProtoPorts`
 
 ## 1.1.6 (2018-02-23)
