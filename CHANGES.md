@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.1.8 (...)
+- introduce minimum password length input validation
+
 ## 1.1.7 (2018-02-26)
 - introduce `exposedVpnProtoPorts`
 

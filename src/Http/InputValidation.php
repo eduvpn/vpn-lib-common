@@ -334,6 +334,23 @@ class InputValidation
     }
 
     /**
+     * @param string $userPass
+     *
+     * @return string
+     */
+    public static function userPass($userPass)
+    {
+        self::requireUtf8($userPass, 'userPass');
+
+        $userPassLength = mb_strlen($userPass);
+        if (8 > $userPassLength) {
+            throw new InputValidationException('password MUST be at least 8 characters long');
+        }
+
+        return $userPass;
+    }
+
+    /**
      * @param string $inputString
      * @param string $inputName
      *
