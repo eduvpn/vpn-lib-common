@@ -1,6 +1,6 @@
 # Changelog
 
-## 1.1.8 (...)
+## 1.1.8 (2018-02-27)
 - introduce minimum password length input validation
 
 ## 1.1.7 (2018-02-26)
