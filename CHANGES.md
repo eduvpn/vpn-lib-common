@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.1.9 (...)
+- delete cached user groups on logout
+
 ## 1.1.8 (2018-02-27)
 - introduce minimum password length input validation
 
