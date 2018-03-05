@@ -18,11 +18,12 @@ class AuthUtils
      */
     public static function requireUser(array $hookData, array $userList)
     {
-        if (!in_array($hookData['auth'], $userList, true)) {
+        $userId = $hookData['auth']->id();
+        if (!in_array($userId, $userList, true)) {
             throw new HttpException(
                 sprintf(
                     'user "%s" is not allowed to perform this operation',
-                    $hookData['auth']
+                    $userId
                 ),
                 403
             );
