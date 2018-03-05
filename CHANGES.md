@@ -2,6 +2,7 @@
 
 ## 1.1.9 (...)
 - delete cached user groups on logout
+- switch to `UserInfo` from just userId string
 
 ## 1.1.8 (2018-02-27)
 - introduce minimum password length input validation
