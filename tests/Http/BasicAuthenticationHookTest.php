@@ -29,7 +29,7 @@ class BasicAuthenticationHookTest extends TestCase
             ]
         );
 
-        $this->assertSame('foo', $basicAuthentication->executeBefore($request, []));
+        $this->assertSame('foo', $basicAuthentication->executeBefore($request, [])->id());
     }
 
     /**

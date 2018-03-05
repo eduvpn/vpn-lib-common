@@ -19,7 +19,7 @@ class MellonAuthenticationHookTest extends TestCase
         $session = new TestSession();
         $auth = new MellonAuthenticationHook($session, 'MELLON_NAME_ID', false);
         $request = new TestRequest(['MELLON_NAME_ID' => 'foo']);
-        $this->assertSame('foo', $auth->executeBefore($request, []));
+        $this->assertSame('foo', $auth->executeBefore($request, [])->id());
     }
 
     public function testEntityID()
@@ -27,7 +27,7 @@ class MellonAuthenticationHookTest extends TestCase
         $session = new TestSession();
         $auth = new MellonAuthenticationHook($session, 'MELLON_NAME_ID', true);
         $request = new TestRequest(['MELLON_NAME_ID' => 'foo', 'MELLON_IDP' => 'https://idp.example.org/saml']);
-        $this->assertSame('https_idp.example.org_saml_foo', $auth->executeBefore($request, []));
+        $this->assertSame('https_idp.example.org_saml_foo', $auth->executeBefore($request, [])->id());
     }
 
     /**
@@ -60,7 +60,7 @@ class MellonAuthenticationHookTest extends TestCase
         $session->set('_mellon_auth_user', 'foo');
         $auth = new MellonAuthenticationHook($session, 'MELLON_NAME_ID', false);
         $request = new TestRequest(['MELLON_NAME_ID' => 'foo']);
-        $this->assertSame('foo', $auth->executeBefore($request, []));
+        $this->assertSame('foo', $auth->executeBefore($request, [])->id());
     }
 
     public function testUserIdMismatch()
@@ -69,7 +69,7 @@ class MellonAuthenticationHookTest extends TestCase
         $session->set('_mellon_auth_user', 'bar');
         $auth = new MellonAuthenticationHook($session, 'MELLON_NAME_ID', false);
         $request = new TestRequest(['MELLON_NAME_ID' => 'foo']);
-        $this->assertSame('foo', $auth->executeBefore($request, []));
+        $this->assertSame('foo', $auth->executeBefore($request, [])->id());
     }
 
     public function testUserIdAuthorization()
@@ -78,7 +78,7 @@ class MellonAuthenticationHookTest extends TestCase
         $auth = new MellonAuthenticationHook($session, 'MELLON_NAME_ID', false);
         $auth->enableUserIdAuthorization(['https://idp.tuxed.net/saml|foo', 'https://idp.tuxed.net/saml|bar']);
         $request = new TestRequest(['MELLON_IDP' => 'https://idp.tuxed.net/saml', 'MELLON_NAME_ID' => 'foo']);
-        $this->assertSame('foo', $auth->executeBefore($request, []));
+        $this->assertSame('foo', $auth->executeBefore($request, [])->id());
     }
 
     /**
@@ -100,7 +100,7 @@ class MellonAuthenticationHookTest extends TestCase
         $auth = new MellonAuthenticationHook($session, 'MELLON_NAME_ID', false);
         $auth->enableEntitlementAuthorization('MELLON_ENTITLEMENT', ['https://idp.tuxed.net/saml|urn:x:admin']);
         $request = new TestRequest(['MELLON_IDP' => 'https://idp.tuxed.net/saml', 'MELLON_ENTITLEMENT' => 'urn:x:admin', 'MELLON_NAME_ID' => 'foo']);
-        $this->assertSame('foo', $auth->executeBefore($request, []));
+        $this->assertSame('foo', $auth->executeBefore($request, [])->id());
     }
 
     public function testEntitlementAuthorizationMultipleEntitlements()
@@ -109,7 +109,7 @@ class MellonAuthenticationHookTest extends TestCase
         $auth = new MellonAuthenticationHook($session, 'MELLON_NAME_ID', false);
         $auth->enableEntitlementAuthorization('MELLON_ENTITLEMENT', ['https://idp.tuxed.net/saml|urn:x:admin']);
         $request = new TestRequest(['MELLON_IDP' => 'https://idp.tuxed.net/saml', 'MELLON_ENTITLEMENT' => 'urn:x:foo;urn:x:admin', 'MELLON_NAME_ID' => 'foo']);
-        $this->assertSame('foo', $auth->executeBefore($request, []));
+        $this->assertSame('foo', $auth->executeBefore($request, [])->id());
     }
 
     /**
@@ -145,7 +145,7 @@ class MellonAuthenticationHookTest extends TestCase
         $auth->enableUserIdAuthorization(['https://idp.tuxed.net/saml|abc', 'https://idp.tuxed.net/saml|def']);
         $auth->enableEntitlementAuthorization('MELLON_ENTITLEMENT', ['https://idp.tuxed.net/saml|urn:x:admin']);
         $request = new TestRequest(['MELLON_IDP' => 'https://idp.tuxed.net/saml', 'MELLON_ENTITLEMENT' => 'urn:x:admin', 'MELLON_NAME_ID' => 'foo']);
-        $this->assertSame('foo', $auth->executeBefore($request, []));
+        $this->assertSame('foo', $auth->executeBefore($request, [])->id());
     }
 
     public function testBothAuthorizationMethodsMatchesUserId()
@@ -155,7 +155,7 @@ class MellonAuthenticationHookTest extends TestCase
         $auth->enableUserIdAuthorization(['https://idp.tuxed.net/saml|foo', 'https://idp.tuxed.net/saml|def']);
         $auth->enableEntitlementAuthorization('MELLON_ENTITLEMENT', ['https://idp.tuxed.net/saml|urn:x:admin']);
         $request = new TestRequest(['MELLON_IDP' => 'https://idp.tuxed.net/saml', 'MELLON_ENTITLEMENT' => 'urn:x:admin', 'MELLON_NAME_ID' => 'foo']);
-        $this->assertSame('foo', $auth->executeBefore($request, []));
+        $this->assertSame('foo', $auth->executeBefore($request, [])->id());
     }
 
     /**
@@ -169,6 +169,6 @@ class MellonAuthenticationHookTest extends TestCase
         $auth->enableUserIdAuthorization(['https://idp.tuxed.net/saml|abc', 'https://idp.tuxed.net/saml|def']);
         $auth->enableEntitlementAuthorization('MELLON_ENTITLEMENT', ['https://idp.tuxed.net/saml|urn:x:admin']);
         $request = new TestRequest(['MELLON_IDP' => 'https://idp.tuxed.net/saml', 'MELLON_ENTITLEMENT' => 'urn:x:foo', 'MELLON_NAME_ID' => 'foo']);
-        $this->assertSame('foo', $auth->executeBefore($request, []));
+        $this->assertSame('foo', $auth->executeBefore($request, [])->id());
     }
 }

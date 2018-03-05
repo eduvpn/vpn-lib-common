@@ -26,6 +26,9 @@ class FormAuthenticationHook implements BeforeHookInterface
         $this->tpl = $tpl;
     }
 
+    /**
+     * @return mixed
+     */
     public function executeBefore(Request $request, array $hookData)
     {
         if ('POST' === $request->getRequestMethod()) {
@@ -40,7 +43,7 @@ class FormAuthenticationHook implements BeforeHookInterface
         }
 
         if ($this->session->has('_form_auth_user')) {
-            return $this->session->get('_form_auth_user');
+            return new UserInfo($this->session->get('_form_auth_user'));
         }
 
         // any other URL, enforce authentication

@@ -25,7 +25,7 @@ class FormAuthenticationHookTest extends TestCase
 
         $request = new TestRequest([]);
 
-        $this->assertSame('foo', $formAuthentication->executeBefore($request, []));
+        $this->assertSame('foo', $formAuthentication->executeBefore($request, [])->id());
     }
 
     public function testNotAuthenticated()

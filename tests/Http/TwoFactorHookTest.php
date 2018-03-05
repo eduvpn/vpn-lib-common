@@ -11,6 +11,7 @@ namespace SURFnet\VPN\Common\Tests\Http;
 
 use PHPUnit\Framework\TestCase;
 use SURFnet\VPN\Common\Http\TwoFactorHook;
+use SURFnet\VPN\Common\Http\UserInfo;
 use SURFnet\VPN\Common\HttpClient\ServerClient;
 use SURFnet\VPN\Common\Tests\TestTpl;
 
@@ -24,7 +25,7 @@ class TwoFactorHookTest extends TestCase
         $tpl = new TestTpl();
         $formAuthentication = new TwoFactorHook($session, $tpl, $serverClient);
         $request = new TestRequest([]);
-        $this->assertTrue($formAuthentication->executeBefore($request, ['auth' => 'foo']));
+        $this->assertTrue($formAuthentication->executeBefore($request, ['auth' => new UserInfo('foo')]));
     }
 
     public function testNotAuthenticatedEnrolled()
@@ -34,7 +35,7 @@ class TwoFactorHookTest extends TestCase
         $tpl = new TestTpl();
         $formAuthentication = new TwoFactorHook($session, $tpl, $serverClient);
         $request = new TestRequest([]);
-        $response = $formAuthentication->executeBefore($request, ['auth' => 'foo']);
+        $response = $formAuthentication->executeBefore($request, ['auth' => new UserInfo('foo')]);
         $this->assertSame('{"twoFactorTotp":{"_two_factor_auth_invalid":false,"_two_factor_auth_redirect_to":"http:\/\/vpn.example\/"}}', $response->getBody());
     }
 
@@ -45,7 +46,7 @@ class TwoFactorHookTest extends TestCase
         $tpl = new TestTpl();
         $formAuthentication = new TwoFactorHook($session, $tpl, $serverClient);
         $request = new TestRequest([]);
-        $this->assertFalse($formAuthentication->executeBefore($request, ['auth' => 'bar']));
+        $this->assertFalse($formAuthentication->executeBefore($request, ['auth' => new UserInfo('bar')]));
     }
 
     /**
@@ -66,6 +67,6 @@ class TwoFactorHookTest extends TestCase
         $tpl = new TestTpl();
         $formAuthentication = new TwoFactorHook($session, $tpl, $serverClient);
         $request = new TestRequest([]);
-        $this->assertTrue($formAuthentication->executeBefore($request, ['auth' => 'foo']));
+        $this->assertTrue($formAuthentication->executeBefore($request, ['auth' => new UserInfo('foo')]));
     }
 }

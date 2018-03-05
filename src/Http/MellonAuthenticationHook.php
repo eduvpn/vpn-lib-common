@@ -69,6 +69,9 @@ class MellonAuthenticationHook implements BeforeHookInterface
         $this->entitlementAuthorization = $entitlementAuthorization;
     }
 
+    /**
+     * @return UserInfo
+     */
     public function executeBefore(Request $request, array $hookData)
     {
         $userId = $request->getHeader($this->userIdAttribute);
@@ -99,7 +102,7 @@ class MellonAuthenticationHook implements BeforeHookInterface
         }
         $this->session->set('_mellon_auth_user', $userId);
 
-        return $userId;
+        return new UserInfo($userId);
     }
 
     /**

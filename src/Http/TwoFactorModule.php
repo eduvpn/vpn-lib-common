@@ -44,7 +44,7 @@ class TwoFactorModule implements ServiceModuleInterface
                 if (!array_key_exists('auth', $hookData)) {
                     throw new HttpException('authentication hook did not run before', 500);
                 }
-                $userId = $hookData['auth'];
+                $userInfo = $hookData['auth'];
 
                 $this->session->delete('_two_factor_verified');
 
@@ -53,9 +53,9 @@ class TwoFactorModule implements ServiceModuleInterface
                 self::validateRedirectTo($request, $redirectTo);
 
                 try {
-                    $this->serverClient->post('verify_totp_key', ['user_id' => $userId, 'totp_key' => $totpKey]);
+                    $this->serverClient->post('verify_totp_key', ['user_id' => $userInfo->id(), 'totp_key' => $totpKey]);
                     $this->session->regenerate(true);
-                    $this->session->set('_two_factor_verified', $userId);
+                    $this->session->set('_two_factor_verified', $userInfo->id());
 
                     return new RedirectResponse($redirectTo, 302);
                 } catch (ApiException $e) {
@@ -83,7 +83,7 @@ class TwoFactorModule implements ServiceModuleInterface
                 if (!array_key_exists('auth', $hookData)) {
                     throw new HttpException('authentication hook did not run before', 500);
                 }
-                $userId = $hookData['auth'];
+                $userInfo = $hookData['auth'];
 
                 $this->session->delete('_two_factor_verified');
 
@@ -92,9 +92,9 @@ class TwoFactorModule implements ServiceModuleInterface
                 self::validateRedirectTo($request, $redirectTo);
 
                 try {
-                    $this->serverClient->post('verify_yubi_key_otp', ['user_id' => $userId, 'yubi_key_otp' => $yubiKeyOtp]);
+                    $this->serverClient->post('verify_yubi_key_otp', ['user_id' => $userInfo->id(), 'yubi_key_otp' => $yubiKeyOtp]);
                     $this->session->regenerate(true);
-                    $this->session->set('_two_factor_verified', $userId);
+                    $this->session->set('_two_factor_verified', $userInfo->id());
 
                     return new RedirectResponse($redirectTo, 302);
                 } catch (ApiException $e) {

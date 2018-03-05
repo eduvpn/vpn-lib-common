@@ -51,24 +51,24 @@ class TwoFactorHook implements BeforeHookInterface
         if (!array_key_exists('auth', $hookData)) {
             throw new HttpException('authentication hook did not run before', 500);
         }
-        $userId = $hookData['auth'];
+        $userInfo = $hookData['auth'];
 
         if ($this->session->has('_two_factor_verified')) {
-            if ($userId !== $this->session->get('_two_factor_verified')) {
+            if ($userInfo->id() !== $this->session->get('_two_factor_verified')) {
                 throw new HttpException('two-factor code not bound to authenticated user', 400);
             }
 
             return true;
         }
 
-        $hasTotpSecret = $this->serverClient->get('has_totp_secret', ['user_id' => $userId]);
-        $hasYubiId = $this->serverClient->get('has_yubi_key_id', ['user_id' => $userId]);
+        $hasTotpSecret = $this->serverClient->get('has_totp_secret', ['user_id' => $userInfo->id()]);
+        $hasYubiId = $this->serverClient->get('has_yubi_key_id', ['user_id' => $userInfo->id()]);
 
         // check if the user is enrolled for 2FA, if not we are fine, for this
         // session we assume we are verified!
         if (!$hasTotpSecret && !$hasYubiId) {
             $this->session->regenerate(true);
-            $this->session->set('_two_factor_verified', $userId);
+            $this->session->set('_two_factor_verified', $userInfo->id());
 
             return false;
         }

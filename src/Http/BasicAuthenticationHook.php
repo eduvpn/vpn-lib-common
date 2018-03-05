@@ -29,7 +29,7 @@ class BasicAuthenticationHook implements BeforeHookInterface
     }
 
     /**
-     * @return string
+     * @return UserInfo
      */
     public function executeBefore(Request $request, array $hookData)
     {
@@ -45,7 +45,7 @@ class BasicAuthenticationHook implements BeforeHookInterface
 
         if (array_key_exists($authUser, $this->userPass)) {
             if (hash_equals($authPass, $this->userPass[$authUser])) {
-                return $authUser;
+                return new UserInfo($authUser);
             }
         }
 
