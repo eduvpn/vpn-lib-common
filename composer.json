@@ -25,6 +25,7 @@
         "ext-mbstring": "*",
         "ext-pcre": "*",
         "ext-pdo": "*",
+        "ext-radius": "*",
         "ext-spl": "*",
         "fkooman/secookie": "^2",
         "ircmaxell/password-compat": "^1",

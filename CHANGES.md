@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.1.10 (...)
+- add RADIUS authentication plugin
+
 ## 1.1.9 (2018-03-15)
 - delete cached user groups on logout
 - switch to `UserInfo` from just userId string
