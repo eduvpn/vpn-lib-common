@@ -17,14 +17,8 @@ class RadiusAuth implements CredentialValidatorInterface
     /** @var \Psr\Log\LoggerInterface */
     private $logger;
 
-    /** @var string */
-    private $host;
-
-    /** @var string */
-    private $secret;
-
-    /** @var int */
-    private $port = 1812;
+    /** @var array */
+    private $serverList;
 
     /** @var string|null */
     private $realm = null;
@@ -34,24 +28,12 @@ class RadiusAuth implements CredentialValidatorInterface
 
     /**
      * @param \Psr\Log\LoggerInterface $logger
-     * @param string                   $host
-     * @param string                   $secret
+     * @param array                    $serverList
      */
-    public function __construct(LoggerInterface $logger, $host, $secret)
+    public function __construct(LoggerInterface $logger, array $serverList)
     {
         $this->logger = $logger;
-        $this->host = $host;
-        $this->secret = $secret;
-    }
-
-    /**
-     * @param int $port
-     *
-     * @return void
-     */
-    public function setPort($port)
-    {
-        $this->port = $port;
+        $this->serverList = $serverList;
     }
 
     /**
@@ -85,18 +67,21 @@ class RadiusAuth implements CredentialValidatorInterface
         }
 
         $radiusAuth = radius_auth_open();
-        if (false === radius_add_server(
-            $radiusAuth,
-            $this->host,
-            $this->port,
-            $this->secret,
-            5,  // timeout
-            3   // max_tries
-        )) {
-            $errorMsg = sprintf('RADIUS error: %s', radius_strerror($radiusAuth));
-            $this->logger->error($errorMsg);
 
-            throw new RadiusException($errorMsg);
+        foreach ($this->serverList as $radiusServer) {
+            if (false === radius_add_server(
+                $radiusAuth,
+                $radiusServer['host'],
+                array_key_exists('port', $radiusServer) ? $radiusServer['port'] : 1812,
+                $radiusServer['secret'],
+                5,  // timeout
+                3   // max_tries
+            )) {
+                $errorMsg = sprintf('RADIUS error: %s', radius_strerror($radiusAuth));
+                $this->logger->error($errorMsg);
+
+                throw new RadiusException($errorMsg);
+            }
         }
 
         if (false === radius_create_request($radiusAuth, RADIUS_ACCESS_REQUEST)) {

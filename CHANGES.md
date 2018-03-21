@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.1.11 (...)
+- support specifying multiple RADIUS servers
+
 ## 1.1.10 (2018-03-16)
 - add RADIUS authentication plugin
 
