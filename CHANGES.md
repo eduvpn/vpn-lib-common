@@ -1,6 +1,6 @@
 # Changelog
 
-## 1.1.11 (...)
+## 1.1.11 (2018-03-29)
 - support specifying multiple RADIUS servers
 
 ## 1.1.10 (2018-03-16)
