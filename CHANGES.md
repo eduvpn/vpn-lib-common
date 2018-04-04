@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.1.12 (...)
+- remove `authPlugin` configuration option, it will be autodetected now
+
 ## 1.1.11 (2018-03-29)
 - support specifying multiple RADIUS servers
 
