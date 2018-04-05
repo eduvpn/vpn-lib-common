@@ -1,6 +1,6 @@
 # Changelog
 
-## 1.1.12 (...)
+## 1.1.12 (2018-04-05)
 - remove `authPlugin` configuration option, it will be autodetected now
 
 ## 1.1.11 (2018-03-29)
