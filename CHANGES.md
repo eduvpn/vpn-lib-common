@@ -1,6 +1,6 @@
 # Changelog
 
-## 1.1.13 (...)
+## 1.1.13 (2018-04-16)
 - replace `useNat` with `enableNat4` and `enableNat6` to allow separate 
   configuration for whether or not to enable NAT. For example: use NAT for IPv4
   and public IP addresses for IPv6
