@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.1.13 (...)
+- replace `useNat` with `enableNat4` and `enableNat6` to allow separate 
+  configuration for whether or not to enable NAT. For example: use NAT for IPv4
+  and public IP addresses for IPv6
+
 ## 1.1.12 (2018-04-05)
 - remove `authPlugin` configuration option, it will be autodetected now
 
