@@ -26,7 +26,7 @@ class ProfileConfig extends Config
             'routes' => [],
             'dns' => [],
             'enableNat4' => false,
-            `enableNat6` => false,
+            'enableNat6' => false,
             'twoFactor' => false,
             'clientToClient' => false,
             'listen' => '::',
