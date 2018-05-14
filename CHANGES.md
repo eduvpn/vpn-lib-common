@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.1.14 (2018-05-14)
+- expose `_two_factor_user_id` to two factor verification template
+
 ## 1.1.13 (2018-04-16)
 - replace `useNat` with `enableNat4` and `enableNat6` to allow separate 
   configuration for whether or not to enable NAT. For example: use NAT for IPv4

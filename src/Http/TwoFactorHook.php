@@ -82,6 +82,7 @@ class TwoFactorHook implements BeforeHookInterface
             $this->tpl->render(
                 $templateName,
                 [
+                    '_two_factor_user_id' => $userInfo->id(),
                     '_two_factor_auth_invalid' => false,
                     '_two_factor_auth_redirect_to' => $request->getUri(),
                 ]
