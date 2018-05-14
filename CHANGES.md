@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.1.15 (...)
+- forgot to expose `_two_factor_user_id` for error pages
+
 ## 1.1.14 (2018-05-14)
 - expose `_two_factor_user_id` to two factor verification template
 

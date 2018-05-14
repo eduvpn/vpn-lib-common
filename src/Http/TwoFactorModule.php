@@ -65,6 +65,7 @@ class TwoFactorModule implements ServiceModuleInterface
                         $this->tpl->render(
                             'twoFactorTotp',
                             [
+                                '_two_factor_user_id' => $userInfo->id(),
                                 '_two_factor_auth_invalid' => true,
                                 '_two_factor_auth_error_msg' => $e->getMessage(),
                                 '_two_factor_auth_redirect_to' => $redirectTo,
@@ -104,6 +105,7 @@ class TwoFactorModule implements ServiceModuleInterface
                         $this->tpl->render(
                             'twoFactorYubiKeyOtp',
                             [
+                                '_two_factor_user_id' => $userInfo->id(),
                                 '_two_factor_auth_invalid' => true,
                                 '_two_factor_auth_error_msg' => $e->getMessage(),
                                 '_two_factor_auth_redirect_to' => $redirectTo,
