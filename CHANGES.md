@@ -1,6 +1,6 @@
 # Changelog
 
-## 1.1.15 (...)
+## 1.1.15 (2018-05-16)
 - forgot to expose `_two_factor_user_id` for error pages
 
 ## 1.1.14 (2018-05-14)
