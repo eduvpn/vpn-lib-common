@@ -43,7 +43,7 @@ class ProfileConfig extends Config
             ],
             'exposedVpnProtoPorts' => [],
             'hideProfile' => false,
-            'tlsCrypt' => false,
+            'tlsProtection' => 'tls-crypt', // (false|'tls-crypt'|'tls-auth')
             'enableCompression' => true,    // comp-lzo
         ];
     }

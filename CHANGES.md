@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.1.16 (..)
+- replace `tlsCrypt` option with `tlsProtection`
+
 ## 1.1.15 (2018-05-16)
 - forgot to expose `_two_factor_user_id` for error pages
 
