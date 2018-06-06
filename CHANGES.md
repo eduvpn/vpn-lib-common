@@ -1,6 +1,6 @@
 # Changelog
 
-## 1.1.16 (..)
+## 1.1.16 (2018-06-06)
 - replace `tlsCrypt` option with `tlsProtection`
 
 ## 1.1.15 (2018-05-16)
