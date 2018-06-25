@@ -41,7 +41,6 @@ class TwoFactorHook implements BeforeHookInterface
             '/_form/auth/logout',
             '/_two_factor/auth/verify/totp',
             '/_two_factor/auth/verify/yubi',
-            '/_oauth/token',
         ];
 
         if (in_array($request->getPathInfo(), $allowedUris, true) && 'POST' === $request->getRequestMethod()) {
