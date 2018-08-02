@@ -46,13 +46,15 @@ class Response
     /**
      * @param string $key
      *
-     * @return string
+     * @return null|string
      */
     public function getHeader($key)
     {
         if (array_key_exists($key, $this->headers)) {
             return $this->headers[$key];
         }
+
+        return null;
     }
 
     /**
