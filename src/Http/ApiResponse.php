@@ -9,8 +9,6 @@
 
 namespace SURFnet\VPN\Common\Http;
 
-use InvalidArgumentException;
-
 class ApiResponse extends Response
 {
     /**
@@ -20,13 +18,6 @@ class ApiResponse extends Response
      */
     public function __construct($wrapperKey, $responseData = null, $responseCode = 200)
     {
-        if (!is_string($wrapperKey)) {
-            throw new InvalidArgumentException('parameter must be string');
-        }
-        if (!is_int($responseCode)) {
-            throw new InvalidArgumentException('parameter must be integer');
-        }
-
         $responseBody = [
             $wrapperKey => [
                 'ok' => true,

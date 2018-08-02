@@ -20,7 +20,7 @@ class TwoFactorModule implements ServiceModuleInterface
     /** @var \SURFnet\VPN\Common\HttpClient\ServerClient */
     private $serverClient;
 
-    /** @var \fkooman\SeCookie\SessionInterface; */
+    /** @var \fkooman\SeCookie\SessionInterface */
     private $session;
 
     /** @var \SURFnet\VPN\Common\TplInterface */
@@ -40,6 +40,9 @@ class TwoFactorModule implements ServiceModuleInterface
     {
         $service->post(
             '/_two_factor/auth/verify/totp',
+            /**
+             * @return Response
+             */
             function (Request $request, array $hookData) {
                 if (!array_key_exists('auth', $hookData)) {
                     throw new HttpException('authentication hook did not run before', 500);
@@ -80,6 +83,9 @@ class TwoFactorModule implements ServiceModuleInterface
 
         $service->post(
             '/_two_factor/auth/verify/yubi',
+            /**
+             * @return Response
+             */
             function (Request $request, array $hookData) {
                 if (!array_key_exists('auth', $hookData)) {
                     throw new HttpException('authentication hook did not run before', 500);
@@ -133,7 +139,8 @@ class TwoFactorModule implements ServiceModuleInterface
         }
 
         // extract the "host" part of the URL
-        if (false === $redirectToHost = parse_url($redirectTo, PHP_URL_HOST)) {
+        $redirectToHost = parse_url($redirectTo, PHP_URL_HOST);
+        if (!is_string($redirectToHost)) {
             throw new HttpException('invalid redirect_to URL, unable to extract host', 400);
         }
         if ($request->getServerName() !== $redirectToHost) {

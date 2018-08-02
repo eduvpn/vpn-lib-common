@@ -16,7 +16,7 @@ use SURFnet\VPN\Common\TplInterface;
 
 class TwoFactorHook implements BeforeHookInterface
 {
-    /** @var \fkooman\SeCookie\SessionInterface; */
+    /** @var \fkooman\SeCookie\SessionInterface */
     private $session;
 
     /** @var \SURFnet\VPN\Common\TplInterface */

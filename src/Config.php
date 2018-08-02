@@ -85,6 +85,8 @@ class Config
     }
 
     /**
+     * @psalm-suppress UnresolvableInclude
+     *
      * @param string $configFile
      *
      * @return Config

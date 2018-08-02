@@ -284,7 +284,7 @@ class InputValidation
      */
     public static function twoFactorValue($twoFactorValue)
     {
-        if (!is_string($twoFactorValue) || 0 >= strlen($twoFactorValue)) {
+        if (0 >= strlen($twoFactorValue)) {
             throw new InputValidationException('invalid "two_factor_value"');
         }
 

@@ -82,7 +82,8 @@ class CurlHttpClient implements HttpClientInterface
             throw new RuntimeException('unable to set cURL options');
         }
 
-        if (false === $responseData = curl_exec($this->curlChannel)) {
+        $responseData = curl_exec($this->curlChannel);
+        if (!is_string($responseData)) {
             $curlError = curl_error($this->curlChannel);
             throw new RuntimeException(sprintf('failure performing the HTTP request: "%s"', $curlError));
         }

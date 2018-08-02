@@ -18,7 +18,7 @@ class FormAuthenticationModule implements ServiceModuleInterface
     /** @var CredentialValidatorInterface */
     private $credentialValidator;
 
-    /** @var \fkooman\SeCookie\SessionInterface; */
+    /** @var \fkooman\SeCookie\SessionInterface */
     private $session;
 
     /** @var \SURFnet\VPN\Common\TplInterface */
@@ -41,6 +41,9 @@ class FormAuthenticationModule implements ServiceModuleInterface
     {
         $service->post(
             '/_form/auth/verify',
+            /**
+             * @return Response
+             */
             function (Request $request) {
                 $this->session->delete('_form_auth_user');
 
@@ -53,7 +56,8 @@ class FormAuthenticationModule implements ServiceModuleInterface
                     throw new HttpException('invalid redirect_to URL', 400);
                 }
                 // extract the "host" part of the URL
-                if (false === $redirectToHost = parse_url($redirectTo, PHP_URL_HOST)) {
+                $redirectToHost = parse_url($redirectTo, PHP_URL_HOST);
+                if (!is_string($redirectToHost)) {
                     throw new HttpException('invalid redirect_to URL, unable to extract host', 400);
                 }
                 if ($request->getServerName() !== $redirectToHost) {
@@ -87,6 +91,9 @@ class FormAuthenticationModule implements ServiceModuleInterface
 
         $service->post(
             '/_form/auth/logout',
+            /**
+             * @return Response
+             */
             function (Request $request) {
                 // delete authentication information
                 $this->session->delete('_form_auth_user');

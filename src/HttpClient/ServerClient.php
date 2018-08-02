@@ -104,11 +104,6 @@ class ServerClient
      */
     private static function validateClientResponse($requestMethod, $requestPath, $statusCode, $responseData)
     {
-        // responseData MUST be array
-        if (!is_array($responseData)) {
-            throw new HttpClientException(sprintf('[%d] %s "/%s": responseData MUST be array', $statusCode, $requestMethod, $requestPath));
-        }
-
         if (400 <= $statusCode) {
             // if status code is 4xx or 5xx it MUST have an 'error' field
             if (!array_key_exists('error', $responseData)) {
