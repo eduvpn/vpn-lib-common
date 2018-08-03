@@ -32,7 +32,7 @@ class ServerClient
     /**
      * @param string $requestPath
      *
-     * @return array|bool
+     * @return null|array
      */
     public function get($requestPath, array $getData = [])
     {
@@ -51,7 +51,7 @@ class ServerClient
     /**
      * @param string $requestPath
      *
-     * @return array|bool
+     * @return null|array
      */
     public function post($requestPath, array $postData)
     {
@@ -68,7 +68,7 @@ class ServerClient
      * @param string $requestMethod
      * @param string $requestPath
      *
-     * @return true|array
+     * @return null|array
      */
     private static function responseHandler($requestMethod, $requestPath, array $clientResponse)
     {
@@ -83,11 +83,11 @@ class ServerClient
         // the request was correct, and there was not a server error
         if ($responseData[$requestPath]['ok']) {
             // our request was handled correctly
-            if (array_key_exists('data', $responseData[$requestPath])) {
-                return $responseData[$requestPath]['data'];
+            if (!array_key_exists('data', $responseData[$requestPath])) {
+                return null;
             }
 
-            return true;
+            return $responseData[$requestPath]['data'];
         }
 
         // our request was not handled correctly, something went wrong...
