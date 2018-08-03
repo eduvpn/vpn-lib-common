@@ -68,6 +68,18 @@ class ServerClient
     /**
      * @param string $requestPath
      *
+     * @return int
+     */
+    public function getRequireInt($requestPath, array $getData = [])
+    {
+        $responseData = $this->get($requestPath, $getData);
+
+        return self::requireInt($responseData);
+    }
+
+    /**
+     * @param string $requestPath
+     *
      * @return null|bool|string|array|int
      */
     public function get($requestPath, array $getData = [])
@@ -267,6 +279,20 @@ class ServerClient
     {
         if (!is_array($in)) {
             throw new HttpClientException('response "data" field MUST be array');
+        }
+
+        return $in;
+    }
+
+    /**
+     * @param mixed $in
+     *
+     * @return int
+     */
+    private static function requireInt($in)
+    {
+        if (!is_int($in)) {
+            throw new HttpClientException('response "data" field MUST be int');
         }
 
         return $in;
