@@ -44,6 +44,18 @@ class ServerClient
     /**
      * @param string $requestPath
      *
+     * @return false|array
+     */
+    public function getRequireArrayOrFalse($requestPath, array $getData = [])
+    {
+        $responseData = $this->get($requestPath, $getData);
+
+        return self::requireArrayOrFalse($responseData);
+    }
+
+    /**
+     * @param string $requestPath
+     *
      * @return string
      */
     public function getRequireString($requestPath, array $getData = [])
@@ -279,6 +291,20 @@ class ServerClient
     {
         if (!is_array($in)) {
             throw new HttpClientException('response "data" field MUST be array');
+        }
+
+        return $in;
+    }
+
+    /**
+     * @param mixed $in
+     *
+     * @return false|array
+     */
+    private static function requireArrayOrFalse($in)
+    {
+        if (!is_array($in) && false !== $in) {
+            throw new HttpClientException('response "data" field MUST be array|false');
         }
 
         return $in;
