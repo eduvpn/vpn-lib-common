@@ -68,7 +68,7 @@ class ServerClient
     /**
      * @param string $requestPath
      *
-     * @return mixed
+     * @return null|bool|string|array|int
      */
     public function get($requestPath, array $getData = [])
     {
@@ -123,7 +123,7 @@ class ServerClient
     /**
      * @param string $requestPath
      *
-     * @return mixed
+     * @return null|bool|string|array|int
      */
     public function post($requestPath, array $postData)
     {
@@ -139,7 +139,7 @@ class ServerClient
     /**
      * @param string $requestPath
      *
-     * @return mixed
+     * @return null|bool|string|array|int
      */
     private function getRequireData($requestPath, array $getData = [])
     {
@@ -151,7 +151,7 @@ class ServerClient
     /**
      * @param string $requestPath
      *
-     * @return mixed
+     * @return null|bool|string|array|int
      */
     private function postRequireData($requestPath, array $postData)
     {
@@ -164,7 +164,7 @@ class ServerClient
      * @param string $requestMethod
      * @param string $requestPath
      *
-     * @return mixed
+     * @return null|bool|string|array|int
      */
     private static function responseHandler($requestMethod, $requestPath, array $clientResponse)
     {
