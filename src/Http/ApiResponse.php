@@ -12,9 +12,9 @@ namespace SURFnet\VPN\Common\Http;
 class ApiResponse extends Response
 {
     /**
-     * @param string          $wrapperKey
-     * @param null|bool|array $responseData
-     * @param int             $responseCode
+     * @param string $wrapperKey
+     * @param mixed  $responseData
+     * @param int    $responseCode
      */
     public function __construct($wrapperKey, $responseData = null, $responseCode = 200)
     {
