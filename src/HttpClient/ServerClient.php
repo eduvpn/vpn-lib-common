@@ -32,7 +32,45 @@ class ServerClient
     /**
      * @param string $requestPath
      *
-     * @return null|array
+     * @return array
+     */
+    public function getExpectArray($requestPath, array $getData = [])
+    {
+        if (null === $responseData = $this->get($requestPath, $getData)) {
+            // XXX better exception msg
+            throw new HttpClientException('requires data');
+        }
+        if (!is_array($responseData)) {
+            // XXX better exception msg
+            throw new HttpClientException('requires data array');
+        }
+
+        return $responseData;
+    }
+
+    /**
+     * @param string $requestPath
+     *
+     * @return bool
+     */
+    public function getExpectBool($requestPath, array $getData = [])
+    {
+        if (null === $responseData = $this->get($requestPath, $getData)) {
+            // XXX better exception msg
+            throw new HttpClientException('requires data');
+        }
+        if (!is_bool($responseData)) {
+            // XXX better exception msg
+            throw new HttpClientException('requires data bool');
+        }
+
+        return $responseData;
+    }
+
+    /**
+     * @param string $requestPath
+     *
+     * @return null|bool|array
      */
     public function get($requestPath, array $getData = [])
     {
@@ -51,7 +89,45 @@ class ServerClient
     /**
      * @param string $requestPath
      *
-     * @return null|array
+     * @return array
+     */
+    public function postExpectArray($requestPath, array $postData)
+    {
+        if (null === $responseData = $this->post($requestPath, $postData)) {
+            // XXX better exception msg
+            throw new HttpClientException('requires data');
+        }
+        if (!is_array($responseData)) {
+            // XXX better exception msg
+            throw new HttpClientException('requires data array');
+        }
+
+        return $responseData;
+    }
+
+    /**
+     * @param string $requestPath
+     *
+     * @return bool
+     */
+    public function postExpectBool($requestPath, array $postData)
+    {
+        if (null === $responseData = $this->post($requestPath, $postData)) {
+            // XXX better exception msg
+            throw new HttpClientException('requires data');
+        }
+        if (!is_bool($responseData)) {
+            // XXX better exception msg
+            throw new HttpClientException('requires data bool');
+        }
+
+        return $responseData;
+    }
+
+    /**
+     * @param string $requestPath
+     *
+     * @return null|bool|array
      */
     public function post($requestPath, array $postData)
     {
@@ -68,7 +144,7 @@ class ServerClient
      * @param string $requestMethod
      * @param string $requestPath
      *
-     * @return null|array
+     * @return null|bool|array
      */
     private static function responseHandler($requestMethod, $requestPath, array $clientResponse)
     {
@@ -85,6 +161,11 @@ class ServerClient
             // our request was handled correctly
             if (!array_key_exists('data', $responseData[$requestPath])) {
                 return null;
+            }
+
+            if (!is_bool($responseData[$requestPath]['data']) && !is_array($responseData[$requestPath]['data'])) {
+                // XXX better exception msg
+                throw new HttpClientException('requires data to be bool or array');
             }
 
             return $responseData[$requestPath]['data'];
