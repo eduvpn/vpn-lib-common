@@ -207,11 +207,6 @@ class ServerClient
                 return null;
             }
 
-            if (!is_bool($responseData[$requestPath]['data']) && !is_array($responseData[$requestPath]['data'])) {
-                // XXX better exception msg
-                throw new HttpClientException('requires data to be bool or array');
-            }
-
             return $responseData[$requestPath]['data'];
         }
 
