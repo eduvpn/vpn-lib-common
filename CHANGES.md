@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.1.17 (...)
+- internal API calls now better typed
+- lots of `vimeo/psalm` fixes
+
 ## 1.1.16 (2018-06-06)
 - replace `tlsCrypt` option with `tlsProtection`
 
