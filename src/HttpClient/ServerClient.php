@@ -163,7 +163,7 @@ class ServerClient
     /**
      * @param string $requestPath
      *
-     * @return null|bool|string|array|int
+     * @return bool|string|array|int
      */
     private function getRequireData($requestPath, array $getData = [])
     {
@@ -175,7 +175,7 @@ class ServerClient
     /**
      * @param string $requestPath
      *
-     * @return null|bool|string|array|int
+     * @return bool|string|array|int
      */
     private function postRequireData($requestPath, array $postData)
     {
@@ -322,7 +322,7 @@ class ServerClient
     /**
      * @param mixed $in
      *
-     * @return mixed
+     * @return bool|string|array|int
      */
     private static function requireNotNull($in)
     {
