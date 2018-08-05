@@ -1,6 +1,6 @@
 # Changelog
 
-## 1.1.17 (...)
+## 1.1.17 (2018-08-05)
 - internal API calls now better typed
 - lots of `vimeo/psalm` fixes
 
