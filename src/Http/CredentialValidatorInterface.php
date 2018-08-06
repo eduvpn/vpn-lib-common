@@ -15,7 +15,7 @@ interface CredentialValidatorInterface
      * @param string $authUser
      * @param string $authPass
      *
-     * @return bool
+     * @return false|UserInfo
      */
     public function isValid($authUser, $authPass);
 }

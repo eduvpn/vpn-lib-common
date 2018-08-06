@@ -35,13 +35,16 @@ class PdoAuth implements CredentialValidatorInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @param string $authUser
+     * @param string $authPass
+     *
+     * @return false|UserInfo
      */
     public function isValid($authUser, $authPass)
     {
         $stmt = $this->db->prepare(
             'SELECT
-                password_hash
+                password_hash, is_admin
              FROM users
              WHERE
                 user_id = :user_id'
@@ -50,24 +53,18 @@ class PdoAuth implements CredentialValidatorInterface
         $stmt->bindValue(':user_id', $authUser, PDO::PARAM_STR);
         $stmt->execute();
         $dbHash = $stmt->fetchColumn(0);
-        $isVerified = password_verify($authPass, $dbHash);
-        if ($isVerified) {
-            // update the "last_authenticated_at" timestamp
-            $stmt = $this->db->prepare(
-                'UPDATE
-                    users
-                 SET
-                    last_authenticated_at = :last_authenticated_at
-                 WHERE
-                    user_id = :user_id'
-            );
+        $isAdmin = (bool) $stmt->fetchColumn(1);
 
-            $stmt->bindValue(':user_id', $authUser, PDO::PARAM_STR);
-            $stmt->bindValue(':last_authenticated_at', $this->dateTime->format('Y-m-d H:i:s'), PDO::PARAM_STR);
-            $stmt->execute();
+        if (false === password_verify($authPass, $dbHash)) {
+            return false;
         }
 
-        return $isVerified;
+        $entitlementList = [];
+        if ($isAdmin) {
+            $entitlementList[] = 'admin';
+        }
+
+        return new UserInfo($authUser, $entitlementList);
     }
 
     /**
@@ -80,13 +77,14 @@ class PdoAuth implements CredentialValidatorInterface
     {
         $stmt = $this->db->prepare(
             'INSERT INTO
-                users (user_id, password_hash, created_at)
+                users (user_id, is_admin, password_hash, created_at)
             VALUES
-                (:user_id, :password_hash, :created_at)'
+                (:user_id, :is_admin, :password_hash, :created_at)'
         );
 
         $passwordHash = password_hash($userPass, PASSWORD_DEFAULT);
         $stmt->bindValue(':user_id', $userId, PDO::PARAM_STR);
+        $stmt->bindValue(':is_admin', false, PDO::PARAM_BOOL);
         $stmt->bindValue(':password_hash', $passwordHash, PDO::PARAM_STR);
         $stmt->bindValue(':created_at', $this->dateTime->format('Y-m-d H:i:s'), PDO::PARAM_STR);
         $stmt->execute();
@@ -147,8 +145,8 @@ class PdoAuth implements CredentialValidatorInterface
             'CREATE TABLE IF NOT EXISTS users (
                 user_id VARCHAR(255) NOT NULL,
                 password_hash VARCHAR(255) NOT NULL,
+                is_admin BOOLEAN NOT NULL,
                 created_at VARCHAR(255) NOT NULL,
-                last_authenticated_at VARCHAR(255) DEFAULT NULL,
                 UNIQUE(user_id)
             )',
         ];

@@ -30,7 +30,7 @@ class PdoAuthTest extends TestCase
     public function testValid()
     {
         $this->pdoAuth->add('foo', 'bar');
-        $this->assertTrue($this->pdoAuth->isValid('foo', 'bar'));
+        $this->assertInstanceOf('\SURFnet\VPN\Common\Http\UserInfo', $this->pdoAuth->isValid('foo', 'bar'));
     }
 
     public function testInvalidPass()
@@ -55,7 +55,7 @@ class PdoAuthTest extends TestCase
     {
         $this->pdoAuth->add('foo', 'bar');
         $this->assertTrue($this->pdoAuth->updatePassword('foo', 'baz'));
-        $this->assertTrue($this->pdoAuth->isValid('foo', 'baz'));
+        $this->assertInstanceOf('\SURFnet\VPN\Common\Http\UserInfo', $this->pdoAuth->isValid('foo', 'baz'));
     }
 
     public function testUserExists()
@@ -74,6 +74,6 @@ class PdoAuthTest extends TestCase
     {
         $this->pdoAuth->add('foo', 'bar');
         $this->assertFalse($this->pdoAuth->updatePassword('bar', 'baz'));
-        $this->assertTrue($this->pdoAuth->isValid('foo', 'bar'));
+        $this->assertInstanceOf('\SURFnet\VPN\Common\Http\UserInfo', $this->pdoAuth->isValid('foo', 'bar'));
     }
 }
