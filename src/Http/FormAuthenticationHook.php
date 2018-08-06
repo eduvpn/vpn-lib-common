@@ -38,8 +38,8 @@ class FormAuthenticationHook implements BeforeHookInterface
             }
         }
 
-        if ($this->session->has('_form_auth_user')) {
-            return new UserInfo($this->session->get('_form_auth_user'));
+        if ($this->session->has('_form_auth_user') && $this->session->has('_form_auth_entitlement_list')) {
+            return new UserInfo($this->session->get('_form_auth_user'), $this->session->get('_form_auth_entitlement_list'));
         }
 
         // any other URL, enforce authentication

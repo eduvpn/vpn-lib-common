@@ -64,28 +64,29 @@ class FormAuthenticationModule implements ServiceModuleInterface
                     throw new HttpException('redirect_to does not match expected host', 400);
                 }
 
-                if ($this->credentialValidator->isValid($authUser, $authPass)) {
-                    $this->session->regenerate(true);
-                    $this->session->set('_form_auth_user', $authUser);
+                if (false === $userInfo = $this->credentialValidator->isValid($authUser, $authPass)) {
+                    // invalid authentication
+                    $response = new Response(200, 'text/html');
+                    $response->setBody(
+                        $this->tpl->render(
+                            'formAuthentication',
+                            [
+                                '_form_auth_invalid_credentials' => true,
+                                '_form_auth_invalid_credentials_user' => $authUser,
+                                '_form_auth_redirect_to' => $redirectTo,
+                                '_form_auth_login_page' => true,
+                            ]
+                        )
+                    );
 
-                    return new RedirectResponse($redirectTo, 302);
+                    return $response;
                 }
 
-                // invalid authentication
-                $response = new Response(200, 'text/html');
-                $response->setBody(
-                    $this->tpl->render(
-                        'formAuthentication',
-                        [
-                            '_form_auth_invalid_credentials' => true,
-                            '_form_auth_invalid_credentials_user' => $authUser,
-                            '_form_auth_redirect_to' => $redirectTo,
-                            '_form_auth_login_page' => true,
-                        ]
-                    )
-                );
+                $this->session->regenerate(true);
+                $this->session->set('_form_auth_user', $userInfo->id());
+                $this->session->set('_form_auth_entitlement_list', $userInfo->entitlementList());
 
-                return $response;
+                return new RedirectResponse($redirectTo, 302);
             }
         );
 
@@ -97,6 +98,7 @@ class FormAuthenticationModule implements ServiceModuleInterface
             function (Request $request) {
                 // delete authentication information
                 $this->session->delete('_form_auth_user');
+                $this->session->delete('_form_auth_entitlement_list');
                 $this->session->delete('_two_factor_verified');
                 $this->session->delete('_cached_groups_user_id');
                 $this->session->delete('_cached_groups');

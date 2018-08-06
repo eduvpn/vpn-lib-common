@@ -21,7 +21,7 @@ class UserInfo
      * @param string        $userId
      * @param array<string> $entitlementList
      */
-    public function __construct($userId, $entitlementList = [])
+    public function __construct($userId, $entitlementList)
     {
         $this->userId = $userId;
         $this->entitlementList = $entitlementList;
