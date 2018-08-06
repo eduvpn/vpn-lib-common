@@ -21,6 +21,10 @@ class RequireAdminHook implements BeforeHookInterface
      */
     public function executeBefore(Request $request, array $hookData)
     {
+        if ('/_form/auth/verify' === $request->getPathInfo()) {
+            return;
+        }
+
         if (!array_key_exists('auth', $hookData)) {
             throw new HttpException('authentication hook did not run before', 500);
         }
