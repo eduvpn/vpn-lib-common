@@ -18,8 +18,10 @@ class RequireAdminHookTest extends TestCase
 {
     public function testAdmin()
     {
-        $r = new RequireAdminHook();
-        $this->assertNull($r->executeBefore(new TestRequest([]), ['auth' => new UserInfo('foo', ['admin'])]));
+        $request = new TestRequest([]);
+        $requireAdminHook = new RequireAdminHook();
+        $userInfo = new UserInfo('foo', ['admin']);
+        $this->assertNull($requireAdminHook->executeBefore($request, ['auth' => $userInfo]));
     }
 
     public function testNoAdmin()

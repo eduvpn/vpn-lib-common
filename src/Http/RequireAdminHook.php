@@ -34,7 +34,9 @@ class RequireAdminHook implements BeforeHookInterface
             throw new HttpException('authentication hook did not run before', 500);
         }
 
-        if (!in_array('admin', $hookData['auth']->entitlementList(), true)) {
+        $userInfo = $hookData['auth'];
+        $entitlementList = $userInfo->entitlementList();
+        if (!in_array('admin', $entitlementList, true)) {
             throw new HttpException('access forbidden', 403);
         }
     }
