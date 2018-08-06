@@ -52,19 +52,23 @@ class PdoAuth implements CredentialValidatorInterface
 
         $stmt->bindValue(':user_id', $authUser, PDO::PARAM_STR);
         $stmt->execute();
-        $dbHash = $stmt->fetchColumn(0);
-        $isAdmin = (bool) $stmt->fetchColumn(1);
 
+        $dbResult = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        $dbHash = $dbResult['password_hash'];
         if (false === password_verify($authPass, $dbHash)) {
             return false;
         }
 
+        $isAdmin = (bool) $dbResult['is_admin'];
         $entitlementList = [];
         if ($isAdmin) {
             $entitlementList[] = 'admin';
         }
 
-        return new UserInfo($authUser, $entitlementList);
+        $userInfo = new UserInfo($authUser, $entitlementList);
+
+        return $userInfo;
     }
 
     /**
@@ -77,15 +81,15 @@ class PdoAuth implements CredentialValidatorInterface
     {
         $stmt = $this->db->prepare(
             'INSERT INTO
-                users (user_id, is_admin, password_hash, created_at)
+                users (user_id, password_hash, is_admin, created_at)
             VALUES
-                (:user_id, :is_admin, :password_hash, :created_at)'
+                (:user_id, :password_hash, :is_admin, :created_at)'
         );
 
         $passwordHash = password_hash($userPass, PASSWORD_DEFAULT);
         $stmt->bindValue(':user_id', $userId, PDO::PARAM_STR);
-        $stmt->bindValue(':is_admin', false, PDO::PARAM_BOOL);
         $stmt->bindValue(':password_hash', $passwordHash, PDO::PARAM_STR);
+        $stmt->bindValue(':is_admin', false, PDO::PARAM_BOOL);
         $stmt->bindValue(':created_at', $this->dateTime->format('Y-m-d H:i:s'), PDO::PARAM_STR);
         $stmt->execute();
     }

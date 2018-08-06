@@ -21,7 +21,12 @@ class RequireAdminHook implements BeforeHookInterface
      */
     public function executeBefore(Request $request, array $hookData)
     {
-        if ('/_form/auth/verify' === $request->getPathInfo()) {
+        $urlList = [
+            '/_form/auth/verify',
+            '/_form/auth/logout',
+        ];
+
+        if (in_array($request->getPathInfo(), $urlList, true)) {
             return;
         }
 
