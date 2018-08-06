@@ -14,12 +14,17 @@ class UserInfo
     /** @var string */
     private $userId;
 
+    /** @var array<string> */
+    private $entitlementList;
+
     /**
-     * @param string $userId
+     * @param string        $userId
+     * @param array<string> $entitlementList
      */
-    public function __construct($userId)
+    public function __construct($userId, $entitlementList = [])
     {
         $this->userId = $userId;
+        $this->entitlementList = $entitlementList;
     }
 
     /**
@@ -28,5 +33,13 @@ class UserInfo
     public function id()
     {
         return $this->userId;
+    }
+
+    /**
+     * @return array<string>
+     */
+    public function entitlementList()
+    {
+        return $this->entitlementList;
     }
 }

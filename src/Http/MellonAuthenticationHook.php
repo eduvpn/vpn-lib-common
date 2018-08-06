@@ -10,7 +10,6 @@
 namespace SURFnet\VPN\Common\Http;
 
 use fkooman\SeCookie\SessionInterface;
-use SURFnet\VPN\Common\Http\Exception\HttpException;
 
 /**
  * The following mod_auth_mellon configuration flags MUST be set:.
@@ -88,8 +87,9 @@ class MellonAuthenticationHook implements BeforeHookInterface
             );
         }
 
-        if (!$this->verifyAuthorization($request)) {
-            throw new HttpException('access forbidden', 403);
+        $entitlementList = [];
+        if ($this->verifyAuthorization($request)) {
+            $entitlementList[] = 'admin';
         }
 
         if ($this->session->has('_mellon_auth_user')) {
@@ -102,7 +102,7 @@ class MellonAuthenticationHook implements BeforeHookInterface
         }
         $this->session->set('_mellon_auth_user', $userId);
 
-        return new UserInfo($userId);
+        return new UserInfo($userId, $entitlementList);
     }
 
     /**

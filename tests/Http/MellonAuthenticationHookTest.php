@@ -81,17 +81,14 @@ class MellonAuthenticationHookTest extends TestCase
         $this->assertSame('foo', $auth->executeBefore($request, [])->id());
     }
 
-    /**
-     * @expectedException \SURFnet\VPN\Common\Http\Exception\HttpException
-     * @expectedExceptionMessage access forbidden
-     */
     public function testUserIdAuthorizationNotAuthorized()
     {
         $session = new TestSession();
         $auth = new MellonAuthenticationHook($session, 'MELLON_NAME_ID', false);
         $auth->enableUserIdAuthorization(['https://idp.tuxed.net/saml|foo', 'https://idp.tuxed.net/saml|bar']);
         $request = new TestRequest(['MELLON_IDP' => 'https://idp.tuxed.net/saml', 'MELLON_NAME_ID' => 'baz']);
-        $auth->executeBefore($request, []);
+        $userInfo = $auth->executeBefore($request, []);
+        $this->assertSame([], $userInfo->entitlementList());
     }
 
     public function testEntitlementAuthorization()
@@ -100,7 +97,9 @@ class MellonAuthenticationHookTest extends TestCase
         $auth = new MellonAuthenticationHook($session, 'MELLON_NAME_ID', false);
         $auth->enableEntitlementAuthorization('MELLON_ENTITLEMENT', ['https://idp.tuxed.net/saml|urn:x:admin']);
         $request = new TestRequest(['MELLON_IDP' => 'https://idp.tuxed.net/saml', 'MELLON_ENTITLEMENT' => 'urn:x:admin', 'MELLON_NAME_ID' => 'foo']);
-        $this->assertSame('foo', $auth->executeBefore($request, [])->id());
+        $userInfo = $auth->executeBefore($request, []);
+        $this->assertSame('foo', $userInfo->id());
+        $this->assertSame(['admin'], $userInfo->entitlementList());
     }
 
     public function testEntitlementAuthorizationMultipleEntitlements()
@@ -109,33 +108,33 @@ class MellonAuthenticationHookTest extends TestCase
         $auth = new MellonAuthenticationHook($session, 'MELLON_NAME_ID', false);
         $auth->enableEntitlementAuthorization('MELLON_ENTITLEMENT', ['https://idp.tuxed.net/saml|urn:x:admin']);
         $request = new TestRequest(['MELLON_IDP' => 'https://idp.tuxed.net/saml', 'MELLON_ENTITLEMENT' => 'urn:x:foo;urn:x:admin', 'MELLON_NAME_ID' => 'foo']);
-        $this->assertSame('foo', $auth->executeBefore($request, [])->id());
+        $userInfo = $auth->executeBefore($request, []);
+        $this->assertSame('foo', $userInfo->id());
+        $this->assertSame(['admin'], $userInfo->entitlementList());
     }
 
-    /**
-     * @expectedException \SURFnet\VPN\Common\Http\Exception\HttpException
-     * @expectedExceptionMessage access forbidden
-     */
     public function testEntitlementAuthorizationNotAuthorized()
     {
         $session = new TestSession();
         $auth = new MellonAuthenticationHook($session, 'MELLON_NAME_ID', false);
         $auth->enableEntitlementAuthorization('MELLON_ENTITLEMENT', ['https://idp.tuxed.net/saml|urn:x:admin']);
         $request = new TestRequest(['MELLON_IDP' => 'https://idp.tuxed.net/saml', 'MELLON_ENTITLEMENT' => 'urn:x:foo', 'MELLON_NAME_ID' => 'foo']);
-        $auth->executeBefore($request, []);
+
+        $userInfo = $auth->executeBefore($request, []);
+        $this->assertSame('foo', $userInfo->id());
+        $this->assertSame([], $userInfo->entitlementList());
     }
 
-    /**
-     * @expectedException \SURFnet\VPN\Common\Http\Exception\HttpException
-     * @expectedExceptionMessage access forbidden
-     */
     public function testEntitlementAuthorizationNoEntitlementAttribute()
     {
         $session = new TestSession();
         $auth = new MellonAuthenticationHook($session, 'MELLON_NAME_ID', false);
         $auth->enableEntitlementAuthorization('MELLON_ENTITLEMENT', ['https://idp.tuxed.net/saml|urn:x:admin']);
         $request = new TestRequest(['MELLON_IDP' => 'https://idp.tuxed.net/saml', 'MELLON_NAME_ID' => 'foo']);
-        $auth->executeBefore($request, []);
+
+        $userInfo = $auth->executeBefore($request, []);
+        $this->assertSame('foo', $userInfo->id());
+        $this->assertSame([], $userInfo->entitlementList());
     }
 
     public function testBothAuthorizationMethodsMatchesEntitlement()
@@ -145,7 +144,10 @@ class MellonAuthenticationHookTest extends TestCase
         $auth->enableUserIdAuthorization(['https://idp.tuxed.net/saml|abc', 'https://idp.tuxed.net/saml|def']);
         $auth->enableEntitlementAuthorization('MELLON_ENTITLEMENT', ['https://idp.tuxed.net/saml|urn:x:admin']);
         $request = new TestRequest(['MELLON_IDP' => 'https://idp.tuxed.net/saml', 'MELLON_ENTITLEMENT' => 'urn:x:admin', 'MELLON_NAME_ID' => 'foo']);
-        $this->assertSame('foo', $auth->executeBefore($request, [])->id());
+
+        $userInfo = $auth->executeBefore($request, []);
+        $this->assertSame('foo', $userInfo->id());
+        $this->assertSame(['admin'], $userInfo->entitlementList());
     }
 
     public function testBothAuthorizationMethodsMatchesUserId()
@@ -155,13 +157,11 @@ class MellonAuthenticationHookTest extends TestCase
         $auth->enableUserIdAuthorization(['https://idp.tuxed.net/saml|foo', 'https://idp.tuxed.net/saml|def']);
         $auth->enableEntitlementAuthorization('MELLON_ENTITLEMENT', ['https://idp.tuxed.net/saml|urn:x:admin']);
         $request = new TestRequest(['MELLON_IDP' => 'https://idp.tuxed.net/saml', 'MELLON_ENTITLEMENT' => 'urn:x:admin', 'MELLON_NAME_ID' => 'foo']);
-        $this->assertSame('foo', $auth->executeBefore($request, [])->id());
+        $userInfo = $auth->executeBefore($request, []);
+        $this->assertSame('foo', $userInfo->id());
+        $this->assertSame(['admin'], $userInfo->entitlementList());
     }
 
-    /**
-     * @expectedException \SURFnet\VPN\Common\Http\Exception\HttpException
-     * @expectedExceptionMessage access forbidden
-     */
     public function testBothAuthorizationMethodsMatchesNeither()
     {
         $session = new TestSession();
@@ -169,6 +169,8 @@ class MellonAuthenticationHookTest extends TestCase
         $auth->enableUserIdAuthorization(['https://idp.tuxed.net/saml|abc', 'https://idp.tuxed.net/saml|def']);
         $auth->enableEntitlementAuthorization('MELLON_ENTITLEMENT', ['https://idp.tuxed.net/saml|urn:x:admin']);
         $request = new TestRequest(['MELLON_IDP' => 'https://idp.tuxed.net/saml', 'MELLON_ENTITLEMENT' => 'urn:x:foo', 'MELLON_NAME_ID' => 'foo']);
-        $this->assertSame('foo', $auth->executeBefore($request, [])->id());
+        $userInfo = $auth->executeBefore($request, []);
+        $this->assertSame('foo', $userInfo->id());
+        $this->assertSame([], $userInfo->entitlementList());
     }
 }
