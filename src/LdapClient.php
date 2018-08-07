@@ -75,9 +75,9 @@ class LdapClient
     }
 
     /**
-     * @param string $baseDn
-     * @param string $searchFilter
-     * @param array  $attributeList
+     * @param string        $baseDn
+     * @param string        $searchFilter
+     * @param array<string> $attributeList
      *
      * @return array
      */
