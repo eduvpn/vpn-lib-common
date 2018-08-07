@@ -24,13 +24,13 @@ class LdapAuth implements CredentialValidatorInterface
     /** @var string */
     private $userDnTemplate;
 
-    /** @var string */
+    /** @var null|string */
     private $baseDn;
 
-    /** @var string */
+    /** @var null|string */
     private $searchFilterTemplate;
 
-    /** @var string */
+    /** @var null|string */
     private $entitlementAttribute;
 
     /** @var array<string> */
@@ -40,9 +40,9 @@ class LdapAuth implements CredentialValidatorInterface
      * @param \Psr\Log\LoggerInterface $logger
      * @param LdapClient               $ldapClient
      * @param string                   $userDnTemplate
-     * @param string                   $baseDn
-     * @param string                   $searchFilterTemplate
-     * @param string                   $entitlementAttribute
+     * @param null|string              $baseDn
+     * @param null|string              $searchFilterTemplate
+     * @param null|string              $entitlementAttribute
      * @param array<string>            $adminEntitlementValueList
      */
     public function __construct(LoggerInterface $logger, LdapClient $ldapClient, $userDnTemplate, $baseDn, $searchFilterTemplate, $entitlementAttribute, array $adminEntitlementValueList)
@@ -91,9 +91,15 @@ class LdapAuth implements CredentialValidatorInterface
      *
      * @return false|array<string>
      */
-    public function getEntitlementList($userId)
+    private function getEntitlementList($userId)
     {
-        $searchFilter = self::prepareSearchFilter($this->searchFilterTemplate, $userId);
+        if (false === $searchFilter = self::prepareSearchFilter($this->searchFilterTemplate, $userId)) {
+            return false;
+        }
+        if (null === $this->baseDn || null === $this->entitlementAttribute) {
+            return false;
+        }
+
         $ldapEntries = $this->ldapClient->search(
             $this->baseDn,
             $searchFilter,
@@ -109,13 +115,17 @@ class LdapAuth implements CredentialValidatorInterface
     }
 
     /**
-     * @param string $searchFilterTemplate
-     * @param string $userId
+     * @param null|string $searchFilterTemplate
+     * @param string      $userId
      *
-     * @return string
+     * @return false|string
      */
     private static function prepareSearchFilter($searchFilterTemplate, $userId)
     {
+        if (null === $searchFilterTemplate) {
+            return false;
+        }
+
         return \str_replace('{{UID}}', LdapClient::escapeFilter($userId), $searchFilterTemplate);
     }
 
