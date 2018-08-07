@@ -45,7 +45,7 @@ class BasicAuthenticationHook implements BeforeHookInterface
 
         if (array_key_exists($authUser, $this->userPass)) {
             if (hash_equals($authPass, $this->userPass[$authUser])) {
-                return new UserInfo($authUser, []);
+                return new UserInfo($authUser);
             }
         }
 

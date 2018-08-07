@@ -20,10 +20,7 @@ class SimpleAuth implements CredentialValidatorInterface
     }
 
     /**
-     * @param string $authUser
-     * @param string $authPass
-     *
-     * @return false|UserInfo
+     * {@inheritdoc}
      */
     public function isValid($authUser, $authPass)
     {
@@ -31,10 +28,6 @@ class SimpleAuth implements CredentialValidatorInterface
             return false;
         }
 
-        if (false === password_verify($authPass, $this->userPass[$authUser])) {
-            return false;
-        }
-
-        return new UserInfo($authUser, []);
+        return password_verify($authPass, $this->userPass[$authUser]);
     }
 }

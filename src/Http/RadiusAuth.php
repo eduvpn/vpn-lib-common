@@ -57,10 +57,7 @@ class RadiusAuth implements CredentialValidatorInterface
     }
 
     /**
-     * @param string $authUser
-     * @param string $authPass
-     *
-     * @return false|UserInfo
+     * {@inheritdoc}
      */
     public function isValid($authUser, $authPass)
     {
@@ -101,7 +98,7 @@ class RadiusAuth implements CredentialValidatorInterface
         }
 
         if (RADIUS_ACCESS_ACCEPT === radius_send_request($radiusAuth)) {
-            return new UserInfo($authUser, []);
+            return true;
         }
 
         if (RADIUS_ACCESS_REJECT === radius_send_request($radiusAuth)) {
