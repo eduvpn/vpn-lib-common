@@ -57,7 +57,10 @@ class RadiusAuth implements CredentialValidatorInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @param string $authUser
+     * @param string $authPass
+     *
+     * @return false|UserInfo
      */
     public function isValid($authUser, $authPass)
     {
@@ -98,7 +101,10 @@ class RadiusAuth implements CredentialValidatorInterface
         }
 
         if (RADIUS_ACCESS_ACCEPT === radius_send_request($radiusAuth)) {
-            return true;
+            // as long as we have separate user databases/configurations
+            // everyone can be admin, it is simply not used for
+            // vpn-user-portal, but avoids breaking vpn-admin-portal
+            return new UserInfo($authUser, ['admin']);
         }
 
         if (RADIUS_ACCESS_REJECT === radius_send_request($radiusAuth)) {

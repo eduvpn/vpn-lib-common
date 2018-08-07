@@ -35,7 +35,10 @@ class PdoAuth implements CredentialValidatorInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @param string $authUser
+     * @param string $authPass
+     *
+     * @return false|UserInfo
      */
     public function isValid($authUser, $authPass)
     {
@@ -65,9 +68,11 @@ class PdoAuth implements CredentialValidatorInterface
             $stmt->bindValue(':user_id', $authUser, PDO::PARAM_STR);
             $stmt->bindValue(':last_authenticated_at', $this->dateTime->format('Y-m-d H:i:s'), PDO::PARAM_STR);
             $stmt->execute();
+
+            return new UserInfo($authUser, ['admin']);
         }
 
-        return $isVerified;
+        return false;
     }
 
     /**

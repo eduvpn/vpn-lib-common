@@ -20,7 +20,10 @@ class SimpleAuth implements CredentialValidatorInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @param string $authUser
+     * @param string $authPass
+     *
+     * @return false|UserInfo
      */
     public function isValid($authUser, $authPass)
     {
@@ -28,6 +31,13 @@ class SimpleAuth implements CredentialValidatorInterface
             return false;
         }
 
-        return password_verify($authPass, $this->userPass[$authUser]);
+        if (!password_verify($authPass, $this->userPass[$authUser])) {
+            return false;
+        }
+
+        // as long as we have separate user databases/configurations
+        // everyone can be admin, it is simply not used for
+        // vpn-user-portal, but avoids breaking vpn-admin-portal
+        return new UserInfo($authUser, ['admin']);
     }
 }
