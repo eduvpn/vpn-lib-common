@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.2.0 (...)
+- rewrite authorization layer, introduce "entitlements"
+- switch SAML backend to use entitlements
+- implement entitlements in LDAP backend
+
 ## 1.1.17 (2018-08-05)
 - internal API calls now better typed
 - lots of `vimeo/psalm` fixes
