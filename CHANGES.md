@@ -1,6 +1,6 @@
 # Changelog
 
-## 1.2.0 (...)
+## 1.2.0 (2018-08-15)
 - rewrite authorization layer, introduce "entitlements"
 - switch SAML backend to use entitlements
 - implement entitlements in LDAP backend
