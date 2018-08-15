@@ -51,7 +51,7 @@ class Config
      */
     public function getSection($key)
     {
-        if (false === $this->hasSection($key)) {
+        if (!$this->hasSection($key)) {
             throw new ConfigException(sprintf('"%s" is not a section', $key));
         }
 
@@ -71,6 +71,8 @@ class Config
     }
 
     /**
+     * @deprecated
+     *
      * @param string $key
      *
      * @return mixed
@@ -82,6 +84,37 @@ class Config
         }
 
         return $this->configData[$key];
+    }
+
+    /**
+     * @param string $configKey
+     *
+     * @return string
+     */
+    public function requireString($configKey)
+    {
+        if (!$this->hasItem($configKey)) {
+            throw new ConfigException(sprintf('item "%s" not available', $configKey));
+        }
+        if (!is_string($this->configData[$configKey])) {
+            throw new ConfigException(sprintf('item "%s" not available', $configKey));
+        }
+
+        return $this->configData[$configKey];
+    }
+
+    /**
+     * @param string $configKey
+     *
+     * @return null|string
+     */
+    public function optionalString($configKey)
+    {
+        if (!$this->hasItem($configKey)) {
+            return null;
+        }
+
+        return $this->requireString($configKey);
     }
 
     /**
