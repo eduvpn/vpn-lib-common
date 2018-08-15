@@ -104,7 +104,7 @@ class FormAuthenticationModule implements ServiceModuleInterface
                 $this->session->delete('_cached_groups');
                 $this->session->regenerate(true);
 
-                return new RedirectResponse($request->getHeader('HTTP_REFERER'));
+                return new RedirectResponse($request->requireHeader('HTTP_REFERER'));
             }
         );
     }

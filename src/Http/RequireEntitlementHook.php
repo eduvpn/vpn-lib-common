@@ -11,8 +11,19 @@ namespace SURFnet\VPN\Common\Http;
 
 use SURFnet\VPN\Common\Http\Exception\HttpException;
 
-class RequireAdminHook implements BeforeHookInterface
+class RequireEntitlementHook implements BeforeHookInterface
 {
+    /** @var string */
+    private $requiredEntitlement;
+
+    /**
+     * @param string $requiredEntitlement
+     */
+    public function __construct($requiredEntitlement)
+    {
+        $this->requiredEntitlement = $requiredEntitlement;
+    }
+
     /**
      * @param Request $request
      * @param array   $hookData
@@ -36,7 +47,7 @@ class RequireAdminHook implements BeforeHookInterface
 
         $userInfo = $hookData['auth'];
         $entitlementList = $userInfo->entitlementList();
-        if (!in_array('admin', $entitlementList, true)) {
+        if (!in_array($this->requiredEntitlement, $entitlementList, true)) {
             throw new HttpException('access forbidden', 403);
         }
     }

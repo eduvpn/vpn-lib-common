@@ -31,12 +31,12 @@ class CsrfProtectionHook implements BeforeHookInterface
         }
 
         $uriAuthority = $request->getAuthority();
-        $httpOrigin = $request->getHeader('HTTP_ORIGIN', false, null);
+        $httpOrigin = $request->optionalHeader('HTTP_ORIGIN');
         if (null !== $httpOrigin) {
             return $this->verifyOrigin($uriAuthority, $httpOrigin);
         }
 
-        $httpReferrer = $request->getHeader('HTTP_REFERER', false, null);
+        $httpReferrer = $request->optionalHeader('HTTP_REFERER');
         if (null !== $httpReferrer) {
             return $this->verifyReferrer($uriAuthority, $httpReferrer);
         }

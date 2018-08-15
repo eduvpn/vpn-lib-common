@@ -11,15 +11,15 @@ namespace SURFnet\VPN\Common\Tests\Http;
 
 use PHPUnit\Framework\TestCase;
 use SURFnet\VPN\Common\Http\Exception\HttpException;
-use SURFnet\VPN\Common\Http\RequireAdminHook;
+use SURFnet\VPN\Common\Http\RequireEntitlementHook;
 use SURFnet\VPN\Common\Http\UserInfo;
 
-class RequireAdminHookTest extends TestCase
+class RequireEntitlementHookTest extends TestCase
 {
     public function testAdmin()
     {
         $request = new TestRequest([]);
-        $requireAdminHook = new RequireAdminHook();
+        $requireAdminHook = new RequireEntitlementHook('admin');
         $userInfo = new UserInfo('foo', ['admin']);
         $this->assertNull($requireAdminHook->executeBefore($request, ['auth' => $userInfo]));
     }
@@ -27,7 +27,7 @@ class RequireAdminHookTest extends TestCase
     public function testNoAdmin()
     {
         try {
-            $r = new RequireAdminHook();
+            $r = new RequireEntitlementHook('admin');
             $r->executeBefore(new TestRequest([]), ['auth' => new UserInfo('foo', ['foo'])]);
             $this->fail();
         } catch (HttpException $e) {

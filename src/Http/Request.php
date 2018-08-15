@@ -206,6 +206,46 @@ class Request
     }
 
     /**
+     * @param string $headerKey
+     *
+     * @return bool
+     */
+    public function hasHeader($headerKey)
+    {
+        return array_key_exists($headerKey, $this->serverData);
+    }
+
+    /**
+     * @param string $headerKey
+     *
+     * @return string
+     */
+    public function requireHeader($headerKey)
+    {
+        if (!$this->hasHeader($headerKey)) {
+            throw new HttpException(sprintf('missing request header "%s"', $headerKey), 400);
+        }
+
+        return $this->serverData[$headerKey];
+    }
+
+    /**
+     * @param string $headerKey
+     *
+     * @return null|string
+     */
+    public function optionalHeader($headerKey)
+    {
+        if (!$this->hasHeader($headerKey)) {
+            return null;
+        }
+
+        return $this->serverData[$headerKey];
+    }
+
+    /**
+     * @deprecated
+     *
      * @param string $key
      * @param bool   $isRequired
      * @param mixed  $defaultValue

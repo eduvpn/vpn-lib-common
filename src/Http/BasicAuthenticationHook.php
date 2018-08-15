@@ -33,8 +33,8 @@ class BasicAuthenticationHook implements BeforeHookInterface
      */
     public function executeBefore(Request $request, array $hookData)
     {
-        $authUser = $request->getHeader('PHP_AUTH_USER', false);
-        $authPass = $request->getHeader('PHP_AUTH_PW', false);
+        $authUser = $request->optionalHeader('PHP_AUTH_USER');
+        $authPass = $request->optionalHeader('PHP_AUTH_PW');
         if (null === $authUser || null === $authPass) {
             throw new HttpException(
                 'missing authentication information',

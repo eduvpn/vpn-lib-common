@@ -25,35 +25,20 @@ class LdapAuth implements CredentialValidatorInterface
     private $userDnTemplate;
 
     /** @var null|string */
-    private $baseDn;
-
-    /** @var null|string */
-    private $searchFilterTemplate;
-
-    /** @var null|string */
     private $entitlementAttribute;
-
-    /** @var array<string> */
-    private $adminEntitlementValueList;
 
     /**
      * @param \Psr\Log\LoggerInterface $logger
      * @param LdapClient               $ldapClient
      * @param string                   $userDnTemplate
-     * @param null|string              $baseDn
-     * @param null|string              $searchFilterTemplate
      * @param null|string              $entitlementAttribute
-     * @param array<string>            $adminEntitlementValueList
      */
-    public function __construct(LoggerInterface $logger, LdapClient $ldapClient, $userDnTemplate, $baseDn, $searchFilterTemplate, $entitlementAttribute, array $adminEntitlementValueList)
+    public function __construct(LoggerInterface $logger, LdapClient $ldapClient, $userDnTemplate, $entitlementAttribute)
     {
         $this->logger = $logger;
         $this->ldapClient = $ldapClient;
         $this->userDnTemplate = $userDnTemplate;
-        $this->baseDn = $baseDn;
-        $this->searchFilterTemplate = $searchFilterTemplate;
         $this->entitlementAttribute = $entitlementAttribute;
-        $this->adminEntitlementValueList = $adminEntitlementValueList;
     }
 
     /**
@@ -67,16 +52,8 @@ class LdapAuth implements CredentialValidatorInterface
         $userDn = str_replace('{{UID}}', LdapClient::escapeDn($authUser), $this->userDnTemplate);
         try {
             $this->ldapClient->bind($userDn, $authPass);
-            $entitlementList = $this->getEntitlementList($authUser);
-            if (false !== $entitlementList) {
-                foreach ($this->adminEntitlementValueList as $adminEntitlementValue) {
-                    if (in_array($adminEntitlementValue, $entitlementList, true)) {
-                        return new UserInfo($authUser, ['admin']);
-                    }
-                }
-            }
 
-            return new UserInfo($authUser, []);
+            return new UserInfo($authUser, $this->getEntitlementList($userDn));
         } catch (LdapClientException $e) {
             $this->logger->warning(
                 sprintf('unable to bind with DN "%s" (%s)', $userDn, $e->getMessage())
@@ -87,46 +64,28 @@ class LdapAuth implements CredentialValidatorInterface
     }
 
     /**
-     * @param string $userId
+     * @param string $userDn
      *
-     * @return false|array<string>
+     * @return array<string>
      */
-    private function getEntitlementList($userId)
+    private function getEntitlementList($userDn)
     {
-        if (false === $searchFilter = self::prepareSearchFilter($this->searchFilterTemplate, $userId)) {
-            return false;
-        }
-        if (null === $this->baseDn || null === $this->entitlementAttribute) {
-            return false;
+        if (null === $this->entitlementAttribute) {
+            return [];
         }
 
         $ldapEntries = $this->ldapClient->search(
-            $this->baseDn,
-            $searchFilter,
+            $userDn,
+            '(objectClass=*)',
             [$this->entitlementAttribute]
         );
 
         if (0 === $ldapEntries['count']) {
             // user does not exist
-            return false;
+            return [];
         }
 
         return self::extractEntitlement($ldapEntries, $this->entitlementAttribute);
-    }
-
-    /**
-     * @param null|string $searchFilterTemplate
-     * @param string      $userId
-     *
-     * @return false|string
-     */
-    private static function prepareSearchFilter($searchFilterTemplate, $userId)
-    {
-        if (null === $searchFilterTemplate) {
-            return false;
-        }
-
-        return \str_replace('{{UID}}', LdapClient::escapeFilter($userId), $searchFilterTemplate);
     }
 
     /**

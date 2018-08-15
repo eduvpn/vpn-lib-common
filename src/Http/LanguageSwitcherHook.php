@@ -49,6 +49,6 @@ class LanguageSwitcherHook implements BeforeHookInterface
 
         $this->cookie->set('ui_lang', $language);
 
-        return new RedirectResponse($request->getHeader('HTTP_REFERER'), 302);
+        return new RedirectResponse($request->requireHeader('HTTP_REFERER'), 302);
     }
 }

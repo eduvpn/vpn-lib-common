@@ -28,52 +28,32 @@ class MellonAuthenticationHook implements BeforeHookInterface
     /** @var bool */
     private $addEntityId;
 
-    /** @var array|null */
-    private $userIdAuthorization = null;
-
-    /** @var string|null */
-    private $entitlementAttribute = null;
-
-    /** @var array|null */
-    private $entitlementAuthorization = null;
+    /** @var null|string */
+    private $entitlementAttribute;
 
     /**
-     * @param SessionInterface $session
-     * @param string           $userIdAttribute
-     * @param bool             $addEntityId
+     * @param \fkooman\SeCookie\SessionInterface $session
+     * @param string                             $userIdAttribute
+     * @param bool                               $addEntityId
+     * @param null|string                        $entitlementAttribute
      */
-    public function __construct(SessionInterface $session, $userIdAttribute, $addEntityId)
+    public function __construct(SessionInterface $session, $userIdAttribute, $addEntityId, $entitlementAttribute)
     {
         $this->session = $session;
         $this->userIdAttribute = $userIdAttribute;
         $this->addEntityId = $addEntityId;
-    }
-
-    /**
-     * @return void
-     */
-    public function enableUserIdAuthorization(array $userIdAuthorization)
-    {
-        $this->userIdAuthorization = $userIdAuthorization;
-    }
-
-    /**
-     * @param string $entitlementAttribute
-     *
-     * @return void
-     */
-    public function enableEntitlementAuthorization($entitlementAttribute, array $entitlementAuthorization)
-    {
         $this->entitlementAttribute = $entitlementAttribute;
-        $this->entitlementAuthorization = $entitlementAuthorization;
     }
 
     /**
+     * @param Request $request
+     * @param array   $hookData
+     *
      * @return UserInfo
      */
     public function executeBefore(Request $request, array $hookData)
     {
-        $userId = $request->getHeader($this->userIdAttribute);
+        $userId = $request->requireHeader($this->userIdAttribute);
         if ($this->addEntityId) {
             // add the entity ID to the user ID, this is used when we have
             // different IdPs that do not guarantee uniqueness among the used
@@ -82,14 +62,9 @@ class MellonAuthenticationHook implements BeforeHookInterface
                 '%s_%s',
                 // strip out all "special" characters from the entityID, just
                 // like mod_auth_mellon does
-                preg_replace('/__*/', '_', preg_replace('/[^A-Za-z.]/', '_', $request->getHeader('MELLON_IDP'))),
+                preg_replace('/__*/', '_', preg_replace('/[^A-Za-z.]/', '_', $request->requireHeader('MELLON_IDP'))),
                 $userId
             );
-        }
-
-        $entitlementList = [];
-        if ($this->verifyAuthorization($request)) {
-            $entitlementList[] = 'admin';
         }
 
         if ($this->session->has('_mellon_auth_user')) {
@@ -102,68 +77,32 @@ class MellonAuthenticationHook implements BeforeHookInterface
         }
         $this->session->set('_mellon_auth_user', $userId);
 
-        return new UserInfo($userId, $entitlementList);
+        return new UserInfo($userId, $this->getEntitlementList($request));
     }
 
     /**
-     * @return bool
+     * @param Request $request
+     *
+     * @return array<int,string>
      */
-    private function verifyAuthorization(Request $request)
+    private function getEntitlementList(Request $request)
     {
-        if (null === $this->userIdAuthorization && null === $this->entitlementAuthorization) {
-            // authorization disabled, allow user
-            return true;
+        if (null === $this->entitlementAttribute) {
+            return [];
+        }
+        if (!$request->hasHeader($this->entitlementAttribute)) {
+            return [];
         }
 
-        // if either of these succeeds now, we allow the user
-        if ($this->verifyUserIdAuthorization($request)) {
-            return true;
-        }
-
-        if ($this->verifyEntitlementAuthorization($request)) {
-            return true;
-        }
-
-        return false;
-    }
-
-    /**
-     * @return bool
-     */
-    private function verifyUserIdAuthorization(Request $request)
-    {
-        if (null === $this->userIdAuthorization) {
-            return false;
-        }
-
-        $userId = sprintf(
-            '%s|%s',
-            $request->getHeader('MELLON_IDP'),
-            $request->getHeader($this->userIdAttribute)
-        );
-
-        return in_array($userId, $this->userIdAuthorization, true);
-    }
-
-    /**
-     * @return bool
-     */
-    private function verifyEntitlementAuthorization(Request $request)
-    {
-        if (null === $this->entitlementAuthorization || null === $this->entitlementAttribute) {
-            return false;
-        }
-
-        $entityID = $request->getHeader('MELLON_IDP');
-        $entitlementValue = $request->getHeader($this->entitlementAttribute, false, 'NO_ENTITLEMENT');
-        $entitlementList = explode(';', $entitlementValue);
+        $entityID = $request->requireHeader('MELLON_IDP');
+        $entitlementList = explode(';', $request->requireHeader($this->entitlementAttribute));
+        /** @var array<int,string> */
+        $returnEntitlementList = [];
         foreach ($entitlementList as $entitlement) {
-            $entitlementCheck = sprintf('%s|%s', $entityID, $entitlement);
-            if (in_array($entitlementCheck, $this->entitlementAuthorization, true)) {
-                return true;
-            }
+            $returnEntitlementList[] = $entitlement;
+            $returnEntitlementList[] = sprintf('%s|%s', $entityID, $entitlement);
         }
 
-        return false;
+        return $returnEntitlementList;
     }
 }
