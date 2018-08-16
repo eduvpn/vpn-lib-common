@@ -11,6 +11,10 @@ namespace SURFnet\VPN\Common\Http;
 
 use SURFnet\VPN\Common\Http\Exception\HttpException;
 
+/**
+ * Require the user to have any of the entitlements provided a constructor
+ * parameter.
+ */
 class RequireEntitlementHook implements BeforeHookInterface
 {
     /** @var array<string> */
