@@ -85,6 +85,21 @@ class Config
     }
 
     /**
+     * @param string     $key
+     * @param null|mixed $defaultValue
+     *
+     * @return mixed
+     */
+    public function optionalItem($key, $defaultValue = null)
+    {
+        if (!$this->hasItem($key)) {
+            return $defaultValue;
+        }
+
+        return $this->getItem($key);
+    }
+
+    /**
      * @psalm-suppress UnresolvableInclude
      *
      * @param string $configFile
