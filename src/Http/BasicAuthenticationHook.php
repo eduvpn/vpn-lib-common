@@ -45,10 +45,7 @@ class BasicAuthenticationHook implements BeforeHookInterface
 
         if (array_key_exists($authUser, $this->userPass)) {
             if (hash_equals($authPass, $this->userPass[$authUser])) {
-                // as long as we have separate user databases/configurations
-                // everyone can be admin, it is simply not used for
-                // vpn-user-portal, but avoids breaking vpn-admin-portal
-                return new UserInfo($authUser, ['admin']);
+                return new UserInfo($authUser, []);
             }
         }
 

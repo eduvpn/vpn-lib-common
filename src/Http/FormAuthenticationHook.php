@@ -43,10 +43,6 @@ class FormAuthenticationHook implements BeforeHookInterface
                 return new UserInfo($this->session->get('_form_auth_user'), $this->session->get('_form_auth_entitlement_list'));
             }
 
-            // handle current sessions before entitlement lists where introduced
-            // where the 'admin' entitlement is not propagated yet, anyone
-            // using vpn-admin-portal will just receive a 403 and needs to
-            // login again
             return new UserInfo($this->session->get('_form_auth_user'), []);
         }
 

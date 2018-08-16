@@ -69,10 +69,7 @@ class PdoAuth implements CredentialValidatorInterface
             $stmt->bindValue(':last_authenticated_at', $this->dateTime->format('Y-m-d H:i:s'), PDO::PARAM_STR);
             $stmt->execute();
 
-            // as long as we have separate user databases/configurations
-            // everyone can be admin, it is simply not used for
-            // vpn-user-portal, but avoids breaking vpn-admin-portal
-            return new UserInfo($authUser, ['admin']);
+            return new UserInfo($authUser, []);
         }
 
         return false;
