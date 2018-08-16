@@ -230,14 +230,15 @@ class Request
     }
 
     /**
-     * @param string $headerKey
+     * @param string      $headerKey
+     * @param null|string $defaultValue
      *
      * @return null|string
      */
-    public function optionalHeader($headerKey)
+    public function optionalHeader($headerKey, $defaultValue = null)
     {
         if (!$this->hasHeader($headerKey)) {
-            return null;
+            return $defaultValue;
         }
 
         return $this->serverData[$headerKey];
