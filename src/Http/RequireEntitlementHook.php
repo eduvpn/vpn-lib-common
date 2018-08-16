@@ -13,15 +13,15 @@ use SURFnet\VPN\Common\Http\Exception\HttpException;
 
 class RequireEntitlementHook implements BeforeHookInterface
 {
-    /** @var string */
-    private $requiredEntitlement;
+    /** @var array<string> */
+    private $entitlementList;
 
     /**
-     * @param string $requiredEntitlement
+     * @param array<string> $entitlementList
      */
-    public function __construct($requiredEntitlement)
+    public function __construct(array $entitlementList)
     {
-        $this->requiredEntitlement = $requiredEntitlement;
+        $this->entitlementList = $entitlementList;
     }
 
     /**
@@ -46,9 +46,13 @@ class RequireEntitlementHook implements BeforeHookInterface
         }
 
         $userInfo = $hookData['auth'];
-        $entitlementList = $userInfo->entitlementList();
-        if (!in_array($this->requiredEntitlement, $entitlementList, true)) {
-            throw new HttpException('access forbidden', 403);
+        $userEntitlementList = $userInfo->entitlementList();
+        foreach ($userEntitlementList as $userEntitlement) {
+            if (in_array($userEntitlement, $this->entitlementList, true)) {
+                return;
+            }
         }
+
+        throw new HttpException('account missing required entitlement', 403);
     }
 }
