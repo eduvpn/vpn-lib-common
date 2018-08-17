@@ -160,7 +160,7 @@ class RequestTest extends TestCase
         $this->assertSame('foo', $request->getPostParameter('user_id'));
     }
 
-    public function testGetHeader()
+    public function testRequireHeader()
     {
         $request = new Request(
             [
@@ -172,7 +172,23 @@ class RequestTest extends TestCase
                 'SCRIPT_NAME' => '/index.php',
             ]
         );
-        $this->assertSame('text/html', $request->getHeader('HTTP_ACCEPT'));
+        $this->assertSame('text/html', $request->requireHeader('HTTP_ACCEPT'));
+    }
+
+    public function testOptionalHeader()
+    {
+        $request = new Request(
+            [
+                'SERVER_NAME' => 'vpn.example',
+                'SERVER_PORT' => 80,
+                'REQUEST_METHOD' => 'GET',
+                'REQUEST_URI' => '/',
+                'HTTP_ACCEPT' => 'text/html',
+                'SCRIPT_NAME' => '/index.php',
+            ]
+        );
+        $this->assertSame('text/html', $request->optionalHeader('HTTP_ACCEPT'));
+        $this->assertNull($request->optionalHeader('HTTP_FOO'));
     }
 
     public function testRequestUri()

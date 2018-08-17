@@ -242,18 +242,4 @@ class Request
 
         return $this->serverData[$headerKey];
     }
-
-    /**
-     * @deprecated
-     *
-     * @param string $key
-     * @param bool   $isRequired
-     * @param mixed  $defaultValue
-     *
-     * @return mixed
-     */
-    public function getHeader($key, $isRequired = true, $defaultValue = null)
-    {
-        return Utils::getValueFromArray($this->serverData, $key, $isRequired, $defaultValue);
-    }
 }
