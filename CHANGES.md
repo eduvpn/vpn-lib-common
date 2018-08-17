@@ -1,5 +1,15 @@
 # Changelog
 
+## 1.2.1 (...)
+- introduce "entitlement" checker hook to check whether an authenticated user
+  is allowed to use the admin portal
+- simplify attribute fetch of authenticated user for LDAP
+- remove userIdAuthorization from SAML plugin
+- introduce `Request::optionalHeader`, `Request::requireHeader` for API
+  simplication
+- no longer have the concept of "admin" entitlement
+- remove `Request::getHeader`
+
 ## 1.2.0 (2018-08-15)
 - rewrite authorization layer, introduce "entitlements"
 - switch SAML backend to use entitlements
