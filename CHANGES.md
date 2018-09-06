@@ -9,6 +9,7 @@
   simplication
 - no longer have the concept of "admin" entitlement
 - remove `Request::getHeader`
+- add `useLocalDns` configuration option, default `false`
 
 ## 1.2.0 (2018-08-15)
 - rewrite authorization layer, introduce "entitlements"
