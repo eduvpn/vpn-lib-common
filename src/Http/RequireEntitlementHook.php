@@ -41,7 +41,7 @@ class RequireEntitlementHook implements BeforeHookInterface
             '/_form/auth/logout',
         ];
 
-        if (in_array($request->getPathInfo(), $urlList, true)) {
+        if (\in_array($request->getPathInfo(), $urlList, true)) {
             return;
         }
 
@@ -52,7 +52,7 @@ class RequireEntitlementHook implements BeforeHookInterface
         $userInfo = $hookData['auth'];
         $userEntitlementList = $userInfo->entitlementList();
         foreach ($userEntitlementList as $userEntitlement) {
-            if (in_array($userEntitlement, $this->entitlementList, true)) {
+            if (\in_array($userEntitlement, $this->entitlementList, true)) {
                 return;
             }
         }

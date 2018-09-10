@@ -43,7 +43,7 @@ class TwoFactorHook implements BeforeHookInterface
             '/_two_factor/auth/verify/yubi',
         ];
 
-        if (in_array($request->getPathInfo(), $allowedUris, true) && 'POST' === $request->getRequestMethod()) {
+        if (\in_array($request->getPathInfo(), $allowedUris, true) && 'POST' === $request->getRequestMethod()) {
             return false;
         }
 

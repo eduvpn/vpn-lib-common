@@ -26,7 +26,7 @@ class CsrfProtectionHook implements BeforeHookInterface
         }
 
         // safe methods
-        if (in_array($request->getRequestMethod(), ['GET', 'HEAD', 'OPTIONS'], true)) {
+        if (\in_array($request->getRequestMethod(), ['GET', 'HEAD', 'OPTIONS'], true)) {
             return false;
         }
 

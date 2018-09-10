@@ -80,7 +80,7 @@ class CliParser
      */
     public function parse(array $argv)
     {
-        $argc = count($argv);
+        $argc = \count($argv);
         $optionValues = [];
 
         for ($i = 1; $i < $argc; ++$i) {
@@ -91,7 +91,7 @@ class CliParser
                 while ($i + 1 < $argc && false === strpos($argv[$i + 1], '--')) {
                     $pO[] = $argv[++$i];
                 }
-                if (1 === count($pO)) {
+                if (1 === \count($pO)) {
                     $optionValues[$p] = $pO[0];
                 } else {
                     $optionValues[$p] = $pO;
@@ -120,8 +120,8 @@ class CliParser
                 // check if it is actually there
                 if (array_key_exists($opt, $optionValues)) {
                     // must have value
-                    if (is_array($optionValues[$opt])) {
-                        if (0 === count($optionValues[$opt])) {
+                    if (\is_array($optionValues[$opt])) {
+                        if (0 === \count($optionValues[$opt])) {
                             throw new CliException(sprintf('missing required parameter value for option "--%s"', $opt));
                         }
                     }

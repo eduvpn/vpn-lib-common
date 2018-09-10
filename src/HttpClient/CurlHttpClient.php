@@ -83,7 +83,7 @@ class CurlHttpClient implements HttpClientInterface
         }
 
         $responseData = curl_exec($this->curlChannel);
-        if (!is_string($responseData)) {
+        if (!\is_string($responseData)) {
             $curlError = curl_error($this->curlChannel);
             throw new RuntimeException(sprintf('failure performing the HTTP request: "%s"', $curlError));
         }
@@ -100,7 +100,7 @@ class CurlHttpClient implements HttpClientInterface
     private function curlReset()
     {
         // requires PHP >= 5.5 for curl_reset
-        if (function_exists('curl_reset')) {
+        if (\function_exists('curl_reset')) {
             curl_reset($this->curlChannel);
 
             return;

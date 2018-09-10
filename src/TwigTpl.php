@@ -108,7 +108,7 @@ class TwigTpl implements TplInterface
             throw new RuntimeException('unable to bind text domain');
         }
 
-        if (!is_string(bind_textdomain_codeset($this->appName, 'UTF-8'))) {
+        if (!\is_string(bind_textdomain_codeset($this->appName, 'UTF-8'))) {
             throw new RuntimeException('unable to bind text domain codeset');
         }
 

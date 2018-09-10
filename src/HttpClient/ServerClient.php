@@ -97,7 +97,7 @@ class ServerClient
     public function get($requestPath, array $getData = [])
     {
         $requestUri = sprintf('%s/%s', $this->baseUri, $requestPath);
-        if (0 !== count($getData)) {
+        if (0 !== \count($getData)) {
             $requestUri = sprintf('%s?%s', $requestUri, http_build_query($getData));
         }
 
@@ -256,7 +256,7 @@ class ServerClient
      */
     private static function requireString($in)
     {
-        if (!is_string($in)) {
+        if (!\is_string($in)) {
             throw new HttpClientException('response "data" field MUST be string');
         }
 
@@ -270,7 +270,7 @@ class ServerClient
      */
     private static function requireBool($in)
     {
-        if (!is_bool($in)) {
+        if (!\is_bool($in)) {
             throw new HttpClientException('response "data" field MUST be bool');
         }
 
@@ -284,7 +284,7 @@ class ServerClient
      */
     private static function requireArray($in)
     {
-        if (!is_array($in)) {
+        if (!\is_array($in)) {
             throw new HttpClientException('response "data" field MUST be array');
         }
 
@@ -298,7 +298,7 @@ class ServerClient
      */
     private static function requireArrayOrFalse($in)
     {
-        if (!is_array($in) && false !== $in) {
+        if (!\is_array($in) && false !== $in) {
             throw new HttpClientException('response "data" field MUST be array|false');
         }
 
@@ -312,7 +312,7 @@ class ServerClient
      */
     private static function requireInt($in)
     {
-        if (!is_int($in)) {
+        if (!\is_int($in)) {
             throw new HttpClientException('response "data" field MUST be int');
         }
 

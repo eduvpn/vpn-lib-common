@@ -92,7 +92,7 @@ class Request
      */
     public function getRoot()
     {
-        $rootDir = dirname($this->serverData['SCRIPT_NAME']);
+        $rootDir = \dirname($this->serverData['SCRIPT_NAME']);
         if ('/' !== $rootDir) {
             return sprintf('%s/', $rootDir);
         }

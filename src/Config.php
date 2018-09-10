@@ -41,7 +41,7 @@ class Config
             return false;
         }
 
-        return is_array($this->configData[$key]);
+        return \is_array($this->configData[$key]);
     }
 
     /**

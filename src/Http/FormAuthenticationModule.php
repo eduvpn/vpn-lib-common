@@ -57,7 +57,7 @@ class FormAuthenticationModule implements ServiceModuleInterface
                 }
                 // extract the "host" part of the URL
                 $redirectToHost = parse_url($redirectTo, PHP_URL_HOST);
-                if (!is_string($redirectToHost)) {
+                if (!\is_string($redirectToHost)) {
                     throw new HttpException('invalid redirect_to URL, unable to extract host', 400);
                 }
                 if ($request->getServerName() !== $redirectToHost) {
