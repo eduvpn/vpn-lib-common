@@ -338,7 +338,7 @@ class InputValidation
      *
      * @param string $entitlementListStr
      *
-     * @return string
+     * @return array<string>
      */
     public static function entitlementList($entitlementListStr)
     {
@@ -353,7 +353,7 @@ class InputValidation
             }
         }
 
-        return $entitlementListStr;
+        return $entitlementList;
     }
 
     /**
