@@ -334,6 +334,29 @@ class InputValidation
     }
 
     /**
+     * Make sure the input string is valid JSON array containing just strings.
+     *
+     * @param string $entitlementListStr
+     *
+     * @return string
+     */
+    public static function entitlementList($entitlementListStr)
+    {
+        // make sure the string is valid JSON array containing just strings
+        $entitlementList = json_decode($entitlementListStr, true);
+        if (!\is_array($entitlementList)) {
+            throw new InputValidationException('invalid "entitlementList"');
+        }
+        foreach ($entitlementList as $entitlement) {
+            if (!\is_string($entitlement)) {
+                throw new InputValidationException('invalid "entitlementList"');
+            }
+        }
+
+        return $entitlementListStr;
+    }
+
+    /**
      * @param string $userPass
      *
      * @return string
