@@ -102,6 +102,7 @@ class FormAuthenticationModule implements ServiceModuleInterface
                 $this->session->delete('_two_factor_verified');
                 $this->session->delete('_cached_groups_user_id');
                 $this->session->delete('_cached_groups');
+                $this->session->delete('_last_authenticated_at_ping_sent');
                 $this->session->regenerate(true);
 
                 return new RedirectResponse($request->requireHeader('HTTP_REFERER'));
