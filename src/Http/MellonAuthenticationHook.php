@@ -53,7 +53,10 @@ class MellonAuthenticationHook implements BeforeHookInterface
      */
     public function executeBefore(Request $request, array $hookData)
     {
-        $userId = $request->requireHeader($this->userIdAttribute);
+        // remove the "NameID" XML construct from the identifier if
+        // eduPersonTargetedID attribute was used and we receive the XML
+        $userId = strip_tags($request->requireHeader($this->userIdAttribute));
+
         if ($this->addEntityId) {
             // add the entity ID to the user ID, this is used when we have
             // different IdPs that do not guarantee uniqueness among the used
