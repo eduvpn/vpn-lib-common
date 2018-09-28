@@ -35,12 +35,8 @@ class FileIO
     public static function readJsonFile($filePath)
     {
         $fileData = self::readFile($filePath);
-        $jsonData = json_decode($fileData, true);
-        if (JSON_ERROR_NONE !== json_last_error()) {
-            throw new RuntimeException(sprintf('unable to decode JSON from file "%s"', $filePath));
-        }
 
-        return $jsonData;
+        return Json::decode($fileData);
     }
 
     /**
@@ -69,10 +65,7 @@ class FileIO
      */
     public static function writeJsonFile($filePath, $fileJsonData, $mode = 0600)
     {
-        $fileData = json_encode($fileJsonData);
-        if (JSON_ERROR_NONE !== json_last_error()) {
-            throw new RuntimeException(sprintf('unable to encode JSON for file "%s"', $filePath));
-        }
+        $fileData = Json::encode($fileJsonData);
 
         self::writeFile($filePath, $fileData, $mode);
     }

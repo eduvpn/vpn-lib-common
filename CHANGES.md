@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.2.2 (...)
+- introduce `Json` helper class
+
 ## 1.2.1 (2018-09-10)
 - introduce "entitlement" checker hook to check whether an authenticated user
   is allowed to use the admin portal

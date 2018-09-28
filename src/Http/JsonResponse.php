@@ -9,6 +9,8 @@
 
 namespace SURFnet\VPN\Common\Http;
 
+use SURFnet\VPN\Common\Json;
+
 class JsonResponse extends Response
 {
     /**
@@ -18,6 +20,6 @@ class JsonResponse extends Response
     public function __construct(array $responseData, $responseCode = 200)
     {
         parent::__construct($responseCode, 'application/json');
-        $this->setBody(json_encode($responseData));
+        $this->setBody(Json::encode($responseData));
     }
 }

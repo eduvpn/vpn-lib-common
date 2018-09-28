@@ -11,6 +11,7 @@ namespace SURFnet\VPN\Common\Http;
 
 use DateTime;
 use SURFnet\VPN\Common\Http\Exception\InputValidationException;
+use SURFnet\VPN\Common\Json;
 
 class InputValidation
 {
@@ -343,7 +344,7 @@ class InputValidation
     public static function entitlementList($entitlementListStr)
     {
         // make sure the string is valid JSON array containing just strings
-        $entitlementList = json_decode($entitlementListStr, true);
+        $entitlementList = Json::decode($entitlementListStr);
         if (!\is_array($entitlementList)) {
             throw new InputValidationException('invalid "entitlementList"');
         }

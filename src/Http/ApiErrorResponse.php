@@ -9,6 +9,8 @@
 
 namespace SURFnet\VPN\Common\Http;
 
+use SURFnet\VPN\Common\Json;
+
 class ApiErrorResponse extends Response
 {
     /**
@@ -27,6 +29,6 @@ class ApiErrorResponse extends Response
             ],
         ];
 
-        $this->setBody(json_encode($responseBody));
+        $this->setBody(Json::encode($responseBody));
     }
 }

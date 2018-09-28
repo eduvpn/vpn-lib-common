@@ -10,6 +10,7 @@
 namespace SURFnet\VPN\Common\HttpClient;
 
 use RuntimeException;
+use SURFnet\VPN\Common\Json;
 
 class CurlHttpClient implements HttpClientInterface
 {
@@ -90,7 +91,7 @@ class CurlHttpClient implements HttpClientInterface
 
         return [
             curl_getinfo($this->curlChannel, CURLINFO_HTTP_CODE),
-            json_decode($responseData, true),
+            Json::decode($responseData),
         ];
     }
 

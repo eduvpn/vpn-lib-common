@@ -10,6 +10,7 @@
 namespace SURFnet\VPN\Common\Http;
 
 use SURFnet\VPN\Common\Http\Exception\HttpException;
+use SURFnet\VPN\Common\Json;
 use SURFnet\VPN\Common\TplInterface;
 
 class Service
@@ -158,7 +159,7 @@ class Service
             } else {
                 // not a browser
                 $response = new Response($e->getCode(), 'application/json');
-                $response->setBody(json_encode(['error' => $e->getMessage()]));
+                $response->setBody(Json::encode(['error' => $e->getMessage()]));
             }
 
             foreach ($e->getResponseHeaders() as $key => $value) {
