@@ -1,7 +1,11 @@
 # Changelog
 
-## 1.2.2 (...)
+## 1.2.2 (2018-10-10)
 - introduce `Json` helper class
+- remove XML from `eduPersonTargetedId` if used as SAML attribute for user 
+  identification
+- delete `_last_authenticated_at_ping_sent` session variable at logout
+- implement "entitlementList" validator
 
 ## 1.2.1 (2018-09-10)
 - introduce "entitlement" checker hook to check whether an authenticated user
