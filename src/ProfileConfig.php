@@ -34,7 +34,6 @@ class ProfileConfig extends Config
             'enableAcl' => false,
             'aclGroupList' => [],
             'managementIp' => '127.0.0.1',
-            'blockSmb' => false,
             'reject4' => false,
             'reject6' => false,
             'vpnProtoPorts' => [
