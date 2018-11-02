@@ -335,6 +335,23 @@ class InputValidation
     }
 
     /**
+     * @param mixed $certExpireDays
+     *
+     * @return null|int
+     */
+    public static function certExpiresDays($certExpireDays)
+    {
+        if (!\is_int($certExpireDays)) {
+            throw new InputValidationException('invalid "certExpireDays", must be "int"');
+        }
+        if (0 >= $certExpireDays) {
+            throw new InputValidationException('invalid "certExpireDays", must be > 0');
+        }
+
+        return $certExpireDays;
+    }
+
+    /**
      * Make sure the input string is valid JSON array containing just strings.
      *
      * @param string $entitlementListStr
