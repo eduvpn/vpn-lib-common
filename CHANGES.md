@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.2.3 (...)
+- add InputValidation::certExpireDays
+- remove blockSmb from default `ProfileConfig`
+
 ## 1.2.2 (2018-10-10)
 - introduce `Json` helper class
 - remove XML from `eduPersonTargetedId` if used as SAML attribute for user 
