@@ -341,11 +341,13 @@ class InputValidation
      */
     public static function certExpiresDays($certExpireDays)
     {
-        if (!\is_int($certExpireDays)) {
-            throw new InputValidationException('invalid "certExpireDays", must be "int"');
-        }
-        if (0 >= $certExpireDays) {
-            throw new InputValidationException('invalid "certExpireDays", must be > 0');
+        if (null !== $certExpireDays) {
+            if (!\is_int($certExpireDays)) {
+                throw new InputValidationException('invalid "certExpireDays", must be "int"');
+            }
+            if (0 >= $certExpireDays) {
+                throw new InputValidationException('invalid "certExpireDays", must be > 0');
+            }
         }
 
         return $certExpireDays;
