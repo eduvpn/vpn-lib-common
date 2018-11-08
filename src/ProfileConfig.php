@@ -44,6 +44,7 @@ class ProfileConfig extends Config
             'hideProfile' => false,
             'tlsProtection' => 'tls-auth', // (false|'tls-crypt'|'tls-auth')
             'enableCompression' => true,    // comp-lzo
+            'blockLan' => false,
         ];
     }
 }
