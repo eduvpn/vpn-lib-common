@@ -1,8 +1,9 @@
 # Changelog
 
-## 1.2.3 (...)
+## 1.2.3 (2018-11-09)
 - add InputValidation::certExpireDays
 - remove blockSmb from default `ProfileConfig`
+- add `blockLan` to block traffic to the local LAN
 
 ## 1.2.2 (2018-10-10)
 - introduce `Json` helper class
