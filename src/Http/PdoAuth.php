@@ -69,7 +69,7 @@ class PdoAuth implements CredentialValidatorInterface
             $stmt->bindValue(':last_authenticated_at', $this->dateTime->format('Y-m-d H:i:s'), PDO::PARAM_STR);
             $stmt->execute();
 
-            return new UserInfo($authUser, []);
+            return new UserInfo($authUser, [], new DateTime());
         }
 
         return false;

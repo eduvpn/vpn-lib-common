@@ -9,6 +9,8 @@
 
 namespace SURFnet\VPN\Common\Http;
 
+use DateTime;
+
 class UserInfo
 {
     /** @var string */
@@ -17,14 +19,19 @@ class UserInfo
     /** @var array<string> */
     private $entitlementList;
 
+    /** @var \DateTime */
+    private $authTime;
+
     /**
      * @param string        $userId
      * @param array<string> $entitlementList
+     * @param \DateTime     $authTime
      */
-    public function __construct($userId, $entitlementList)
+    public function __construct($userId, $entitlementList, DateTime $authTime)
     {
         $this->userId = $userId;
         $this->entitlementList = $entitlementList;
+        $this->authTime = $authTime;
     }
 
     /**
@@ -41,5 +48,13 @@ class UserInfo
     public function entitlementList()
     {
         return $this->entitlementList;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function authTime()
+    {
+        return $this->authTime;
     }
 }

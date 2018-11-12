@@ -9,6 +9,7 @@
 
 namespace SURFnet\VPN\Common\Http;
 
+use DateTime;
 use Psr\Log\LoggerInterface;
 use SURFnet\VPN\Common\Http\Exception\RadiusException;
 
@@ -101,7 +102,7 @@ class RadiusAuth implements CredentialValidatorInterface
         }
 
         if (RADIUS_ACCESS_ACCEPT === radius_send_request($radiusAuth)) {
-            return new UserInfo($authUser, []);
+            return new UserInfo($authUser, [], new DateTime());
         }
 
         if (RADIUS_ACCESS_REJECT === radius_send_request($radiusAuth)) {

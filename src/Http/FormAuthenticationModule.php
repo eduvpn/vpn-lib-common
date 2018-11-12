@@ -9,6 +9,7 @@
 
 namespace SURFnet\VPN\Common\Http;
 
+use DateTime;
 use fkooman\SeCookie\SessionInterface;
 use SURFnet\VPN\Common\Http\Exception\HttpException;
 use SURFnet\VPN\Common\TplInterface;
@@ -85,6 +86,7 @@ class FormAuthenticationModule implements ServiceModuleInterface
                 $this->session->regenerate(true);
                 $this->session->set('_form_auth_user', $userInfo->id());
                 $this->session->set('_form_auth_entitlement_list', $userInfo->entitlementList());
+                $this->session->set('_form_auth_time', $userInfo->authTime()->format(DateTime::ATOM));
 
                 return new RedirectResponse($redirectTo, 302);
             }
@@ -99,6 +101,7 @@ class FormAuthenticationModule implements ServiceModuleInterface
                 // delete authentication information
                 $this->session->delete('_form_auth_user');
                 $this->session->delete('_form_auth_entitlement_list');
+                $this->session->delete('_form_auth_time');
                 $this->session->delete('_two_factor_verified');
                 $this->session->delete('_cached_groups_user_id');
                 $this->session->delete('_cached_groups');

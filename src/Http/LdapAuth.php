@@ -9,6 +9,7 @@
 
 namespace SURFnet\VPN\Common\Http;
 
+use DateTime;
 use Psr\Log\LoggerInterface;
 use SURFnet\VPN\Common\Exception\LdapClientException;
 use SURFnet\VPN\Common\LdapClient;
@@ -53,7 +54,7 @@ class LdapAuth implements CredentialValidatorInterface
         try {
             $this->ldapClient->bind($userDn, $authPass);
 
-            return new UserInfo($authUser, $this->getEntitlementList($userDn));
+            return new UserInfo($authUser, $this->getEntitlementList($userDn), new DateTime());
         } catch (LdapClientException $e) {
             $this->logger->warning(
                 sprintf('unable to bind with DN "%s" (%s)', $userDn, $e->getMessage())

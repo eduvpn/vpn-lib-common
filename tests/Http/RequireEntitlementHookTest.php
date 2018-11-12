@@ -9,6 +9,7 @@
 
 namespace SURFnet\VPN\Common\Tests\Http;
 
+use DateTime;
 use PHPUnit\Framework\TestCase;
 use SURFnet\VPN\Common\Http\Exception\HttpException;
 use SURFnet\VPN\Common\Http\RequireEntitlementHook;
@@ -20,7 +21,7 @@ class RequireEntitlementHookTest extends TestCase
     {
         $request = new TestRequest([]);
         $requireAdminHook = new RequireEntitlementHook(['admin']);
-        $userInfo = new UserInfo('foo', ['admin']);
+        $userInfo = new UserInfo('foo', ['admin'], new DateTime());
         $this->assertNull($requireAdminHook->executeBefore($request, ['auth' => $userInfo]));
     }
 
@@ -28,7 +29,7 @@ class RequireEntitlementHookTest extends TestCase
     {
         $request = new TestRequest([]);
         $requireAdminHook = new RequireEntitlementHook(['admin', 'super']);
-        $userInfo = new UserInfo('foo', ['foo', 'super', 'admin']);
+        $userInfo = new UserInfo('foo', ['foo', 'super', 'admin'], new DateTime());
         $this->assertNull($requireAdminHook->executeBefore($request, ['auth' => $userInfo]));
     }
 
@@ -36,7 +37,7 @@ class RequireEntitlementHookTest extends TestCase
     {
         try {
             $r = new RequireEntitlementHook(['admin']);
-            $r->executeBefore(new TestRequest([]), ['auth' => new UserInfo('foo', ['foo', 'bar', 'baz'])]);
+            $r->executeBefore(new TestRequest([]), ['auth' => new UserInfo('foo', ['foo', 'bar', 'baz'], new DateTime())]);
             $this->fail();
         } catch (HttpException $e) {
             $this->assertSame('account missing required entitlement', $e->getMessage());

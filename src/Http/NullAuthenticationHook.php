@@ -9,6 +9,8 @@
 
 namespace SURFnet\VPN\Common\Http;
 
+use DateTime;
+
 class NullAuthenticationHook implements BeforeHookInterface
 {
     /** @var string */
@@ -27,6 +29,6 @@ class NullAuthenticationHook implements BeforeHookInterface
      */
     public function executeBefore(Request $request, array $hookData)
     {
-        return new UserInfo($this->authUser, []);
+        return new UserInfo($this->authUser, [], new DateTime());
     }
 }

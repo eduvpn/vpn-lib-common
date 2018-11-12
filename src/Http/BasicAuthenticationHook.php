@@ -9,6 +9,7 @@
 
 namespace SURFnet\VPN\Common\Http;
 
+use DateTime;
 use SURFnet\VPN\Common\Http\Exception\HttpException;
 
 class BasicAuthenticationHook implements BeforeHookInterface
@@ -45,7 +46,7 @@ class BasicAuthenticationHook implements BeforeHookInterface
 
         if (array_key_exists($authUser, $this->userPass)) {
             if (hash_equals($authPass, $this->userPass[$authUser])) {
-                return new UserInfo($authUser, []);
+                return new UserInfo($authUser, [], new DateTime());
             }
         }
 
