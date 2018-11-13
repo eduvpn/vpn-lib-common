@@ -81,7 +81,7 @@ class MellonAuthenticationHook implements BeforeHookInterface
         }
         $this->session->set('_mellon_auth_user', $userId);
 
-        // XXX would be nice if we could bind this to the actual authentication 
+        // XXX would be nice if we could bind this to the actual authentication
         // time, but that seems impossible with mod_auth_mellon...
         return new UserInfo($userId, $this->getEntitlementList($request), new DateTime());
     }
