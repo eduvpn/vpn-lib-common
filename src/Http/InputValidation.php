@@ -335,20 +335,17 @@ class InputValidation
     }
 
     /**
-     * @param mixed $certExpireDays
+     * @param string $expiresAt
      *
-     * @return null|int
+     * @return \DateTime
      */
-    public static function certExpiresDays($certExpireDays)
+    public static function expiresAt($expiresAt)
     {
-        if (null !== $certExpireDays) {
-            $certExpireDays = (int) $certExpireDays;
-            if (0 >= $certExpireDays) {
-                throw new InputValidationException('invalid "certExpireDays", must be > 0');
-            }
+        if (false === $dateTime = DateTime::createFromFormat(DateTime::ATOM, $expiresAt)) {
+            throw new InputValidationException('invalid "expires_at"');
         }
 
-        return $certExpireDays;
+        return $dateTime;
     }
 
     /**

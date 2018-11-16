@@ -2,6 +2,8 @@
 
 ## 1.2.4 (...)
 - add `authTime` to `UserInfo`
+- implement `InputValidation::expiresAt` to replace 
+  `InputValidation::certExpireDays`
 
 ## 1.2.3 (2018-11-09)
 - add InputValidation::certExpireDays
