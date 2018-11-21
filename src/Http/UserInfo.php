@@ -27,7 +27,7 @@ class UserInfo
      * @param array<string> $entitlementList
      * @param \DateTime     $authTime
      */
-    public function __construct($userId, $entitlementList, DateTime $authTime)
+    public function __construct($userId, array $entitlementList, DateTime $authTime)
     {
         $this->userId = $userId;
         $this->entitlementList = $entitlementList;
@@ -48,6 +48,16 @@ class UserInfo
     public function entitlementList()
     {
         return $this->entitlementList;
+    }
+
+    /**
+     * @param array<string> $entitlementList
+     *
+     * @return void
+     */
+    public function addEntitlements(array $entitlementList)
+    {
+        $this->entitlementList = array_merge($this->entitlementList, $entitlementList);
     }
 
     /**
