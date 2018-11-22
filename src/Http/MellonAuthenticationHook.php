@@ -87,7 +87,7 @@ class MellonAuthenticationHook implements BeforeHookInterface
             $authTime = new DateTime($this->session->get('_mellon_auth_time'));
         } else {
             $authTime = new DateTime();
-            $this->session->set('_mellon_auth_time', $authTime);
+            $this->session->set('_mellon_auth_time', $authTime->format(DateTime::ATOM));
         }
 
         return new UserInfo($userId, $this->getEntitlementList($request), $authTime);
