@@ -1,7 +1,7 @@
 # Changelog
 
-## 1.2.4 (...)
-- add `authTime` to `UserInfo`
+## 1.3.0 (2018-11-22)
+- implement `UserInfo::authTime` to obtain the time the user authenticated
 - implement `InputValidation::expiresAt` to replace 
   `InputValidation::certExpireDays`
 - update password instead of trying to add user when user already exists with
