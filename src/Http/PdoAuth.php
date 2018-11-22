@@ -83,11 +83,11 @@ class PdoAuth implements CredentialValidatorInterface
      */
     public function add($userId, $userPass)
     {
-        if ($this->userExists($userId))
-            {
-	        $this->updatePassword($userId, $userPass);
-	            return;
-	    }
+        if ($this->userExists($userId)) {
+            $this->updatePassword($userId, $userPass);
+
+            return;
+        }
 
         $stmt = $this->db->prepare(
             'INSERT INTO
