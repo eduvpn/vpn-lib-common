@@ -4,6 +4,8 @@
 - add `authTime` to `UserInfo`
 - implement `InputValidation::expiresAt` to replace 
   `InputValidation::certExpireDays`
+- update password instead of trying to add user when user already exists with
+  `PdoAuth` (Sjors Haanen)
 
 ## 1.2.3 (2018-11-09)
 - add InputValidation::certExpireDays

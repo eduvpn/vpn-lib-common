@@ -51,6 +51,8 @@ class UserInfo
     }
 
     /**
+     * Add additional entitlement. Currently only used by VOOT.
+     *
      * @param array<string> $entitlementList
      *
      * @return void
