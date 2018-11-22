@@ -81,9 +81,16 @@ class MellonAuthenticationHook implements BeforeHookInterface
         }
         $this->session->set('_mellon_auth_user', $userId);
 
-        // XXX would be nice if we could bind this to the actual authentication
-        // time, but that seems impossible with mod_auth_mellon...
-        return new UserInfo($userId, $this->getEntitlementList($request), new DateTime());
+        // we record the first time the user comes by and cache this and use
+        // that time in subsequent requests...
+        if ($this->session->has('_mellon_auth_time')) {
+            $authTime = new DateTime($this->session->get('_mellon_auth_time'));
+        } else {
+            $authTime = new DateTime();
+            $this->session->set('_mellon_auth_time', $authTime);
+        }
+
+        return new UserInfo($userId, $this->getEntitlementList($request), $authTime);
     }
 
     /**
