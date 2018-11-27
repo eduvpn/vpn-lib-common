@@ -91,28 +91,5 @@ class FormAuthenticationModule implements ServiceModuleInterface
                 return new RedirectResponse($redirectTo, 302);
             }
         );
-
-        $service->post(
-            '/_form/auth/logout',
-            /**
-             * @return Response
-             */
-            function (Request $request) {
-                // delete authentication information
-                $this->session->delete('_form_auth_user');
-                $this->session->delete('_form_auth_entitlement_list');
-                $this->session->delete('_form_auth_time');
-                $this->session->delete('_two_factor_verified');
-                $this->session->delete('_cached_groups_user_id');
-                $this->session->delete('_cached_groups');
-                $this->session->delete('_last_authenticated_at_ping_sent');
-                $this->session->delete('_cached_voot_groups');
-                $this->session->delete('_cached_voot_groups_user_id');
-
-                $this->session->regenerate(true);
-
-                return new RedirectResponse($request->requireHeader('HTTP_REFERER'));
-            }
-        );
     }
 }
