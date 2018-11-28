@@ -108,7 +108,7 @@ class Config
      */
     public static function fromFile($configFile)
     {
-        if (false === @file_exists($configFile)) {
+        if (false === file_exists($configFile)) {
             throw new ConfigException(sprintf('unable to read "%s"', $configFile));
         }
 

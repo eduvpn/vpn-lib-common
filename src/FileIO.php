@@ -20,7 +20,7 @@ class FileIO
      */
     public static function readFile($filePath)
     {
-        if (false === $fileData = @file_get_contents($filePath)) {
+        if (false === $fileData = file_get_contents($filePath)) {
             throw new RuntimeException(sprintf('unable to read file "%s"', $filePath));
         }
 
@@ -48,7 +48,7 @@ class FileIO
      */
     public static function writeFile($filePath, $fileData, $mode = 0600)
     {
-        if (false === @file_put_contents($filePath, $fileData)) {
+        if (false === file_put_contents($filePath, $fileData)) {
             throw new RuntimeException(sprintf('unable to write file "%s"', $filePath));
         }
         if (false === chmod($filePath, $mode)) {
@@ -77,7 +77,7 @@ class FileIO
      */
     public static function deleteFile($filePath)
     {
-        if (false === @unlink($filePath)) {
+        if (false === unlink($filePath)) {
             throw new RuntimeException(sprintf('unable to delete file "%s"', $filePath));
         }
     }
@@ -90,8 +90,8 @@ class FileIO
      */
     public static function createDir($dirPath, $mode = 0711)
     {
-        if (!@file_exists($dirPath)) {
-            if (false === @mkdir($dirPath, $mode, true)) {
+        if (!file_exists($dirPath)) {
+            if (false === mkdir($dirPath, $mode, true)) {
                 throw new RuntimeException(sprintf('unable to create directory "%s"', $dirPath));
             }
         }

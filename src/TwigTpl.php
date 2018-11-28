@@ -54,7 +54,7 @@ class TwigTpl implements TplInterface
 
         if (null !== $cacheDir) {
             if (false === is_dir($cacheDir)) {
-                if (false === @mkdir($cacheDir, 0700, true)) {
+                if (false === mkdir($cacheDir, 0700, true)) {
                     throw new RuntimeException('unable to create template cache directory');
                 }
             }
