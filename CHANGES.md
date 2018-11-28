@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.3.1 (2018-11-28)
+- rework "logout" to make it work for `MellonAuthentication` as well
+
 ## 1.3.0 (2018-11-22)
 - implement `UserInfo::authTime` to obtain the time the user authenticated
 - implement `InputValidation::expiresAt` to replace 
