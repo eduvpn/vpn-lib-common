@@ -38,7 +38,8 @@ class TwoFactorHook implements BeforeHookInterface
         // verifying the OTP key
         $allowedUris = [
             '/_form/auth/verify',
-            '/_form/auth/logout',
+            '/_form/auth/logout',   // DEPRECATED
+            '/_logout',
             '/_two_factor/auth/verify/totp',
             '/_two_factor/auth/verify/yubi',
         ];

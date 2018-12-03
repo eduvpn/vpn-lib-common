@@ -38,7 +38,8 @@ class RequireEntitlementHook implements BeforeHookInterface
     {
         $urlList = [
             '/_form/auth/verify',
-            '/_form/auth/logout',
+            '/_form/auth/logout',   // DEPRECATED
+            '/_logout',
         ];
 
         if (\in_array($request->getPathInfo(), $urlList, true)) {
