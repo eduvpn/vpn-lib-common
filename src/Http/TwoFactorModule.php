@@ -53,7 +53,6 @@ class TwoFactorModule implements ServiceModuleInterface
 
                 $totpKey = InputValidation::totpKey($request->getPostParameter('_two_factor_auth_totp_key'));
                 $redirectTo = $request->getPostParameter('_two_factor_auth_redirect_to');
-                self::validateRedirectTo($request, $redirectTo);
 
                 try {
                     $this->serverClient->post('verify_totp_key', ['user_id' => $userInfo->id(), 'totp_key' => $totpKey]);
@@ -96,7 +95,6 @@ class TwoFactorModule implements ServiceModuleInterface
 
                 $yubiKeyOtp = InputValidation::yubiKeyOtp($request->getPostParameter('_two_factor_auth_yubi_key_otp'));
                 $redirectTo = $request->getPostParameter('_two_factor_auth_redirect_to');
-                self::validateRedirectTo($request, $redirectTo);
 
                 try {
                     $this->serverClient->post('verify_yubi_key_otp', ['user_id' => $userInfo->id(), 'yubi_key_otp' => $yubiKeyOtp]);
@@ -123,28 +121,5 @@ class TwoFactorModule implements ServiceModuleInterface
                 }
             }
         );
-    }
-
-    /**
-     * @param Request $request
-     * @param string  $redirectTo
-     *
-     * @return void
-     */
-    private static function validateRedirectTo(Request $request, $redirectTo)
-    {
-        // validate the URL
-        if (false === filter_var($redirectTo, FILTER_VALIDATE_URL, FILTER_FLAG_SCHEME_REQUIRED | FILTER_FLAG_HOST_REQUIRED | FILTER_FLAG_PATH_REQUIRED)) {
-            throw new HttpException('invalid redirect_to URL', 400);
-        }
-
-        // extract the "host" part of the URL
-        $redirectToHost = parse_url($redirectTo, PHP_URL_HOST);
-        if (!\is_string($redirectToHost)) {
-            throw new HttpException('invalid redirect_to URL, unable to extract host', 400);
-        }
-        if ($request->getServerName() !== $redirectToHost) {
-            throw new HttpException('redirect_to does not match expected host', 400);
-        }
     }
 }
