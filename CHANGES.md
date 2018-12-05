@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.3.2 (2018-12-05)
+- remove PHP error suppression
+- fix issue where user could not logout when being asked for 2FA
+
 ## 1.3.1 (2018-11-28)
 - rework "logout" to make it work for `MellonAuthentication` as well
 
