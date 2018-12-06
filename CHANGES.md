@@ -3,6 +3,7 @@
 ## 1.3.3 (...)
 - remove YubiKey support
 - check whether file exists before reading it
+- implement the ability to require 2FA
 
 ## 1.3.2 (2018-12-05)
 - remove PHP error suppression
