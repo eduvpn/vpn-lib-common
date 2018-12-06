@@ -47,22 +47,33 @@ class TwoFactorHook implements BeforeHookInterface
      */
     public function executeBefore(Request $request, array $hookData)
     {
+        if (!array_key_exists('auth', $hookData)) {
+            throw new HttpException('authentication hook did not run before', 500);
+        }
+
         // some URIs are allowed as they are used for either logging in, or
         // verifying the OTP key
-        $allowedUris = [
+        $allowedPostUriList = [
+            '/two_factor_enroll',
             '/_form/auth/verify',
             '/_form/auth/logout',   // DEPRECATED
             '/_logout',
             '/_two_factor/auth/verify/totp',
         ];
 
-        if (\in_array($request->getPathInfo(), $allowedUris, true) && 'POST' === $request->getRequestMethod()) {
+        $allowedGetUriList = [
+            '/two_factor_enroll',
+            '/two_factor_enroll_qr',
+            '/documentation',
+        ];
+
+        if (\in_array($request->getPathInfo(), $allowedPostUriList, true) && 'POST' === $request->getRequestMethod()) {
+            return false;
+        }
+        if (\in_array($request->getPathInfo(), $allowedGetUriList, true) && 'GET' === $request->getRequestMethod()) {
             return false;
         }
 
-        if (!array_key_exists('auth', $hookData)) {
-            throw new HttpException('authentication hook did not run before', 500);
-        }
         $userInfo = $hookData['auth'];
         if ($this->session->has('_two_factor_verified')) {
             if ($userInfo->id() !== $this->session->get('_two_factor_verified')) {
