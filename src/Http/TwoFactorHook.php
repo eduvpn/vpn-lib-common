@@ -25,13 +25,26 @@ class TwoFactorHook implements BeforeHookInterface
     /** @var \SURFnet\VPN\Common\HttpClient\ServerClient */
     private $serverClient;
 
-    public function __construct(SessionInterface $session, TplInterface $tpl, ServerClient $serverClient)
+    /** @var bool */
+    private $requireTwoFactor;
+
+    /**
+     * @param \fkooman\SeCookie\SessionInterface          $session
+     * @param \SURFnet\VPN\Common\TplInterface            $tpl
+     * @param \SURFnet\VPN\Common\HttpClient\ServerClient $serverClient
+     * @param bool                                        $requireTwoFactor
+     */
+    public function __construct(SessionInterface $session, TplInterface $tpl, ServerClient $serverClient, $requireTwoFactor)
     {
         $this->session = $session;
         $this->tpl = $tpl;
         $this->serverClient = $serverClient;
+        $this->requireTwoFactor = $requireTwoFactor;
     }
 
+    /**
+     * @return bool|Response
+     */
     public function executeBefore(Request $request, array $hookData)
     {
         // some URIs are allowed as they are used for either logging in, or
@@ -51,7 +64,6 @@ class TwoFactorHook implements BeforeHookInterface
             throw new HttpException('authentication hook did not run before', 500);
         }
         $userInfo = $hookData['auth'];
-
         if ($this->session->has('_two_factor_verified')) {
             if ($userInfo->id() !== $this->session->get('_two_factor_verified')) {
                 throw new HttpException('two-factor code not bound to authenticated user', 400);
@@ -60,30 +72,33 @@ class TwoFactorHook implements BeforeHookInterface
             return true;
         }
 
-        $hasTotpSecret = $this->serverClient->get('has_totp_secret', ['user_id' => $userInfo->id()]);
-
-        // check if the user is enrolled for 2FA, if not we are fine, for this
-        // session we assume we are verified!
-        if (!$hasTotpSecret) {
-            $this->session->regenerate(true);
-            $this->session->set('_two_factor_verified', $userInfo->id());
-
-            return false;
+        // check if user is enrolled
+        $hasTotpSecret = $this->serverClient->getRequireBool('has_totp_secret', ['user_id' => $userInfo->id()]);
+        if ($hasTotpSecret) {
+            // user is enrolled for 2FA, ask for it!
+            return new HtmlResponse(
+                $this->tpl->render(
+                    'twoFactorTotp',
+                    [
+                        '_two_factor_user_id' => $userInfo->id(),
+                        '_two_factor_auth_invalid' => false,
+                        '_two_factor_auth_redirect_to' => $request->getUri(),
+                    ]
+                )
+            );
         }
 
-        // any other URL, enforce 2FA
-        $response = new Response(200, 'text/html');
-        $response->setBody(
-            $this->tpl->render(
-                'twoFactorTotp',
-                [
-                    '_two_factor_user_id' => $userInfo->id(),
-                    '_two_factor_auth_invalid' => false,
-                    '_two_factor_auth_redirect_to' => $request->getUri(),
-                ]
-            )
-        );
+        if ($this->requireTwoFactor) {
+            // 2FA required, but user not enrolled, offer them to enroll
+            $this->session->set('_two_factor_enroll_redirect_to', $request->getUri());
 
-        return $response;
+            return new RedirectResponse($request->getRootUri().'two_factor_enroll');
+        }
+
+        // 2FA not required, and user not enrolled...
+        $this->session->regenerate(true);
+        $this->session->set('_two_factor_verified', $userInfo->id());
+
+        return true;
     }
 }

@@ -62,8 +62,7 @@ class TwoFactorModule implements ServiceModuleInterface
                     return new RedirectResponse($redirectTo, 302);
                 } catch (ApiException $e) {
                     // unable to validate the OTP
-                    $response = new Response(200, 'text/html');
-                    $response->setBody(
+                    return new HtmlResponse(
                         $this->tpl->render(
                             'twoFactorTotp',
                             [
@@ -74,8 +73,6 @@ class TwoFactorModule implements ServiceModuleInterface
                             ]
                         )
                     );
-
-                    return $response;
                 }
             }
         );
