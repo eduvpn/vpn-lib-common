@@ -20,6 +20,9 @@ class FileIO
      */
     public static function readFile($filePath)
     {
+        if (false === file_exists($filePath)) {
+            throw new RuntimeException(sprintf('unable to find "%s"', $filePath));
+        }
         if (false === $fileData = file_get_contents($filePath)) {
             throw new RuntimeException(sprintf('unable to read file "%s"', $filePath));
         }
@@ -90,7 +93,7 @@ class FileIO
      */
     public static function createDir($dirPath, $mode = 0711)
     {
-        if (!file_exists($dirPath)) {
+        if (false === file_exists($dirPath)) {
             if (false === mkdir($dirPath, $mode, true)) {
                 throw new RuntimeException(sprintf('unable to create directory "%s"', $dirPath));
             }
