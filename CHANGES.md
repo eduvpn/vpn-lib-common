@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.3.3 (...)
+- remove YubiKey support
+- check whether file exists before reading it
+
 ## 1.3.2 (2018-12-05)
 - remove PHP error suppression
 - fix issue where user could not logout when being asked for 2FA
