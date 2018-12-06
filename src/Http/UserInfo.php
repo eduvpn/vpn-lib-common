@@ -51,18 +51,6 @@ class UserInfo
     }
 
     /**
-     * Add additional entitlement. Currently only used by VOOT.
-     *
-     * @param array<string> $entitlementList
-     *
-     * @return void
-     */
-    public function addEntitlements(array $entitlementList)
-    {
-        $this->entitlementList = array_merge($this->entitlementList, $entitlementList);
-    }
-
-    /**
      * @return \DateTime
      */
     public function authTime()
