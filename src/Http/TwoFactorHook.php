@@ -41,7 +41,6 @@ class TwoFactorHook implements BeforeHookInterface
             '/_form/auth/logout',   // DEPRECATED
             '/_logout',
             '/_two_factor/auth/verify/totp',
-            '/_two_factor/auth/verify/yubi',
         ];
 
         if (\in_array($request->getPathInfo(), $allowedUris, true) && 'POST' === $request->getRequestMethod()) {
@@ -62,25 +61,21 @@ class TwoFactorHook implements BeforeHookInterface
         }
 
         $hasTotpSecret = $this->serverClient->get('has_totp_secret', ['user_id' => $userInfo->id()]);
-        $hasYubiId = $this->serverClient->get('has_yubi_key_id', ['user_id' => $userInfo->id()]);
 
         // check if the user is enrolled for 2FA, if not we are fine, for this
         // session we assume we are verified!
-        if (!$hasTotpSecret && !$hasYubiId) {
+        if (!$hasTotpSecret) {
             $this->session->regenerate(true);
             $this->session->set('_two_factor_verified', $userInfo->id());
 
             return false;
         }
 
-        // if not Yubi, then TOTP
-        $templateName = $hasYubiId ? 'twoFactorYubiKeyOtp' : 'twoFactorTotp';
-
         // any other URL, enforce 2FA
         $response = new Response(200, 'text/html');
         $response->setBody(
             $this->tpl->render(
-                $templateName,
+                'twoFactorTotp',
                 [
                     '_two_factor_user_id' => $userInfo->id(),
                     '_two_factor_auth_invalid' => false,

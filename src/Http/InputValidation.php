@@ -106,20 +106,6 @@ class InputValidation
     }
 
     /**
-     * @param string $yubiKeyOtp
-     *
-     * @return string
-     */
-    public static function yubiKeyOtp($yubiKeyOtp)
-    {
-        if (1 !== preg_match('/^[a-z]{44}$/', $yubiKeyOtp)) {
-            throw new InputValidationException('invalid "yubi_key_otp"');
-        }
-
-        return $yubiKeyOtp;
-    }
-
-    /**
      * @param string $totpKey
      *
      * @return string
@@ -271,7 +257,7 @@ class InputValidation
      */
     public static function twoFactorType($twoFactorType)
     {
-        if ('totp' !== $twoFactorType && 'yubi' !== $twoFactorType) {
+        if ('totp' !== $twoFactorType) {
             throw new InputValidationException('invalid "two_factor_type"');
         }
 

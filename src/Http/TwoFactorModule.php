@@ -79,47 +79,5 @@ class TwoFactorModule implements ServiceModuleInterface
                 }
             }
         );
-
-        $service->post(
-            '/_two_factor/auth/verify/yubi',
-            /**
-             * @return Response
-             */
-            function (Request $request, array $hookData) {
-                if (!array_key_exists('auth', $hookData)) {
-                    throw new HttpException('authentication hook did not run before', 500);
-                }
-                $userInfo = $hookData['auth'];
-
-                $this->session->delete('_two_factor_verified');
-
-                $yubiKeyOtp = InputValidation::yubiKeyOtp($request->getPostParameter('_two_factor_auth_yubi_key_otp'));
-                $redirectTo = $request->getPostParameter('_two_factor_auth_redirect_to');
-
-                try {
-                    $this->serverClient->post('verify_yubi_key_otp', ['user_id' => $userInfo->id(), 'yubi_key_otp' => $yubiKeyOtp]);
-                    $this->session->regenerate(true);
-                    $this->session->set('_two_factor_verified', $userInfo->id());
-
-                    return new RedirectResponse($redirectTo, 302);
-                } catch (ApiException $e) {
-                    // unable to validate the OTP
-                    $response = new Response(200, 'text/html');
-                    $response->setBody(
-                        $this->tpl->render(
-                            'twoFactorYubiKeyOtp',
-                            [
-                                '_two_factor_user_id' => $userInfo->id(),
-                                '_two_factor_auth_invalid' => true,
-                                '_two_factor_auth_error_msg' => $e->getMessage(),
-                                '_two_factor_auth_redirect_to' => $redirectTo,
-                            ]
-                        )
-                    );
-
-                    return $response;
-                }
-            }
-        );
     }
 }
