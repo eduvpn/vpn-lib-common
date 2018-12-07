@@ -16,11 +16,21 @@ class FileIO
     /**
      * @param string $filePath
      *
+     * @return bool
+     */
+    public static function hasFile($filePath)
+    {
+        return file_exists($filePath);
+    }
+
+    /**
+     * @param string $filePath
+     *
      * @return string
      */
     public static function readFile($filePath)
     {
-        if (false === file_exists($filePath)) {
+        if (false === self::hasFile($filePath)) {
             throw new RuntimeException(sprintf('unable to find "%s"', $filePath));
         }
         if (false === $fileData = file_get_contents($filePath)) {
