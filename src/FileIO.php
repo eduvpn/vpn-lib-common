@@ -18,7 +18,7 @@ class FileIO
      *
      * @return bool
      */
-    public static function hasFile($filePath)
+    public static function exists($filePath)
     {
         return file_exists($filePath);
     }
@@ -30,7 +30,7 @@ class FileIO
      */
     public static function readFile($filePath)
     {
-        if (false === self::hasFile($filePath)) {
+        if (false === self::exists($filePath)) {
             throw new RuntimeException(sprintf('unable to find "%s"', $filePath));
         }
         if (false === $fileData = file_get_contents($filePath)) {
