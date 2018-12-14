@@ -23,7 +23,7 @@ class Tpl implements TplInterface
     public function __construct(array $templateDirs, $localeFile)
     {
         $this->tpl = new Template($templateDirs, $localeFile);
-        $this->tpl->addCallback('bytes_to_human', [\get_class($this), 'toHuman']);
+        $this->tpl->addCallback('bytes_to_human', [__CLASS__, 'toHuman']);
     }
 
     /**
