@@ -48,18 +48,6 @@ class LogoutModule implements ServiceModuleInterface
                 return $this->doLogout($request);
             }
         );
-
-        // this is an "alias" to remain compatible with the old "base.twig"
-        // template in case it was locally overridden...
-        $service->post(
-            '/_form/auth/logout',
-            /**
-             * @return \SURFnet\VPN\Common\Http\Response
-             */
-            function (Request $request, array $hookData) {
-                return $this->doLogout($request);
-            }
-        );
     }
 
     /**
