@@ -190,20 +190,37 @@ class Tpl implements TplInterface
     private function e($v, $cb = null)
     {
         if (null !== $cb) {
-            $functionList = \explode('|', $cb);
-            foreach ($functionList as $f) {
-                if (\array_key_exists($f, $this->callbackList)) {
-                    $f = $this->callbackList[$f];
-                } else {
-                    if (!\function_exists($f)) {
-                        throw new TplException(\sprintf('function "%s" does not exist', $f));
-                    }
-                }
-                $v = \call_user_func($f, $v);
-            }
+            $v = $this->batch($v, $cb);
         }
 
         return \htmlentities($v, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+    }
+
+    /**
+     * @param string $v
+     * @param string $cb
+     *
+     * @return string
+     */
+    private function batch($v, $cb)
+    {
+        $functionList = \explode('|', $cb);
+        foreach ($functionList as $f) {
+            if ('escape' === $f) {
+                $v = $this->e($v);
+                continue;
+            }
+            if (\array_key_exists($f, $this->callbackList)) {
+                $f = $this->callbackList[$f];
+            } else {
+                if (!\function_exists($f)) {
+                    throw new TplException(\sprintf('function "%s" does not exist', $f));
+                }
+            }
+            $v = \call_user_func($f, $v);
+        }
+
+        return $v;
     }
 
     /**
