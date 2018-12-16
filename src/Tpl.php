@@ -280,7 +280,7 @@ class Tpl implements TplInterface
      */
     private function templatePath($templateName)
     {
-        foreach ($this->templateFolderList as $templateFolder) {
+        foreach (\array_reverse($this->templateFolderList) as $templateFolder) {
             $templatePath = \sprintf('%s/%s.php', $templateFolder, $templateName);
             if (\file_exists($templatePath)) {
                 return $templatePath;
