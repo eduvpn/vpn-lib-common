@@ -50,10 +50,15 @@ class MellonAuthenticationHook implements BeforeHookInterface
      * @param Request $request
      * @param array   $hookData
      *
-     * @return UserInfo
+     * @return false|UserInfo
      */
     public function executeBefore(Request $request, array $hookData)
     {
+        // when user tries to logout, let them
+        if ('POST' === $request->getRequestMethod() && '/_logout' === $request->getPathInfo()) {
+            return false;
+        }
+
         // remove the "NameID" XML construct from the identifier if
         // eduPersonTargetedID attribute was used and we receive the XML
         $userId = strip_tags($request->requireHeader($this->userIdAttribute));
