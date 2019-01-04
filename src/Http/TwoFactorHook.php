@@ -55,6 +55,7 @@ class TwoFactorHook implements BeforeHookInterface
         // verifying the OTP key
         $allowedPostUriList = [
             '/two_factor_enroll',
+            '/_saml/acs',
             '/_form/auth/verify',
             '/_form/auth/logout',   // DEPRECATED
             '/_logout',
@@ -62,6 +63,7 @@ class TwoFactorHook implements BeforeHookInterface
         ];
 
         $allowedGetUriList = [
+            '/_saml/login',
             '/two_factor_enroll',
             '/two_factor_enroll_qr',
             '/documentation',

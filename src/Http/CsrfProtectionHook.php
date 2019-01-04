@@ -30,6 +30,12 @@ class CsrfProtectionHook implements BeforeHookInterface
             return false;
         }
 
+        // POST to /_saml/acs is allowed without matching REFERER, it comes
+        // from the IdP...
+        if ('POST' === $request->getRequestMethod() && '/_saml/acs' === $request->getPathInfo()) {
+            return false;
+        }
+
         $uriAuthority = $request->getAuthority();
         $httpOrigin = $request->optionalHeader('HTTP_ORIGIN');
         if (null !== $httpOrigin) {
