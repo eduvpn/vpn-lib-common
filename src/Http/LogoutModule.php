@@ -45,6 +45,20 @@ class LogoutModule implements ServiceModuleInterface
             function (Request $request, array $hookData) {
                 $httpReferrer = $request->requireHeader('HTTP_REFERER');
                 if (null !== $this->logoutUrl) {
+                    // we can't destroy the complete session here, we need to
+                    // delete the keys one by one as some may be used by e.g.
+                    // the SAML authentication backend...
+                    $this->session->delete('_last_authenticated_at_ping_sent');
+                    $this->session->delete('_saml_auth_time');
+                    $this->session->delete('_two_factor_verified');
+                    $this->session->delete('_mellon_auth_user');
+                    $this->session->delete('_mellon_auth_time');
+                    $this->session->delete('_two_factor_enroll_redirect_to');
+                    $this->session->delete('_two_factor_verified');
+                    $this->session->delete('_form_auth_user');
+                    $this->session->delete('_form_auth_entitlement_list');
+                    $this->session->delete('_form_auth_time');
+
                     // a logout URL is defined, this is used by SAML/Mellon
                     return new RedirectResponse(
                         sprintf(
@@ -59,9 +73,6 @@ class LogoutModule implements ServiceModuleInterface
                     );
                 }
 
-                // we only destroy the session here, and not for the
-                // "SAML backends" as they may store stuff in the session as
-                // well, defer to those authtication mechanisms...
                 $this->session->destroy();
 
                 return new RedirectResponse($httpReferrer);
