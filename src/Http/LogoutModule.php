@@ -43,7 +43,6 @@ class LogoutModule implements ServiceModuleInterface
              * @return \SURFnet\VPN\Common\Http\Response
              */
             function (Request $request, array $hookData) {
-                $this->session->destroy();
                 $httpReferrer = $request->requireHeader('HTTP_REFERER');
                 if (null !== $this->logoutUrl) {
                     // a logout URL is defined, this is used by SAML/Mellon
@@ -59,6 +58,11 @@ class LogoutModule implements ServiceModuleInterface
                         )
                     );
                 }
+
+                // we only destroy the session here, and not for the
+                // "SAML backends" as they may store stuff in the session as
+                // well, defer to those authtication mechanisms...
+                $this->session->destroy();
 
                 return new RedirectResponse($httpReferrer);
             }
