@@ -19,7 +19,7 @@ class LogoutModuleTest extends TestCase
     {
         $session = new TestSession();
         $service = new Service();
-        $logoutModule = new LogoutModule($session, false);
+        $logoutModule = new LogoutModule($session);
         $service->addModule($logoutModule);
         $request = new TestRequest(
             [
@@ -35,11 +35,11 @@ class LogoutModuleTest extends TestCase
         $this->assertSame('http://example.org/foo', $response->getHeader('Location'));
     }
 
-    public function testVerifyMellonLogout()
+    public function testVerifyMellonLogoutWithUrl()
     {
         $session = new TestSession();
         $service = new Service();
-        $logoutModule = new LogoutModule($session, true);
+        $logoutModule = new LogoutModule($session, 'http://vpn.example/saml/logout');
         $service->addModule($logoutModule);
         $request = new TestRequest(
             [

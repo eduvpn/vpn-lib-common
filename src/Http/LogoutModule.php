@@ -13,22 +13,20 @@ use fkooman\SeCookie\SessionInterface;
 
 class LogoutModule implements ServiceModuleInterface
 {
-    const MELLON_LOGOUT = 'saml/logout';
-
     /** @var \fkooman\SeCookie\SessionInterface */
     private $session;
 
-    /** @var bool */
-    private $isMellon;
+    /** @var null|string */
+    private $logoutUrl;
 
     /**
      * @param \fkooman\SeCookie\SessionInterface $session
-     * @param bool                               $isMellon
+     * @param null|string                        $logoutUrl
      */
-    public function __construct(SessionInterface $session, $isMellon)
+    public function __construct(SessionInterface $session, $logoutUrl = null)
     {
         $this->session = $session;
-        $this->isMellon = $isMellon;
+        $this->logoutUrl = $logoutUrl;
     }
 
     /**
@@ -45,36 +43,25 @@ class LogoutModule implements ServiceModuleInterface
              * @return \SURFnet\VPN\Common\Http\Response
              */
             function (Request $request, array $hookData) {
-                return $this->doLogout($request);
+                $this->session->destroy();
+                $httpReferrer = $request->requireHeader('HTTP_REFERER');
+                if (null !== $this->logoutUrl) {
+                    // a logout URL is defined, this is used by SAML/Mellon
+                    return new RedirectResponse(
+                        sprintf(
+                            '%s?%s',
+                            $this->logoutUrl,
+                            http_build_query(
+                                [
+                                    'ReturnTo' => $httpReferrer,
+                                ]
+                            )
+                        )
+                    );
+                }
+
+                return new RedirectResponse($httpReferrer);
             }
         );
-    }
-
-    /**
-     * @param \SURFnet\VPN\Common\Http\Request $request
-     *
-     * @return \SURFnet\VPN\Common\Http\Response
-     */
-    private function doLogout(Request $request)
-    {
-        $this->session->destroy();
-        $httpReferrer = $request->requireHeader('HTTP_REFERER');
-        if ($this->isMellon) {
-            $mellonLogoutUrl = sprintf('%s/%s', $request->getAuthority(), self::MELLON_LOGOUT);
-
-            return new RedirectResponse(
-                sprintf(
-                    '%s?%s',
-                    $mellonLogoutUrl,
-                    http_build_query(
-                        [
-                            'ReturnTo' => $httpReferrer,
-                        ]
-                    )
-                )
-            );
-        }
-
-        return new RedirectResponse($httpReferrer);
     }
 }
