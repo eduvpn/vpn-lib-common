@@ -36,21 +36,18 @@ class RequireEntitlementHook implements BeforeHookInterface
      */
     public function executeBefore(Request $request, array $hookData)
     {
-        $allowedPostUriList = [
-            '/_saml/acs',
-            '/_form/auth/verify',
-            '/_form/auth/logout',   // DEPRECATED
-            '/_logout',
+        $whiteList = [
+            'POST' => [
+                '/_saml/acs',
+                '/_form/auth/verify',
+                '/_form/auth/logout',   // DEPRECATED
+                '/_logout',
+            ],
+            'GET' => [
+                '/_saml/login',
+            ],
         ];
-
-        $allowedGetUriList = [
-            '/_saml/login',
-        ];
-
-        if (\in_array($request->getPathInfo(), $allowedPostUriList, true) && 'POST' === $request->getRequestMethod()) {
-            return;
-        }
-        if (\in_array($request->getPathInfo(), $allowedGetUriList, true) && 'GET' === $request->getRequestMethod()) {
+        if (Service::isWhitelisted($request, $whiteList)) {
             return;
         }
 

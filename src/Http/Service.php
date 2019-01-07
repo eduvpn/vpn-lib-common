@@ -172,6 +172,21 @@ class Service
     }
 
     /**
+     * @param Request                     $request
+     * @param array<string,array<string>> $whiteList
+     *
+     * @return bool
+     */
+    public static function isWhitelisted(Request $request, array $whiteList)
+    {
+        if (!array_key_exists($request->getRequestMethod(), $whiteList)) {
+            return false;
+        }
+
+        return \in_array($request->getPathInfo(), $whiteList[$request->getRequestMethod()], true);
+    }
+
+    /**
      * @return Response
      */
     private function runAfterHooks(Request $request, Response $response)

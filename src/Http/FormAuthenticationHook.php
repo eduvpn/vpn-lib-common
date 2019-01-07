@@ -32,11 +32,8 @@ class FormAuthenticationHook implements BeforeHookInterface
      */
     public function executeBefore(Request $request, array $hookData)
     {
-        if ('POST' === $request->getRequestMethod()) {
-            // ignore POST to verify endpoint
-            if ('/_form/auth/verify' === $request->getPathInfo()) {
-                return;
-            }
+        if (Service::isWhitelisted($request, ['POST' => ['/_form/auth/verify']])) {
+            return;
         }
 
         if ($this->session->has('_form_auth_user')) {

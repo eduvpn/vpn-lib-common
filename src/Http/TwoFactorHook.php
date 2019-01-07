@@ -53,27 +53,24 @@ class TwoFactorHook implements BeforeHookInterface
 
         // some URIs are allowed as they are used for either logging in, or
         // verifying the OTP key
-        $allowedPostUriList = [
-            '/two_factor_enroll',
-            '/_saml/acs',
-            '/_form/auth/verify',
-            '/_form/auth/logout',   // DEPRECATED
-            '/_logout',
-            '/_two_factor/auth/verify/totp',
+        $whiteList = [
+            'POST' => [
+                '/two_factor_enroll',
+                '/_saml/acs',
+                '/_form/auth/verify',
+                '/_form/auth/logout',
+                '/_logout',
+                '/_two_factor/auth/verify/totp',
+            ],
+            'GET' => [
+                '/_saml/login',
+                '/_saml/logout',
+                '/two_factor_enroll',
+                '/two_factor_enroll_qr',
+                '/documentation',
+            ],
         ];
-
-        $allowedGetUriList = [
-            '/_saml/login',
-            '/_saml/logout',
-            '/two_factor_enroll',
-            '/two_factor_enroll_qr',
-            '/documentation',
-        ];
-
-        if (\in_array($request->getPathInfo(), $allowedPostUriList, true) && 'POST' === $request->getRequestMethod()) {
-            return false;
-        }
-        if (\in_array($request->getPathInfo(), $allowedGetUriList, true) && 'GET' === $request->getRequestMethod()) {
+        if (Service::isWhitelisted($request, $whiteList)) {
             return false;
         }
 

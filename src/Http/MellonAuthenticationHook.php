@@ -54,8 +54,7 @@ class MellonAuthenticationHook implements BeforeHookInterface
      */
     public function executeBefore(Request $request, array $hookData)
     {
-        // when user tries to logout, let them
-        if ('POST' === $request->getRequestMethod() && '/_logout' === $request->getPathInfo()) {
+        if (Service::isWhitelisted($request, ['POST' => ['/_logout']])) {
             return false;
         }
 
