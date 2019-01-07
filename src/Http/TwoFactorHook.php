@@ -64,6 +64,7 @@ class TwoFactorHook implements BeforeHookInterface
 
         $allowedGetUriList = [
             '/_saml/login',
+            '/_saml/logout',
             '/two_factor_enroll',
             '/two_factor_enroll_qr',
             '/documentation',
