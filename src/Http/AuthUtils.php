@@ -33,22 +33,10 @@ class AuthUtils
     /**
      * @return void
      */
-    public static function requireEntitlement(array $hookData, array $requiredEntitlementList)
+    public static function requireAdmin(array $hookData)
     {
-        $userId = $hookData['auth']->id();
-        $userEntitlementList = $hookData['auth']->entitlementList();
-        foreach ($userEntitlementList as $userEntitlement) {
-            if (\in_array($userEntitlement, $requiredEntitlementList, true)) {
-                return;
-            }
+        if (false === $hookData['is_admin']) {
+            throw new HttpException('user is not an administrator', 403);
         }
-
-        throw new HttpException(
-            sprintf(
-                'user "%s" is missing the required entitlement',
-                $userId
-            ),
-            403
-        );
     }
 }
