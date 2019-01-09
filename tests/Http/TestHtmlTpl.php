@@ -13,6 +13,21 @@ use SURFnet\VPN\Common\TplInterface;
 
 class TestHtmlTpl implements TplInterface
 {
+    /**
+     * @param array $templateVariables
+     *
+     * @return void
+     */
+    public function addDefault(array $templateVariables)
+    {
+    }
+
+    /**
+     * @param string $templateName
+     * @param array  $templateVariables
+     *
+     * @return string
+     */
     public function render($templateName, array $templateVariables)
     {
         $str = '<html><head><title>{{code}}</title></head><body><h1>Error ({{code}})</h1><p>{{message}}</p></body></html>';

@@ -12,13 +12,17 @@ namespace SURFnet\VPN\Common;
 interface TplInterface
 {
     /**
-     * Render the template.
+     * @param array $templateVariables
      *
-     * @param string $templateName      the name of the template
-     * @param array  $templateVariables the variables to be used in the
-     *                                  template
+     * @return void
+     */
+    public function addDefault(array $templateVariables);
+
+    /**
+     * @param string $templateName
+     * @param array  $templateVariables
      *
-     * @return string the rendered template
+     * @return string
      */
     public function render($templateName, array $templateVariables);
 }
