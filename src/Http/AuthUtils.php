@@ -29,4 +29,26 @@ class AuthUtils
             );
         }
     }
+
+    /**
+     * @return void
+     */
+    public static function requireEntitlement(array $hookData, array $requiredEntitlementList)
+    {
+        $userId = $hookData['auth']->id();
+        $userEntitlementList = $hookData['auth']->entitlementList();
+        foreach ($userEntitlementList as $userEntitlement) {
+            if (\in_array($userEntitlement, $requiredEntitlementList, true)) {
+                return;
+            }
+        }
+
+        throw new HttpException(
+            sprintf(
+                'user "%s" is missing the required entitlement',
+                $userId
+            ),
+            403
+        );
+    }
 }
