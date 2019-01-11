@@ -65,6 +65,7 @@ class TwoFactorHook implements BeforeHookInterface
             'GET' => [
                 '/_saml/login',
                 '/_saml/logout',
+                '/_saml/metadata',
                 '/two_factor_enroll',
                 '/two_factor_enroll_qr',
                 '/documentation',
