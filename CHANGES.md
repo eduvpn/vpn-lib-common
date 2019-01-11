@@ -1,6 +1,6 @@
 # Changelog
 
-## 1.3.3 (...)
+## 2.0.0 (...)
 - remove YubiKey support
 - check whether file exists before reading it
 - implement the ability to require 2FA
