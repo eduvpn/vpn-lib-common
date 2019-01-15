@@ -76,20 +76,6 @@ class InputValidation
     }
 
     /**
-     * @param string $instanceId
-     *
-     * @return string
-     */
-    public static function instanceId($instanceId)
-    {
-        if (1 !== preg_match('/^[a-zA-Z0-9-.]+$/', $instanceId)) {
-            throw new InputValidationException('invalid "instance_id"');
-        }
-
-        return $instanceId;
-    }
-
-    /**
      * @param string $totpSecret
      *
      * @return string
