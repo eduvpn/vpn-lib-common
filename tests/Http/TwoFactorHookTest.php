@@ -3,18 +3,18 @@
 /*
  * eduVPN - End-user friendly VPN.
  *
- * Copyright: 2016-2018, The Commons Conservancy eduVPN Programme
+ * Copyright: 2016-2019, The Commons Conservancy eduVPN Programme
  * SPDX-License-Identifier: AGPL-3.0+
  */
 
-namespace SURFnet\VPN\Common\Tests\Http;
+namespace LetsConnect\Common\Tests\Http;
 
 use DateTime;
+use LetsConnect\Common\Http\TwoFactorHook;
+use LetsConnect\Common\Http\UserInfo;
+use LetsConnect\Common\HttpClient\ServerClient;
+use LetsConnect\Common\Tests\TestTpl;
 use PHPUnit\Framework\TestCase;
-use SURFnet\VPN\Common\Http\TwoFactorHook;
-use SURFnet\VPN\Common\Http\UserInfo;
-use SURFnet\VPN\Common\HttpClient\ServerClient;
-use SURFnet\VPN\Common\Tests\TestTpl;
 
 class TwoFactorHookTest extends TestCase
 {
@@ -64,7 +64,7 @@ class TwoFactorHookTest extends TestCase
     }
 
     /**
-     * @expectedException \SURFnet\VPN\Common\Http\Exception\HttpException
+     * @expectedException \LetsConnect\Common\Http\Exception\HttpException
      * @expectedExceptionMessage two-factor code not bound to authenticated user
      */
     public function testNotBoundToAuth()

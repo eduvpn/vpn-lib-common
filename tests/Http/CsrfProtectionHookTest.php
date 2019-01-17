@@ -3,14 +3,14 @@
 /*
  * eduVPN - End-user friendly VPN.
  *
- * Copyright: 2016-2018, The Commons Conservancy eduVPN Programme
+ * Copyright: 2016-2019, The Commons Conservancy eduVPN Programme
  * SPDX-License-Identifier: AGPL-3.0+
  */
 
-namespace SURFnet\VPN\Common\Tests\Http;
+namespace LetsConnect\Common\Tests\Http;
 
+use LetsConnect\Common\Http\CsrfProtectionHook;
 use PHPUnit\Framework\TestCase;
-use SURFnet\VPN\Common\Http\CsrfProtectionHook;
 
 class CsrfProtectionHookTest extends TestCase
 {
@@ -55,7 +55,7 @@ class CsrfProtectionHookTest extends TestCase
     }
 
     /**
-     * @expectedException \SURFnet\VPN\Common\Http\Exception\HttpException
+     * @expectedException \LetsConnect\Common\Http\Exception\HttpException
      * @expectedExceptionMessage CSRF protection failed, no HTTP_ORIGIN or HTTP_REFERER
      */
     public function testCheckPostNoReferrer()
@@ -72,7 +72,7 @@ class CsrfProtectionHookTest extends TestCase
     }
 
     /**
-     * @expectedException \SURFnet\VPN\Common\Http\Exception\HttpException
+     * @expectedException \LetsConnect\Common\Http\Exception\HttpException
      * @expectedExceptionMessage CSRF protection failed: unexpected HTTP_REFERER
      */
     public function testCheckPostWrongReferrer()
@@ -90,7 +90,7 @@ class CsrfProtectionHookTest extends TestCase
     }
 
     /**
-     * @expectedException \SURFnet\VPN\Common\Http\Exception\HttpException
+     * @expectedException \LetsConnect\Common\Http\Exception\HttpException
      * @expectedExceptionMessage CSRF protection failed: unexpected HTTP_ORIGIN
      */
     public function testCheckPostWrongOrigin()

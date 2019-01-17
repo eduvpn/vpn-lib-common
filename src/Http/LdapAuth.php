@@ -3,36 +3,36 @@
 /*
  * eduVPN - End-user friendly VPN.
  *
- * Copyright: 2016-2018, The Commons Conservancy eduVPN Programme
+ * Copyright: 2016-2019, The Commons Conservancy eduVPN Programme
  * SPDX-License-Identifier: AGPL-3.0+
  */
 
-namespace SURFnet\VPN\Common\Http;
+namespace LetsConnect\Common\Http;
 
 use DateTime;
+use LetsConnect\Common\Exception\LdapClientException;
+use LetsConnect\Common\LdapClient;
 use Psr\Log\LoggerInterface;
-use SURFnet\VPN\Common\Exception\LdapClientException;
-use SURFnet\VPN\Common\LdapClient;
 
 class LdapAuth implements CredentialValidatorInterface
 {
     /** @var \Psr\Log\LoggerInterface */
     private $logger;
 
-    /** @var \SURFnet\VPN\Common\LdapClient */
+    /** @var \LetsConnect\Common\LdapClient */
     private $ldapClient;
 
     /** @var string */
     private $userDnTemplate;
 
-    /** @var null|string */
+    /** @var string|null */
     private $entitlementAttribute;
 
     /**
      * @param \Psr\Log\LoggerInterface $logger
      * @param LdapClient               $ldapClient
      * @param string                   $userDnTemplate
-     * @param null|string              $entitlementAttribute
+     * @param string|null              $entitlementAttribute
      */
     public function __construct(LoggerInterface $logger, LdapClient $ldapClient, $userDnTemplate, $entitlementAttribute)
     {
@@ -102,6 +102,6 @@ class LdapAuth implements CredentialValidatorInterface
             return [];
         }
 
-        return \array_slice($ldapEntries[0][\strtolower($entitlementAttribute)], 1);
+        return \array_slice($ldapEntries[0][strtolower($entitlementAttribute)], 1);
     }
 }

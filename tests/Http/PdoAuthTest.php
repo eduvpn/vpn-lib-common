@@ -3,16 +3,16 @@
 /*
  * eduVPN - End-user friendly VPN.
  *
- * Copyright: 2016-2018, The Commons Conservancy eduVPN Programme
+ * Copyright: 2016-2019, The Commons Conservancy eduVPN Programme
  * SPDX-License-Identifier: AGPL-3.0+
  */
 
-namespace SURFnet\VPN\Common\Tests\Http;
+namespace LetsConnect\Common\Tests\Http;
 
 use DateTime;
+use LetsConnect\Common\Http\PdoAuth;
 use PDO;
 use PHPUnit\Framework\TestCase;
-use SURFnet\VPN\Common\Http\PdoAuth;
 
 class PdoAuthTest extends TestCase
 {
@@ -30,7 +30,7 @@ class PdoAuthTest extends TestCase
     public function testValid()
     {
         $this->pdoAuth->add('foo', 'bar');
-        $this->assertInstanceOf('\SURFnet\VPN\Common\Http\UserInfo', $this->pdoAuth->isValid('foo', 'bar'));
+        $this->assertInstanceOf('\LetsConnect\Common\Http\UserInfo', $this->pdoAuth->isValid('foo', 'bar'));
     }
 
     public function testInvalidPass()
@@ -55,7 +55,7 @@ class PdoAuthTest extends TestCase
     {
         $this->pdoAuth->add('foo', 'bar');
         $this->assertTrue($this->pdoAuth->updatePassword('foo', 'baz'));
-        $this->assertInstanceOf('\SURFnet\VPN\Common\Http\UserInfo', $this->pdoAuth->isValid('foo', 'baz'));
+        $this->assertInstanceOf('\LetsConnect\Common\Http\UserInfo', $this->pdoAuth->isValid('foo', 'baz'));
     }
 
     public function testUserExists()
@@ -74,6 +74,6 @@ class PdoAuthTest extends TestCase
     {
         $this->pdoAuth->add('foo', 'bar');
         $this->assertFalse($this->pdoAuth->updatePassword('bar', 'baz'));
-        $this->assertInstanceOf('\SURFnet\VPN\Common\Http\UserInfo', $this->pdoAuth->isValid('foo', 'bar'));
+        $this->assertInstanceOf('\LetsConnect\Common\Http\UserInfo', $this->pdoAuth->isValid('foo', 'bar'));
     }
 }

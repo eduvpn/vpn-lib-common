@@ -3,27 +3,27 @@
 /*
  * eduVPN - End-user friendly VPN.
  *
- * Copyright: 2016-2018, The Commons Conservancy eduVPN Programme
+ * Copyright: 2016-2019, The Commons Conservancy eduVPN Programme
  * SPDX-License-Identifier: AGPL-3.0+
  */
 
-namespace SURFnet\VPN\Common\Http;
+namespace LetsConnect\Common\Http;
 
 use fkooman\SeCookie\SessionInterface;
-use SURFnet\VPN\Common\Http\Exception\HttpException;
-use SURFnet\VPN\Common\HttpClient\Exception\ApiException;
-use SURFnet\VPN\Common\HttpClient\ServerClient;
-use SURFnet\VPN\Common\TplInterface;
+use LetsConnect\Common\Http\Exception\HttpException;
+use LetsConnect\Common\HttpClient\Exception\ApiException;
+use LetsConnect\Common\HttpClient\ServerClient;
+use LetsConnect\Common\TplInterface;
 
 class TwoFactorModule implements ServiceModuleInterface
 {
-    /** @var \SURFnet\VPN\Common\HttpClient\ServerClient */
+    /** @var \LetsConnect\Common\HttpClient\ServerClient */
     private $serverClient;
 
     /** @var \fkooman\SeCookie\SessionInterface */
     private $session;
 
-    /** @var \SURFnet\VPN\Common\TplInterface */
+    /** @var \LetsConnect\Common\TplInterface */
     private $tpl;
 
     public function __construct(ServerClient $serverClient, SessionInterface $session, TplInterface $tpl)

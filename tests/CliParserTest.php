@@ -3,14 +3,14 @@
 /*
  * eduVPN - End-user friendly VPN.
  *
- * Copyright: 2016-2018, The Commons Conservancy eduVPN Programme
+ * Copyright: 2016-2019, The Commons Conservancy eduVPN Programme
  * SPDX-License-Identifier: AGPL-3.0+
  */
 
-namespace SURFnet\VPN\Common\Tests;
+namespace LetsConnect\Common\Tests;
 
+use LetsConnect\Common\CliParser;
 use PHPUnit\Framework\TestCase;
-use SURFnet\VPN\Common\CliParser;
 
 class CliParserTest extends TestCase
 {
@@ -58,7 +58,7 @@ class CliParserTest extends TestCase
     }
 
     /**
-     * @expectedException \SURFnet\VPN\Common\Exception\CliException
+     * @expectedException \LetsConnect\Common\Exception\CliException
      * @expectedExceptionMessage missing required parameter "--instance"
      */
     public function testMissingRequiredArgument()
@@ -73,7 +73,7 @@ class CliParserTest extends TestCase
     }
 
     /**
-     * @expectedException \SURFnet\VPN\Common\Exception\CliException
+     * @expectedException \LetsConnect\Common\Exception\CliException
      * @expectedExceptionMessage missing required parameter value for option "--instance"
      */
     public function testMissingRequiredArgumentValue()

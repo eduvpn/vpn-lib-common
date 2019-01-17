@@ -3,13 +3,13 @@
 /*
  * eduVPN - End-user friendly VPN.
  *
- * Copyright: 2016-2018, The Commons Conservancy eduVPN Programme
+ * Copyright: 2016-2019, The Commons Conservancy eduVPN Programme
  * SPDX-License-Identifier: AGPL-3.0+
  */
 
-namespace SURFnet\VPN\Common;
+namespace LetsConnect\Common;
 
-use SURFnet\VPN\Common\Exception\CliException;
+use LetsConnect\Common\Exception\CliException;
 
 class CliParser
 {
@@ -76,7 +76,7 @@ class CliParser
     }
 
     /**
-     * @return \SURFnet\VPN\Common\Config
+     * @return \LetsConnect\Common\Config
      */
     public function parse(array $argv)
     {

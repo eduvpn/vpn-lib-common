@@ -3,11 +3,11 @@
 /*
  * eduVPN - End-user friendly VPN.
  *
- * Copyright: 2016-2018, The Commons Conservancy eduVPN Programme
+ * Copyright: 2016-2019, The Commons Conservancy eduVPN Programme
  * SPDX-License-Identifier: AGPL-3.0+
  */
 
-namespace SURFnet\VPN\Common\Http;
+namespace LetsConnect\Common\Http;
 
 use fkooman\SeCookie\SessionInterface;
 
@@ -16,12 +16,12 @@ class LogoutModule implements ServiceModuleInterface
     /** @var \fkooman\SeCookie\SessionInterface */
     private $session;
 
-    /** @var null|string */
+    /** @var string|null */
     private $logoutUrl;
 
     /**
      * @param \fkooman\SeCookie\SessionInterface $session
-     * @param null|string                        $logoutUrl
+     * @param string|null                        $logoutUrl
      */
     public function __construct(SessionInterface $session, $logoutUrl = null)
     {
@@ -30,7 +30,7 @@ class LogoutModule implements ServiceModuleInterface
     }
 
     /**
-     * @param \SURFnet\VPN\Common\Http\Service $service
+     * @param \LetsConnect\Common\Http\Service $service
      *
      * @return void
      */
@@ -40,7 +40,7 @@ class LogoutModule implements ServiceModuleInterface
         $service->post(
             '/_logout',
             /**
-             * @return \SURFnet\VPN\Common\Http\Response
+             * @return \LetsConnect\Common\Http\Response
              */
             function (Request $request, array $hookData) {
                 $httpReferrer = $request->requireHeader('HTTP_REFERER');

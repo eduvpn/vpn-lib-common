@@ -3,26 +3,26 @@
 /*
  * eduVPN - End-user friendly VPN.
  *
- * Copyright: 2016-2018, The Commons Conservancy eduVPN Programme
+ * Copyright: 2016-2019, The Commons Conservancy eduVPN Programme
  * SPDX-License-Identifier: AGPL-3.0+
  */
 
-namespace SURFnet\VPN\Common\Http;
+namespace LetsConnect\Common\Http;
 
 use fkooman\SeCookie\SessionInterface;
-use SURFnet\VPN\Common\Http\Exception\HttpException;
-use SURFnet\VPN\Common\HttpClient\ServerClient;
-use SURFnet\VPN\Common\TplInterface;
+use LetsConnect\Common\Http\Exception\HttpException;
+use LetsConnect\Common\HttpClient\ServerClient;
+use LetsConnect\Common\TplInterface;
 
 class TwoFactorHook implements BeforeHookInterface
 {
     /** @var \fkooman\SeCookie\SessionInterface */
     private $session;
 
-    /** @var \SURFnet\VPN\Common\TplInterface */
+    /** @var \LetsConnect\Common\TplInterface */
     private $tpl;
 
-    /** @var \SURFnet\VPN\Common\HttpClient\ServerClient */
+    /** @var \LetsConnect\Common\HttpClient\ServerClient */
     private $serverClient;
 
     /** @var bool */
@@ -30,8 +30,8 @@ class TwoFactorHook implements BeforeHookInterface
 
     /**
      * @param \fkooman\SeCookie\SessionInterface          $session
-     * @param \SURFnet\VPN\Common\TplInterface            $tpl
-     * @param \SURFnet\VPN\Common\HttpClient\ServerClient $serverClient
+     * @param \LetsConnect\Common\TplInterface            $tpl
+     * @param \LetsConnect\Common\HttpClient\ServerClient $serverClient
      * @param bool                                        $requireTwoFactor
      */
     public function __construct(SessionInterface $session, TplInterface $tpl, ServerClient $serverClient, $requireTwoFactor)

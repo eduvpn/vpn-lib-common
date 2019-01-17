@@ -3,14 +3,14 @@
 /*
  * eduVPN - End-user friendly VPN.
  *
- * Copyright: 2016-2018, The Commons Conservancy eduVPN Programme
+ * Copyright: 2016-2019, The Commons Conservancy eduVPN Programme
  * SPDX-License-Identifier: AGPL-3.0+
  */
 
-namespace SURFnet\VPN\Common\Tests\HttpClient;
+namespace LetsConnect\Common\Tests\HttpClient;
 
+use LetsConnect\Common\HttpClient\ServerClient;
 use PHPUnit\Framework\TestCase;
-use SURFnet\VPN\Common\HttpClient\ServerClient;
 
 class ServerClientTest extends TestCase
 {
@@ -29,7 +29,7 @@ class ServerClientTest extends TestCase
     }
 
     /**
-     * @expectedException \SURFnet\VPN\Common\HttpClient\Exception\HttpClientException
+     * @expectedException \LetsConnect\Common\HttpClient\Exception\HttpClientException
      * @expectedExceptionMessage [400] GET "/error": errorValue
      */
     public function testError()

@@ -3,23 +3,23 @@
 /*
  * eduVPN - End-user friendly VPN.
  *
- * Copyright: 2016-2018, The Commons Conservancy eduVPN Programme
+ * Copyright: 2016-2019, The Commons Conservancy eduVPN Programme
  * SPDX-License-Identifier: AGPL-3.0+
  */
 
-namespace SURFnet\VPN\Common;
+namespace LetsConnect\Common;
 
-use SURFnet\VPN\Common\Exception\TplException;
+use LetsConnect\Common\Exception\TplException;
 
 class Tpl implements TplInterface
 {
     /** @var array<string> */
     private $templateFolderList;
 
-    /** @var null|string */
+    /** @var string|null */
     private $translationFile;
 
-    /** @var null|string */
+    /** @var string|null */
     private $activeSectionName = null;
 
     /** @var array */
@@ -52,7 +52,7 @@ class Tpl implements TplInterface
      */
     public function addDefault(array $templateVariables)
     {
-        $this->templateVariables = \array_merge($this->templateVariables, $templateVariables);
+        $this->templateVariables = array_merge($this->templateVariables, $templateVariables);
     }
 
     /**
@@ -74,12 +74,12 @@ class Tpl implements TplInterface
      */
     public function render($templateName, array $templateVariables = [])
     {
-        $this->templateVariables = \array_merge($this->templateVariables, $templateVariables);
-        \extract($this->templateVariables);
-        \ob_start();
+        $this->templateVariables = array_merge($this->templateVariables, $templateVariables);
+        extract($this->templateVariables);
+        ob_start();
         /** @psalm-suppress UnresolvableInclude */
         include $this->templatePath($templateName);
-        $templateStr = \ob_get_clean();
+        $templateStr = ob_get_clean();
         if (0 === \count($this->layoutList)) {
             // we have no layout defined, so simple template...
             return $templateStr;
@@ -136,11 +136,11 @@ class Tpl implements TplInterface
     private function start($sectionName)
     {
         if (null !== $this->activeSectionName) {
-            throw new TplException(\sprintf('section "%s" already started', $this->activeSectionName));
+            throw new TplException(sprintf('section "%s" already started', $this->activeSectionName));
         }
 
         $this->activeSectionName = $sectionName;
-        \ob_start();
+        ob_start();
     }
 
     /**
@@ -152,7 +152,7 @@ class Tpl implements TplInterface
             throw new TplException('no section started');
         }
 
-        $this->sectionList[$this->activeSectionName] = \ob_get_clean();
+        $this->sectionList[$this->activeSectionName] = ob_get_clean();
         $this->activeSectionName = null;
     }
 
@@ -174,8 +174,8 @@ class Tpl implements TplInterface
      */
     private function section($sectionName)
     {
-        if (!\array_key_exists($sectionName, $this->sectionList)) {
-            throw new TplException(\sprintf('section "%s" does not exist', $sectionName));
+        if (!array_key_exists($sectionName, $this->sectionList)) {
+            throw new TplException(sprintf('section "%s" does not exist', $sectionName));
         }
 
         return $this->sectionList[$sectionName];
@@ -183,7 +183,7 @@ class Tpl implements TplInterface
 
     /**
      * @param string      $v
-     * @param null|string $cb
+     * @param string|null $cb
      *
      * @return string
      */
@@ -193,7 +193,7 @@ class Tpl implements TplInterface
             $v = $this->batch($v, $cb);
         }
 
-        return \htmlentities($v, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+        return htmlentities($v, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
     }
 
     /**
@@ -204,17 +204,17 @@ class Tpl implements TplInterface
      */
     private function batch($v, $cb)
     {
-        $functionList = \explode('|', $cb);
+        $functionList = explode('|', $cb);
         foreach ($functionList as $f) {
             if ('escape' === $f) {
                 $v = $this->e($v);
                 continue;
             }
-            if (\array_key_exists($f, $this->callbackList)) {
+            if (array_key_exists($f, $this->callbackList)) {
                 $f = $this->callbackList[$f];
             } else {
                 if (!\function_exists($f)) {
-                    throw new TplException(\sprintf('function "%s" does not exist', $f));
+                    throw new TplException(sprintf('function "%s" does not exist', $f));
                 }
             }
             $v = \call_user_func($f, $v);
@@ -236,7 +236,7 @@ class Tpl implements TplInterface
         } else {
             /** @psalm-suppress UnresolvableInclude */
             $translationData = include $this->translationFile;
-            if (\array_key_exists($v, $translationData)) {
+            if (array_key_exists($v, $translationData)) {
                 // translation found
                 $translatedText = $translationData[$v];
             } else {
@@ -253,7 +253,7 @@ class Tpl implements TplInterface
             }
         }
 
-        return \str_replace(\array_keys($escapedVars), \array_values($escapedVars), $translatedText);
+        return str_replace(array_keys($escapedVars), array_values($escapedVars), $translatedText);
     }
 
     /**
@@ -264,8 +264,8 @@ class Tpl implements TplInterface
     private function exists($templateName)
     {
         foreach ($this->templateFolderList as $templateFolder) {
-            $templatePath = \sprintf('%s/%s.php', $templateFolder, $templateName);
-            if (\file_exists($templatePath)) {
+            $templatePath = sprintf('%s/%s.php', $templateFolder, $templateName);
+            if (file_exists($templatePath)) {
                 return true;
             }
         }
@@ -280,13 +280,13 @@ class Tpl implements TplInterface
      */
     private function templatePath($templateName)
     {
-        foreach (\array_reverse($this->templateFolderList) as $templateFolder) {
-            $templatePath = \sprintf('%s/%s.php', $templateFolder, $templateName);
-            if (\file_exists($templatePath)) {
+        foreach (array_reverse($this->templateFolderList) as $templateFolder) {
+            $templatePath = sprintf('%s/%s.php', $templateFolder, $templateName);
+            if (file_exists($templatePath)) {
                 return $templatePath;
             }
         }
 
-        throw new TplException(\sprintf('template "%s" does not exist', $templateName));
+        throw new TplException(sprintf('template "%s" does not exist', $templateName));
     }
 }

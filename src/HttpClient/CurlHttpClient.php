@@ -3,14 +3,14 @@
 /*
  * eduVPN - End-user friendly VPN.
  *
- * Copyright: 2016-2018, The Commons Conservancy eduVPN Programme
+ * Copyright: 2016-2019, The Commons Conservancy eduVPN Programme
  * SPDX-License-Identifier: AGPL-3.0+
  */
 
-namespace SURFnet\VPN\Common\HttpClient;
+namespace LetsConnect\Common\HttpClient;
 
+use LetsConnect\Common\Json;
 use RuntimeException;
-use SURFnet\VPN\Common\Json;
 
 class CurlHttpClient implements HttpClientInterface
 {

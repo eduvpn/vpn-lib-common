@@ -3,14 +3,14 @@
 /*
  * eduVPN - End-user friendly VPN.
  *
- * Copyright: 2016-2018, The Commons Conservancy eduVPN Programme
+ * Copyright: 2016-2019, The Commons Conservancy eduVPN Programme
  * SPDX-License-Identifier: AGPL-3.0+
  */
 
-namespace SURFnet\VPN\Common\Tests\Http;
+namespace LetsConnect\Common\Tests\Http;
 
+use LetsConnect\Common\HttpClient\HttpClientInterface;
 use RuntimeException;
-use SURFnet\VPN\Common\HttpClient\HttpClientInterface;
 
 class TestHttpClient implements HttpClientInterface
 {

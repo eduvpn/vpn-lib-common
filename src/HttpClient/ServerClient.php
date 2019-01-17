@@ -3,14 +3,14 @@
 /*
  * eduVPN - End-user friendly VPN.
  *
- * Copyright: 2016-2018, The Commons Conservancy eduVPN Programme
+ * Copyright: 2016-2019, The Commons Conservancy eduVPN Programme
  * SPDX-License-Identifier: AGPL-3.0+
  */
 
-namespace SURFnet\VPN\Common\HttpClient;
+namespace LetsConnect\Common\HttpClient;
 
-use SURFnet\VPN\Common\HttpClient\Exception\ApiException;
-use SURFnet\VPN\Common\HttpClient\Exception\HttpClientException;
+use LetsConnect\Common\HttpClient\Exception\ApiException;
+use LetsConnect\Common\HttpClient\Exception\HttpClientException;
 
 class ServerClient
 {
@@ -92,7 +92,7 @@ class ServerClient
     /**
      * @param string $requestPath
      *
-     * @return null|bool|string|array|int
+     * @return bool|string|array|int|null
      */
     public function get($requestPath, array $getData = [])
     {
@@ -147,7 +147,7 @@ class ServerClient
     /**
      * @param string $requestPath
      *
-     * @return null|bool|string|array|int
+     * @return bool|string|array|int|null
      */
     public function post($requestPath, array $postData)
     {
@@ -188,7 +188,7 @@ class ServerClient
      * @param string $requestMethod
      * @param string $requestPath
      *
-     * @return null|bool|string|array|int
+     * @return bool|string|array|int|null
      */
     private static function responseHandler($requestMethod, $requestPath, array $clientResponse)
     {

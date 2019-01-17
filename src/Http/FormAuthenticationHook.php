@@ -3,22 +3,22 @@
 /*
  * eduVPN - End-user friendly VPN.
  *
- * Copyright: 2016-2018, The Commons Conservancy eduVPN Programme
+ * Copyright: 2016-2019, The Commons Conservancy eduVPN Programme
  * SPDX-License-Identifier: AGPL-3.0+
  */
 
-namespace SURFnet\VPN\Common\Http;
+namespace LetsConnect\Common\Http;
 
 use DateTime;
 use fkooman\SeCookie\SessionInterface;
-use SURFnet\VPN\Common\TplInterface;
+use LetsConnect\Common\TplInterface;
 
 class FormAuthenticationHook implements BeforeHookInterface
 {
     /** @var \fkooman\SeCookie\SessionInterface */
     private $session;
 
-    /** @var \SURFnet\VPN\Common\TplInterface */
+    /** @var \LetsConnect\Common\TplInterface */
     private $tpl;
 
     public function __construct(SessionInterface $session, TplInterface $tpl)

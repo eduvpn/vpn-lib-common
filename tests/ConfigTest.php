@@ -3,14 +3,14 @@
 /*
  * eduVPN - End-user friendly VPN.
  *
- * Copyright: 2016-2018, The Commons Conservancy eduVPN Programme
+ * Copyright: 2016-2019, The Commons Conservancy eduVPN Programme
  * SPDX-License-Identifier: AGPL-3.0+
  */
 
-namespace SURFnet\VPN\Common\Tests;
+namespace LetsConnect\Common\Tests;
 
+use LetsConnect\Common\Config;
 use PHPUnit\Framework\TestCase;
-use SURFnet\VPN\Common\Config;
 
 class ConfigTest extends TestCase
 {
@@ -51,7 +51,7 @@ class ConfigTest extends TestCase
     }
 
     /**
-     * @expectedException \SURFnet\VPN\Common\Exception\ConfigException
+     * @expectedException \LetsConnect\Common\Exception\ConfigException
      * @expectedExceptionMessage item "foo" not available
      */
     public function testMissingConfig()
@@ -61,7 +61,7 @@ class ConfigTest extends TestCase
     }
 
     /**
-     * @expectedException \SURFnet\VPN\Common\Exception\ConfigException
+     * @expectedException \LetsConnect\Common\Exception\ConfigException
      * @expectedExceptionMessage item "baz" not available
      */
     public function testMissingNestedConfig()
