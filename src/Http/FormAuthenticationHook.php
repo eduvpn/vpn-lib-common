@@ -37,12 +37,12 @@ class FormAuthenticationHook implements BeforeHookInterface
         }
 
         if ($this->session->has('_form_auth_user')) {
-            $entitlementList = $this->session->has('_form_auth_entitlement_list') ? $this->session->get('_form_auth_entitlement_list') : [];
+            $permissionList = $this->session->has('_form_auth_permission_list') ? $this->session->get('_form_auth_permission_list') : [];
             $authTime = $this->session->has('_form_auth_time') ? new DateTime($this->session->get('_form_auth_time')) : new DateTime();
 
             return new UserInfo(
                 $this->session->get('_form_auth_user'),
-                $entitlementList,
+                $permissionList,
                 $authTime
             );
         }

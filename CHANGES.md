@@ -7,6 +7,7 @@
 - switch to `Tpl`, completely remove Twig
 - remove `tls-auth` and `enableCompression` from profile config, no longer 
   supported
+- rename "entitlement" to "permission"
 
 ## 1.3.2 (2018-12-05)
 - remove PHP error suppression

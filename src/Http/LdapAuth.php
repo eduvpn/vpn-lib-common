@@ -26,20 +26,20 @@ class LdapAuth implements CredentialValidatorInterface
     private $userDnTemplate;
 
     /** @var string|null */
-    private $entitlementAttribute;
+    private $permissionAttribute;
 
     /**
      * @param \Psr\Log\LoggerInterface $logger
      * @param LdapClient               $ldapClient
      * @param string                   $userDnTemplate
-     * @param string|null              $entitlementAttribute
+     * @param string|null              $permissionAttribute
      */
-    public function __construct(LoggerInterface $logger, LdapClient $ldapClient, $userDnTemplate, $entitlementAttribute)
+    public function __construct(LoggerInterface $logger, LdapClient $ldapClient, $userDnTemplate, $permissionAttribute)
     {
         $this->logger = $logger;
         $this->ldapClient = $ldapClient;
         $this->userDnTemplate = $userDnTemplate;
-        $this->entitlementAttribute = $entitlementAttribute;
+        $this->permissionAttribute = $permissionAttribute;
     }
 
     /**
@@ -54,7 +54,7 @@ class LdapAuth implements CredentialValidatorInterface
         try {
             $this->ldapClient->bind($userDn, $authPass);
 
-            return new UserInfo($authUser, $this->getEntitlementList($userDn), new DateTime());
+            return new UserInfo($authUser, $this->getPermissionList($userDn), new DateTime());
         } catch (LdapClientException $e) {
             $this->logger->warning(
                 sprintf('unable to bind with DN "%s" (%s)', $userDn, $e->getMessage())
@@ -69,16 +69,16 @@ class LdapAuth implements CredentialValidatorInterface
      *
      * @return array<string>
      */
-    private function getEntitlementList($userDn)
+    private function getPermissionList($userDn)
     {
-        if (null === $this->entitlementAttribute) {
+        if (null === $this->permissionAttribute) {
             return [];
         }
 
         $ldapEntries = $this->ldapClient->search(
             $userDn,
             '(objectClass=*)',
-            [$this->entitlementAttribute]
+            [$this->permissionAttribute]
         );
 
         if (0 === $ldapEntries['count']) {
@@ -86,22 +86,22 @@ class LdapAuth implements CredentialValidatorInterface
             return [];
         }
 
-        return self::extractEntitlement($ldapEntries, $this->entitlementAttribute);
+        return self::extractPermission($ldapEntries, $this->permissionAttribute);
     }
 
     /**
      * @param array  $ldapEntries
-     * @param string $entitlementAttribute
+     * @param string $permissionAttribute
      *
      * @return array<string>
      */
-    private static function extractEntitlement(array $ldapEntries, $entitlementAttribute)
+    private static function extractPermission(array $ldapEntries, $permissionAttribute)
     {
         if (0 === $ldapEntries[0]['count']) {
             // attribute not found for this user
             return [];
         }
 
-        return \array_slice($ldapEntries[0][strtolower($entitlementAttribute)], 1);
+        return \array_slice($ldapEntries[0][strtolower($permissionAttribute)], 1);
     }
 }

@@ -85,7 +85,7 @@ class FormAuthenticationModule implements ServiceModuleInterface
 
                 $this->session->regenerate(true);
                 $this->session->set('_form_auth_user', $userInfo->id());
-                $this->session->set('_form_auth_entitlement_list', $userInfo->entitlementList());
+                $this->session->set('_form_auth_permission_list', $userInfo->permissionList());
                 $this->session->set('_form_auth_time', $userInfo->authTime()->format(DateTime::ATOM));
 
                 return new RedirectResponse($redirectTo, 302);

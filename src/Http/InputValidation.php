@@ -323,24 +323,24 @@ class InputValidation
     /**
      * Make sure the input string is valid JSON array containing just strings.
      *
-     * @param string $entitlementListStr
+     * @param string $permissionListStr
      *
      * @return array<string>
      */
-    public static function entitlementList($entitlementListStr)
+    public static function permissionList($permissionListStr)
     {
         // make sure the string is valid JSON array containing just strings
-        $entitlementList = Json::decode($entitlementListStr);
-        if (!\is_array($entitlementList)) {
-            throw new InputValidationException('invalid "entitlementList"');
+        $permissionList = Json::decode($permissionListStr);
+        if (!\is_array($permissionList)) {
+            throw new InputValidationException('invalid "permissionList"');
         }
-        foreach ($entitlementList as $entitlement) {
-            if (!\is_string($entitlement)) {
-                throw new InputValidationException('invalid "entitlementList"');
+        foreach ($permissionList as $permission) {
+            if (!\is_string($permission)) {
+                throw new InputValidationException('invalid "permissionList"');
             }
         }
 
-        return $entitlementList;
+        return $permissionList;
     }
 
     /**

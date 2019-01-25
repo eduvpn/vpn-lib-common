@@ -17,20 +17,20 @@ class UserInfo
     private $userId;
 
     /** @var array<string> */
-    private $entitlementList;
+    private $permissionList;
 
     /** @var \DateTime */
     private $authTime;
 
     /**
      * @param string        $userId
-     * @param array<string> $entitlementList
+     * @param array<string> $permissionList
      * @param \DateTime     $authTime
      */
-    public function __construct($userId, array $entitlementList, DateTime $authTime)
+    public function __construct($userId, array $permissionList, DateTime $authTime)
     {
         $this->userId = $userId;
-        $this->entitlementList = $entitlementList;
+        $this->permissionList = $permissionList;
         $this->authTime = $authTime;
     }
 
@@ -45,9 +45,9 @@ class UserInfo
     /**
      * @return array<string>
      */
-    public function entitlementList()
+    public function permissionList()
     {
-        return $this->entitlementList;
+        return $this->permissionList;
     }
 
     /**
