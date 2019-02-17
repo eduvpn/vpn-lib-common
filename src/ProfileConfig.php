@@ -25,23 +25,19 @@ class ProfileConfig extends Config
             'defaultGateway' => false,
             'routes' => [],
             'dns' => [],
-            'enableNat4' => false,
-            'enableNat6' => false,
             'clientToClient' => false,
             'listen' => '::',
             'enableLog' => false,
             'enableAcl' => false,
             'aclPermissionList' => [],
             'managementIp' => '127.0.0.1',
-            'reject4' => false,
-            'reject6' => false,
             'vpnProtoPorts' => [
                 'udp/1194',
                 'tcp/1194',
             ],
             'exposedVpnProtoPorts' => [],
             'hideProfile' => false,
-            'tlsProtection' => 'tls-crypt', // (false|'tls-crypt')
+            'tlsProtection' => 'tls-crypt',
             'blockLan' => false,
         ];
     }
