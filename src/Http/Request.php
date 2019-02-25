@@ -166,6 +166,20 @@ class Request
     }
 
     /**
+     * Return the "raw" query string.
+     *
+     * @return string
+     */
+    public function getQueryString()
+    {
+        if (!\array_key_exists('QUERY_STRING', $this->serverData)) {
+            return '';
+        }
+
+        return $this->serverData['QUERY_STRING'];
+    }
+
+    /**
      * @return array
      */
     public function getQueryParameters()
