@@ -147,6 +147,10 @@ class InputValidation
             throw new InputValidationException('invalid length: 0 < userId <= 256');
         }
 
+        if (false !== strpos($userId, '!!')) {
+            throw new InputValidationException('"user_id" cannot contain "!!"');
+        }
+
         return $userId;
     }
 
