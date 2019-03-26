@@ -50,7 +50,7 @@ class Response
      */
     public function getHeader($key)
     {
-        if (array_key_exists($key, $this->headers)) {
+        if (\array_key_exists($key, $this->headers)) {
             return $this->headers[$key];
         }
 

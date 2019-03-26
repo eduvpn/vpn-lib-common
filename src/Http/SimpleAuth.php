@@ -29,7 +29,7 @@ class SimpleAuth implements CredentialValidatorInterface
      */
     public function isValid($authUser, $authPass)
     {
-        if (!array_key_exists($authUser, $this->userPass)) {
+        if (!\array_key_exists($authUser, $this->userPass)) {
             return false;
         }
 

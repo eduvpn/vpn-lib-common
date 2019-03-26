@@ -44,7 +44,7 @@ class TwoFactorModule implements ServiceModuleInterface
              * @return Response
              */
             function (Request $request, array $hookData) {
-                if (!array_key_exists('auth', $hookData)) {
+                if (!\array_key_exists('auth', $hookData)) {
                     throw new HttpException('authentication hook did not run before', 500);
                 }
                 $userInfo = $hookData['auth'];

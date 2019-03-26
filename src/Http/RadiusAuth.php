@@ -76,7 +76,7 @@ class RadiusAuth implements CredentialValidatorInterface
             if (false === radius_add_server(
                 $radiusAuth,
                 $radiusServer['host'],
-                array_key_exists('port', $radiusServer) ? $radiusServer['port'] : 1812,
+                \array_key_exists('port', $radiusServer) ? $radiusServer['port'] : 1812,
                 $radiusServer['secret'],
                 5,  // timeout
                 3   // max_tries

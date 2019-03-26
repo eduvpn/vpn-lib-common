@@ -174,7 +174,7 @@ class Tpl implements TplInterface
      */
     private function section($sectionName)
     {
-        if (!array_key_exists($sectionName, $this->sectionList)) {
+        if (!\array_key_exists($sectionName, $this->sectionList)) {
             throw new TplException(sprintf('section "%s" does not exist', $sectionName));
         }
 
@@ -210,7 +210,7 @@ class Tpl implements TplInterface
                 $v = $this->e($v);
                 continue;
             }
-            if (array_key_exists($f, $this->callbackList)) {
+            if (\array_key_exists($f, $this->callbackList)) {
                 $f = $this->callbackList[$f];
             } else {
                 if (!\function_exists($f)) {
@@ -236,7 +236,7 @@ class Tpl implements TplInterface
         } else {
             /** @psalm-suppress UnresolvableInclude */
             $translationData = include $this->translationFile;
-            if (array_key_exists($v, $translationData)) {
+            if (\array_key_exists($v, $translationData)) {
                 // translation found
                 $translatedText = $translationData[$v];
             } else {

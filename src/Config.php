@@ -37,7 +37,7 @@ class Config
      */
     public function hasSection($key)
     {
-        if (!array_key_exists($key, $this->configData)) {
+        if (!\array_key_exists($key, $this->configData)) {
             return false;
         }
 
@@ -67,7 +67,7 @@ class Config
      */
     public function hasItem($key)
     {
-        return array_key_exists($key, $this->configData);
+        return \array_key_exists($key, $this->configData);
     }
 
     /**

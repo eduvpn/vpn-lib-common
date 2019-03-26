@@ -33,7 +33,7 @@ class Request
         ];
 
         foreach ($requiredHeaders as $key) {
-            if (!array_key_exists($key, $serverData)) {
+            if (!\array_key_exists($key, $serverData)) {
                 // this indicates something wrong with the interaction between
                 // the web server and PHP, these headers MUST always be available
                 throw new HttpException(sprintf('missing header "%s"', $key), 500);
@@ -50,7 +50,7 @@ class Request
     public function getAuthority()
     {
         // scheme
-        if (!array_key_exists('REQUEST_SCHEME', $this->serverData)) {
+        if (!\array_key_exists('REQUEST_SCHEME', $this->serverData)) {
             $requestScheme = 'http';
         } else {
             $requestScheme = $this->serverData['REQUEST_SCHEME'];
@@ -129,7 +129,7 @@ class Request
      */
     public function isBrowser()
     {
-        if (!array_key_exists('HTTP_ACCEPT', $this->serverData)) {
+        if (!\array_key_exists('HTTP_ACCEPT', $this->serverData)) {
             return false;
         }
 
@@ -226,7 +226,7 @@ class Request
      */
     public function hasHeader($headerKey)
     {
-        return array_key_exists($headerKey, $this->serverData);
+        return \array_key_exists($headerKey, $this->serverData);
     }
 
     /**

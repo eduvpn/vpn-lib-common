@@ -100,7 +100,7 @@ class CliParser
         }
 
         // --help is special
-        if (array_key_exists('help', $optionValues)) {
+        if (\array_key_exists('help', $optionValues)) {
             return new Config(['help' => true]);
         }
 
@@ -108,7 +108,7 @@ class CliParser
         foreach (array_keys($this->optionList) as $opt) {
             if ($this->optionList[$opt][2]) {
                 // required
-                if (!array_key_exists($opt, $optionValues)) {
+                if (!\array_key_exists($opt, $optionValues)) {
                     throw new CliException(sprintf('missing required parameter "--%s"', $opt));
                 }
             }
@@ -118,7 +118,7 @@ class CliParser
         foreach (array_keys($this->optionList) as $opt) {
             if ($this->optionList[$opt][1]) {
                 // check if it is actually there
-                if (array_key_exists($opt, $optionValues)) {
+                if (\array_key_exists($opt, $optionValues)) {
                     // must have value
                     if (\is_array($optionValues[$opt])) {
                         if (0 === \count($optionValues[$opt])) {

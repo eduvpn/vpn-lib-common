@@ -203,7 +203,7 @@ class ServerClient
         // the request was correct, and there was not a server error
         if ($responseData[$requestPath]['ok']) {
             // our request was handled correctly
-            if (!array_key_exists('data', $responseData[$requestPath])) {
+            if (!\array_key_exists('data', $responseData[$requestPath])) {
                 return null;
             }
 
@@ -226,24 +226,24 @@ class ServerClient
     {
         if (400 <= $statusCode) {
             // if status code is 4xx or 5xx it MUST have an 'error' field
-            if (!array_key_exists('error', $responseData)) {
+            if (!\array_key_exists('error', $responseData)) {
                 throw new HttpClientException(sprintf('[%d] %s "/%s": responseData MUST contain "error" field', $statusCode, $requestMethod, $requestPath));
             }
 
             return;
         }
 
-        if (!array_key_exists($requestPath, $responseData)) {
+        if (!\array_key_exists($requestPath, $responseData)) {
             throw new HttpClientException(sprintf('[%d] %s "/%s": responseData MUST contain "%s" field', $statusCode, $requestMethod, $requestPath, $requestPath));
         }
 
-        if (!array_key_exists('ok', $responseData[$requestPath])) {
+        if (!\array_key_exists('ok', $responseData[$requestPath])) {
             throw new HttpClientException(sprintf('[%d] %s "/%s": responseData MUST contain "%s/ok" field', $statusCode, $requestMethod, $requestPath, $requestPath));
         }
 
         if (!$responseData[$requestPath]['ok']) {
             // not OK response, MUST contain error field
-            if (!array_key_exists('error', $responseData[$requestPath])) {
+            if (!\array_key_exists('error', $responseData[$requestPath])) {
                 throw new HttpClientException(sprintf('[%d] %s "/%s": responseData MUST contain "%s/error" field', $statusCode, $requestMethod, $requestPath, $requestPath));
             }
         }
