@@ -9,6 +9,8 @@
 
 namespace LetsConnect\Common\Http;
 
+use DateTime;
+
 class UserInfo
 {
     /** @var string */
@@ -16,6 +18,9 @@ class UserInfo
 
     /** @var array<string> */
     private $permissionList;
+
+    /** @var \DateTime|null */
+    private $sessionExpiresAt = null;
 
     /**
      * @param string        $userId
@@ -25,6 +30,24 @@ class UserInfo
     {
         $this->userId = $userId;
         $this->permissionList = $permissionList;
+    }
+
+    /**
+     * @param \DateTime $sessionExpiresAt
+     *
+     * @return void
+     */
+    public function setSessionExpiresAt(DateTime $sessionExpiresAt)
+    {
+        $this->sessionExpiresAt = $sessionExpiresAt;
+    }
+
+    /**
+     * @return \DateTime|null
+     */
+    public function getSessionExpiresAt()
+    {
+        return $this->sessionExpiresAt;
     }
 
     /**
