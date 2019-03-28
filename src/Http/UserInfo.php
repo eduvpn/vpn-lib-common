@@ -53,7 +53,7 @@ class UserInfo
     /**
      * @return string
      */
-    public function id()
+    public function getUserId()
     {
         return $this->userId;
     }
@@ -61,7 +61,7 @@ class UserInfo
     /**
      * @return array<string>
      */
-    public function permissionList()
+    public function getPermissionList()
     {
         return $this->permissionList;
     }

@@ -18,7 +18,10 @@ class AuthUtils
      */
     public static function requireUser(array $hookData, array $userList)
     {
-        $userId = $hookData['auth']->id();
+        /** @var UserInfo */
+        $userInfo = $hookData['auth'];
+
+        $userId = $userInfo->getUserId();
         if (!\in_array($userId, $userList, true)) {
             throw new HttpException(
                 sprintf(

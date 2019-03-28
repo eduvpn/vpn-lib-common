@@ -47,6 +47,7 @@ class TwoFactorModule implements ServiceModuleInterface
                 if (!\array_key_exists('auth', $hookData)) {
                     throw new HttpException('authentication hook did not run before', 500);
                 }
+                /** @var UserInfo */
                 $userInfo = $hookData['auth'];
 
                 $this->session->delete('_two_factor_verified');
@@ -55,9 +56,9 @@ class TwoFactorModule implements ServiceModuleInterface
                 $redirectTo = $request->getPostParameter('_two_factor_auth_redirect_to');
 
                 try {
-                    $this->serverClient->post('verify_totp_key', ['user_id' => $userInfo->id(), 'totp_key' => $totpKey]);
+                    $this->serverClient->post('verify_totp_key', ['user_id' => $userInfo->getUserId(), 'totp_key' => $totpKey]);
                     $this->session->regenerate(true);
-                    $this->session->set('_two_factor_verified', $userInfo->id());
+                    $this->session->set('_two_factor_verified', $userInfo->getUserId());
 
                     return new RedirectResponse($redirectTo, 302);
                 } catch (ApiException $e) {
@@ -66,7 +67,7 @@ class TwoFactorModule implements ServiceModuleInterface
                         $this->tpl->render(
                             'twoFactorTotp',
                             [
-                                '_two_factor_user_id' => $userInfo->id(),
+                                '_two_factor_user_id' => $userInfo->getUserId(),
                                 '_two_factor_auth_invalid' => true,
                                 '_two_factor_auth_error_msg' => $e->getMessage(),
                                 '_two_factor_auth_redirect_to' => $redirectTo,

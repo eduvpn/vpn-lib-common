@@ -75,9 +75,10 @@ class TwoFactorHook implements BeforeHookInterface
             return false;
         }
 
+        /** @var UserInfo */
         $userInfo = $hookData['auth'];
         if ($this->session->has('_two_factor_verified')) {
-            if ($userInfo->id() !== $this->session->get('_two_factor_verified')) {
+            if ($userInfo->getUserId() !== $this->session->get('_two_factor_verified')) {
                 throw new HttpException('two-factor code not bound to authenticated user', 400);
             }
 
@@ -85,14 +86,14 @@ class TwoFactorHook implements BeforeHookInterface
         }
 
         // check if user is enrolled
-        $hasTotpSecret = $this->serverClient->getRequireBool('has_totp_secret', ['user_id' => $userInfo->id()]);
+        $hasTotpSecret = $this->serverClient->getRequireBool('has_totp_secret', ['user_id' => $userInfo->getUserId()]);
         if ($hasTotpSecret) {
             // user is enrolled for 2FA, ask for it!
             return new HtmlResponse(
                 $this->tpl->render(
                     'twoFactorTotp',
                     [
-                        '_two_factor_user_id' => $userInfo->id(),
+                        '_two_factor_user_id' => $userInfo->getUserId(),
                         '_two_factor_auth_invalid' => false,
                         '_two_factor_auth_redirect_to' => $request->getUri(),
                     ]
@@ -109,7 +110,7 @@ class TwoFactorHook implements BeforeHookInterface
 
         // 2FA not required, and user not enrolled...
         $this->session->regenerate(true);
-        $this->session->set('_two_factor_verified', $userInfo->id());
+        $this->session->set('_two_factor_verified', $userInfo->getUserId());
 
         return true;
     }

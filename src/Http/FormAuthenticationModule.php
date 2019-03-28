@@ -83,8 +83,8 @@ class FormAuthenticationModule implements ServiceModuleInterface
                 }
 
                 $this->session->regenerate(true);
-                $this->session->set('_form_auth_user', $userInfo->id());
-                $this->session->set('_form_auth_permission_list', $userInfo->permissionList());
+                $this->session->set('_form_auth_user', $userInfo->getUserId());
+                $this->session->set('_form_auth_permission_list', $userInfo->getPermissionList());
 
                 return new RedirectResponse($redirectTo, 302);
             }
