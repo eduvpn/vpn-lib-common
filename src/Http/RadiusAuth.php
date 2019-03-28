@@ -9,7 +9,6 @@
 
 namespace LetsConnect\Common\Http;
 
-use DateTime;
 use LetsConnect\Common\Http\Exception\RadiusException;
 use Psr\Log\LoggerInterface;
 
@@ -102,7 +101,7 @@ class RadiusAuth implements CredentialValidatorInterface
         }
 
         if (RADIUS_ACCESS_ACCEPT === radius_send_request($radiusAuth)) {
-            return new UserInfo($authUser, [], new DateTime());
+            return new UserInfo($authUser, []);
         }
 
         if (RADIUS_ACCESS_REJECT === radius_send_request($radiusAuth)) {

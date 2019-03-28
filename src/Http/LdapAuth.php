@@ -9,7 +9,6 @@
 
 namespace LetsConnect\Common\Http;
 
-use DateTime;
 use LetsConnect\Common\Exception\LdapClientException;
 use LetsConnect\Common\LdapClient;
 use Psr\Log\LoggerInterface;
@@ -23,7 +22,13 @@ class LdapAuth implements CredentialValidatorInterface
     private $ldapClient;
 
     /** @var string */
-    private $userDnTemplate;
+    private $bindDnTemplate;
+
+    /** @var string|null */
+    private $baseDn;
+
+    /** @var string|null */
+    private $userFilterTemplate;
 
     /** @var string|null */
     private $permissionAttribute;
@@ -31,14 +36,18 @@ class LdapAuth implements CredentialValidatorInterface
     /**
      * @param \Psr\Log\LoggerInterface $logger
      * @param LdapClient               $ldapClient
-     * @param string                   $userDnTemplate
+     * @param string                   $bindDnTemplate
+     * @param string|null              $baseDn
+     * @param string|null              $userFilterTemplate
      * @param string|null              $permissionAttribute
      */
-    public function __construct(LoggerInterface $logger, LdapClient $ldapClient, $userDnTemplate, $permissionAttribute)
+    public function __construct(LoggerInterface $logger, LdapClient $ldapClient, $bindDnTemplate, $baseDn, $userFilterTemplate, $permissionAttribute)
     {
         $this->logger = $logger;
         $this->ldapClient = $ldapClient;
-        $this->userDnTemplate = $userDnTemplate;
+        $this->bindDnTemplate = $bindDnTemplate;
+        $this->baseDn = $baseDn;
+        $this->userFilterTemplate = $userFilterTemplate;
         $this->permissionAttribute = $permissionAttribute;
     }
 
@@ -50,14 +59,24 @@ class LdapAuth implements CredentialValidatorInterface
      */
     public function isValid($authUser, $authPass)
     {
-        $userDn = str_replace('{{UID}}', LdapClient::escapeDn($authUser), $this->userDnTemplate);
+        $bindDn = str_replace('{{UID}}', LdapClient::escapeDn($authUser), $this->bindDnTemplate);
         try {
-            $this->ldapClient->bind($userDn, $authPass);
+            $this->ldapClient->bind($bindDn, $authPass);
 
-            return new UserInfo($authUser, $this->getPermissionList($userDn), new DateTime());
+            $baseDn = $bindDn;
+            if (null !== $this->baseDn) {
+                $baseDn = $this->baseDn;
+            }
+
+            $userFilter = '(objectClass=*)';
+            if (null !== $this->userFilterTemplate) {
+                $userFilter = str_replace('{{UID}}', LdapClient::escapeDn($authUser), $this->userFilterTemplate);
+            }
+
+            return new UserInfo($authUser, $this->getPermissionList($baseDn, $userFilter));
         } catch (LdapClientException $e) {
             $this->logger->warning(
-                sprintf('unable to bind with DN "%s" (%s)', $userDn, $e->getMessage())
+                sprintf('unable to bind with DN "%s" (%s)', $bindDn, $e->getMessage())
             );
 
             return false;
@@ -65,19 +84,20 @@ class LdapAuth implements CredentialValidatorInterface
     }
 
     /**
-     * @param string $userDn
+     * @param string $baseDn
+     * @param string $userFilter
      *
      * @return array<string>
      */
-    private function getPermissionList($userDn)
+    private function getPermissionList($baseDn, $userFilter)
     {
         if (null === $this->permissionAttribute) {
             return [];
         }
 
         $ldapEntries = $this->ldapClient->search(
-            $userDn,
-            '(objectClass=*)',
+            $baseDn,
+            $userFilter,
             [$this->permissionAttribute]
         );
 

@@ -9,8 +9,6 @@
 
 namespace LetsConnect\Common\Http;
 
-use DateTime;
-
 class NullAuthenticationHook implements BeforeHookInterface
 {
     /** @var string */
@@ -29,6 +27,6 @@ class NullAuthenticationHook implements BeforeHookInterface
      */
     public function executeBefore(Request $request, array $hookData)
     {
-        return new UserInfo($this->authUser, [], new DateTime());
+        return new UserInfo($this->authUser, []);
     }
 }

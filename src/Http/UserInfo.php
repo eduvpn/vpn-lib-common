@@ -9,8 +9,6 @@
 
 namespace LetsConnect\Common\Http;
 
-use DateTime;
-
 class UserInfo
 {
     /** @var string */
@@ -19,19 +17,14 @@ class UserInfo
     /** @var array<string> */
     private $permissionList;
 
-    /** @var \DateTime */
-    private $authTime;
-
     /**
      * @param string        $userId
      * @param array<string> $permissionList
-     * @param \DateTime     $authTime
      */
-    public function __construct($userId, array $permissionList, DateTime $authTime)
+    public function __construct($userId, array $permissionList)
     {
         $this->userId = $userId;
         $this->permissionList = $permissionList;
-        $this->authTime = $authTime;
     }
 
     /**
@@ -48,13 +41,5 @@ class UserInfo
     public function permissionList()
     {
         return $this->permissionList;
-    }
-
-    /**
-     * @return \DateTime
-     */
-    public function authTime()
-    {
-        return $this->authTime;
     }
 }

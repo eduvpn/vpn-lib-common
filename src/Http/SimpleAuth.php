@@ -9,8 +9,6 @@
 
 namespace LetsConnect\Common\Http;
 
-use DateTime;
-
 class SimpleAuth implements CredentialValidatorInterface
 {
     /** @var array */
@@ -37,6 +35,6 @@ class SimpleAuth implements CredentialValidatorInterface
             return false;
         }
 
-        return new UserInfo($authUser, [], new DateTime());
+        return new UserInfo($authUser, []);
     }
 }
