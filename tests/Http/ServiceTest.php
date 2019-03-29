@@ -29,13 +29,21 @@ class ServiceTest extends TestCase
         );
 
         $service = new Service();
-        $service->get('/foo', function (Request $request) {
+        $service->get('/foo',
+        /**
+         * @return \LetsConnect\Common\Http\Response
+         */
+        function (Request $request) {
             $response = new Response(201, 'application/json');
             $response->setBody('{}');
 
             return $response;
         });
-        $service->post('/bar', function (Request $request) {
+        $service->post('/bar',
+        /**
+         * @return \LetsConnect\Common\Http\Response
+         */
+        function (Request $request) {
             return new Response();
         });
         $response = $service->run($request);
@@ -56,7 +64,11 @@ class ServiceTest extends TestCase
         );
 
         $service = new Service();
-        $service->get('/foo', function (Request $request) {
+        $service->get('/foo',
+        /**
+         * @return \LetsConnect\Common\Http\Response
+         */
+        function (Request $request) {
             $response = new Response(201, 'application/json');
             $response->setBody('{}');
 
@@ -81,10 +93,18 @@ class ServiceTest extends TestCase
         );
 
         $service = new Service();
-        $service->get('/foo', function (Request $request) {
+        $service->get('/foo',
+        /**
+         * @return \LetsConnect\Common\Http\Response
+         */
+        function (Request $request) {
             return new Response();
         });
-        $service->post('/foo', function (Request $request) {
+        $service->post('/foo',
+        /**
+         * @return \LetsConnect\Common\Http\Response
+         */
+        function (Request $request) {
             return new Response();
         });
         $response = $service->run($request);
@@ -107,9 +127,15 @@ class ServiceTest extends TestCase
 
         $service = new Service();
         $callbackHook = new CallbackHook(
+            /**
+             * @return string
+             */
             function (Request $request) {
                 return '12345';
             },
+            /**
+             * @return \LetsConnect\Common\Http\Response
+             */
             function (Request $request, Response $response) {
                 $response->addHeader('Foo', 'Bar');
 
@@ -119,7 +145,11 @@ class ServiceTest extends TestCase
         $service->addBeforeHook('test', $callbackHook);
         $service->addAfterHook('test', $callbackHook);
 
-        $service->get('/foo', function (Request $request, array $hookData) {
+        $service->get('/foo',
+        /**
+         * @return \LetsConnect\Common\Http\Response
+         */
+        function (Request $request, array $hookData) {
             $response = new Response();
             $response->setBody($hookData['test']);
 
@@ -144,13 +174,20 @@ class ServiceTest extends TestCase
         );
         $service = new Service();
         $callbackHook = new CallbackHook(
+            /**
+             * @return \LetsConnect\Common\Http\Response
+             */
             function (Request $request) {
                 return new Response(201);
             }
         );
         $service->addBeforeHook('test', $callbackHook);
 
-        $service->get('/foo', function (Request $request, array $hookData) {
+        $service->get('/foo',
+        /**
+         * @return \LetsConnect\Common\Http\Response
+         */
+        function (Request $request, array $hookData) {
             return new Response();
         });
         $response = $service->run($request);
@@ -168,6 +205,9 @@ class ServiceTest extends TestCase
         $service->addBeforeHook(
             'test',
             new CallbackHook(
+                /**
+                 * @return string
+                 */
                 function (Request $request, array $hookData) {
                     // this should be available in the next before hook
                     return '12345';
@@ -177,6 +217,9 @@ class ServiceTest extends TestCase
         $service->addBeforeHook(
             'test2',
             new CallbackHook(
+                /**
+                 * @return \LetsConnect\Common\Http\Response
+                 */
                 function (Request $request, array $hookData) {
                     $response = new Response();
                     $response->setBody($hookData['test']);
@@ -202,7 +245,11 @@ class ServiceTest extends TestCase
         );
 
         $service = new Service();
-        $service->get('/foo', function (Request $request) {
+        $service->get('/foo',
+        /**
+         * @return \LetsConnect\Common\Http\Response
+         */
+        function (Request $request) {
             return new Response(200);
         });
         $response = $service->run($request);
@@ -223,7 +270,11 @@ class ServiceTest extends TestCase
         );
 
         $service = new Service(new TestHtmlTpl());
-        $service->get('/foo', function (Request $request) {
+        $service->get('/foo',
+        /**
+         * @return \LetsConnect\Common\Http\Response
+         */
+        function (Request $request) {
             return new Response(200);
         });
         $response = $service->run($request);

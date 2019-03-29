@@ -9,7 +9,6 @@
 
 namespace LetsConnect\Common\Tests\Http;
 
-use DateTime;
 use LetsConnect\Common\Http\TwoFactorHook;
 use LetsConnect\Common\Http\UserInfo;
 use LetsConnect\Common\HttpClient\ServerClient;
@@ -29,7 +28,7 @@ class TwoFactorHookTest extends TestCase
         $tpl = new TestTpl();
         $formAuthentication = new TwoFactorHook($session, $tpl, $serverClient, false);
         $request = new TestRequest([]);
-        $this->assertTrue($formAuthentication->executeBefore($request, ['auth' => new UserInfo('foo', [], new DateTime())]));
+        $this->assertTrue($formAuthentication->executeBefore($request, ['auth' => new UserInfo('foo', [])]));
     }
 
     /**
@@ -42,7 +41,7 @@ class TwoFactorHookTest extends TestCase
         $tpl = new TestTpl();
         $formAuthentication = new TwoFactorHook($session, $tpl, $serverClient, false);
         $request = new TestRequest([]);
-        $response = $formAuthentication->executeBefore($request, ['auth' => new UserInfo('foo', [], new DateTime())]);
+        $response = $formAuthentication->executeBefore($request, ['auth' => new UserInfo('foo', [])]);
         $this->assertSame('{"twoFactorTotp":{"_two_factor_user_id":"foo","_two_factor_auth_invalid":false,"_two_factor_auth_redirect_to":"http:\/\/vpn.example\/"}}', $response->getBody());
     }
 
@@ -56,7 +55,7 @@ class TwoFactorHookTest extends TestCase
         $tpl = new TestTpl();
         $formAuthentication = new TwoFactorHook($session, $tpl, $serverClient, false);
         $request = new TestRequest([]);
-        $this->assertTrue($formAuthentication->executeBefore($request, ['auth' => new UserInfo('bar', [], new DateTime())]));
+        $this->assertTrue($formAuthentication->executeBefore($request, ['auth' => new UserInfo('bar', [])]));
     }
 
     /**
@@ -69,7 +68,7 @@ class TwoFactorHookTest extends TestCase
         $tpl = new TestTpl();
         $formAuthentication = new TwoFactorHook($session, $tpl, $serverClient, true);
         $request = new TestRequest([]);
-        $response = $formAuthentication->executeBefore($request, ['auth' => new UserInfo('bar', [], new DateTime())]);
+        $response = $formAuthentication->executeBefore($request, ['auth' => new UserInfo('bar', [])]);
         $this->assertSame('http://vpn.example/', $session->get('_two_factor_enroll_redirect_to'));
         $this->assertSame(302, $response->getStatusCode());
         $this->assertSame('http://vpn.example/two_factor_enroll', $response->getHeader('Location'));
@@ -96,6 +95,6 @@ class TwoFactorHookTest extends TestCase
         $tpl = new TestTpl();
         $formAuthentication = new TwoFactorHook($session, $tpl, $serverClient, false);
         $request = new TestRequest([]);
-        $this->assertTrue($formAuthentication->executeBefore($request, ['auth' => new UserInfo('foo', [], new DateTime())]));
+        $this->assertTrue($formAuthentication->executeBefore($request, ['auth' => new UserInfo('foo', [])]));
     }
 }
