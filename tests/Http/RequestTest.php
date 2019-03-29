@@ -14,6 +14,9 @@ use PHPUnit\Framework\TestCase;
 
 class RequestTest extends TestCase
 {
+    /**
+     * @return void
+     */
     public function testGetServerName()
     {
         $request = new Request(
@@ -28,6 +31,9 @@ class RequestTest extends TestCase
         $this->assertSame('vpn.example', $request->getServerName());
     }
 
+    /**
+     * @return void
+     */
     public function testGetRequestMethod()
     {
         $request = new Request(
@@ -44,13 +50,19 @@ class RequestTest extends TestCase
 
     /**
      * @expectedException \LetsConnect\Common\Http\Exception\HttpException
+     *
      * @expectedExceptionMessage missing header "REQUEST_METHOD"
+     *
+     * @return void
      */
     public function testMissingHeader()
     {
         new Request([]);
     }
 
+    /**
+     * @return void
+     */
     public function testGetPathInfo()
     {
         $request = new Request(
@@ -65,6 +77,9 @@ class RequestTest extends TestCase
         $this->assertSame('/foo/bar', $request->getPathInfo());
     }
 
+    /**
+     * @return void
+     */
     public function testMissingPathInfo()
     {
         $request = new Request(
@@ -79,6 +94,9 @@ class RequestTest extends TestCase
         $this->assertSame('/', $request->getPathInfo());
     }
 
+    /**
+     * @return void
+     */
     public function testNoPathInfo()
     {
         $request = new Request(
@@ -93,6 +111,9 @@ class RequestTest extends TestCase
         $this->assertSame('/', $request->getPathInfo());
     }
 
+    /**
+     * @return void
+     */
     public function testGetQueryParameter()
     {
         $request = new Request(
@@ -112,7 +133,10 @@ class RequestTest extends TestCase
 
     /**
      * @expectedException \LetsConnect\Common\Http\Exception\HttpException
+     *
      * @expectedExceptionMessage missing required field "user_id"
+     *
+     * @return void
      */
     public function testGetMissingQueryParameter()
     {
@@ -128,6 +152,9 @@ class RequestTest extends TestCase
         $request->getQueryParameter('user_id');
     }
 
+    /**
+     * @return void
+     */
     public function testDefaultQueryParameter()
     {
         $request = new Request(
@@ -142,6 +169,9 @@ class RequestTest extends TestCase
         $this->assertSame('bar', $request->getQueryParameter('user_id', false, 'bar'));
     }
 
+    /**
+     * @return void
+     */
     public function testGetPostParameter()
     {
         $request = new Request(
@@ -160,6 +190,9 @@ class RequestTest extends TestCase
         $this->assertSame('foo', $request->getPostParameter('user_id'));
     }
 
+    /**
+     * @return void
+     */
     public function testRequireHeader()
     {
         $request = new Request(
@@ -175,6 +208,9 @@ class RequestTest extends TestCase
         $this->assertSame('text/html', $request->requireHeader('HTTP_ACCEPT'));
     }
 
+    /**
+     * @return void
+     */
     public function testOptionalHeader()
     {
         $request = new Request(
@@ -191,6 +227,9 @@ class RequestTest extends TestCase
         $this->assertNull($request->optionalHeader('HTTP_FOO'));
     }
 
+    /**
+     * @return void
+     */
     public function testRequestUri()
     {
         $request = new Request(
@@ -205,6 +244,9 @@ class RequestTest extends TestCase
         $this->assertSame('http://vpn.example/', $request->getUri());
     }
 
+    /**
+     * @return void
+     */
     public function testHttpsRequestUri()
     {
         $request = new Request(
@@ -220,6 +262,9 @@ class RequestTest extends TestCase
         $this->assertSame('https://vpn.example/', $request->getUri());
     }
 
+    /**
+     * @return void
+     */
     public function testNonStandardPortRequestUri()
     {
         $request = new Request(
@@ -234,6 +279,9 @@ class RequestTest extends TestCase
         $this->assertSame('http://vpn.example:8080/', $request->getUri());
     }
 
+    /**
+     * @return void
+     */
     public function testGetRootSimple()
     {
         $request = new Request(
@@ -248,6 +296,9 @@ class RequestTest extends TestCase
         $this->assertSame('/', $request->getRoot());
     }
 
+    /**
+     * @return void
+     */
     public function testGetRootSame()
     {
         $request = new Request(
@@ -262,6 +313,9 @@ class RequestTest extends TestCase
         $this->assertSame('/', $request->getRoot());
     }
 
+    /**
+     * @return void
+     */
     public function testGetRootPathInfo()
     {
         $request = new Request(
@@ -276,6 +330,9 @@ class RequestTest extends TestCase
         $this->assertSame('/admin/', $request->getRoot());
     }
 
+    /**
+     * @return void
+     */
     public function testScriptNameInRequestUri()
     {
         $request = new Request(
@@ -291,6 +348,9 @@ class RequestTest extends TestCase
         $this->assertSame('/foo/bar', $request->getPathInfo());
     }
 
+    /**
+     * @return void
+     */
     public function testGetRootQueryString()
     {
         $request = new Request(
@@ -306,6 +366,9 @@ class RequestTest extends TestCase
         $this->assertSame('/', $request->getPathInfo());
     }
 
+    /**
+     * @return void
+     */
     public function testGetRootPathInfoQueryString()
     {
         $request = new Request(

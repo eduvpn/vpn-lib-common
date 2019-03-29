@@ -18,6 +18,9 @@ use PHPUnit\Framework\TestCase;
 
 class TwoFactorModuleTest extends TestCase
 {
+    /**
+     * @return void
+     */
     public function testVerifyCorrect()
     {
         $session = new TestSession();
@@ -52,6 +55,9 @@ class TwoFactorModuleTest extends TestCase
         $this->assertSame('http://vpn.example/account', $response->getHeader('Location'));
     }
 
+    /**
+     * @return void
+     */
     public function testVerifyIncorrect()
     {
         $session = new TestSession();

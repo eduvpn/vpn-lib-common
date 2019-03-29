@@ -14,6 +14,9 @@ use PHPUnit\Framework\TestCase;
 
 class ServerClientTest extends TestCase
 {
+    /**
+     * @return void
+     */
     public function testGet()
     {
         $httpClient = new TestHttpClient();
@@ -21,6 +24,9 @@ class ServerClientTest extends TestCase
         $this->assertTrue($serverClient->get('foo'));
     }
 
+    /**
+     * @return void
+     */
     public function testQueryParameter()
     {
         $httpClient = new TestHttpClient();
@@ -30,7 +36,10 @@ class ServerClientTest extends TestCase
 
     /**
      * @expectedException \LetsConnect\Common\HttpClient\Exception\HttpClientException
+     *
      * @expectedExceptionMessage [400] GET "/error": errorValue
+     *
+     * @return void
      */
     public function testError()
     {
@@ -39,6 +48,9 @@ class ServerClientTest extends TestCase
         $serverClient->get('error');
     }
 
+    /**
+     * @return void
+     */
     public function testPost()
     {
         $httpClient = new TestHttpClient();

@@ -2,7 +2,9 @@
 <psalm totallyTyped="false" useDocblockTypes="true">
   <projectFiles>
     <directory name="src"/>
+<directory name="tests"/>
     <ignoreFiles>
+
       <directory name="vendor"/>
     </ignoreFiles>
   </projectFiles>

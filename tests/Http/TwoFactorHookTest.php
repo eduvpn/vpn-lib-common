@@ -18,6 +18,9 @@ use PHPUnit\Framework\TestCase;
 
 class TwoFactorHookTest extends TestCase
 {
+    /**
+     * @return void
+     */
     public function testAlreadyVerified()
     {
         $serverClient = new ServerClient(new TestHttpClient(), 'serverClient');
@@ -29,6 +32,9 @@ class TwoFactorHookTest extends TestCase
         $this->assertTrue($formAuthentication->executeBefore($request, ['auth' => new UserInfo('foo', [], new DateTime())]));
     }
 
+    /**
+     * @return void
+     */
     public function testNotRequiredEnrolled()
     {
         $serverClient = new ServerClient(new TestHttpClient(), 'serverClient');
@@ -40,6 +46,9 @@ class TwoFactorHookTest extends TestCase
         $this->assertSame('{"twoFactorTotp":{"_two_factor_user_id":"foo","_two_factor_auth_invalid":false,"_two_factor_auth_redirect_to":"http:\/\/vpn.example\/"}}', $response->getBody());
     }
 
+    /**
+     * @return void
+     */
     public function testNotRequiredNotEnrolled()
     {
         $serverClient = new ServerClient(new TestHttpClient(), 'serverClient');
@@ -50,6 +59,9 @@ class TwoFactorHookTest extends TestCase
         $this->assertTrue($formAuthentication->executeBefore($request, ['auth' => new UserInfo('bar', [], new DateTime())]));
     }
 
+    /**
+     * @return void
+     */
     public function testRequireTwoFactorNotEnrolled()
     {
         $serverClient = new ServerClient(new TestHttpClient(), 'serverClient');
@@ -65,7 +77,10 @@ class TwoFactorHookTest extends TestCase
 
     /**
      * @expectedException \LetsConnect\Common\Http\Exception\HttpException
+     *
      * @expectedExceptionMessage two-factor code not bound to authenticated user
+     *
+     * @return void
      */
     public function testNotBoundToAuth()
     {

@@ -14,6 +14,9 @@ use PHPUnit\Framework\TestCase;
 
 class ConfigTest extends TestCase
 {
+    /**
+     * @return void
+     */
     public function testSimpleConfig()
     {
         $c = new Config(
@@ -24,6 +27,9 @@ class ConfigTest extends TestCase
         $this->assertSame('bar', $c->getItem('foo'));
     }
 
+    /**
+     * @return void
+     */
     public function testNestedConfig()
     {
         $c = new Config(
@@ -36,6 +42,9 @@ class ConfigTest extends TestCase
         $this->assertSame('baz', $c->getSection('foo')->getItem('bar'));
     }
 
+    /**
+     * @return void
+     */
     public function testNoParameters()
     {
         $configData = ['foo' => 'bar'];
@@ -43,6 +52,9 @@ class ConfigTest extends TestCase
         $this->assertSame($configData, $c->toArray());
     }
 
+    /**
+     * @return void
+     */
     public function testExists()
     {
         $c = new Config(['foo' => 'bar']);
@@ -52,7 +64,10 @@ class ConfigTest extends TestCase
 
     /**
      * @expectedException \LetsConnect\Common\Exception\ConfigException
+     *
      * @expectedExceptionMessage item "foo" not available
+     *
+     * @return void
      */
     public function testMissingConfig()
     {
@@ -62,7 +77,10 @@ class ConfigTest extends TestCase
 
     /**
      * @expectedException \LetsConnect\Common\Exception\ConfigException
+     *
      * @expectedExceptionMessage item "baz" not available
+     *
+     * @return void
      */
     public function testMissingNestedConfig()
     {
@@ -76,12 +94,18 @@ class ConfigTest extends TestCase
         $c->getSection('foo')->getItem('baz');
     }
 
+    /**
+     * @return void
+     */
     public function testFromFile()
     {
         $c = Config::fromFile(sprintf('%s/data/config.php', __DIR__));
         $this->assertSame('b', $c->getSection('bar')->getItem('a'));
     }
 
+    /**
+     * @return void
+     */
     public function testMyConfigDefaultValues()
     {
         $c = new MyConfig(['a' => ['b' => ['c' => 'd']]]);

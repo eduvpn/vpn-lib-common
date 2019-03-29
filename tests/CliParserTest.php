@@ -14,6 +14,9 @@ use PHPUnit\Framework\TestCase;
 
 class CliParserTest extends TestCase
 {
+    /**
+     * @return void
+     */
     public function testRequiredArgumentWithValue()
     {
         $p = new CliParser(
@@ -31,6 +34,9 @@ class CliParserTest extends TestCase
         $this->assertSame('foo', $config->getItem('foo'));
     }
 
+    /**
+     * @return void
+     */
     public function testTwoRequiredArgumentsWithValues()
     {
         $p = new CliParser(
@@ -45,6 +51,9 @@ class CliParserTest extends TestCase
         $this->assertSame('vpn00.example', $config->getItem('generate'));
     }
 
+    /**
+     * @return void
+     */
     public function testRequiredArgument()
     {
         $p = new CliParser(
@@ -59,7 +68,10 @@ class CliParserTest extends TestCase
 
     /**
      * @expectedException \LetsConnect\Common\Exception\CliException
+     *
      * @expectedExceptionMessage missing required parameter "--instance"
+     *
+     * @return void
      */
     public function testMissingRequiredArgument()
     {
@@ -74,7 +86,10 @@ class CliParserTest extends TestCase
 
     /**
      * @expectedException \LetsConnect\Common\Exception\CliException
+     *
      * @expectedExceptionMessage missing required parameter value for option "--instance"
+     *
+     * @return void
      */
     public function testMissingRequiredArgumentValue()
     {
@@ -87,6 +102,9 @@ class CliParserTest extends TestCase
         $p->parse(['name_of_program', '--instance']);
     }
 
+    /**
+     * @return void
+     */
     public function testHelpCall()
     {
         $p = new CliParser(

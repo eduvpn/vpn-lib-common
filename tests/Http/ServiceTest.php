@@ -17,6 +17,9 @@ use PHPUnit\Framework\TestCase;
 
 class ServiceTest extends TestCase
 {
+    /**
+     * @return void
+     */
     public function testGet()
     {
         $request = new TestRequest(
@@ -41,6 +44,9 @@ class ServiceTest extends TestCase
         $this->assertSame('{}', $response->getBody());
     }
 
+    /**
+     * @return void
+     */
     public function testMissingDocument()
     {
         $request = new TestRequest(
@@ -62,6 +68,9 @@ class ServiceTest extends TestCase
         $this->assertSame('{"error":"\"\/bar\" not found"}', $response->getBody());
     }
 
+    /**
+     * @return void
+     */
     public function testUnsupportedMethod()
     {
         $request = new TestRequest(
@@ -85,6 +94,9 @@ class ServiceTest extends TestCase
         $this->assertSame('{"error":"method \"DELETE\" not allowed"}', $response->getBody());
     }
 
+    /**
+     * @return void
+     */
     public function testHooks()
     {
         $request = new TestRequest(
@@ -120,6 +132,9 @@ class ServiceTest extends TestCase
         $this->assertSame('Bar', $response->getHeader('Foo'));
     }
 
+    /**
+     * @return void
+     */
     public function testHookResponse()
     {
         $request = new TestRequest(
@@ -143,6 +158,9 @@ class ServiceTest extends TestCase
         $this->assertSame(201, $response->getStatusCode());
     }
 
+    /**
+     * @return void
+     */
     public function testHookDataPassing()
     {
         $request = new TestRequest([]);
@@ -171,6 +189,9 @@ class ServiceTest extends TestCase
         $this->assertSame('12345', $response->getBody());
     }
 
+    /**
+     * @return void
+     */
     public function testBrowserNotFoundWithoutTpl()
     {
         $request = new TestRequest(
@@ -189,6 +210,9 @@ class ServiceTest extends TestCase
         $this->assertSame('404: "/bar" not found', $response->getBody());
     }
 
+    /**
+     * @return void
+     */
     public function testBrowserNotFoundWithTpl()
     {
         $request = new TestRequest(

@@ -14,6 +14,11 @@ use RuntimeException;
 
 class TestHttpClient implements HttpClientInterface
 {
+    /**
+     * @param mixed $requestUri
+     *
+     * @return array
+     */
     public function get($requestUri)
     {
         switch ($requestUri) {
@@ -29,6 +34,11 @@ class TestHttpClient implements HttpClientInterface
         }
     }
 
+    /**
+     * @param mixed $requestUri
+     *
+     * @return array
+     */
     public function post($requestUri, array $postData = [])
     {
         switch ($requestUri) {
@@ -39,6 +49,12 @@ class TestHttpClient implements HttpClientInterface
         }
     }
 
+    /**
+     * @param mixed $key
+     * @param mixed $responseData
+     *
+     * @return array
+     */
     private static function wrap($key, $responseData)
     {
         return [
@@ -49,6 +65,12 @@ class TestHttpClient implements HttpClientInterface
         ];
     }
 
+    /**
+     * @param mixed $key
+     * @param mixed $errorMessage
+     *
+     * @return array
+     */
     private static function wrapError($key, $errorMessage)
     {
         return [

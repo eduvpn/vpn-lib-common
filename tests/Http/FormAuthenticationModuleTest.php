@@ -17,6 +17,9 @@ use PHPUnit\Framework\TestCase;
 
 class FormAuthenticationModuleTest extends TestCase
 {
+    /**
+     * @return void
+     */
     public function testVerifyCorrect()
     {
         $session = new TestSession();
@@ -53,6 +56,9 @@ class FormAuthenticationModuleTest extends TestCase
         $this->assertSame(302, $response->getStatusCode());
     }
 
+    /**
+     * @return void
+     */
     public function testVerifyIncorrect()
     {
         $session = new TestSession();

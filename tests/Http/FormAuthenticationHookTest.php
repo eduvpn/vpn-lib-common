@@ -15,6 +15,9 @@ use PHPUnit\Framework\TestCase;
 
 class FormAuthenticationHookTest extends TestCase
 {
+    /**
+     * @return void
+     */
     public function testAuthenticated()
     {
         $session = new TestSession();
@@ -29,6 +32,9 @@ class FormAuthenticationHookTest extends TestCase
         $this->assertSame('foo', $formAuthentication->executeBefore($request, [])->getUserId());
     }
 
+    /**
+     * @return void
+     */
     public function testNotAuthenticated()
     {
         $session = new TestSession();

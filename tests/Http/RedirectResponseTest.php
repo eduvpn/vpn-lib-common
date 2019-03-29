@@ -14,6 +14,9 @@ use PHPUnit\Framework\TestCase;
 
 class RedirectResponseTest extends TestCase
 {
+    /**
+     * @return void
+     */
     public function testRedirect()
     {
         $response = new RedirectResponse('http://vpn.example.org/foo');

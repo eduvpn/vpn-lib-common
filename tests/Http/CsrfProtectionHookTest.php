@@ -14,6 +14,9 @@ use PHPUnit\Framework\TestCase;
 
 class CsrfProtectionHookTest extends TestCase
 {
+    /**
+     * @return void
+     */
     public function testGoodPostReferrer()
     {
         $request = new TestRequest(
@@ -28,6 +31,9 @@ class CsrfProtectionHookTest extends TestCase
         $this->assertTrue($referrerCheckHook->executeBefore($request, []));
     }
 
+    /**
+     * @return void
+     */
     public function testGoodPostOrigin()
     {
         $request = new TestRequest(
@@ -42,6 +48,9 @@ class CsrfProtectionHookTest extends TestCase
         $this->assertTrue($referrerCheckHook->executeBefore($request, []));
     }
 
+    /**
+     * @return void
+     */
     public function testGet()
     {
         $request = new TestRequest(
@@ -56,7 +65,10 @@ class CsrfProtectionHookTest extends TestCase
 
     /**
      * @expectedException \LetsConnect\Common\Http\Exception\HttpException
+     *
      * @expectedExceptionMessage CSRF protection failed, no HTTP_ORIGIN or HTTP_REFERER
+     *
+     * @return void
      */
     public function testCheckPostNoReferrer()
     {
@@ -73,7 +85,10 @@ class CsrfProtectionHookTest extends TestCase
 
     /**
      * @expectedException \LetsConnect\Common\Http\Exception\HttpException
+     *
      * @expectedExceptionMessage CSRF protection failed: unexpected HTTP_REFERER
+     *
+     * @return void
      */
     public function testCheckPostWrongReferrer()
     {
@@ -91,7 +106,10 @@ class CsrfProtectionHookTest extends TestCase
 
     /**
      * @expectedException \LetsConnect\Common\Http\Exception\HttpException
+     *
      * @expectedExceptionMessage CSRF protection failed: unexpected HTTP_ORIGIN
+     *
+     * @return void
      */
     public function testCheckPostWrongOrigin()
     {
@@ -107,6 +125,9 @@ class CsrfProtectionHookTest extends TestCase
         $referrerCheckHook->executeBefore($request, []);
     }
 
+    /**
+     * @return void
+     */
     public function testNonBrowser()
     {
         $request = new TestRequest(

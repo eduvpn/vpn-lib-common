@@ -14,6 +14,9 @@ use PHPUnit\Framework\TestCase;
 
 class ResponseTest extends TestCase
 {
+    /**
+     * @return void
+     */
     public function testImport()
     {
         $response = Response::import(

@@ -14,6 +14,9 @@ use PHPUnit\Framework\TestCase;
 
 class BasicAuthenticationHookTest extends TestCase
 {
+    /**
+     * @return void
+     */
     public function testBasicAuthentication()
     {
         $basicAuthentication = new BasicAuthenticationHook(
@@ -34,7 +37,10 @@ class BasicAuthenticationHookTest extends TestCase
 
     /**
      * @expectedException \LetsConnect\Common\Http\Exception\HttpException
+     *
      * @expectedExceptionMessage invalid authentication information
+     *
+     * @return void
      */
     public function testBasicAuthenticationWrongPassword()
     {
@@ -56,7 +62,10 @@ class BasicAuthenticationHookTest extends TestCase
 
     /**
      * @expectedException \LetsConnect\Common\Http\Exception\HttpException
+     *
      * @expectedExceptionMessage missing authentication information
+     *
+     * @return void
      */
     public function testBasicAuthenticationNoAuth()
     {
