@@ -141,16 +141,16 @@ class Service
             if ($request->isBrowser()) {
                 if (null === $this->tpl) {
                     // template not available
-                    $response = new Response($e->getCode(), 'text/plain');
-                    $response->setBody(sprintf('%d: %s', $e->getCode(), $e->getMessage()));
+                    $response = new Response((int) $e->getCode(), 'text/plain');
+                    $response->setBody(sprintf('%d: %s', (int) $e->getCode(), $e->getMessage()));
                 } else {
                     // template available
-                    $response = new Response($e->getCode(), 'text/html');
+                    $response = new Response((int) $e->getCode(), 'text/html');
                     $response->setBody(
                         $this->tpl->render(
                             'errorPage',
                             [
-                                'code' => $e->getCode(),
+                                'code' => (int) $e->getCode(),
                                 'message' => $e->getMessage(),
                             ]
                         )
@@ -158,7 +158,7 @@ class Service
                 }
             } else {
                 // not a browser
-                $response = new Response($e->getCode(), 'application/json');
+                $response = new Response((int) $e->getCode(), 'application/json');
                 $response->setBody(Json::encode(['error' => $e->getMessage()]));
             }
 

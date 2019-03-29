@@ -82,9 +82,7 @@ class InputValidation
      */
     public static function totpSecret($totpSecret)
     {
-        // XXX for now we support both 80 and 160 bits secrets, in the near
-        // future we'll remove support for 80 bits
-        if (1 !== preg_match('/^[A-Z0-9]{16,32}$/', $totpSecret)) {
+        if (1 !== preg_match('/^[A-Z0-9]{32}$/', $totpSecret)) {
             throw new InputValidationException('invalid "totp_secret"');
         }
 
