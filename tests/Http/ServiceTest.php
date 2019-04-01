@@ -7,12 +7,12 @@
  * SPDX-License-Identifier: AGPL-3.0+
  */
 
-namespace LetsConnect\Common\Tests\Http;
+namespace LC\Common\Tests\Http;
 
-use LetsConnect\Common\Http\CallbackHook;
-use LetsConnect\Common\Http\Request;
-use LetsConnect\Common\Http\Response;
-use LetsConnect\Common\Http\Service;
+use LC\Common\Http\CallbackHook;
+use LC\Common\Http\Request;
+use LC\Common\Http\Response;
+use LC\Common\Http\Service;
 use PHPUnit\Framework\TestCase;
 
 class ServiceTest extends TestCase
@@ -31,7 +31,7 @@ class ServiceTest extends TestCase
         $service = new Service();
         $service->get('/foo',
         /**
-         * @return \LetsConnect\Common\Http\Response
+         * @return \LC\Common\Http\Response
          */
         function (Request $request) {
             $response = new Response(201, 'application/json');
@@ -41,7 +41,7 @@ class ServiceTest extends TestCase
         });
         $service->post('/bar',
         /**
-         * @return \LetsConnect\Common\Http\Response
+         * @return \LC\Common\Http\Response
          */
         function (Request $request) {
             return new Response();
@@ -66,7 +66,7 @@ class ServiceTest extends TestCase
         $service = new Service();
         $service->get('/foo',
         /**
-         * @return \LetsConnect\Common\Http\Response
+         * @return \LC\Common\Http\Response
          */
         function (Request $request) {
             $response = new Response(201, 'application/json');
@@ -95,14 +95,14 @@ class ServiceTest extends TestCase
         $service = new Service();
         $service->get('/foo',
         /**
-         * @return \LetsConnect\Common\Http\Response
+         * @return \LC\Common\Http\Response
          */
         function (Request $request) {
             return new Response();
         });
         $service->post('/foo',
         /**
-         * @return \LetsConnect\Common\Http\Response
+         * @return \LC\Common\Http\Response
          */
         function (Request $request) {
             return new Response();
@@ -134,7 +134,7 @@ class ServiceTest extends TestCase
                 return '12345';
             },
             /**
-             * @return \LetsConnect\Common\Http\Response
+             * @return \LC\Common\Http\Response
              */
             function (Request $request, Response $response) {
                 $response->addHeader('Foo', 'Bar');
@@ -147,7 +147,7 @@ class ServiceTest extends TestCase
 
         $service->get('/foo',
         /**
-         * @return \LetsConnect\Common\Http\Response
+         * @return \LC\Common\Http\Response
          */
         function (Request $request, array $hookData) {
             $response = new Response();
@@ -175,7 +175,7 @@ class ServiceTest extends TestCase
         $service = new Service();
         $callbackHook = new CallbackHook(
             /**
-             * @return \LetsConnect\Common\Http\Response
+             * @return \LC\Common\Http\Response
              */
             function (Request $request) {
                 return new Response(201);
@@ -185,7 +185,7 @@ class ServiceTest extends TestCase
 
         $service->get('/foo',
         /**
-         * @return \LetsConnect\Common\Http\Response
+         * @return \LC\Common\Http\Response
          */
         function (Request $request, array $hookData) {
             return new Response();
@@ -218,7 +218,7 @@ class ServiceTest extends TestCase
             'test2',
             new CallbackHook(
                 /**
-                 * @return \LetsConnect\Common\Http\Response
+                 * @return \LC\Common\Http\Response
                  */
                 function (Request $request, array $hookData) {
                     $response = new Response();
@@ -247,7 +247,7 @@ class ServiceTest extends TestCase
         $service = new Service();
         $service->get('/foo',
         /**
-         * @return \LetsConnect\Common\Http\Response
+         * @return \LC\Common\Http\Response
          */
         function (Request $request) {
             return new Response(200);
@@ -272,7 +272,7 @@ class ServiceTest extends TestCase
         $service = new Service(new TestHtmlTpl());
         $service->get('/foo',
         /**
-         * @return \LetsConnect\Common\Http\Response
+         * @return \LC\Common\Http\Response
          */
         function (Request $request) {
             return new Response(200);

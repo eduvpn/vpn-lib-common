@@ -7,17 +7,17 @@
  * SPDX-License-Identifier: AGPL-3.0+
  */
 
-namespace LetsConnect\Common\Http;
+namespace LC\Common\Http;
 
 use fkooman\SeCookie\SessionInterface;
-use LetsConnect\Common\TplInterface;
+use LC\Common\TplInterface;
 
 class FormAuthenticationHook implements BeforeHookInterface
 {
     /** @var \fkooman\SeCookie\SessionInterface */
     private $session;
 
-    /** @var \LetsConnect\Common\TplInterface */
+    /** @var \LC\Common\TplInterface */
     private $tpl;
 
     public function __construct(SessionInterface $session, TplInterface $tpl)

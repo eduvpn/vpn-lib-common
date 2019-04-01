@@ -7,10 +7,10 @@
  * SPDX-License-Identifier: AGPL-3.0+
  */
 
-namespace LetsConnect\Common\Tests\Http;
+namespace LC\Common\Tests\Http;
 
-use LetsConnect\Common\Http\FormAuthenticationHook;
-use LetsConnect\Common\Tests\TestTpl;
+use LC\Common\Http\FormAuthenticationHook;
+use LC\Common\Tests\TestTpl;
 use PHPUnit\Framework\TestCase;
 
 class FormAuthenticationHookTest extends TestCase

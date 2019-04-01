@@ -7,9 +7,9 @@
  * SPDX-License-Identifier: AGPL-3.0+
  */
 
-namespace LetsConnect\Common\Tests;
+namespace LC\Common\Tests;
 
-use LetsConnect\Common\Config;
+use LC\Common\Config;
 
 class MyConfig extends Config
 {

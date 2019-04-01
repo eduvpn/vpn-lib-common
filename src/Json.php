@@ -7,9 +7,9 @@
  * SPDX-License-Identifier: AGPL-3.0+
  */
 
-namespace LetsConnect\Common;
+namespace LC\Common;
 
-use LetsConnect\Common\Exception\JsonException;
+use LC\Common\Exception\JsonException;
 
 class Json
 {

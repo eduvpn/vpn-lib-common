@@ -7,9 +7,9 @@
  * SPDX-License-Identifier: AGPL-3.0+
  */
 
-namespace LetsConnect\Common\Tests\Http;
+namespace LC\Common\Tests\Http;
 
-use LetsConnect\Common\Http\Request;
+use LC\Common\Http\Request;
 
 class TestRequest extends Request
 {

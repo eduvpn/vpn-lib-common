@@ -7,9 +7,9 @@
  * SPDX-License-Identifier: AGPL-3.0+
  */
 
-namespace LetsConnect\Common\Tests\Http;
+namespace LC\Common\Tests\Http;
 
-use LetsConnect\Common\TplInterface;
+use LC\Common\TplInterface;
 
 class TestHtmlTpl implements TplInterface
 {

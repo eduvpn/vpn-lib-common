@@ -7,9 +7,9 @@
  * SPDX-License-Identifier: AGPL-3.0+
  */
 
-namespace LetsConnect\Common\Http;
+namespace LC\Common\Http;
 
-use LetsConnect\Common\Http\Exception\HttpException;
+use LC\Common\Http\Exception\HttpException;
 
 class Request
 {

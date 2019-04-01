@@ -7,9 +7,9 @@
  * SPDX-License-Identifier: AGPL-3.0+
  */
 
-namespace LetsConnect\Common\Tests\Http;
+namespace LC\Common\Tests\Http;
 
-use LetsConnect\Common\Http\Request;
+use LC\Common\Http\Request;
 use PHPUnit\Framework\TestCase;
 
 class RequestTest extends TestCase
@@ -49,7 +49,7 @@ class RequestTest extends TestCase
     }
 
     /**
-     * @expectedException \LetsConnect\Common\Http\Exception\HttpException
+     * @expectedException \LC\Common\Http\Exception\HttpException
      *
      * @expectedExceptionMessage missing header "REQUEST_METHOD"
      *
@@ -132,7 +132,7 @@ class RequestTest extends TestCase
     }
 
     /**
-     * @expectedException \LetsConnect\Common\Http\Exception\HttpException
+     * @expectedException \LC\Common\Http\Exception\HttpException
      *
      * @expectedExceptionMessage missing required field "user_id"
      *

@@ -7,7 +7,7 @@
  * SPDX-License-Identifier: AGPL-3.0+
  */
 
-namespace LetsConnect\Common\Exception;
+namespace LC\Common\Exception;
 
 use RuntimeException;
 

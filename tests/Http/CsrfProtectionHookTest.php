@@ -7,9 +7,9 @@
  * SPDX-License-Identifier: AGPL-3.0+
  */
 
-namespace LetsConnect\Common\Tests\Http;
+namespace LC\Common\Tests\Http;
 
-use LetsConnect\Common\Http\CsrfProtectionHook;
+use LC\Common\Http\CsrfProtectionHook;
 use PHPUnit\Framework\TestCase;
 
 class CsrfProtectionHookTest extends TestCase
@@ -64,7 +64,7 @@ class CsrfProtectionHookTest extends TestCase
     }
 
     /**
-     * @expectedException \LetsConnect\Common\Http\Exception\HttpException
+     * @expectedException \LC\Common\Http\Exception\HttpException
      *
      * @expectedExceptionMessage CSRF protection failed, no HTTP_ORIGIN or HTTP_REFERER
      *
@@ -84,7 +84,7 @@ class CsrfProtectionHookTest extends TestCase
     }
 
     /**
-     * @expectedException \LetsConnect\Common\Http\Exception\HttpException
+     * @expectedException \LC\Common\Http\Exception\HttpException
      *
      * @expectedExceptionMessage CSRF protection failed: unexpected HTTP_REFERER
      *
@@ -105,7 +105,7 @@ class CsrfProtectionHookTest extends TestCase
     }
 
     /**
-     * @expectedException \LetsConnect\Common\Http\Exception\HttpException
+     * @expectedException \LC\Common\Http\Exception\HttpException
      *
      * @expectedExceptionMessage CSRF protection failed: unexpected HTTP_ORIGIN
      *

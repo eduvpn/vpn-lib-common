@@ -7,12 +7,12 @@
  * SPDX-License-Identifier: AGPL-3.0+
  */
 
-namespace LetsConnect\Common\Tests\Http;
+namespace LC\Common\Tests\Http;
 
-use LetsConnect\Common\Http\TwoFactorHook;
-use LetsConnect\Common\Http\UserInfo;
-use LetsConnect\Common\HttpClient\ServerClient;
-use LetsConnect\Common\Tests\TestTpl;
+use LC\Common\Http\TwoFactorHook;
+use LC\Common\Http\UserInfo;
+use LC\Common\HttpClient\ServerClient;
+use LC\Common\Tests\TestTpl;
 use PHPUnit\Framework\TestCase;
 
 class TwoFactorHookTest extends TestCase
@@ -75,7 +75,7 @@ class TwoFactorHookTest extends TestCase
     }
 
     /**
-     * @expectedException \LetsConnect\Common\Http\Exception\HttpException
+     * @expectedException \LC\Common\Http\Exception\HttpException
      *
      * @expectedExceptionMessage two-factor code not bound to authenticated user
      *

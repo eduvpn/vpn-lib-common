@@ -7,10 +7,10 @@
  * SPDX-License-Identifier: AGPL-3.0+
  */
 
-namespace LetsConnect\Common\Http;
+namespace LC\Common\Http;
 
 use fkooman\SeCookie\Cookie;
-use LetsConnect\Common\Http\Exception\HttpException;
+use LC\Common\Http\Exception\HttpException;
 
 /**
  * This hook is used to be able to switch the language without requiring to be

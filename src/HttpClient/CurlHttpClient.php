@@ -7,9 +7,9 @@
  * SPDX-License-Identifier: AGPL-3.0+
  */
 
-namespace LetsConnect\Common\HttpClient;
+namespace LC\Common\HttpClient;
 
-use LetsConnect\Common\Json;
+use LC\Common\Json;
 use RuntimeException;
 
 class CurlHttpClient implements HttpClientInterface

@@ -7,7 +7,7 @@
  * SPDX-License-Identifier: AGPL-3.0+
  */
 
-namespace LetsConnect\Common\Http;
+namespace LC\Common\Http;
 
 use DateTime;
 

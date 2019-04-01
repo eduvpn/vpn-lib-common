@@ -7,9 +7,9 @@
  * SPDX-License-Identifier: AGPL-3.0+
  */
 
-namespace LetsConnect\Common\Tests\Http;
+namespace LC\Common\Tests\Http;
 
-use LetsConnect\Common\Http\Response;
+use LC\Common\Http\Response;
 use PHPUnit\Framework\TestCase;
 
 class ResponseTest extends TestCase

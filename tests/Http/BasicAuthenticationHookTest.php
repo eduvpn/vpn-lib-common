@@ -7,9 +7,9 @@
  * SPDX-License-Identifier: AGPL-3.0+
  */
 
-namespace LetsConnect\Common\Tests\Http;
+namespace LC\Common\Tests\Http;
 
-use LetsConnect\Common\Http\BasicAuthenticationHook;
+use LC\Common\Http\BasicAuthenticationHook;
 use PHPUnit\Framework\TestCase;
 
 class BasicAuthenticationHookTest extends TestCase
@@ -36,7 +36,7 @@ class BasicAuthenticationHookTest extends TestCase
     }
 
     /**
-     * @expectedException \LetsConnect\Common\Http\Exception\HttpException
+     * @expectedException \LC\Common\Http\Exception\HttpException
      *
      * @expectedExceptionMessage invalid authentication information
      *
@@ -61,7 +61,7 @@ class BasicAuthenticationHookTest extends TestCase
     }
 
     /**
-     * @expectedException \LetsConnect\Common\Http\Exception\HttpException
+     * @expectedException \LC\Common\Http\Exception\HttpException
      *
      * @expectedExceptionMessage missing authentication information
      *

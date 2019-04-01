@@ -7,23 +7,23 @@
  * SPDX-License-Identifier: AGPL-3.0+
  */
 
-namespace LetsConnect\Common\Http;
+namespace LC\Common\Http;
 
 use fkooman\SeCookie\SessionInterface;
-use LetsConnect\Common\Http\Exception\HttpException;
-use LetsConnect\Common\HttpClient\Exception\ApiException;
-use LetsConnect\Common\HttpClient\ServerClient;
-use LetsConnect\Common\TplInterface;
+use LC\Common\Http\Exception\HttpException;
+use LC\Common\HttpClient\Exception\ApiException;
+use LC\Common\HttpClient\ServerClient;
+use LC\Common\TplInterface;
 
 class TwoFactorModule implements ServiceModuleInterface
 {
-    /** @var \LetsConnect\Common\HttpClient\ServerClient */
+    /** @var \LC\Common\HttpClient\ServerClient */
     private $serverClient;
 
     /** @var \fkooman\SeCookie\SessionInterface */
     private $session;
 
-    /** @var \LetsConnect\Common\TplInterface */
+    /** @var \LC\Common\TplInterface */
     private $tpl;
 
     public function __construct(ServerClient $serverClient, SessionInterface $session, TplInterface $tpl)

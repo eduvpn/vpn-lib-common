@@ -7,10 +7,10 @@
  * SPDX-License-Identifier: AGPL-3.0+
  */
 
-namespace LetsConnect\Common\HttpClient;
+namespace LC\Common\HttpClient;
 
-use LetsConnect\Common\HttpClient\Exception\ApiException;
-use LetsConnect\Common\HttpClient\Exception\HttpClientException;
+use LC\Common\HttpClient\Exception\ApiException;
+use LC\Common\HttpClient\Exception\HttpClientException;
 
 class ServerClient
 {

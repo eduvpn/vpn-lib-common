@@ -7,9 +7,9 @@
  * SPDX-License-Identifier: AGPL-3.0+
  */
 
-namespace LetsConnect\Common\Http;
+namespace LC\Common\Http;
 
-use LetsConnect\Common\Json;
+use LC\Common\Json;
 
 class JsonResponse extends Response
 {

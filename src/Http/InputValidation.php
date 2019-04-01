@@ -7,11 +7,11 @@
  * SPDX-License-Identifier: AGPL-3.0+
  */
 
-namespace LetsConnect\Common\Http;
+namespace LC\Common\Http;
 
 use DateTime;
-use LetsConnect\Common\Http\Exception\InputValidationException;
-use LetsConnect\Common\Json;
+use LC\Common\Http\Exception\InputValidationException;
+use LC\Common\Json;
 
 class InputValidation
 {

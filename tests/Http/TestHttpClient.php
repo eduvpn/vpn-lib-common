@@ -7,9 +7,9 @@
  * SPDX-License-Identifier: AGPL-3.0+
  */
 
-namespace LetsConnect\Common\Tests\Http;
+namespace LC\Common\Tests\Http;
 
-use LetsConnect\Common\HttpClient\HttpClientInterface;
+use LC\Common\HttpClient\HttpClientInterface;
 use RuntimeException;
 
 class TestHttpClient implements HttpClientInterface

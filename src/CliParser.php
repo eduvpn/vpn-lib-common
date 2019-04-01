@@ -7,9 +7,9 @@
  * SPDX-License-Identifier: AGPL-3.0+
  */
 
-namespace LetsConnect\Common;
+namespace LC\Common;
 
-use LetsConnect\Common\Exception\CliException;
+use LC\Common\Exception\CliException;
 
 class CliParser
 {
@@ -76,7 +76,7 @@ class CliParser
     }
 
     /**
-     * @return \LetsConnect\Common\Config
+     * @return \LC\Common\Config
      */
     public function parse(array $argv)
     {

@@ -7,15 +7,15 @@
  * SPDX-License-Identifier: AGPL-3.0+
  */
 
-namespace LetsConnect\Common\Http;
+namespace LC\Common\Http;
 
-use LetsConnect\Common\Http\Exception\HttpException;
-use LetsConnect\Common\Json;
-use LetsConnect\Common\TplInterface;
+use LC\Common\Http\Exception\HttpException;
+use LC\Common\Json;
+use LC\Common\TplInterface;
 
 class Service
 {
-    /** @var \LetsConnect\Common\TplInterface|null */
+    /** @var \LC\Common\TplInterface|null */
     private $tpl;
 
     /** @var array */

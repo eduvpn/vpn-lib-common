@@ -7,9 +7,9 @@
  * SPDX-License-Identifier: AGPL-3.0+
  */
 
-namespace LetsConnect\Common\Tests;
+namespace LC\Common\Tests;
 
-use LetsConnect\Common\Config;
+use LC\Common\Config;
 use PHPUnit\Framework\TestCase;
 
 class ConfigTest extends TestCase
@@ -63,7 +63,7 @@ class ConfigTest extends TestCase
     }
 
     /**
-     * @expectedException \LetsConnect\Common\Exception\ConfigException
+     * @expectedException \LC\Common\Exception\ConfigException
      *
      * @expectedExceptionMessage item "foo" not available
      *
@@ -76,7 +76,7 @@ class ConfigTest extends TestCase
     }
 
     /**
-     * @expectedException \LetsConnect\Common\Exception\ConfigException
+     * @expectedException \LC\Common\Exception\ConfigException
      *
      * @expectedExceptionMessage item "baz" not available
      *

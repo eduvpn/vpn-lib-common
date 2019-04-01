@@ -7,9 +7,9 @@
  * SPDX-License-Identifier: AGPL-3.0+
  */
 
-namespace LetsConnect\Common\Tests;
+namespace LC\Common\Tests;
 
-use LetsConnect\Common\CliParser;
+use LC\Common\CliParser;
 use PHPUnit\Framework\TestCase;
 
 class CliParserTest extends TestCase
@@ -67,7 +67,7 @@ class CliParserTest extends TestCase
     }
 
     /**
-     * @expectedException \LetsConnect\Common\Exception\CliException
+     * @expectedException \LC\Common\Exception\CliException
      *
      * @expectedExceptionMessage missing required parameter "--instance"
      *
@@ -85,7 +85,7 @@ class CliParserTest extends TestCase
     }
 
     /**
-     * @expectedException \LetsConnect\Common\Exception\CliException
+     * @expectedException \LC\Common\Exception\CliException
      *
      * @expectedExceptionMessage missing required parameter value for option "--instance"
      *

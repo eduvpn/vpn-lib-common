@@ -7,9 +7,9 @@
  * SPDX-License-Identifier: AGPL-3.0+
  */
 
-namespace LetsConnect\Common\Tests\HttpClient;
+namespace LC\Common\Tests\HttpClient;
 
-use LetsConnect\Common\HttpClient\ServerClient;
+use LC\Common\HttpClient\ServerClient;
 use PHPUnit\Framework\TestCase;
 
 class ServerClientTest extends TestCase
@@ -35,7 +35,7 @@ class ServerClientTest extends TestCase
     }
 
     /**
-     * @expectedException \LetsConnect\Common\HttpClient\Exception\HttpClientException
+     * @expectedException \LC\Common\HttpClient\Exception\HttpClientException
      *
      * @expectedExceptionMessage [400] GET "/error": errorValue
      *

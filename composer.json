@@ -7,13 +7,13 @@
     ],
     "autoload": {
         "psr-4": {
-            "LetsConnect\\Common\\": "src/",
-            "LetsConnect\\Common\\Tests\\": "tests/"
+            "LC\\Common\\": "src/",
+            "LC\\Common\\Tests\\": "tests/"
         }
     },
     "description": "Common VPN library",
     "license": "AGPL-3.0-or-later",
-    "name": "eduvpn/common",
+    "name": "lc/common",
     "repositories": [
         {
             "type": "vcs",

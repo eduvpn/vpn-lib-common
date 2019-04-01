@@ -7,9 +7,9 @@
  * SPDX-License-Identifier: AGPL-3.0+
  */
 
-namespace LetsConnect\Common;
+namespace LC\Common;
 
-use LetsConnect\Common\Exception\LdapClientException;
+use LC\Common\Exception\LdapClientException;
 
 class LdapClient
 {

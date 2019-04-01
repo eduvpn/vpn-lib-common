@@ -7,13 +7,13 @@
  * SPDX-License-Identifier: AGPL-3.0+
  */
 
-namespace LetsConnect\Common\Tests\Http;
+namespace LC\Common\Tests\Http;
 
-use LetsConnect\Common\Http\NullAuthenticationHook;
-use LetsConnect\Common\Http\Service;
-use LetsConnect\Common\Http\TwoFactorModule;
-use LetsConnect\Common\HttpClient\ServerClient;
-use LetsConnect\Common\Tests\TestTpl;
+use LC\Common\Http\NullAuthenticationHook;
+use LC\Common\Http\Service;
+use LC\Common\Http\TwoFactorModule;
+use LC\Common\HttpClient\ServerClient;
+use LC\Common\Tests\TestTpl;
 use PHPUnit\Framework\TestCase;
 
 class TwoFactorModuleTest extends TestCase

@@ -7,11 +7,11 @@
  * SPDX-License-Identifier: AGPL-3.0+
  */
 
-namespace LetsConnect\Common\Http;
+namespace LC\Common\Http;
 
 use fkooman\SeCookie\SessionInterface;
-use LetsConnect\Common\Http\Exception\HttpException;
-use LetsConnect\Common\TplInterface;
+use LC\Common\Http\Exception\HttpException;
+use LC\Common\TplInterface;
 
 class FormAuthenticationModule implements ServiceModuleInterface
 {
@@ -21,7 +21,7 @@ class FormAuthenticationModule implements ServiceModuleInterface
     /** @var \fkooman\SeCookie\SessionInterface */
     private $session;
 
-    /** @var \LetsConnect\Common\TplInterface */
+    /** @var \LC\Common\TplInterface */
     private $tpl;
 
     public function __construct(

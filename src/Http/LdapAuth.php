@@ -7,10 +7,10 @@
  * SPDX-License-Identifier: AGPL-3.0+
  */
 
-namespace LetsConnect\Common\Http;
+namespace LC\Common\Http;
 
-use LetsConnect\Common\Exception\LdapClientException;
-use LetsConnect\Common\LdapClient;
+use LC\Common\Exception\LdapClientException;
+use LC\Common\LdapClient;
 use Psr\Log\LoggerInterface;
 
 class LdapAuth implements CredentialValidatorInterface
@@ -18,7 +18,7 @@ class LdapAuth implements CredentialValidatorInterface
     /** @var \Psr\Log\LoggerInterface */
     private $logger;
 
-    /** @var \LetsConnect\Common\LdapClient */
+    /** @var \LC\Common\LdapClient */
     private $ldapClient;
 
     /** @var string */

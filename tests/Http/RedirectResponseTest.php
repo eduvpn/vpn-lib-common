@@ -7,9 +7,9 @@
  * SPDX-License-Identifier: AGPL-3.0+
  */
 
-namespace LetsConnect\Common\Tests\Http;
+namespace LC\Common\Tests\Http;
 
-use LetsConnect\Common\Http\RedirectResponse;
+use LC\Common\Http\RedirectResponse;
 use PHPUnit\Framework\TestCase;
 
 class RedirectResponseTest extends TestCase

@@ -7,7 +7,7 @@
  * SPDX-License-Identifier: AGPL-3.0+
  */
 
-namespace LetsConnect\Common\HttpClient;
+namespace LC\Common\HttpClient;
 
 interface HttpClientInterface
 {
