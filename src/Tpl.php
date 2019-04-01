@@ -9,6 +9,7 @@
 
 namespace LC\Common;
 
+use DateTime;
 use LC\Common\Exception\TplException;
 
 class Tpl implements TplInterface
@@ -224,15 +225,16 @@ class Tpl implements TplInterface
     }
 
     /**
-     * Format a date according to locale.
+     * Format a date.
      *
      * @param string $d
+     * @param string $f
      *
      * @return string
      */
-    private function d($d)
+    private function d($d, $f = 'Y-m-d H:i:s')
     {
-        return strftime('%c', strtotime($d));
+        return $this->e(date_format(new DateTime($d), $f));
     }
 
     /**
