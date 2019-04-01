@@ -232,7 +232,7 @@ class Tpl implements TplInterface
      *
      * @return string
      */
-    private function d($d, $f)
+    private function d($d, $f = 'Y-m-d H:i:s')
     {
         return $this->e(date_format(new DateTime($d), $f));
     }
