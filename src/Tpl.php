@@ -9,6 +9,7 @@
 
 namespace LC\Common;
 
+use DateTime;
 use LC\Common\Exception\TplException;
 
 class Tpl implements TplInterface
@@ -221,6 +222,19 @@ class Tpl implements TplInterface
         }
 
         return $v;
+    }
+
+    /**
+     * Format a date.
+     *
+     * @param string $d
+     * @param string $f
+     *
+     * @return string
+     */
+    private function d($d, $f)
+    {
+        return $this->e(date_format(new DateTime($d), $f));
     }
 
     /**
