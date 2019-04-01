@@ -7,7 +7,11 @@
     ],
     "autoload": {
         "psr-4": {
-            "LC\\Common\\": "src/",
+            "LC\\Common\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
             "LC\\Common\\Tests\\": "tests/"
         }
     },
