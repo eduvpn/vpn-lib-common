@@ -27,7 +27,7 @@ class TestHttpClient implements HttpClientInterface
             case 'serverClient/foo?foo=bar':
                 return [200, self::wrap('foo', true)];
             case 'serverClient/error':
-                return [400, ['error' => 'errorValue']];
+                return [400, json_encode(['error' => 'errorValue'])];
 
             default:
                 throw new RuntimeException(sprintf('unexpected requestUri "%s"', $requestUri));
