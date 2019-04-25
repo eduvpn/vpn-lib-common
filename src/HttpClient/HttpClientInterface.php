@@ -14,7 +14,7 @@ interface HttpClientInterface
     /**
      * @param string $requestUri
      *
-     * @return array<int,string>
+     * @return array{0: int, 1: string}
      */
     public function get($requestUri);
 
@@ -22,7 +22,7 @@ interface HttpClientInterface
      * @param string $requestUri
      * @param array  $postData
      *
-     * @return array<int,string>
+     * @return array{0: int, 1: string}
      */
     public function post($requestUri, array $postData = []);
 }

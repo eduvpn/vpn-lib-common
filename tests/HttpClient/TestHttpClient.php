@@ -17,7 +17,7 @@ class TestHttpClient implements HttpClientInterface
     /**
      * @param mixed $requestUri
      *
-     * @return array
+     * @return array{0: int, 1: string}
      */
     public function get($requestUri)
     {
@@ -37,7 +37,7 @@ class TestHttpClient implements HttpClientInterface
     /**
      * @param mixed $requestUri
      *
-     * @return array
+     * @return array{0: int, 1: string}
      */
     public function post($requestUri, array $postData = [])
     {

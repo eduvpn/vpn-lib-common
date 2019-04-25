@@ -187,9 +187,9 @@ class ServerClient
     }
 
     /**
-     * @param string            $requestMethod
-     * @param string            $requestPath
-     * @param array<int,string> $clientResponse
+     * @param string                   $requestMethod
+     * @param string                   $requestPath
+     * @param array{0: int, 1: string} $clientResponse
      *
      * @return bool|string|array|int|null
      */

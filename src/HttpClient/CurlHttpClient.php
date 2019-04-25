@@ -35,7 +35,7 @@ class CurlHttpClient implements HttpClientInterface
     /**
      * @param string $requestUri
      *
-     * @return array<int,string>
+     * @return array{0: int, 1: string}
      */
     public function get($requestUri)
     {
@@ -50,7 +50,7 @@ class CurlHttpClient implements HttpClientInterface
      * @param string $requestUri
      * @param array  $postData
      *
-     * @return array<int,string>
+     * @return array{0: int, 1: string}
      */
     public function post($requestUri, array $postData = [])
     {
@@ -63,7 +63,7 @@ class CurlHttpClient implements HttpClientInterface
     }
 
     /**
-     * @return array<int,string>
+     * @return array{0: int, 1: string}
      */
     private function exec(array $curlOptions)
     {
@@ -89,7 +89,7 @@ class CurlHttpClient implements HttpClientInterface
         }
 
         return [
-            curl_getinfo($this->curlChannel, CURLINFO_HTTP_CODE),
+            (int) curl_getinfo($this->curlChannel, CURLINFO_HTTP_CODE),
             $responseData,
         ];
     }
