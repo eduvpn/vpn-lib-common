@@ -10,6 +10,7 @@
 namespace LC\Common\HttpClient;
 
 use LC\Common\Json;
+use LC\Common\HttpClient\Exception\HttpClientException;
 use RuntimeException;
 
 class CurlHttpClient implements HttpClientInterface
@@ -89,10 +90,16 @@ class CurlHttpClient implements HttpClientInterface
             throw new RuntimeException(sprintf('failure performing the HTTP request: "%s"', $curlError));
         }
 
-        return [
-            curl_getinfo($this->curlChannel, CURLINFO_HTTP_CODE),
-            Json::decode($responseData),
-        ];
+        $code = curl_getinfo($this->curlChannel, CURLINFO_HTTP_CODE);
+        try {
+            // TODO: throw exception if $code < 300
+            return [
+                $code,
+                Json::decode($responseData),
+            ];
+        } catch (\Exception $e) {
+            throw new HttpClientException(sprintf('%s: HTTP %d', $curlOptions[CURLOPT_URL], $code), $code, $e);
+        }
     }
 
     /**
