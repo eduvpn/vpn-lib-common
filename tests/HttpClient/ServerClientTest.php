@@ -37,7 +37,7 @@ class ServerClientTest extends TestCase
     /**
      * @expectedException \LC\Common\HttpClient\Exception\HttpClientException
      *
-     * @expectedExceptionMessage [400] GET "/error": errorValue
+     * @expectedExceptionMessage [400] GET "serverClient/error": errorValue
      *
      * @return void
      */

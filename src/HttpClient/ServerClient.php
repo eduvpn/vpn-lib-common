@@ -103,7 +103,7 @@ class ServerClient
             $requestUri = sprintf('%s?%s', $requestUri, http_build_query($getData));
         }
 
-        return self::responseHandler(
+        return $this->responseHandler(
             'GET',
             $requestPath,
             $this->httpClient->get($requestUri)
@@ -155,7 +155,7 @@ class ServerClient
     {
         $requestUri = sprintf('%s/%s', $this->baseUri, $requestPath);
 
-        return self::responseHandler(
+        return $this->responseHandler(
             'POST',
             $requestPath,
             $this->httpClient->post($requestUri, $postData)
@@ -193,18 +193,18 @@ class ServerClient
      *
      * @return bool|string|array|int|null
      */
-    private static function responseHandler($requestMethod, $requestPath, array $clientResponse)
+    private function responseHandler($requestMethod, $requestPath, array $clientResponse)
     {
         $statusCode = (int) $clientResponse[0];
         $responseString = (string) $clientResponse[1];
 
         try {
             $responseData = Json::decode($responseString);
-            self::validateClientResponse($requestMethod, $requestPath, $statusCode, $responseData);
+            $this->validateClientResponse($requestMethod, $requestPath, $statusCode, $responseData);
 
             if (400 <= $statusCode) {
                 // either we sent an incorrect request, or there is a server error
-                throw new HttpClientException(sprintf('[%d] %s "/%s": %s', $statusCode, $requestMethod, $requestPath, $responseData['error']));
+                throw new HttpClientException(sprintf('[%d] %s "%s/%s": %s', $statusCode, $requestMethod, $this->baseUri, $requestPath, $responseData['error']));
             }
 
             // the request was correct, and there was not a server error
@@ -221,7 +221,7 @@ class ServerClient
             throw new ApiException($responseData[$requestPath]['error']);
         } catch (JsonException $e) {
             // unable to parse the JSON
-            throw new HttpClientException(sprintf('[%d] %s "/%s": %s', $statusCode, $requestMethod, $requestPath, $e->getMessage()));
+            throw new HttpClientException(sprintf('[%d] %s "%s/%s": %s', $statusCode, $requestMethod, $this->baseUri, $requestPath, $e->getMessage()));
         }
     }
 
@@ -233,29 +233,29 @@ class ServerClient
      *
      * @return void
      */
-    private static function validateClientResponse($requestMethod, $requestPath, $statusCode, array $responseData)
+    private function validateClientResponse($requestMethod, $requestPath, $statusCode, array $responseData)
     {
         if (400 <= $statusCode) {
             // if status code is 4xx or 5xx it MUST have an 'error' field
             if (!\array_key_exists('error', $responseData)) {
-                throw new HttpClientException(sprintf('[%d] %s "/%s": responseData MUST contain "error" field', $statusCode, $requestMethod, $requestPath));
+                throw new HttpClientException(sprintf('[%d] %s "%s/%s": responseData MUST contain "error" field', $statusCode, $requestMethod, $this->baseUri, $requestPath));
             }
 
             return;
         }
 
         if (!\array_key_exists($requestPath, $responseData)) {
-            throw new HttpClientException(sprintf('[%d] %s "/%s": responseData MUST contain "%s" field', $statusCode, $requestMethod, $requestPath, $requestPath));
+            throw new HttpClientException(sprintf('[%d] %s "%s/%s": responseData MUST contain "%s" field', $statusCode, $requestMethod, $this->baseUri, $requestPath, $requestPath));
         }
 
         if (!\array_key_exists('ok', $responseData[$requestPath])) {
-            throw new HttpClientException(sprintf('[%d] %s "/%s": responseData MUST contain "%s/ok" field', $statusCode, $requestMethod, $requestPath, $requestPath));
+            throw new HttpClientException(sprintf('[%d] %s "%s/%s": responseData MUST contain "%s/ok" field', $statusCode, $requestMethod, $this->baseUri, $requestPath, $requestPath));
         }
 
         if (!$responseData[$requestPath]['ok']) {
             // not OK response, MUST contain error field
             if (!\array_key_exists('error', $responseData[$requestPath])) {
-                throw new HttpClientException(sprintf('[%d] %s "/%s": responseData MUST contain "%s/error" field', $statusCode, $requestMethod, $requestPath, $requestPath));
+                throw new HttpClientException(sprintf('[%d] %s "%s/%s": responseData MUST contain "%s/error" field', $statusCode, $requestMethod, $this->baseUri, $requestPath, $requestPath));
             }
         }
     }
