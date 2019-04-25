@@ -25,8 +25,8 @@ class Json
         if (false === $jsonString || 'null' === $jsonString) {
             throw new JsonException(
                 sprintf(
-                    'unable to encode JSON, error code "%d"',
-                    json_last_error()
+                    'json_encode: %s',
+                    json_last_error_msg()
                 )
             );
         }
@@ -45,8 +45,8 @@ class Json
         if (null === $jsonData && JSON_ERROR_NONE !== json_last_error()) {
             throw new JsonException(
                 sprintf(
-                    'unable to decode JSON, error code "%d"',
-                    json_last_error()
+                    'json_decode: %s',
+                    json_last_error_msg()
                 )
             );
         }
