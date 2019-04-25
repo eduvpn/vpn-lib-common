@@ -9,8 +9,10 @@
 
 namespace LC\Common\HttpClient;
 
+use LC\Common\Exception\JsonException;
 use LC\Common\HttpClient\Exception\ApiException;
 use LC\Common\HttpClient\Exception\HttpClientException;
+use LC\Common\Json;
 
 class ServerClient
 {
@@ -185,33 +187,42 @@ class ServerClient
     }
 
     /**
-     * @param string $requestMethod
-     * @param string $requestPath
+     * @param string            $requestMethod
+     * @param string            $requestPath
+     * @param array<int,string> $clientResponse
      *
      * @return bool|string|array|int|null
      */
     private static function responseHandler($requestMethod, $requestPath, array $clientResponse)
     {
-        list($statusCode, $responseData) = $clientResponse;
-        self::validateClientResponse($requestMethod, $requestPath, $statusCode, $responseData);
+        $statusCode = (int) $clientResponse[0];
+        $responseString = (string) $clientResponse[1];
 
-        if (400 <= $statusCode) {
-            // either we sent an incorrect request, or there is a server error
-            throw new HttpClientException(sprintf('[%d] %s "/%s": %s', $statusCode, $requestMethod, $requestPath, $responseData['error']));
-        }
+        try {
+            $responseData = Json::decode($responseString);
+            self::validateClientResponse($requestMethod, $requestPath, $statusCode, $responseData);
 
-        // the request was correct, and there was not a server error
-        if ($responseData[$requestPath]['ok']) {
-            // our request was handled correctly
-            if (!\array_key_exists('data', $responseData[$requestPath])) {
-                return null;
+            if (400 <= $statusCode) {
+                // either we sent an incorrect request, or there is a server error
+                throw new HttpClientException(sprintf('[%d] %s "/%s": %s', $statusCode, $requestMethod, $requestPath, $responseData['error']));
             }
 
-            return $responseData[$requestPath]['data'];
-        }
+            // the request was correct, and there was not a server error
+            if ($responseData[$requestPath]['ok']) {
+                // our request was handled correctly
+                if (!\array_key_exists('data', $responseData[$requestPath])) {
+                    return null;
+                }
 
-        // our request was not handled correctly, something went wrong...
-        throw new ApiException($responseData[$requestPath]['error']);
+                return $responseData[$requestPath]['data'];
+            }
+
+            // our request was not handled correctly, something went wrong...
+            throw new ApiException($responseData[$requestPath]['error']);
+        } catch (JsonException $e) {
+            // unable to parse the JSON
+            throw new HttpClientException(sprintf('[%d] %s "/%s": %s', $statusCode, $requestMethod, $requestPath, $e->getMessage()));
+        }
     }
 
     /**
@@ -222,7 +233,7 @@ class ServerClient
      *
      * @return void
      */
-    private static function validateClientResponse($requestMethod, $requestPath, $statusCode, $responseData)
+    private static function validateClientResponse($requestMethod, $requestPath, $statusCode, array $responseData)
     {
         if (400 <= $statusCode) {
             // if status code is 4xx or 5xx it MUST have an 'error' field

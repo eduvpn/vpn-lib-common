@@ -329,9 +329,6 @@ class InputValidation
     {
         // make sure the string is valid JSON array containing just strings
         $permissionList = Json::decode($permissionListStr);
-        if (!\is_array($permissionList)) {
-            throw new InputValidationException('invalid "permissionList"');
-        }
         foreach ($permissionList as $permission) {
             if (!\is_string($permission)) {
                 throw new InputValidationException('invalid "permissionList"');

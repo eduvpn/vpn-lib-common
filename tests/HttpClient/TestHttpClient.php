@@ -53,31 +53,35 @@ class TestHttpClient implements HttpClientInterface
      * @param mixed $key
      * @param mixed $responseData
      *
-     * @return array
+     * @return string
      */
     private static function wrap($key, $responseData)
     {
-        return [
-            $key => [
-                'ok' => true,
-                'data' => $responseData,
-            ],
-        ];
+        return json_encode(
+            [
+                $key => [
+                    'ok' => true,
+                    'data' => $responseData,
+                ],
+            ]
+        );
     }
 
     /**
      * @param mixed $key
      * @param mixed $errorMessage
      *
-     * @return array
+     * @return string
      */
     private static function wrapError($key, $errorMessage)
     {
-        return [
-            $key => [
-                'ok' => false,
-                'error' => $errorMessage,
-            ],
-        ];
+        return json_encode(
+            [
+                $key => [
+                    'ok' => false,
+                    'error' => $errorMessage,
+                ],
+            ]
+        );
     }
 }

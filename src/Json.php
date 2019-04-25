@@ -32,13 +32,17 @@ class Json
     /**
      * @param string $jsonString
      *
-     * @return mixed
+     * @return array
      */
     public static function decode($jsonString)
     {
         $jsonData = json_decode($jsonString, true);
         if (null === $jsonData && JSON_ERROR_NONE !== json_last_error()) {
             throw new JsonException('unable to parse/decode JSON');
+        }
+
+        if (!\is_array($jsonData)) {
+            throw new JsonException(sprintf('expected JSON object, got "%s"', \gettype($jsonData)));
         }
 
         return $jsonData;

@@ -13,12 +13,16 @@ interface HttpClientInterface
 {
     /**
      * @param string $requestUri
+     *
+     * @return array<int,string>
      */
     public function get($requestUri);
 
     /**
      * @param string $requestUri
      * @param array  $postData
+     *
+     * @return array<int,string>
      */
     public function post($requestUri, array $postData = []);
 }
