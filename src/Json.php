@@ -23,12 +23,7 @@ class Json
         $jsonString = json_encode($jsonData);
         // 5.5.0 	The return value on failure was changed from null string to FALSE.
         if (false === $jsonString || 'null' === $jsonString) {
-            throw new JsonException(
-                sprintf(
-                    'unable to encode JSON, error code "%d"',
-                    json_last_error()
-                )
-            );
+            throw new JsonException('unable to encode JSON');
         }
 
         return $jsonString;
