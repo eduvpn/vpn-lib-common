@@ -40,6 +40,15 @@ class Request
             }
         }
         $this->serverData = $serverData;
+
+        // make sure getData and postData are array<string,string>
+        foreach ([$getData, $postData] as $keyValueList) {
+            foreach ($keyValueList as $k => $v) {
+                if (!\is_string($k) || !\is_string($v)) {
+                    throw new HttpException('GET/POST parameter key and value MUST be of type "string"', 400);
+                }
+            }
+        }
         $this->getData = $getData;
         $this->postData = $postData;
     }
