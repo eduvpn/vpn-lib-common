@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.0.2 (2019-06-07)
+- add `InputValidation::uiLang`
+- better validate `GET` and `POST` values to make sure they are of type 
+  `string`
+- remove deprecated `filter_var` parameters for URL validation
+
 ## 2.0.1 (2019-04-26)
 - better error reporting when (internal) API calls fail
 
