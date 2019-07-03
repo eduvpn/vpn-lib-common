@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.0.3 (...)
+- use timezone as configured in `php.ini` as the default for showing dates 
+  and times
+
 ## 2.0.2 (2019-06-07)
 - add `InputValidation::uiLang`
 - better validate `GET` and `POST` values to make sure they are of type 
