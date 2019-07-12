@@ -3,6 +3,7 @@
 ## 2.0.3 (...)
 - use timezone as configured in `php.ini` as the default for showing dates 
   and times
+- LDAP: disable following referrals by default
 
 ## 2.0.2 (2019-06-07)
 - add `InputValidation::uiLang`
