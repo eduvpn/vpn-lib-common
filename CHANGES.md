@@ -1,5 +1,8 @@
 # Changelog
 
+## 2.0.4 (...)
+- add dnsSuffix configuration option
+
 ## 2.0.3 (2019-07-20)
 - use timezone as configured in PHP as the default for showing dates and times
 - LDAP: disable following referrals by default
