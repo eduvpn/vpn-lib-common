@@ -25,6 +25,7 @@ class ProfileConfig extends Config
             'defaultGateway' => false,
             'routes' => [],
             'dns' => [],
+            'dnsSuffix' => [],
             'clientToClient' => false,
             'listen' => '::',
             'enableLog' => false,
