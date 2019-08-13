@@ -1,6 +1,6 @@
 # Changelog
 
-## 2.0.4 (...)
+## 2.0.4 (2019-08-13)
 - add dnsSuffix configuration option
 
 ## 2.0.3 (2019-07-20)
