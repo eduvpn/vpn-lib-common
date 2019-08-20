@@ -11,5 +11,8 @@ namespace LC\Common\Http;
 
 interface ServiceModuleInterface
 {
+    /**
+     * @return void
+     */
     public function init(Service $service);
 }
