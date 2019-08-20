@@ -18,8 +18,8 @@ class Tpl implements TplInterface
     /** @var array<string> */
     private $templateFolderList;
 
-    /** @var string|null */
-    private $translationFile;
+    /** @var array<string> */
+    private $translationFileList;
 
     /** @var string|null */
     private $activeSectionName = null;
@@ -38,12 +38,12 @@ class Tpl implements TplInterface
 
     /**
      * @param array<string> $templateFolderList
-     * @param string        $translationFile
+     * @param array<string> $translationFileList
      */
-    public function __construct(array $templateFolderList, $translationFile = null)
+    public function __construct(array $templateFolderList, array $translationFileList = [])
     {
         $this->templateFolderList = $templateFolderList;
-        $this->translationFile = $translationFile;
+        $this->translationFileList = $translationFileList;
         $this->addCallback('bytes_to_human', [__CLASS__, 'toHuman']);
     }
 
@@ -248,18 +248,15 @@ class Tpl implements TplInterface
      */
     private function t($v)
     {
-        if (null === $this->translationFile) {
-            // no translation file, use original
-            $translatedText = $v;
-        } else {
+        // use original, unless it is found in any of the translation files...
+        $translatedText = $v;
+        foreach ($this->translationFileList as $translationFile) {
             /** @psalm-suppress UnresolvableInclude */
-            $translationData = include $this->translationFile;
+            $translationData = include $translationFile;
             if (\array_key_exists($v, $translationData)) {
-                // translation found
+                // translation found!
                 $translatedText = $translationData[$v];
-            } else {
-                // not found, use original
-                $translatedText = $v;
+                break;
             }
         }
 
