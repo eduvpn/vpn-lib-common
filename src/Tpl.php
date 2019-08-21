@@ -24,16 +24,16 @@ class Tpl implements TplInterface
     /** @var string|null */
     private $activeSectionName = null;
 
-    /** @var array */
+    /** @var array<string,string> */
     private $sectionList = [];
 
-    /** @var array */
+    /** @var array<string,array> */
     private $layoutList = [];
 
-    /** @var array */
+    /** @var array<string,mixed> */
     private $templateVariables = [];
 
-    /** @var array */
+    /** @var array<string,callable> */
     private $callbackList = [];
 
     /**
@@ -48,7 +48,7 @@ class Tpl implements TplInterface
     }
 
     /**
-     * @param array $templateVariables
+     * @param array<string,mixed> $templateVariables
      *
      * @return void
      */
@@ -69,8 +69,8 @@ class Tpl implements TplInterface
     }
 
     /**
-     * @param string $templateName
-     * @param array  $templateVariables
+     * @param string              $templateName
+     * @param array<string,mixed> $templateVariables
      *
      * @return string
      */
@@ -120,8 +120,8 @@ class Tpl implements TplInterface
     }
 
     /**
-     * @param string $templateName
-     * @param array  $templateVariables
+     * @param string              $templateName
+     * @param array<string,mixed> $templateVariables
      *
      * @return string
      */
@@ -146,12 +146,24 @@ class Tpl implements TplInterface
     }
 
     /**
+     * @param string $sectionName
+     *
      * @return void
      */
-    private function stop()
+    private function stop($sectionName)
     {
         if (null === $this->activeSectionName) {
             throw new TplException('no section started');
+        }
+
+        if ($sectionName !== $this->activeSectionName) {
+            throw new TplException(
+                sprintf(
+                    'attempted to end section "%s" but current section is "%s"',
+                    $sectionName,
+                    $this->activeSectionName
+                )
+            );
         }
 
         $this->sectionList[$this->activeSectionName] = ob_get_clean();
@@ -159,8 +171,8 @@ class Tpl implements TplInterface
     }
 
     /**
-     * @param string $layoutName
-     * @param array  $templateVariables
+     * @param string              $layoutName
+     * @param array<string,mixed> $templateVariables
      *
      * @return void
      */
@@ -228,17 +240,17 @@ class Tpl implements TplInterface
     /**
      * Format a date.
      *
-     * @param string $d
-     * @param string $f
+     * @param string $dateString
+     * @param string $dateFormat
      *
      * @return string
      */
-    private function d($d, $f = 'Y-m-d H:i:s')
+    private function d($dateString, $dateFormat = 'Y-m-d H:i:s')
     {
-        $dateTime = new DateTime($d);
+        $dateTime = new DateTime($dateString);
         $dateTime->setTimeZone(new DateTimeZone(date_default_timezone_get()));
 
-        return $this->e(date_format($dateTime, $f));
+        return $this->e(date_format($dateTime, $dateFormat));
     }
 
     /**
@@ -251,11 +263,14 @@ class Tpl implements TplInterface
         // use original, unless it is found in any of the translation files...
         $translatedText = $v;
         foreach ($this->translationFileList as $translationFile) {
+            // XXX should we make sure the file exists?
             /** @psalm-suppress UnresolvableInclude */
             $translationData = include $translationFile;
             if (\array_key_exists($v, $translationData)) {
                 // translation found!
                 $translatedText = $translationData[$v];
+                // XXX do we want to loop over all of them?! take the first,
+                // or the last?
                 break;
             }
         }

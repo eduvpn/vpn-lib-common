@@ -14,7 +14,7 @@ use LC\Common\TplInterface;
 class TestHtmlTpl implements TplInterface
 {
     /**
-     * @param array $templateVariables
+     * @param array<string,mixed> $templateVariables
      *
      * @return void
      */
@@ -23,12 +23,12 @@ class TestHtmlTpl implements TplInterface
     }
 
     /**
-     * @param string $templateName
-     * @param array  $templateVariables
+     * @param string              $templateName
+     * @param array<string,mixed> $templateVariables
      *
      * @return string
      */
-    public function render($templateName, array $templateVariables)
+    public function render($templateName, array $templateVariables = [])
     {
         $str = '<html><head><title>{{code}}</title></head><body><h1>Error ({{code}})</h1><p>{{message}}</p></body></html>';
         foreach ($templateVariables as $k => $v) {
