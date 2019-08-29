@@ -1,5 +1,10 @@
 # Changelog
 
+## 2.0.5 (2019-08-29)
+- update `Tpl` class from `fkooman/tpl`
+- support multiple translation files / overrides
+- RADIUS/LDAP are now optional extensions in `composer.json`
+
 ## 2.0.4 (2019-08-13)
 - add dnsSuffix configuration option
 
