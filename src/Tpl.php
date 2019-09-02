@@ -12,6 +12,7 @@ namespace LC\Common;
 use DateTime;
 use DateTimeZone;
 use LC\Common\Exception\TplException;
+use RangeException;
 
 class Tpl implements TplInterface
 {
@@ -96,31 +97,6 @@ class Tpl implements TplInterface
     }
 
     /**
-     * @param string $inputString
-     * @param int    $maxLen
-     *
-     * @throws \RangeException
-     *
-     * @return string
-     */
-    public static function shortenString($inputString, $maxLen)
-    {
-        if ($maxLen < 3) {
-            throw new RangeException('"maxLen" must be >= 3');
-        }
-
-        $strLen = mb_strlen($inputString);
-        if ($strLen <= $maxLen) {
-            return $inputString;
-        }
-
-        $partOne = mb_substr($inputString, 0, ceil(($maxLen - 1) / 2));
-        $partTwo = mb_substr($inputString, -floor(($maxLen - 1) / 2));
-
-        return $partOne.'…'.$partTwo;
-    }
-
-    /**
      * @param int $byteSize
      *
      * @return string
@@ -142,6 +118,34 @@ class Tpl implements TplInterface
         }
 
         return sprintf('%0.0f kiB', $byteSize / $kB);
+    }
+
+    /**
+     * Trim a string to a specified lenght and escape it.
+     *
+     * @param string      $inputString
+     * @param int         $maxLen
+     * @param string|null $cb
+     *
+     * @throws \RangeException
+     *
+     * @return string
+     */
+    private function etr($inputString, $maxLen, $cb = null)
+    {
+        if ($maxLen < 3) {
+            throw new RangeException('"maxLen" must be >= 3');
+        }
+
+        $strLen = mb_strlen($inputString);
+        if ($strLen <= $maxLen) {
+            return $inputString;
+        }
+
+        $partOne = mb_substr($inputString, 0, (int) ceil(($maxLen - 1) / 2));
+        $partTwo = mb_substr($inputString, (int) -floor(($maxLen - 1) / 2));
+
+        return $this->e($partOne.'…'.$partTwo, $cb);
     }
 
     /**
