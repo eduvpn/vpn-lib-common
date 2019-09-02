@@ -96,6 +96,31 @@ class Tpl implements TplInterface
     }
 
     /**
+     * @param string $inputString
+     * @param int    $maxLen
+     *
+     * @throws \RangeException
+     *
+     * @return string
+     */
+    public static function shortenString($inputString, $maxLen)
+    {
+        if ($maxLen < 3) {
+            throw new RangeException('"maxLen" must be >= 3');
+        }
+
+        $strLen = mb_strlen($inputString);
+        if ($strLen <= $maxLen) {
+            return $inputString;
+        }
+
+        $partOne = mb_substr($inputString, 0, ceil(($maxLen - 1) / 2));
+        $partTwo = mb_substr($inputString, -floor(($maxLen - 1) / 2));
+
+        return $partOne.'…'.$partTwo;
+    }
+
+    /**
      * @param int $byteSize
      *
      * @return string
