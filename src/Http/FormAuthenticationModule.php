@@ -21,6 +21,9 @@ class FormAuthenticationModule implements ServiceModuleInterface
     /** @var \fkooman\SeCookie\SessionInterface */
     private $session;
 
+    /** @var StaticPermissions|null */
+    private $staticPermissions = null;
+
     /** @var \LC\Common\TplInterface */
     private $tpl;
 
@@ -32,6 +35,16 @@ class FormAuthenticationModule implements ServiceModuleInterface
         $this->credentialValidator = $credentialValidator;
         $this->session = $session;
         $this->tpl = $tpl;
+    }
+
+    /**
+     * @param StaticPermissions $staticPermissions
+     *
+     * @return void
+     */
+    public function setStaticPermissions(StaticPermissions $staticPermissions)
+    {
+        $this->staticPermissions = $staticPermissions;
     }
 
     /**
@@ -82,9 +95,25 @@ class FormAuthenticationModule implements ServiceModuleInterface
                     return $response;
                 }
 
+                $permissionList = $userInfo->getPermissionList();
+                if (null !== $this->staticPermissions) {
+                    // merge the StaticPermissions in the list obtained from the
+                    // authentication backend (if any)
+                    $permissionList = array_values(
+                        array_unique(
+                            array_merge(
+                                $permissionList,
+                                $this->staticPermissions->get(
+                                    $userInfo->getUserId()
+                                )
+                            )
+                        )
+                    );
+                }
+
                 $this->session->regenerate(true);
                 $this->session->set('_form_auth_user', $userInfo->getUserId());
-                $this->session->set('_form_auth_permission_list', $userInfo->getPermissionList());
+                $this->session->set('_form_auth_permission_list', $permissionList);
 
                 return new RedirectResponse($redirectTo, 302);
             }
