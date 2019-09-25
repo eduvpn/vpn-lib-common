@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.0.6 (...)
+- implement static permissions for PDO|LDAP|RADIUS authentication backends
+- implement string trimming function for templates
+
 ## 2.0.5 (2019-08-29)
 - update `Tpl` class from `fkooman/tpl`
 - support multiple translation files / overrides
