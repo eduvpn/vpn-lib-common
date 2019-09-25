@@ -1,6 +1,6 @@
 # Changelog
 
-## 2.0.6 (...)
+## 2.0.6 (2019-09-25)
 - implement static permissions for PDO|LDAP|RADIUS authentication backends
 - implement string trimming function for templates
 
