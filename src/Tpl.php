@@ -59,8 +59,7 @@ class Tpl implements TplInterface
     }
 
     /**
-     * @param string   $callbackName
-     * @param callable $cb
+     * @param string $callbackName
      *
      * @return void
      */
@@ -186,13 +185,7 @@ class Tpl implements TplInterface
         }
 
         if ($sectionName !== $this->activeSectionName) {
-            throw new TplException(
-                sprintf(
-                    'attempted to end section "%s" but current section is "%s"',
-                    $sectionName,
-                    $this->activeSectionName
-                )
-            );
+            throw new TplException(sprintf('attempted to end section "%s" but current section is "%s"', $sectionName, $this->activeSectionName));
         }
 
         $this->sectionList[$this->activeSectionName] = ob_get_clean();

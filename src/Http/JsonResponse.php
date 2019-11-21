@@ -14,8 +14,7 @@ use LC\Common\Json;
 class JsonResponse extends Response
 {
     /**
-     * @param array $responseData
-     * @param int   $responseCode
+     * @param int $responseCode
      */
     public function __construct(array $responseData, $responseCode = 200)
     {

@@ -92,8 +92,6 @@ class Response
     }
 
     /**
-     * @param array $responseData
-     *
      * @return self
      */
     public static function import(array $responseData)

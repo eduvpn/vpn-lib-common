@@ -49,13 +49,7 @@ class LdapClient
     public function bind($bindUser = null, $bindPass = null)
     {
         if (false === ldap_bind($this->ldapResource, $bindUser, $bindPass)) {
-            throw new LdapClientException(
-                sprintf(
-                    'LDAP error: (%d) %s',
-                    ldap_errno($this->ldapResource),
-                    ldap_error($this->ldapResource)
-                )
-            );
+            throw new LdapClientException(sprintf('LDAP error: (%d) %s', ldap_errno($this->ldapResource), ldap_error($this->ldapResource)));
         }
     }
 
@@ -100,24 +94,12 @@ class LdapClient
             10                      // timelimit
         );
         if (false === $searchResource) {
-            throw new LdapClientException(
-                sprintf(
-                    'LDAP error: (%d) %s',
-                    ldap_errno($this->ldapResource),
-                    ldap_error($this->ldapResource)
-                )
-            );
+            throw new LdapClientException(sprintf('LDAP error: (%d) %s', ldap_errno($this->ldapResource), ldap_error($this->ldapResource)));
         }
 
         $ldapEntries = ldap_get_entries($this->ldapResource, $searchResource);
         if (false === $ldapEntries) {
-            throw new LdapClientException(
-                sprintf(
-                    'LDAP error: (%d) %s',
-                    ldap_errno($this->ldapResource),
-                    ldap_error($this->ldapResource)
-                )
-            );
+            throw new LdapClientException(sprintf('LDAP error: (%d) %s', ldap_errno($this->ldapResource), ldap_error($this->ldapResource)));
         }
 
         return $ldapEntries;

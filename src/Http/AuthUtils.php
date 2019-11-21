@@ -23,13 +23,7 @@ class AuthUtils
 
         $userId = $userInfo->getUserId();
         if (!\in_array($userId, $userList, true)) {
-            throw new HttpException(
-                sprintf(
-                    'user "%s" is not allowed to perform this operation',
-                    $userId
-                ),
-                403
-            );
+            throw new HttpException(sprintf('user "%s" is not allowed to perform this operation', $userId), 403);
         }
     }
 

@@ -120,17 +120,10 @@ class Service
             $pathInfo = $request->getPathInfo();
 
             if (!\array_key_exists($requestMethod, $this->routes)) {
-                throw new HttpException(
-                    sprintf('method "%s" not allowed', $requestMethod),
-                    405,
-                    ['Allow' => implode(',', array_keys($this->routes))]
-                );
+                throw new HttpException(sprintf('method "%s" not allowed', $requestMethod), 405, ['Allow' => implode(',', array_keys($this->routes))]);
             }
             if (!\array_key_exists($pathInfo, $this->routes[$requestMethod])) {
-                throw new HttpException(
-                    sprintf('"%s" not found', $pathInfo),
-                    404
-                );
+                throw new HttpException(sprintf('"%s" not found', $pathInfo), 404);
             }
 
             $response = $this->routes[$requestMethod][$pathInfo]($request, $hookData);
@@ -172,7 +165,6 @@ class Service
     }
 
     /**
-     * @param Request                     $request
      * @param array<string,array<string>> $whiteList
      *
      * @return bool

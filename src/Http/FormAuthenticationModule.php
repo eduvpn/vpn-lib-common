@@ -38,8 +38,6 @@ class FormAuthenticationModule implements ServiceModuleInterface
     }
 
     /**
-     * @param StaticPermissions $staticPermissions
-     *
      * @return void
      */
     public function setStaticPermissions(StaticPermissions $staticPermissions)

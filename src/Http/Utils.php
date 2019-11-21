@@ -14,7 +14,6 @@ use LC\Common\Http\Exception\HttpException;
 class Utils
 {
     /**
-     * @param array  $sourceData
      * @param string $key
      * @param bool   $isRequired
      * @param mixed  $defaultValue
@@ -28,10 +27,7 @@ class Utils
         }
 
         if ($isRequired) {
-            throw new HttpException(
-                sprintf('missing required field "%s"', $key),
-                400
-            );
+            throw new HttpException(sprintf('missing required field "%s"', $key), 400);
         }
 
         return $defaultValue;

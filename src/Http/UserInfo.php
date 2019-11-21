@@ -33,8 +33,6 @@ class UserInfo
     }
 
     /**
-     * @param \DateTime $sessionExpiresAt
-     *
      * @return void
      */
     public function setSessionExpiresAt(DateTime $sessionExpiresAt)

@@ -37,7 +37,6 @@ class Logger extends AbstractLogger
      *
      * @param mixed  $level
      * @param string $message
-     * @param array  $context
      *
      * @return void
      */

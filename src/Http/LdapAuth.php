@@ -34,12 +34,10 @@ class LdapAuth implements CredentialValidatorInterface
     private $permissionAttribute;
 
     /**
-     * @param \Psr\Log\LoggerInterface $logger
-     * @param LdapClient               $ldapClient
-     * @param string                   $bindDnTemplate
-     * @param string|null              $baseDn
-     * @param string|null              $userFilterTemplate
-     * @param string|null              $permissionAttribute
+     * @param string      $bindDnTemplate
+     * @param string|null $baseDn
+     * @param string|null $userFilterTemplate
+     * @param string|null $permissionAttribute
      */
     public function __construct(LoggerInterface $logger, LdapClient $ldapClient, $bindDnTemplate, $baseDn, $userFilterTemplate, $permissionAttribute)
     {
@@ -110,7 +108,6 @@ class LdapAuth implements CredentialValidatorInterface
     }
 
     /**
-     * @param array  $ldapEntries
      * @param string $permissionAttribute
      *
      * @return array<string>

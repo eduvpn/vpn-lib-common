@@ -229,7 +229,6 @@ class ServerClient
      * @param string $requestMethod
      * @param string $requestPath
      * @param int    $statusCode
-     * @param array  $responseData
      *
      * @return void
      */

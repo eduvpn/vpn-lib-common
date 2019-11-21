@@ -20,7 +20,6 @@ interface HttpClientInterface
 
     /**
      * @param string $requestUri
-     * @param array  $postData
      *
      * @return array{0: int, 1: string}
      */

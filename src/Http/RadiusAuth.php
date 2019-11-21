@@ -27,10 +27,6 @@ class RadiusAuth implements CredentialValidatorInterface
     /** @var string|null */
     private $nasIdentifier = null;
 
-    /**
-     * @param \Psr\Log\LoggerInterface $logger
-     * @param array                    $serverList
-     */
     public function __construct(LoggerInterface $logger, array $serverList)
     {
         if (false === \extension_loaded('radius')) {

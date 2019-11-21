@@ -36,11 +36,7 @@ class BasicAuthenticationHook implements BeforeHookInterface
         $authUser = $request->optionalHeader('PHP_AUTH_USER');
         $authPass = $request->optionalHeader('PHP_AUTH_PW');
         if (null === $authUser || null === $authPass) {
-            throw new HttpException(
-                'missing authentication information',
-                401,
-                ['WWW-Authenticate' => sprintf('Basic realm="%s"', $this->realm)]
-            );
+            throw new HttpException('missing authentication information', 401, ['WWW-Authenticate' => sprintf('Basic realm="%s"', $this->realm)]);
         }
 
         if (\array_key_exists($authUser, $this->userPass)) {
@@ -49,10 +45,6 @@ class BasicAuthenticationHook implements BeforeHookInterface
             }
         }
 
-        throw new HttpException(
-            'invalid authentication information',
-            401,
-            ['WWW-Authenticate' => sprintf('Basic realm="%s"', $this->realm)]
-        );
+        throw new HttpException('invalid authentication information', 401, ['WWW-Authenticate' => sprintf('Basic realm="%s"', $this->realm)]);
     }
 }
