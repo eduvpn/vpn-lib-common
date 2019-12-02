@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.0.7 (2019-12-02)
+- strip whitespace in front and behind user name as e.g. LDAP treats user name
+  with / without whitespace identical
+
 ## 2.0.6 (2019-09-25)
 - implement static permissions for PDO|LDAP|RADIUS authentication backends
 - implement string trimming function for templates
