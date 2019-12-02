@@ -58,7 +58,10 @@ class FormAuthenticationModule implements ServiceModuleInterface
             function (Request $request) {
                 $this->session->delete('_form_auth_user');
 
-                $authUser = $request->getPostParameter('userName');
+                // LDAP treats user "foo" and "foo " as the same user, but the
+                // VPN portal does not, creating "ghost" users, so trim the
+                // userName (ISSUE vpn-user-portal#151)
+                $authUser = trim($request->getPostParameter('userName'));
                 $authPass = $request->getPostParameter('userPass');
                 $redirectTo = $request->getPostParameter('_form_auth_redirect_to');
 
