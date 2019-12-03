@@ -56,6 +56,18 @@ class Request
     /**
      * @return string
      */
+    public function getScheme()
+    {
+        if (null !== $requestScheme = $this->optionalHeader('REQUEST_SCHEME')) {
+            return $requestScheme;
+        }
+
+        return 'http';
+    }
+
+    /**
+     * @return string
+     */
     public function getAuthority()
     {
         // scheme
