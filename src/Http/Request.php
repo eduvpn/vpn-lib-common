@@ -66,22 +66,19 @@ class Request
     }
 
     /**
+     * URI = scheme:[//authority]path[?query][#fragment]
+     * authority = [userinfo@]host[:port].
+     *
+     * @see https://en.wikipedia.org/wiki/Uniform_Resource_Identifier#Generic_syntax
+     *
      * @return string
      */
     public function getAuthority()
     {
-        // scheme
-        if (!\array_key_exists('REQUEST_SCHEME', $this->serverData)) {
-            $requestScheme = 'http';
-        } else {
-            $requestScheme = $this->serverData['REQUEST_SCHEME'];
-        }
-
-        // server_name
-        $serverName = $this->serverData['SERVER_NAME'];
-
-        // port
-        $serverPort = (int) $this->serverData['SERVER_PORT'];
+        // we do not care about "userinfo"...
+        $requestScheme = $this->getScheme();
+        $serverName = $this->requireHeader('SERVER_NAME');
+        $serverPort = (int) $this->requireHeader('SERVER_PORT');
 
         $usePort = false;
         if ('https' === $requestScheme && 443 !== $serverPort) {
@@ -92,10 +89,10 @@ class Request
         }
 
         if ($usePort) {
-            return sprintf('%s://%s:%d', $requestScheme, $serverName, $serverPort);
+            return sprintf('%s:%d', $serverName, $serverPort);
         }
 
-        return sprintf('%s://%s', $requestScheme, $serverName);
+        return $serverName;
     }
 
     /**
@@ -105,7 +102,7 @@ class Request
     {
         $requestUri = $this->serverData['REQUEST_URI'];
 
-        return sprintf('%s%s', $this->getAuthority(), $requestUri);
+        return sprintf('%s://%s%s', $this->getScheme(), $this->getAuthority(), $requestUri);
     }
 
     /**
@@ -126,7 +123,7 @@ class Request
      */
     public function getRootUri()
     {
-        return sprintf('%s%s', $this->getAuthority(), $this->getRoot());
+        return sprintf('%s://%s%s', $this->getScheme(), $this->getAuthority(), $this->getRoot());
     }
 
     /**

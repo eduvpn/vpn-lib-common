@@ -36,7 +36,7 @@ class CsrfProtectionHook implements BeforeHookInterface
             return false;
         }
 
-        $uriAuthority = $request->getAuthority();
+        $uriAuthority = $request->getScheme().'://'.$request->getAuthority();
         $httpOrigin = $request->optionalHeader('HTTP_ORIGIN');
         if (null !== $httpOrigin) {
             return $this->verifyOrigin($uriAuthority, $httpOrigin);
