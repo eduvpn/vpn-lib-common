@@ -102,21 +102,26 @@ class Tpl implements TplInterface
      */
     public static function toHuman($byteSize)
     {
-        $kB = 1024;
-        $MB = $kB * 1024;
-        $GB = $MB * 1024;
-        $TB = $GB * 1024;
-        if ($byteSize > $TB) {
-            return sprintf('%0.2f TiB', $byteSize / $TB);
+        $KiB = 1024;
+        $MiB = $KiB * 1024;
+        $GiB = $MiB * 1024;
+        $TiB = $GiB * 1024;
+        $PiB = $TiB * 1024;
+
+        if ($byteSize > $PiB) {
+            return sprintf('%0.2f PiB', $byteSize / $PiB);
         }
-        if ($byteSize > $GB) {
-            return sprintf('%0.2f GiB', $byteSize / $GB);
+        if ($byteSize > $TiB) {
+            return sprintf('%0.2f TiB', $byteSize / $TiB);
         }
-        if ($byteSize > $MB) {
-            return sprintf('%0.2f MiB', $byteSize / $MB);
+        if ($byteSize > $GiB) {
+            return sprintf('%0.2f GiB', $byteSize / $GiB);
+        }
+        if ($byteSize > $MiB) {
+            return sprintf('%0.2f MiB', $byteSize / $MiB);
         }
 
-        return sprintf('%0.0f kiB', $byteSize / $kB);
+        return sprintf('%0.0f KiB', $byteSize / $KiB);
     }
 
     /**
