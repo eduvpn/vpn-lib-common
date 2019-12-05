@@ -9,6 +9,7 @@
 
 namespace LC\Common\Tests\Http;
 
+use LC\Common\Http\Exception\HttpException;
 use LC\Common\Http\Request;
 use PHPUnit\Framework\TestCase;
 
@@ -49,15 +50,16 @@ class RequestTest extends TestCase
     }
 
     /**
-     * @expectedException \LC\Common\Http\Exception\HttpException
-     *
-     * @expectedExceptionMessage missing header "REQUEST_METHOD"
-     *
      * @return void
      */
     public function testMissingHeader()
     {
-        new Request([]);
+        try {
+            new Request([]);
+            self::fail();
+        } catch (HttpException $e) {
+            self::assertSame('missing header "REQUEST_METHOD"', $e->getMessage());
+        }
     }
 
     /**
@@ -132,24 +134,25 @@ class RequestTest extends TestCase
     }
 
     /**
-     * @expectedException \LC\Common\Http\Exception\HttpException
-     *
-     * @expectedExceptionMessage missing required field "user_id"
-     *
      * @return void
      */
     public function testGetMissingQueryParameter()
     {
-        $request = new Request(
-            [
-                'SERVER_NAME' => 'vpn.example',
-                'SERVER_PORT' => 80,
-                'REQUEST_METHOD' => 'GET',
-                'REQUEST_URI' => '/',
-                'SCRIPT_NAME' => '/index.php',
-      ]
-        );
-        $request->getQueryParameter('user_id');
+        try {
+            $request = new Request(
+                [
+                    'SERVER_NAME' => 'vpn.example',
+                    'SERVER_PORT' => 80,
+                    'REQUEST_METHOD' => 'GET',
+                    'REQUEST_URI' => '/',
+                    'SCRIPT_NAME' => '/index.php',
+                ]
+            );
+            $request->getQueryParameter('user_id');
+            self::fail();
+        } catch (HttpException $e) {
+            self::assertSame('missing required field "user_id"', $e->getMessage());
+        }
     }
 
     /**

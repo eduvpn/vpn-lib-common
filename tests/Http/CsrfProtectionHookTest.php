@@ -10,6 +10,7 @@
 namespace LC\Common\Tests\Http;
 
 use LC\Common\Http\CsrfProtectionHook;
+use LC\Common\Http\Exception\HttpException;
 use PHPUnit\Framework\TestCase;
 
 class CsrfProtectionHookTest extends TestCase
@@ -64,65 +65,68 @@ class CsrfProtectionHookTest extends TestCase
     }
 
     /**
-     * @expectedException \LC\Common\Http\Exception\HttpException
-     *
-     * @expectedExceptionMessage CSRF protection failed, no HTTP_ORIGIN or HTTP_REFERER
-     *
      * @return void
      */
     public function testCheckPostNoReferrer()
     {
-        $request = new TestRequest(
-            [
-                'REQUEST_METHOD' => 'POST',
-                'HTTP_ACCEPT' => 'text/html',
-            ]
-        );
+        try {
+            $request = new TestRequest(
+                [
+                    'REQUEST_METHOD' => 'POST',
+                    'HTTP_ACCEPT' => 'text/html',
+                ]
+            );
 
-        $referrerCheckHook = new CsrfProtectionHook();
-        $referrerCheckHook->executeBefore($request, []);
+            $referrerCheckHook = new CsrfProtectionHook();
+            $referrerCheckHook->executeBefore($request, []);
+            self::fail();
+        } catch (HttpException $e) {
+            self::assertSame('CSRF protection failed, no HTTP_ORIGIN or HTTP_REFERER', $e->getMessage());
+        }
     }
 
     /**
-     * @expectedException \LC\Common\Http\Exception\HttpException
-     *
-     * @expectedExceptionMessage CSRF protection failed: unexpected HTTP_REFERER
-     *
      * @return void
      */
     public function testCheckPostWrongReferrer()
     {
-        $request = new TestRequest(
-            [
-            'REQUEST_METHOD' => 'POST',
-            'HTTP_REFERER' => 'http://www.attacker.org/foo',
-            'HTTP_ACCEPT' => 'text/html',
-            ]
-        );
+        try {
+            $request = new TestRequest(
+                [
+                'REQUEST_METHOD' => 'POST',
+                'HTTP_REFERER' => 'http://www.attacker.org/foo',
+                'HTTP_ACCEPT' => 'text/html',
+                ]
+            );
 
-        $referrerCheckHook = new CsrfProtectionHook();
-        $referrerCheckHook->executeBefore($request, []);
+            $referrerCheckHook = new CsrfProtectionHook();
+            $referrerCheckHook->executeBefore($request, []);
+            self::fail();
+        } catch (HttpException $e) {
+            self::assertSame('CSRF protection failed: unexpected HTTP_REFERER', $e->getMessage());
+        }
     }
 
     /**
-     * @expectedException \LC\Common\Http\Exception\HttpException
-     *
-     * @expectedExceptionMessage CSRF protection failed: unexpected HTTP_ORIGIN
-     *
      * @return void
      */
     public function testCheckPostWrongOrigin()
     {
-        $request = new TestRequest(
-            [
-            'REQUEST_METHOD' => 'POST',
-            'HTTP_ORIGIN' => 'http://www.attacker.org',
-            'HTTP_ACCEPT' => 'text/html',
-            ]
-        );
+        try {
+            $request = new TestRequest(
+                [
+                'REQUEST_METHOD' => 'POST',
+                'HTTP_ORIGIN' => 'http://www.attacker.org',
+                'HTTP_ACCEPT' => 'text/html',
+                ]
+            );
 
-        $referrerCheckHook = new CsrfProtectionHook();
-        $referrerCheckHook->executeBefore($request, []);
+            $referrerCheckHook = new CsrfProtectionHook();
+            $referrerCheckHook->executeBefore($request, []);
+            self::fail();
+        } catch (HttpException $e) {
+            self::assertSame('CSRF protection failed: unexpected HTTP_ORIGIN', $e->getMessage());
+        }
     }
 
     /**

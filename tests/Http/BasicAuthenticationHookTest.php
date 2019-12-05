@@ -10,6 +10,7 @@
 namespace LC\Common\Tests\Http;
 
 use LC\Common\Http\BasicAuthenticationHook;
+use LC\Common\Http\Exception\HttpException;
 use PHPUnit\Framework\TestCase;
 
 class BasicAuthenticationHookTest extends TestCase
@@ -36,47 +37,49 @@ class BasicAuthenticationHookTest extends TestCase
     }
 
     /**
-     * @expectedException \LC\Common\Http\Exception\HttpException
-     *
-     * @expectedExceptionMessage invalid authentication information
-     *
      * @return void
      */
     public function testBasicAuthenticationWrongPassword()
     {
-        $basicAuthentication = new BasicAuthenticationHook(
-            [
-                'foo' => 'bar',
-            ]
-        );
+        try {
+            $basicAuthentication = new BasicAuthenticationHook(
+                [
+                    'foo' => 'bar',
+                ]
+            );
 
-        $request = new TestRequest(
-            [
-                'PHP_AUTH_USER' => 'foo',
-                'PHP_AUTH_PW' => 'baz',
-            ]
-        );
+            $request = new TestRequest(
+                [
+                    'PHP_AUTH_USER' => 'foo',
+                    'PHP_AUTH_PW' => 'baz',
+                ]
+            );
 
-        $basicAuthentication->executeBefore($request, []);
+            $basicAuthentication->executeBefore($request, []);
+            self::fail();
+        } catch (HttpException $e) {
+            self::assertSame('invalid authentication information', $e->getMessage());
+        }
     }
 
     /**
-     * @expectedException \LC\Common\Http\Exception\HttpException
-     *
-     * @expectedExceptionMessage missing authentication information
-     *
      * @return void
      */
     public function testBasicAuthenticationNoAuth()
     {
-        $basicAuthentication = new BasicAuthenticationHook(
-            [
-                'foo' => 'bar',
-            ]
-        );
+        try {
+            $basicAuthentication = new BasicAuthenticationHook(
+                [
+                    'foo' => 'bar',
+                ]
+            );
 
-        $request = new TestRequest([]);
+            $request = new TestRequest([]);
 
-        $basicAuthentication->executeBefore($request, []);
+            $basicAuthentication->executeBefore($request, []);
+            self::fail();
+        } catch (HttpException $e) {
+            self::assertSame('missing authentication information', $e->getMessage());
+        }
     }
 }
