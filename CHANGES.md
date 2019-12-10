@@ -1,6 +1,6 @@
 # Changelog
 
-## 2.0.8 (...)
+## 2.0.8 (2019-12-10)
 - implement `Request::getScheme()` and fix `Request::getAuthority()`
 - support PiB when showing byte counts
 
