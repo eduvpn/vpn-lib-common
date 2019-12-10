@@ -2,6 +2,7 @@
 
 ## 2.0.8 (...)
 - implement `Request::getScheme()` and fix `Request::getAuthority()`
+- support PiB when showing byte counts
 
 ## 2.0.7 (2019-12-02)
 - strip whitespace in front and behind user name as e.g. LDAP treats user name
