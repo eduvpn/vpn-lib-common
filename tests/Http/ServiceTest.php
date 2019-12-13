@@ -77,7 +77,7 @@ class ServiceTest extends TestCase
         $response = $service->run($request);
 
         $this->assertSame(404, $response->getStatusCode());
-        $this->assertSame('{"error":"\"\/bar\" not found"}', $response->getBody());
+        $this->assertSame('{"error":"\"/bar\" not found"}', $response->getBody());
     }
 
     /**
