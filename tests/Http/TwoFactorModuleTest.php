@@ -50,7 +50,7 @@ class TwoFactorModuleTest extends TestCase
         );
 
         $response = $service->run($request);
-        $this->assertSame('foo', $session->get('_two_factor_verified'));
+        $this->assertSame('foo', $session->getString('_two_factor_verified'));
         $this->assertSame(302, $response->getStatusCode());
         $this->assertSame('http://vpn.example/account', $response->getHeader('Location'));
     }

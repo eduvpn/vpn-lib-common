@@ -9,7 +9,6 @@
 
 namespace LC\Common\Http;
 
-use fkooman\SeCookie\Cookie;
 use LC\Common\Http\Exception\HttpException;
 
 /**
@@ -20,13 +19,13 @@ use LC\Common\Http\Exception\HttpException;
  */
 class LanguageSwitcherHook implements BeforeHookInterface
 {
-    /** @var \fkooman\SeCookie\Cookie */
+    /** @var CookieInterface */
     private $cookie;
 
     /** @var array */
     private $supportedLanguages;
 
-    public function __construct(array $supportedLanguages, Cookie $cookie)
+    public function __construct(array $supportedLanguages, CookieInterface $cookie)
     {
         $this->supportedLanguages = $supportedLanguages;
         $this->cookie = $cookie;

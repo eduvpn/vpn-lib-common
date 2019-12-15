@@ -52,7 +52,7 @@ class FormAuthenticationModuleTest extends TestCase
         );
 
         $response = $service->run($request);
-        $this->assertSame('foo', $session->get('_form_auth_user'));
+        $this->assertSame('foo', $session->getString('_form_auth_user'));
         $this->assertSame(302, $response->getStatusCode());
     }
 

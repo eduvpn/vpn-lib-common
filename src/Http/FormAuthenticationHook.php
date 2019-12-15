@@ -9,12 +9,11 @@
 
 namespace LC\Common\Http;
 
-use fkooman\SeCookie\SessionInterface;
 use LC\Common\TplInterface;
 
 class FormAuthenticationHook implements BeforeHookInterface
 {
-    /** @var \fkooman\SeCookie\SessionInterface */
+    /** @var SessionInterface */
     private $session;
 
     /** @var \LC\Common\TplInterface */
@@ -36,10 +35,10 @@ class FormAuthenticationHook implements BeforeHookInterface
         }
 
         if ($this->session->has('_form_auth_user')) {
-            $permissionList = $this->session->has('_form_auth_permission_list') ? $this->session->get('_form_auth_permission_list') : [];
+            $permissionList = $this->session->has('_form_auth_permission_list') ? $this->session->getStringArray('_form_auth_permission_list') : [];
 
             return new UserInfo(
-                $this->session->get('_form_auth_user'),
+                $this->session->getString('_form_auth_user'),
                 $permissionList
             );
         }

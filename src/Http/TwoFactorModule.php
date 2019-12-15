@@ -9,7 +9,6 @@
 
 namespace LC\Common\Http;
 
-use fkooman\SeCookie\SessionInterface;
 use LC\Common\Http\Exception\HttpException;
 use LC\Common\HttpClient\Exception\ApiException;
 use LC\Common\HttpClient\ServerClient;
@@ -20,7 +19,7 @@ class TwoFactorModule implements ServiceModuleInterface
     /** @var \LC\Common\HttpClient\ServerClient */
     private $serverClient;
 
-    /** @var \fkooman\SeCookie\SessionInterface */
+    /** @var SessionInterface */
     private $session;
 
     /** @var \LC\Common\TplInterface */
@@ -57,8 +56,8 @@ class TwoFactorModule implements ServiceModuleInterface
 
                 try {
                     $this->serverClient->post('verify_totp_key', ['user_id' => $userInfo->getUserId(), 'totp_key' => $totpKey]);
-                    $this->session->regenerate(true);
-                    $this->session->set('_two_factor_verified', $userInfo->getUserId());
+                    $this->session->regenerate();
+                    $this->session->setString('_two_factor_verified', $userInfo->getUserId());
 
                     return new RedirectResponse($redirectTo, 302);
                 } catch (ApiException $e) {

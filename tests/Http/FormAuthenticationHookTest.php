@@ -21,8 +21,8 @@ class FormAuthenticationHookTest extends TestCase
     public function testAuthenticated()
     {
         $session = new TestSession();
-        $session->set('_form_auth_user', 'foo');
-        $session->set('_form_auth_permission_list', ['foo']);
+        $session->setString('_form_auth_user', 'foo');
+        $session->setStringArray('_form_auth_permission_list', ['foo']);
 
         $tpl = new TestTpl();
         $formAuthentication = new FormAuthenticationHook($session, $tpl);

@@ -9,7 +9,6 @@
 
 namespace LC\Common\Http;
 
-use fkooman\SeCookie\SessionInterface;
 use LC\Common\Http\Exception\HttpException;
 use LC\Common\TplInterface;
 
@@ -18,7 +17,7 @@ class FormAuthenticationModule implements ServiceModuleInterface
     /** @var CredentialValidatorInterface */
     private $credentialValidator;
 
-    /** @var \fkooman\SeCookie\SessionInterface */
+    /** @var SessionInterface */
     private $session;
 
     /** @var StaticPermissions|null */
@@ -112,9 +111,9 @@ class FormAuthenticationModule implements ServiceModuleInterface
                     );
                 }
 
-                $this->session->regenerate(true);
-                $this->session->set('_form_auth_user', $userInfo->getUserId());
-                $this->session->set('_form_auth_permission_list', $permissionList);
+                $this->session->regenerate();
+                $this->session->setString('_form_auth_user', $userInfo->getUserId());
+                $this->session->setStringArray('_form_auth_permission_list', $permissionList);
 
                 return new RedirectResponse($redirectTo, 302);
             }

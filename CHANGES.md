@@ -1,5 +1,10 @@
 # Changelog
 
+## 2.0.9 (...)
+- do not escape slashes (`/`) in JSON any longer
+- switch to our own `SessionInterface` and `CookieInterface` so we can drop 
+  fkooman/secookie dependency here
+
 ## 2.0.8 (2019-12-10)
 - implement `Request::getScheme()` and fix `Request::getAuthority()`
 - support PiB when showing byte counts

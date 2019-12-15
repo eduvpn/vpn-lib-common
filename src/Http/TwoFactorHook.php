@@ -9,14 +9,13 @@
 
 namespace LC\Common\Http;
 
-use fkooman\SeCookie\SessionInterface;
 use LC\Common\Http\Exception\HttpException;
 use LC\Common\HttpClient\ServerClient;
 use LC\Common\TplInterface;
 
 class TwoFactorHook implements BeforeHookInterface
 {
-    /** @var \fkooman\SeCookie\SessionInterface */
+    /** @var SessionInterface */
     private $session;
 
     /** @var \LC\Common\TplInterface */
@@ -75,7 +74,7 @@ class TwoFactorHook implements BeforeHookInterface
         /** @var UserInfo */
         $userInfo = $hookData['auth'];
         if ($this->session->has('_two_factor_verified')) {
-            if ($userInfo->getUserId() !== $this->session->get('_two_factor_verified')) {
+            if ($userInfo->getUserId() !== $this->session->getString('_two_factor_verified')) {
                 throw new HttpException('two-factor code not bound to authenticated user', 400);
             }
 
@@ -100,14 +99,14 @@ class TwoFactorHook implements BeforeHookInterface
 
         if ($this->requireTwoFactor) {
             // 2FA required, but user not enrolled, offer them to enroll
-            $this->session->set('_two_factor_enroll_redirect_to', $request->getUri());
+            $this->session->setString('_two_factor_enroll_redirect_to', $request->getUri());
 
             return new RedirectResponse($request->getRootUri().'two_factor_enroll');
         }
 
         // 2FA not required, and user not enrolled...
-        $this->session->regenerate(true);
-        $this->session->set('_two_factor_verified', $userInfo->getUserId());
+        $this->session->regenerate();
+        $this->session->setString('_two_factor_verified', $userInfo->getUserId());
 
         return true;
     }
