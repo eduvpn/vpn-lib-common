@@ -10,10 +10,11 @@
 namespace LC\Common;
 
 use Psr\Log\AbstractLogger;
+use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
 use RuntimeException;
 
-class Logger extends AbstractLogger
+class Logger extends AbstractLogger implements LoggerInterface
 {
     /**
      * @param string $ident
