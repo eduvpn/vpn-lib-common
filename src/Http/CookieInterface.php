@@ -18,4 +18,11 @@ interface CookieInterface
      * @return void
      */
     public function set($cookieName, $cookieValue);
+
+    /**
+     * @param string $cookieName
+     *
+     * @return string|null
+     */
+    public function get($cookieName);
 }
