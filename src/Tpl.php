@@ -108,20 +108,23 @@ class Tpl implements TplInterface
         $TiB = $GiB * 1024;
         $PiB = $TiB * 1024;
 
-        if ($byteSize > $PiB) {
-            return sprintf('%0.2f PiB', $byteSize / $PiB);
+        if ($byteSize >= $PiB) {
+            return sprintf('%1$.2f PiB', $byteSize / $PiB);
         }
-        if ($byteSize > $TiB) {
-            return sprintf('%0.2f TiB', $byteSize / $TiB);
+        if ($byteSize >= $TiB) {
+            return sprintf('%1$.2f TiB', $byteSize / $TiB);
         }
-        if ($byteSize > $GiB) {
-            return sprintf('%0.2f GiB', $byteSize / $GiB);
+        if ($byteSize >= $GiB) {
+            return sprintf('%1$.2f GiB', $byteSize / $GiB);
         }
-        if ($byteSize > $MiB) {
-            return sprintf('%0.2f MiB', $byteSize / $MiB);
+        if ($byteSize >= $MiB) {
+            return sprintf('%1$.2f MiB', $byteSize / $MiB);
+        }
+        if ($byteSize >= $KiB) {
+            return sprintf('%1$.2f KiB', $byteSize / $KiB);
         }
 
-        return sprintf('%0.0f KiB', $byteSize / $KiB);
+        return sprintf('%1$.0f B', $byteSize);
     }
 
     /**
