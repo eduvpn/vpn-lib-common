@@ -93,6 +93,6 @@ class FormAuthenticationModuleTest extends TestCase
         $response = $service->run($request);
         $this->assertFalse($session->has('_form_auth_user'));
 
-        $this->assertSame('{"formAuthentication":{"_form_auth_invalid_credentials":true,"_form_auth_invalid_credentials_user":"foo","_form_auth_redirect_to":"http:\/\/vpn.example\/account","_form_auth_login_page":true}}', $response->getBody());
+        $this->assertSame('{"formAuthentication":{"_form_auth_invalid_credentials":true,"_form_auth_invalid_credentials_user":"foo","_form_auth_redirect_to":"http:\/\/vpn.example\/account","_show_logout_button":false}}', $response->getBody());
     }
 }
