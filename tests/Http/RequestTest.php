@@ -23,7 +23,7 @@ class RequestTest extends TestCase
         $request = new Request(
             [
                 'SERVER_NAME' => 'vpn.example',
-                'SERVER_PORT' => 80,
+                'SERVER_PORT' => '80',
                 'REQUEST_METHOD' => 'GET',
                 'REQUEST_URI' => '/',
                 'SCRIPT_NAME' => '/index.php',
@@ -40,7 +40,7 @@ class RequestTest extends TestCase
         $request = new Request(
             [
                 'SERVER_NAME' => 'vpn.example',
-                'SERVER_PORT' => 80,
+                'SERVER_PORT' => '80',
                 'REQUEST_METHOD' => 'GET',
                 'REQUEST_URI' => '/',
                 'SCRIPT_NAME' => '/index.php',
@@ -70,7 +70,7 @@ class RequestTest extends TestCase
         $request = new Request(
             [
                 'SERVER_NAME' => 'vpn.example',
-                'SERVER_PORT' => 80,
+                'SERVER_PORT' => '80',
                 'REQUEST_METHOD' => 'GET',
                 'REQUEST_URI' => '/foo/bar',
                 'SCRIPT_NAME' => '/index.php',
@@ -87,7 +87,7 @@ class RequestTest extends TestCase
         $request = new Request(
             [
                 'SERVER_NAME' => 'vpn.example',
-                'SERVER_PORT' => 80,
+                'SERVER_PORT' => '80',
                 'REQUEST_METHOD' => 'GET',
                 'REQUEST_URI' => '/',
                 'SCRIPT_NAME' => '/index.php',
@@ -104,7 +104,7 @@ class RequestTest extends TestCase
         $request = new Request(
             [
                 'SERVER_NAME' => 'vpn.example',
-                'SERVER_PORT' => 80,
+                'SERVER_PORT' => '80',
                 'REQUEST_METHOD' => 'GET',
                 'REQUEST_URI' => '/index.php',
                 'SCRIPT_NAME' => '/index.php',
@@ -121,7 +121,7 @@ class RequestTest extends TestCase
         $request = new Request(
             [
                 'SERVER_NAME' => 'vpn.example',
-                'SERVER_PORT' => 80,
+                'SERVER_PORT' => '80',
                 'REQUEST_METHOD' => 'GET',
                 'REQUEST_URI' => '/?user_id=foo',
                 'SCRIPT_NAME' => '/index.php',
@@ -142,7 +142,7 @@ class RequestTest extends TestCase
             $request = new Request(
                 [
                     'SERVER_NAME' => 'vpn.example',
-                    'SERVER_PORT' => 80,
+                    'SERVER_PORT' => '80',
                     'REQUEST_METHOD' => 'GET',
                     'REQUEST_URI' => '/',
                     'SCRIPT_NAME' => '/index.php',
@@ -163,7 +163,7 @@ class RequestTest extends TestCase
         $request = new Request(
             [
                 'SERVER_NAME' => 'vpn.example',
-                'SERVER_PORT' => 80,
+                'SERVER_PORT' => '80',
                 'REQUEST_METHOD' => 'GET',
                 'REQUEST_URI' => '/',
                 'SCRIPT_NAME' => '/index.php',
@@ -180,7 +180,7 @@ class RequestTest extends TestCase
         $request = new Request(
             [
                 'SERVER_NAME' => 'vpn.example',
-                'SERVER_PORT' => 80,
+                'SERVER_PORT' => '80',
                 'REQUEST_METHOD' => 'GET',
                 'REQUEST_URI' => '/',
                 'SCRIPT_NAME' => '/index.php',
@@ -201,7 +201,7 @@ class RequestTest extends TestCase
         $request = new Request(
             [
                 'SERVER_NAME' => 'vpn.example',
-                'SERVER_PORT' => 80,
+                'SERVER_PORT' => '80',
                 'REQUEST_METHOD' => 'GET',
                 'REQUEST_URI' => '/',
                 'HTTP_ACCEPT' => 'text/html',
@@ -219,7 +219,7 @@ class RequestTest extends TestCase
         $request = new Request(
             [
                 'SERVER_NAME' => 'vpn.example',
-                'SERVER_PORT' => 80,
+                'SERVER_PORT' => '80',
                 'REQUEST_METHOD' => 'GET',
                 'REQUEST_URI' => '/',
                 'HTTP_ACCEPT' => 'text/html',
@@ -238,7 +238,7 @@ class RequestTest extends TestCase
         $request = new Request(
             [
                 'SERVER_NAME' => 'vpn.example',
-                'SERVER_PORT' => 80,
+                'SERVER_PORT' => '80',
                 'REQUEST_METHOD' => 'GET',
                 'REQUEST_URI' => '/',
                 'SCRIPT_NAME' => '/index.php',
@@ -256,7 +256,7 @@ class RequestTest extends TestCase
             [
                 'REQUEST_SCHEME' => 'https',
                 'SERVER_NAME' => 'vpn.example',
-                'SERVER_PORT' => 443,
+                'SERVER_PORT' => '443',
                 'REQUEST_METHOD' => 'GET',
                 'REQUEST_URI' => '/',
                 'SCRIPT_NAME' => '/index.php',
@@ -273,7 +273,7 @@ class RequestTest extends TestCase
         $request = new Request(
             [
                 'SERVER_NAME' => 'vpn.example',
-                'SERVER_PORT' => 8080,
+                'SERVER_PORT' => '8080',
                 'REQUEST_METHOD' => 'GET',
                 'REQUEST_URI' => '/',
                 'SCRIPT_NAME' => '/index.php',
@@ -290,7 +290,7 @@ class RequestTest extends TestCase
         $request = new Request(
             [
                 'SERVER_NAME' => 'vpn.example',
-                'SERVER_PORT' => 80,
+                'SERVER_PORT' => '80',
                 'REQUEST_METHOD' => 'GET',
                 'REQUEST_URI' => '/',
                 'SCRIPT_NAME' => '/index.php',
@@ -307,7 +307,7 @@ class RequestTest extends TestCase
         $request = new Request(
             [
                 'SERVER_NAME' => 'vpn.example',
-                'SERVER_PORT' => 80,
+                'SERVER_PORT' => '80',
                 'REQUEST_METHOD' => 'GET',
                 'REQUEST_URI' => '/connection',
                 'SCRIPT_NAME' => '/index.php',
@@ -324,7 +324,7 @@ class RequestTest extends TestCase
         $request = new Request(
             [
                 'SERVER_NAME' => 'vpn.example',
-                'SERVER_PORT' => 80,
+                'SERVER_PORT' => '80',
                 'REQUEST_METHOD' => 'GET',
                 'REQUEST_URI' => '/admin/foo/bar',
                 'SCRIPT_NAME' => '/admin/index.php',
@@ -341,7 +341,7 @@ class RequestTest extends TestCase
         $request = new Request(
             [
                 'SERVER_NAME' => 'vpn.example',
-                'SERVER_PORT' => 80,
+                'SERVER_PORT' => '80',
                 'REQUEST_METHOD' => 'GET',
                 'REQUEST_URI' => '/admin/index.php/foo/bar',
                 'SCRIPT_NAME' => '/admin/index.php',
@@ -359,7 +359,7 @@ class RequestTest extends TestCase
         $request = new Request(
             [
                 'SERVER_NAME' => 'vpn.example',
-                'SERVER_PORT' => 80,
+                'SERVER_PORT' => '80',
                 'REQUEST_METHOD' => 'GET',
                 'REQUEST_URI' => '/?foo=bar',
                 'SCRIPT_NAME' => '/index.php',
@@ -377,7 +377,7 @@ class RequestTest extends TestCase
         $request = new Request(
             [
                 'SERVER_NAME' => 'vpn.example',
-                'SERVER_PORT' => 80,
+                'SERVER_PORT' => '80',
                 'REQUEST_METHOD' => 'GET',
                 'REQUEST_URI' => '/admin/foo/bar?foo=bar',
                 'SCRIPT_NAME' => '/admin/index.php',

@@ -18,7 +18,7 @@ class TestRequest extends Request
         $serverData = array_merge(
             [
                 'SERVER_NAME' => 'vpn.example',
-                'SERVER_PORT' => 80,
+                'SERVER_PORT' => '80',
                 'REQUEST_SCHEME' => 'http',
                 'REQUEST_METHOD' => 'GET',
                 'REQUEST_URI' => '/',
