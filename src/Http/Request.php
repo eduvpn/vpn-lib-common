@@ -256,44 +256,6 @@ class Request
     }
 
     /**
-     * @deprecated
-     *
-     * @param string $key
-     * @param bool   $isRequired
-     * @param mixed  $defaultValue
-     *
-     * @return mixed
-     */
-    public function getQueryParameter($key, $isRequired = true, $defaultValue = null)
-    {
-        return self::getStringFromArray($this->getData, $key, $isRequired, $defaultValue);
-    }
-
-    /**
-     * @deprecated
-     *
-     * @return array<string,string|string[]>
-     */
-    public function getPostParameters()
-    {
-        return $this->postData;
-    }
-
-    /**
-     * @deprecated
-     *
-     * @param string $key
-     * @param bool   $isRequired
-     * @param mixed  $defaultValue
-     *
-     * @return mixed
-     */
-    public function getPostParameter($key, $isRequired = true, $defaultValue = null)
-    {
-        return self::getStringFromArray($this->postData, $key, $isRequired, $defaultValue);
-    }
-
-    /**
      * @param string $headerKey
      *
      * @return string
@@ -323,29 +285,5 @@ class Request
         }
 
         return $this->requireHeader($headerKey);
-    }
-
-    /**
-     * @param string $key
-     * @param bool   $isRequired
-     * @param mixed  $defaultValue
-     *
-     * @return mixed
-     */
-    private static function getStringFromArray(array $sourceData, $key, $isRequired, $defaultValue)
-    {
-        if (\array_key_exists($key, $sourceData)) {
-            if (!\is_string($sourceData[$key])) {
-                throw new HttpException(sprintf('value of field "%s" MUST be string', $key), 400);
-            }
-
-            return $sourceData[$key];
-        }
-
-        if ($isRequired) {
-            throw new HttpException(sprintf('missing required field "%s"', $key), 400);
-        }
-
-        return $defaultValue;
     }
 }
