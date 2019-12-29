@@ -103,7 +103,7 @@ class RequestTest extends TestCase
     /**
      * @return void
      */
-    public function testGetQueryParameter()
+    public function testRequireQueryParameter()
     {
         $request = new Request(
             [
@@ -117,7 +117,27 @@ class RequestTest extends TestCase
                 'user_id' => 'foo',
             ]
         );
-        $this->assertSame('foo', $request->getQueryParameter('user_id'));
+        $this->assertSame('foo', $request->requireQueryParameter('user_id'));
+    }
+
+    /**
+     * @return void
+     */
+    public function testOptionalQueryParameter()
+    {
+        $request = new Request(
+            [
+                'SERVER_NAME' => 'vpn.example',
+                'SERVER_PORT' => '80',
+                'REQUEST_METHOD' => 'GET',
+                'REQUEST_URI' => '/?user_id=foo',
+                'SCRIPT_NAME' => '/index.php',
+            ],
+            [
+                'user_id' => 'foo',
+            ]
+        );
+        $this->assertNull($request->optionalQueryParameter('foo'));
     }
 
     /**
@@ -135,28 +155,11 @@ class RequestTest extends TestCase
                     'SCRIPT_NAME' => '/index.php',
                 ]
             );
-            $request->getQueryParameter('user_id');
+            $request->requireQueryParameter('user_id');
             self::fail();
         } catch (HttpException $e) {
-            self::assertSame('missing required field "user_id"', $e->getMessage());
+            self::assertSame('missing query parameter "user_id"', $e->getMessage());
         }
-    }
-
-    /**
-     * @return void
-     */
-    public function testDefaultQueryParameter()
-    {
-        $request = new Request(
-            [
-                'SERVER_NAME' => 'vpn.example',
-                'SERVER_PORT' => '80',
-                'REQUEST_METHOD' => 'GET',
-                'REQUEST_URI' => '/',
-                'SCRIPT_NAME' => '/index.php',
-            ]
-        );
-        $this->assertSame('bar', $request->getQueryParameter('user_id', false, 'bar'));
     }
 
     /**
@@ -177,7 +180,7 @@ class RequestTest extends TestCase
                 'user_id' => 'foo',
             ]
         );
-        $this->assertSame('foo', $request->getPostParameter('user_id'));
+        $this->assertSame('foo', $request->requirePostParameter('user_id'));
     }
 
     /**
