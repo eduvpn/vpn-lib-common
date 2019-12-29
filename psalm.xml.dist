@@ -1,10 +1,12 @@
 <?xml version="1.0"?>
-<psalm totallyTyped="false" useDocblockTypes="true">
+<psalm totallyTyped="false" resolveFromConfigFile="true">
   <projectFiles>
     <directory name="src"/>
-    <directory name="tests"/>
     <ignoreFiles>
       <directory name="vendor"/>
     </ignoreFiles>
   </projectFiles>
+  <issueHandlers>
+    <LessSpecificReturnType errorLevel="info"/>
+  </issueHandlers>
 </psalm>

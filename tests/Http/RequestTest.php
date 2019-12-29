@@ -52,19 +52,6 @@ class RequestTest extends TestCase
     /**
      * @return void
      */
-    public function testMissingHeader()
-    {
-        try {
-            new Request([]);
-            self::fail();
-        } catch (HttpException $e) {
-            self::assertSame('missing header "REQUEST_METHOD"', $e->getMessage());
-        }
-    }
-
-    /**
-     * @return void
-     */
     public function testGetPathInfo()
     {
         $request = new Request(

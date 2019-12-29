@@ -60,9 +60,9 @@ class FormAuthenticationModule implements ServiceModuleInterface
                 // LDAP treats user "foo" and "foo " as the same user, but the
                 // VPN portal does not, creating "ghost" users, so trim the
                 // userName (ISSUE vpn-user-portal#151)
-                $authUser = trim($request->getPostParameter('userName'));
-                $authPass = $request->getPostParameter('userPass');
-                $redirectTo = $request->getPostParameter('_form_auth_redirect_to');
+                $authUser = trim($request->requirePostParameter('userName'));
+                $authPass = $request->requirePostParameter('userPass');
+                $redirectTo = $request->requirePostParameter('_form_auth_redirect_to');
 
                 // validate the URL
                 if (false === filter_var($redirectTo, FILTER_VALIDATE_URL, FILTER_FLAG_PATH_REQUIRED)) {

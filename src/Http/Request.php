@@ -13,42 +13,23 @@ use LC\Common\Http\Exception\HttpException;
 
 class Request
 {
-    /** @var array */
+    /** @var array<string,mixed> */
     private $serverData;
 
-    /** @var array */
+    /** @var array<string,string|string[]> */
     private $getData;
 
-    /** @var array */
+    /** @var array<string,string|string[]> */
     private $postData;
 
+    /**
+     * @param array<string,mixed>           $serverData
+     * @param array<string,string|string[]> $getData
+     * @param array<string,string|string[]> $postData
+     */
     public function __construct(array $serverData, array $getData = [], array $postData = [])
     {
-        $requiredHeaders = [
-            'REQUEST_METHOD',
-            'SERVER_NAME',
-            'SERVER_PORT',
-            'REQUEST_URI',
-            'SCRIPT_NAME',
-        ];
-
-        foreach ($requiredHeaders as $key) {
-            if (!\array_key_exists($key, $serverData)) {
-                // this indicates something wrong with the interaction between
-                // the web server and PHP, these headers MUST always be available
-                throw new HttpException(sprintf('missing header "%s"', $key), 500);
-            }
-        }
         $this->serverData = $serverData;
-
-        // make sure getData and postData are array<string,string>
-        foreach ([$getData, $postData] as $keyValueList) {
-            foreach ($keyValueList as $k => $v) {
-                if (!\is_string($k) || !\is_string($v)) {
-                    throw new HttpException('GET/POST parameter key and value MUST be of type "string"', 400);
-                }
-            }
-        }
         $this->getData = $getData;
         $this->postData = $postData;
     }
@@ -203,7 +184,71 @@ class Request
     }
 
     /**
-     * @return array
+     * @param string $queryKey
+     *
+     * @return string
+     */
+    public function requireQueryParameter($queryKey)
+    {
+        if (!\array_key_exists($queryKey, $this->getData)) {
+            throw new HttpException(sprintf('missing query parameter "%s"', $queryKey), 400);
+        }
+        if (!\is_string($this->getData[$queryKey])) {
+            throw new HttpException(sprintf('value of query parameter "%s" MUST be string', $queryKey), 400);
+        }
+
+        return $this->getData[$queryKey];
+    }
+
+    /**
+     * @param string $queryKey
+     *
+     * @return string|null
+     */
+    public function optionalQueryParameter($queryKey)
+    {
+        if (!\array_key_exists($queryKey, $this->getData)) {
+            return null;
+        }
+
+        return $this->requireQueryParameter($queryKey);
+    }
+
+    /**
+     * @param string $postKey
+     *
+     * @return string
+     */
+    public function requirePostParameter($postKey)
+    {
+        if (!\array_key_exists($postKey, $this->postData)) {
+            throw new HttpException(sprintf('missing post parameter "%s"', $postKey), 400);
+        }
+        if (!\is_string($this->postData[$postKey])) {
+            throw new HttpException(sprintf('value of post parameter "%s" MUST be string', $postKey), 400);
+        }
+
+        return $this->postData[$postKey];
+    }
+
+    /**
+     * @param string $postKey
+     *
+     * @return string|null
+     */
+    public function optionalPostParameter($postKey)
+    {
+        if (!\array_key_exists($postKey, $this->postData)) {
+            return null;
+        }
+
+        return $this->requirePostParameter($postKey);
+    }
+
+    /**
+     * @deprecated
+     *
+     * @return array<string,string|string[]>
      */
     public function getQueryParameters()
     {
@@ -211,6 +256,8 @@ class Request
     }
 
     /**
+     * @deprecated
+     *
      * @param string $key
      * @param bool   $isRequired
      * @param mixed  $defaultValue
@@ -219,11 +266,13 @@ class Request
      */
     public function getQueryParameter($key, $isRequired = true, $defaultValue = null)
     {
-        return self::getValueFromArray($this->getData, $key, $isRequired, $defaultValue);
+        return self::getStringFromArray($this->getData, $key, $isRequired, $defaultValue);
     }
 
     /**
-     * @return array
+     * @deprecated
+     *
+     * @return array<string,string|string[]>
      */
     public function getPostParameters()
     {
@@ -231,6 +280,8 @@ class Request
     }
 
     /**
+     * @deprecated
+     *
      * @param string $key
      * @param bool   $isRequired
      * @param mixed  $defaultValue
@@ -239,7 +290,7 @@ class Request
      */
     public function getPostParameter($key, $isRequired = true, $defaultValue = null)
     {
-        return self::getValueFromArray($this->postData, $key, $isRequired, $defaultValue);
+        return self::getStringFromArray($this->postData, $key, $isRequired, $defaultValue);
     }
 
     /**
@@ -251,6 +302,10 @@ class Request
     {
         if (!\array_key_exists($headerKey, $this->serverData)) {
             throw new HttpException(sprintf('missing request header "%s"', $headerKey), 400);
+        }
+
+        if (!\is_string($this->serverData[$headerKey])) {
+            throw new HttpException(sprintf('value of request header "%s" MUST be string', $headerKey), 400);
         }
 
         return $this->serverData[$headerKey];
@@ -277,9 +332,13 @@ class Request
      *
      * @return mixed
      */
-    private static function getValueFromArray(array $sourceData, $key, $isRequired, $defaultValue)
+    private static function getStringFromArray(array $sourceData, $key, $isRequired, $defaultValue)
     {
         if (\array_key_exists($key, $sourceData)) {
+            if (!\is_string($sourceData[$key])) {
+                throw new HttpException(sprintf('value of field "%s" MUST be string', $key), 400);
+            }
+
             return $sourceData[$key];
         }
 
