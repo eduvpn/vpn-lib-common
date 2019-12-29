@@ -58,11 +58,15 @@ class Request
      */
     public function getScheme()
     {
-        if (null !== $requestScheme = $this->optionalHeader('REQUEST_SCHEME')) {
-            return $requestScheme;
+        if (null === $requestScheme = $this->optionalHeader('REQUEST_SCHEME')) {
+            $requestScheme = 'http';
         }
 
-        return 'http';
+        if (!\in_array($requestScheme, ['http', 'https'], true)) {
+            throw new HttpException('unsupported "REQUEST_SCHEME"', 400);
+        }
+
+        return $requestScheme;
     }
 
     /**
