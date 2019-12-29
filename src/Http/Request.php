@@ -104,7 +104,7 @@ class Request
      */
     public function getUri()
     {
-        $requestUri = $this->serverData['REQUEST_URI'];
+        $requestUri = $this->requireHeader('REQUEST_URI');
 
         return sprintf('%s://%s%s', $this->getScheme(), $this->getAuthority(), $requestUri);
     }
@@ -114,7 +114,7 @@ class Request
      */
     public function getRoot()
     {
-        $rootDir = \dirname($this->serverData['SCRIPT_NAME']);
+        $rootDir = \dirname($this->requireHeader('SCRIPT_NAME'));
         if ('/' !== $rootDir) {
             return sprintf('%s/', $rootDir);
         }
@@ -135,7 +135,7 @@ class Request
      */
     public function getRequestMethod()
     {
-        return $this->serverData['REQUEST_METHOD'];
+        return $this->requireHeader('REQUEST_METHOD');
     }
 
     /**
@@ -143,7 +143,7 @@ class Request
      */
     public function getServerName()
     {
-        return $this->serverData['SERVER_NAME'];
+        return $this->requireHeader('SERVER_NAME');
     }
 
     /**
@@ -151,11 +151,11 @@ class Request
      */
     public function isBrowser()
     {
-        if (!\array_key_exists('HTTP_ACCEPT', $this->serverData)) {
+        if (null === $httpAccept = $this->optionalHeader('HTTP_ACCEPT')) {
             return false;
         }
 
-        return false !== mb_strpos($this->serverData['HTTP_ACCEPT'], 'text/html');
+        return false !== mb_strpos($httpAccept, 'text/html');
     }
 
     /**
@@ -164,19 +164,20 @@ class Request
     public function getPathInfo()
     {
         // remove the query string
-        $requestUri = $this->serverData['REQUEST_URI'];
+        $requestUri = $this->requireHeader('REQUEST_URI');
         if (false !== $pos = mb_strpos($requestUri, '?')) {
             $requestUri = mb_substr($requestUri, 0, $pos);
         }
 
         // if requestUri === scriptName
-        if ($this->serverData['REQUEST_URI'] === $this->serverData['SCRIPT_NAME']) {
+        $scriptName = $this->requireHeader('SCRIPT_NAME');
+        if ($requestUri === $scriptName) {
             return '/';
         }
 
         // remove script_name (if it is part of request_uri
-        if (0 === mb_strpos($requestUri, $this->serverData['SCRIPT_NAME'])) {
-            return substr($requestUri, mb_strlen($this->serverData['SCRIPT_NAME']));
+        if (0 === mb_strpos($requestUri, $scriptName)) {
+            return substr($requestUri, mb_strlen($scriptName));
         }
 
         // remove the root
@@ -194,11 +195,11 @@ class Request
      */
     public function getQueryString()
     {
-        if (!\array_key_exists('QUERY_STRING', $this->serverData)) {
+        if (null === $queryString = $this->optionalHeader('QUERY_STRING')) {
             return '';
         }
 
-        return $this->serverData['QUERY_STRING'];
+        return $queryString;
     }
 
     /**
@@ -218,7 +219,7 @@ class Request
      */
     public function getQueryParameter($key, $isRequired = true, $defaultValue = null)
     {
-        return Utils::getValueFromArray($this->getData, $key, $isRequired, $defaultValue);
+        return self::getValueFromArray($this->getData, $key, $isRequired, $defaultValue);
     }
 
     /**
@@ -238,17 +239,7 @@ class Request
      */
     public function getPostParameter($key, $isRequired = true, $defaultValue = null)
     {
-        return Utils::getValueFromArray($this->postData, $key, $isRequired, $defaultValue);
-    }
-
-    /**
-     * @param string $headerKey
-     *
-     * @return bool
-     */
-    public function hasHeader($headerKey)
-    {
-        return \array_key_exists($headerKey, $this->serverData);
+        return self::getValueFromArray($this->postData, $key, $isRequired, $defaultValue);
     }
 
     /**
@@ -258,7 +249,7 @@ class Request
      */
     public function requireHeader($headerKey)
     {
-        if (!$this->hasHeader($headerKey)) {
+        if (!\array_key_exists($headerKey, $this->serverData)) {
             throw new HttpException(sprintf('missing request header "%s"', $headerKey), 400);
         }
 
@@ -272,10 +263,30 @@ class Request
      */
     public function optionalHeader($headerKey)
     {
-        if (!$this->hasHeader($headerKey)) {
+        if (!\array_key_exists($headerKey, $this->serverData)) {
             return null;
         }
 
-        return $this->serverData[$headerKey];
+        return $this->requireHeader($headerKey);
+    }
+
+    /**
+     * @param string $key
+     * @param bool   $isRequired
+     * @param mixed  $defaultValue
+     *
+     * @return mixed
+     */
+    private static function getValueFromArray(array $sourceData, $key, $isRequired, $defaultValue)
+    {
+        if (\array_key_exists($key, $sourceData)) {
+            return $sourceData[$key];
+        }
+
+        if ($isRequired) {
+            throw new HttpException(sprintf('missing required field "%s"', $key), 400);
+        }
+
+        return $defaultValue;
     }
 }
