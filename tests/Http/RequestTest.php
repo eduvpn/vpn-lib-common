@@ -9,7 +9,6 @@
 
 namespace LC\Common\Tests\Http;
 
-use LC\Common\Http\Exception\HttpException;
 use LC\Common\Http\Request;
 use PHPUnit\Framework\TestCase;
 
@@ -145,21 +144,18 @@ class RequestTest extends TestCase
      */
     public function testGetMissingQueryParameter()
     {
-        try {
-            $request = new Request(
-                [
-                    'SERVER_NAME' => 'vpn.example',
-                    'SERVER_PORT' => '80',
-                    'REQUEST_METHOD' => 'GET',
-                    'REQUEST_URI' => '/',
-                    'SCRIPT_NAME' => '/index.php',
-                ]
-            );
-            $request->requireQueryParameter('user_id');
-            self::fail();
-        } catch (HttpException $e) {
-            self::assertSame('missing query parameter "user_id"', $e->getMessage());
-        }
+        $this->expectException('LC\Common\Http\Exception\HttpException');
+        $this->expectExceptionMessage('missing query parameter "user_id"');
+        $request = new Request(
+            [
+                'SERVER_NAME' => 'vpn.example',
+                'SERVER_PORT' => '80',
+                'REQUEST_METHOD' => 'GET',
+                'REQUEST_URI' => '/',
+                'SCRIPT_NAME' => '/index.php',
+            ]
+        );
+        $request->requireQueryParameter('user_id');
     }
 
     /**
