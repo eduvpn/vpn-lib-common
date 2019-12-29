@@ -246,13 +246,35 @@ class Request
     }
 
     /**
-     * @deprecated
-     *
-     * @return array<string,string|string[]>
+     * @return array<string,string>
      */
     public function getQueryParameters()
     {
-        return $this->getData;
+        // make sure the GET parameter values are of type string
+        $getData = [];
+        foreach ($this->getData as $getKey => $getValue) {
+            if (\is_string($getValue)) {
+                $getData[$getKey] = $getValue;
+            }
+        }
+
+        return $getData;
+    }
+
+    /**
+     * @return array<string,string>
+     */
+    public function getPostParameters()
+    {
+        // make sure the POST parameter values are of type string
+        $postData = [];
+        foreach ($this->postData as $postKey => $postValue) {
+            if (\is_string($postValue)) {
+                $postData[$postKey] = $postValue;
+            }
+        }
+
+        return $postData;
     }
 
     /**
