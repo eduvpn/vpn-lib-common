@@ -10,6 +10,7 @@
 namespace LC\Common\Tests;
 
 use LC\Common\CliParser;
+use LC\Common\Exception\CliException;
 use PHPUnit\Framework\TestCase;
 
 class CliParserTest extends TestCase
@@ -71,15 +72,18 @@ class CliParserTest extends TestCase
      */
     public function testMissingRequiredArgument()
     {
-        $this->expectException('LC\Common\Exception\CliException');
-        $this->expectExceptionMessage('missing required parameter "--instance"');
-        $p = new CliParser(
-            'Test',
-            [
-                'instance' => ['instance identifier', true, true],
-            ]
-        );
-        $p->parse(['name_of_program']);
+        try {
+            $p = new CliParser(
+                'Test',
+                [
+                    'instance' => ['instance identifier', true, true],
+                ]
+            );
+            $p->parse(['name_of_program']);
+            self::fail();
+        } catch (CliException $e) {
+            self::assertSame('missing required parameter "--instance"', $e->getMessage());
+        }
     }
 
     /**
@@ -87,15 +91,18 @@ class CliParserTest extends TestCase
      */
     public function testMissingRequiredArgumentValue()
     {
-        $this->expectException('LC\Common\Exception\CliException');
-        $this->expectExceptionMessage('missing required parameter value for option "--instance"');
-        $p = new CliParser(
-            'Test',
-            [
-                'instance' => ['instance identifier', true, true],
-            ]
-        );
-        $p->parse(['name_of_program', '--instance']);
+        try {
+            $p = new CliParser(
+                'Test',
+                [
+                    'instance' => ['instance identifier', true, true],
+                ]
+            );
+            $p->parse(['name_of_program', '--instance']);
+            self::fail();
+        } catch (CliException $e) {
+            self::assertSame('missing required parameter value for option "--instance"', $e->getMessage());
+        }
     }
 
     /**

@@ -9,6 +9,7 @@
 
 namespace LC\Common\Tests\Http;
 
+use LC\Common\Http\Exception\HttpException;
 use LC\Common\Http\TwoFactorHook;
 use LC\Common\Http\UserInfo;
 use LC\Common\HttpClient\ServerClient;
@@ -79,20 +80,23 @@ class TwoFactorHookTest extends TestCase
      */
     public function testNotBoundToAuth()
     {
-        $this->expectException('LC\Common\Http\Exception\HttpException');
-        $this->expectExceptionMessage('two-factor code not bound to authenticated user');
-        // if you have access to two accounts using e.g. MellonAuth you could
-        // use the cookie from one OTP-authenticated account in the other
-        // without needing the OTP secret! So basically reducing the
-        // authentication to one factor for the (admin) portal. This binding
-        // makes sure that the authenticated user MUST be the same as the
-        // one used for the two_factor verification
-        $serverClient = new ServerClient(new TestHttpClient(), 'serverClient');
-        $session = new TestSession();
-        $session->setString('_two_factor_verified', 'bar');
-        $tpl = new TestTpl();
-        $formAuthentication = new TwoFactorHook($session, $tpl, $serverClient, false);
-        $request = new TestRequest([]);
-        $formAuthentication->executeBefore($request, ['auth' => new UserInfo('foo', [])]);
+        try {
+            // if you have access to two accounts using e.g. MellonAuth you could
+            // use the cookie from one OTP-authenticated account in the other
+            // without needing the OTP secret! So basically reducing the
+            // authentication to one factor for the (admin) portal. This binding
+            // makes sure that the authenticated user MUST be the same as the
+            // one used for the two_factor verification
+            $serverClient = new ServerClient(new TestHttpClient(), 'serverClient');
+            $session = new TestSession();
+            $session->setString('_two_factor_verified', 'bar');
+            $tpl = new TestTpl();
+            $formAuthentication = new TwoFactorHook($session, $tpl, $serverClient, false);
+            $request = new TestRequest([]);
+            $this->assertTrue($formAuthentication->executeBefore($request, ['auth' => new UserInfo('foo', [])]));
+            self::fail();
+        } catch (HttpException $e) {
+            self::assertSame('two-factor code not bound to authenticated user', $e->getMessage());
+        }
     }
 }

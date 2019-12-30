@@ -9,6 +9,7 @@
 
 namespace LC\Common\Tests\HttpClient;
 
+use LC\Common\HttpClient\Exception\HttpClientException;
 use LC\Common\HttpClient\ServerClient;
 use PHPUnit\Framework\TestCase;
 
@@ -39,11 +40,14 @@ class ServerClientTest extends TestCase
      */
     public function testError()
     {
-        $this->expectException('LC\Common\HttpClient\Exception\HttpClientException');
-        $this->expectExceptionMessage('[400] GET "serverClient/error": errorValue');
-        $httpClient = new TestHttpClient();
-        $serverClient = new ServerClient($httpClient, 'serverClient');
-        $serverClient->get('error');
+        try {
+            $httpClient = new TestHttpClient();
+            $serverClient = new ServerClient($httpClient, 'serverClient');
+            $serverClient->get('error');
+            self::fail();
+        } catch (HttpClientException $e) {
+            self::assertSame('[400] GET "serverClient/error": errorValue', $e->getMessage());
+        }
     }
 
     /**
