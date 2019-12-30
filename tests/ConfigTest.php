@@ -10,7 +10,6 @@
 namespace LC\Common\Tests;
 
 use LC\Common\Config;
-use LC\Common\Exception\ConfigException;
 use PHPUnit\Framework\TestCase;
 
 class ConfigTest extends TestCase
@@ -68,13 +67,10 @@ class ConfigTest extends TestCase
      */
     public function testMissingConfig()
     {
-        try {
-            $c = new Config([]);
-            $c->getItem('foo');
-            self::fail();
-        } catch (ConfigException $e) {
-            self::assertSame('item "foo" not available', $e->getMessage());
-        }
+        $this->expectException('LC\Common\Exception\ConfigException');
+        $this->expectExceptionMessage('item "foo" not available');
+        $c = new Config([]);
+        $c->getItem('foo');
     }
 
     /**
@@ -82,19 +78,16 @@ class ConfigTest extends TestCase
      */
     public function testMissingNestedConfig()
     {
-        try {
-            $c = new Config(
-                [
-                    'foo' => [
-                        'bar' => 'baz',
-                    ],
-                ]
-            );
-            $c->getSection('foo')->getItem('baz');
-            self::fail();
-        } catch (ConfigException $e) {
-            self::assertSame('item "baz" not available', $e->getMessage());
-        }
+        $this->expectException('LC\Common\Exception\ConfigException');
+        $this->expectExceptionMessage('item "baz" not available');
+        $c = new Config(
+            [
+                'foo' => [
+                    'bar' => 'baz',
+                ],
+            ]
+        );
+        $c->getSection('foo')->getItem('baz');
     }
 
     /**
