@@ -28,9 +28,7 @@ class Logger extends AbstractLogger implements LoggerInterface
 
     public function __destruct()
     {
-        if (false === closelog()) {
-            throw new RuntimeException('unable to close syslog');
-        }
+        closelog();
     }
 
     /**
