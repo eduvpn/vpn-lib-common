@@ -72,17 +72,6 @@ class Config
 
     /**
      * @param string $key
-     * @param mixed  $value
-     *
-     * @return void
-     */
-    public function setItem($key, $value)
-    {
-        $thos->configData[$key] = $value;
-    }
-
-    /**
-     * @param string $key
      *
      * @return mixed
      */
