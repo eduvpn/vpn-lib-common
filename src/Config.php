@@ -74,11 +74,13 @@ class Config
      * @param string $key
      * @param mixed  $value
      *
-     * @return void
+     * @return self
      */
     public function setItem($key, $value)
     {
-        $thos->configData[$key] = $value;
+        $this->configData[$key] = $value;
+
+        return $this;
     }
 
     /**
