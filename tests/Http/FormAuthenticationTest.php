@@ -9,23 +9,25 @@
 
 namespace LC\Common\Tests\Http;
 
-use LC\Common\Http\FormAuthenticationModule;
+use LC\Common\Http\FormAuthentication;
 use LC\Common\Http\Service;
 use LC\Common\Http\SimpleAuth;
 use LC\Common\Tests\TestTpl;
 use PHPUnit\Framework\TestCase;
 
-class FormAuthenticationModuleTest extends TestCase
+class FormAuthenticationTest extends TestCase
 {
     /**
      * @return void
      */
-    public function testVerifyCorrect()
+    public function testAuthenticated()
     {
         $session = new TestSession();
+        $session->setString('_form_auth_user', 'foo');
+        $session->setStringArray('_form_auth_permission_list', ['foo']);
+
         $tpl = new TestTpl();
-        $service = new Service();
-        $formAuthenticationModule = new FormAuthenticationModule(
+        $formAuthentication = new FormAuthentication(
             new SimpleAuth(
                 [
                     // foo:bar
@@ -35,7 +37,58 @@ class FormAuthenticationModuleTest extends TestCase
             $session,
             $tpl
         );
-        $formAuthenticationModule->init($service);
+
+        $request = new TestRequest([]);
+
+        $this->assertSame('foo', $formAuthentication->executeBefore($request, [])->getUserId());
+    }
+
+    /**
+     * @return void
+     */
+    public function testNotAuthenticated()
+    {
+        $session = new TestSession();
+        $tpl = new TestTpl();
+        $formAuthentication = new FormAuthentication(
+            new SimpleAuth(
+                [
+                    // foo:bar
+                    'foo' => '$2y$10$F4lt5FzX.wfr2s3jsTy9XuxU2T7J5R0bTnMbu.9MDjphIupbG54l6',
+                ]
+            ),
+            $session,
+            $tpl
+        );
+
+        $request = new TestRequest(
+            [
+            ]
+        );
+
+        $response = $formAuthentication->executeBefore($request, []);
+        $this->assertSame('{"formAuthentication":{"_form_auth_invalid_credentials":false,"_form_auth_redirect_to":"http:\/\/vpn.example\/","_show_logout_button":false}}', $response->getBody());
+    }
+
+    /**
+     * @return void
+     */
+    public function testVerifyCorrect()
+    {
+        $session = new TestSession();
+        $tpl = new TestTpl();
+        $service = new Service();
+        $formAuthentication = new FormAuthentication(
+            new SimpleAuth(
+                [
+                    // foo:bar
+                    'foo' => '$2y$10$F4lt5FzX.wfr2s3jsTy9XuxU2T7J5R0bTnMbu.9MDjphIupbG54l6',
+                ]
+            ),
+            $session,
+            $tpl
+        );
+        $formAuthentication->init($service);
 
         $request = new TestRequest(
             [
@@ -65,7 +118,7 @@ class FormAuthenticationModuleTest extends TestCase
         $tpl = new TestTpl();
 
         $service = new Service();
-        $formAuthenticationModule = new FormAuthenticationModule(
+        $formAuthentication = new FormAuthentication(
             new SimpleAuth(
                 [
                     'foo' => 'bar',
@@ -74,7 +127,7 @@ class FormAuthenticationModuleTest extends TestCase
             $session,
             $tpl
         );
-        $formAuthenticationModule->init($service);
+        $formAuthentication->init($service);
 
         $request = new TestRequest(
             [

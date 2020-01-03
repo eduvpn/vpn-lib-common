@@ -12,8 +12,10 @@ namespace LC\Common\Http;
 use LC\Common\Http\Exception\HttpException;
 use LC\Common\TplInterface;
 
-class FormAuthenticationModule implements ServiceModuleInterface
+class FormAuthentication implements ServiceModuleInterface, BeforeHookInterface
 {
+    /** @var \LC\Common\TplInterface */
+    protected $tpl;
     /** @var CredentialValidatorInterface */
     private $credentialValidator;
 
@@ -22,9 +24,6 @@ class FormAuthenticationModule implements ServiceModuleInterface
 
     /** @var StaticPermissions|null */
     private $staticPermissions = null;
-
-    /** @var \LC\Common\TplInterface */
-    private $tpl;
 
     public function __construct(
         CredentialValidatorInterface $credentialValidator,
@@ -118,5 +117,39 @@ class FormAuthenticationModule implements ServiceModuleInterface
                 return new RedirectResponse($redirectTo, 302);
             }
         );
+    }
+
+    /**
+     * @return mixed
+     */
+    public function executeBefore(Request $request, array $hookData)
+    {
+        if (Service::isWhitelisted($request, ['POST' => ['/_form/auth/verify']])) {
+            return;
+        }
+
+        if ($this->session->has('_form_auth_user')) {
+            $permissionList = $this->session->has('_form_auth_permission_list') ? $this->session->getStringArray('_form_auth_permission_list') : [];
+
+            return new UserInfo(
+                $this->session->getString('_form_auth_user'),
+                $permissionList
+            );
+        }
+
+        // any other URL, enforce authentication
+        $response = new Response(200, 'text/html');
+        $response->setBody(
+            $this->tpl->render(
+                'formAuthentication',
+                [
+                    '_form_auth_invalid_credentials' => false,
+                    '_form_auth_redirect_to' => $request->getUri(),
+                    '_show_logout_button' => false,
+                ]
+            )
+        );
+
+        return $response;
     }
 }
