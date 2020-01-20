@@ -1,9 +1,12 @@
 # Changelog
 
-## 2.0.9 (...)
+## 2.1.0 (2020-01-20)
 - do not escape slashes (`/`) in JSON any longer
 - switch to our own `SessionInterface` and `CookieInterface` so we can drop 
   fkooman/secookie dependency here
+- refactor and simplify `Request` class
+- refactor and simplify `FormAuthentication` by merging "Hook" and "Module" in 
+  one class
 
 ## 2.0.8 (2019-12-10)
 - implement `Request::getScheme()` and fix `Request::getAuthority()`
