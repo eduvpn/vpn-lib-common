@@ -50,7 +50,7 @@ class TwoFactorModuleTest extends TestCase
         );
 
         $response = $service->run($request);
-        $this->assertSame('foo', $session->getString('_two_factor_verified'));
+        $this->assertSame('foo', $session->get('_two_factor_verified'));
         $this->assertSame(302, $response->getStatusCode());
         $this->assertSame('http://vpn.example/account', $response->getHeader('Location'));
     }
@@ -85,7 +85,7 @@ class TwoFactorModuleTest extends TestCase
         );
 
         $response = $service->run($request);
-        $this->assertFalse($session->has('_two_factor_verified'));
+        $this->assertNull($session->get('_two_factor_verified'));
         $this->assertSame(200, $response->getStatusCode());
         $this->assertSame('{"twoFactorTotp":{"_two_factor_user_id":"bar","_two_factor_auth_invalid":true,"_two_factor_auth_error_msg":"invalid OTP key","_two_factor_auth_redirect_to":"http:\/\/vpn.example\/account"}}', $response->getBody());
     }

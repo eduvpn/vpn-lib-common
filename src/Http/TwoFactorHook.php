@@ -73,8 +73,8 @@ class TwoFactorHook implements BeforeHookInterface
 
         /** @var UserInfo */
         $userInfo = $hookData['auth'];
-        if ($this->session->has('_two_factor_verified')) {
-            if ($userInfo->getUserId() !== $this->session->getString('_two_factor_verified')) {
+        if (null !== $twoFactorVerified = $this->session->get('_two_factor_verified')) {
+            if ($userInfo->getUserId() !== $twoFactorVerified) {
                 throw new HttpException('two-factor code not bound to authenticated user', 400);
             }
 
@@ -99,14 +99,14 @@ class TwoFactorHook implements BeforeHookInterface
 
         if ($this->requireTwoFactor) {
             // 2FA required, but user not enrolled, offer them to enroll
-            $this->session->setString('_two_factor_enroll_redirect_to', $request->getUri());
+            $this->session->set('_two_factor_enroll_redirect_to', $request->getUri());
 
             return new RedirectResponse($request->getRootUri().'two_factor_enroll');
         }
 
         // 2FA not required, and user not enrolled...
         $this->session->regenerate();
-        $this->session->setString('_two_factor_verified', $userInfo->getUserId());
+        $this->session->set('_two_factor_verified', $userInfo->getUserId());
 
         return true;
     }

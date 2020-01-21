@@ -54,7 +54,7 @@ class FormAuthentication implements ServiceModuleInterface, BeforeHookInterface
              * @return Response
              */
             function (Request $request) {
-                $this->session->delete('_form_auth_user');
+                $this->session->remove('_form_auth_user');
 
                 // LDAP treats user "foo" and "foo " as the same user, but the
                 // VPN portal does not, creating "ghost" users, so trim the
@@ -111,8 +111,8 @@ class FormAuthentication implements ServiceModuleInterface, BeforeHookInterface
                 }
 
                 $this->session->regenerate();
-                $this->session->setString('_form_auth_user', $userInfo->getUserId());
-                $this->session->setStringArray('_form_auth_permission_list', $permissionList);
+                $this->session->set('_form_auth_user', $userInfo->getUserId());
+                $this->session->set('_form_auth_permission_list', serialize($permissionList));
 
                 return new RedirectResponse($redirectTo, 302);
             }
@@ -128,11 +128,14 @@ class FormAuthentication implements ServiceModuleInterface, BeforeHookInterface
             return;
         }
 
-        if ($this->session->has('_form_auth_user')) {
-            $permissionList = $this->session->has('_form_auth_permission_list') ? $this->session->getStringArray('_form_auth_permission_list') : [];
+        if (null !== $authUser = $this->session->get('_form_auth_user')) {
+            $permissionList = [];
+            if (null !== $sessionValue = $this->session->get('_form_auth_permission_list')) {
+                $permissionList = unserialize($sessionValue);
+            }
 
             return new UserInfo(
-                $this->session->getString('_form_auth_user'),
+                $authUser,
                 $permissionList
             );
         }

@@ -23,8 +23,8 @@ class FormAuthenticationTest extends TestCase
     public function testAuthenticated()
     {
         $session = new TestSession();
-        $session->setString('_form_auth_user', 'foo');
-        $session->setStringArray('_form_auth_permission_list', ['foo']);
+        $session->set('_form_auth_user', 'foo');
+        $session->set('_form_auth_permission_list', serialize(['foo']));
 
         $tpl = new TestTpl();
         $formAuthentication = new FormAuthentication(
@@ -105,7 +105,7 @@ class FormAuthenticationTest extends TestCase
         );
 
         $response = $service->run($request);
-        $this->assertSame('foo', $session->getString('_form_auth_user'));
+        $this->assertSame('foo', $session->get('_form_auth_user'));
         $this->assertSame(302, $response->getStatusCode());
     }
 
@@ -144,7 +144,7 @@ class FormAuthenticationTest extends TestCase
         );
 
         $response = $service->run($request);
-        $this->assertFalse($session->has('_form_auth_user'));
+        $this->assertNull($session->get('_form_auth_user'));
 
         $this->assertSame('{"formAuthentication":{"_form_auth_invalid_credentials":true,"_form_auth_invalid_credentials_user":"foo","_form_auth_redirect_to":"http:\/\/vpn.example\/account","_show_logout_button":false}}', $response->getBody());
     }

@@ -49,7 +49,7 @@ class TwoFactorModule implements ServiceModuleInterface
                 /** @var UserInfo */
                 $userInfo = $hookData['auth'];
 
-                $this->session->delete('_two_factor_verified');
+                $this->session->remove('_two_factor_verified');
 
                 $totpKey = InputValidation::totpKey($request->requirePostParameter('_two_factor_auth_totp_key'));
                 $redirectTo = $request->requirePostParameter('_two_factor_auth_redirect_to');
@@ -57,7 +57,7 @@ class TwoFactorModule implements ServiceModuleInterface
                 try {
                     $this->serverClient->post('verify_totp_key', ['user_id' => $userInfo->getUserId(), 'totp_key' => $totpKey]);
                     $this->session->regenerate();
-                    $this->session->setString('_two_factor_verified', $userInfo->getUserId());
+                    $this->session->set('_two_factor_verified', $userInfo->getUserId());
 
                     return new RedirectResponse($redirectTo, 302);
                 } catch (ApiException $e) {

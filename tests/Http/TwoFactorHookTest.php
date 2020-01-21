@@ -25,7 +25,7 @@ class TwoFactorHookTest extends TestCase
     {
         $serverClient = new ServerClient(new TestHttpClient(), 'serverClient');
         $session = new TestSession();
-        $session->setString('_two_factor_verified', 'foo');
+        $session->set('_two_factor_verified', 'foo');
         $tpl = new TestTpl();
         $formAuthentication = new TwoFactorHook($session, $tpl, $serverClient, false);
         $request = new TestRequest([]);
@@ -70,7 +70,7 @@ class TwoFactorHookTest extends TestCase
         $formAuthentication = new TwoFactorHook($session, $tpl, $serverClient, true);
         $request = new TestRequest([]);
         $response = $formAuthentication->executeBefore($request, ['auth' => new UserInfo('bar', [])]);
-        $this->assertSame('http://vpn.example/', $session->getString('_two_factor_enroll_redirect_to'));
+        $this->assertSame('http://vpn.example/', $session->get('_two_factor_enroll_redirect_to'));
         $this->assertSame(302, $response->getStatusCode());
         $this->assertSame('http://vpn.example/two_factor_enroll', $response->getHeader('Location'));
     }
@@ -89,7 +89,7 @@ class TwoFactorHookTest extends TestCase
             // one used for the two_factor verification
             $serverClient = new ServerClient(new TestHttpClient(), 'serverClient');
             $session = new TestSession();
-            $session->setString('_two_factor_verified', 'bar');
+            $session->set('_two_factor_verified', 'bar');
             $tpl = new TestTpl();
             $formAuthentication = new TwoFactorHook($session, $tpl, $serverClient, false);
             $request = new TestRequest([]);

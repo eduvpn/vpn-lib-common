@@ -10,7 +10,6 @@
 namespace LC\Common\Tests\Http;
 
 use LC\Common\Http\SessionInterface;
-use RuntimeException;
 
 class TestSession implements SessionInterface
 {
@@ -39,7 +38,7 @@ class TestSession implements SessionInterface
      *
      * @return void
      */
-    public function setString($sessionKey, $sessionValue)
+    public function set($sessionKey, $sessionValue)
     {
         $this->sessionData[$sessionKey] = $sessionValue;
     }
@@ -49,9 +48,9 @@ class TestSession implements SessionInterface
      *
      * @return void
      */
-    public function delete($sessionKey)
+    public function remove($sessionKey)
     {
-        if ($this->has($sessionKey)) {
+        if (\array_key_exists($sessionKey, $this->sessionData)) {
             unset($this->sessionData[$sessionKey]);
         }
     }
@@ -59,75 +58,19 @@ class TestSession implements SessionInterface
     /**
      * @param string $sessionKey
      *
-     * @return bool
+     * @return string|null
      */
-    public function has($sessionKey)
+    public function get($sessionKey)
     {
-        return \array_key_exists($sessionKey, $this->sessionData);
-    }
-
-    /**
-     * @param string $sessionKey
-     *
-     * @return string
-     */
-    public function getString($sessionKey)
-    {
-        if (!$this->has($sessionKey)) {
-            throw new RuntimeException(sprintf('key "%s" not available in session', $sessionKey));
+        if (!\array_key_exists($sessionKey, $this->sessionData)) {
+            return null;
+        }
+        $sessionValue = $this->sessionData[$sessionKey];
+        if (!\is_string($sessionValue)) {
+            return null;
         }
 
-        return $this->sessionData[$sessionKey];
-    }
-
-    /**
-     * @param string $sessionKey
-     *
-     * @return array<string>
-     */
-    public function getStringArray($sessionKey)
-    {
-        if (!$this->has($sessionKey)) {
-            throw new RuntimeException(sprintf('key "%s" not available in session', $sessionKey));
-        }
-
-        return $this->sessionData[$sessionKey];
-    }
-
-    /**
-     * @param string        $sessionKey
-     * @param array<string> $sessionValue
-     *
-     * @return void
-     */
-    public function setStringArray($sessionKey, array $sessionValue)
-    {
-        $this->sessionData[$sessionKey] = $sessionValue;
-    }
-
-    /**
-     * @param string $sessionKey
-     *
-     * @return bool
-     */
-    public function getBool($sessionKey)
-    {
-        if (!$this->has($sessionKey)) {
-            throw new RuntimeException(sprintf('key "%s" not available in session', $sessionKey));
-        }
-
-        return $this->sessionData[$sessionKey];
-    }
-
-    /**
-     * @param string $sessionKey
-     * @param bool   $sessionValue
-     *
-     * @return void
-     */
-    public function setBool($sessionKey, $sessionValue)
-    {
-        $this->sessionData[$sessionKey] = $sessionValue;
+        return $sessionValue;
     }
 
     /**
@@ -136,6 +79,5 @@ class TestSession implements SessionInterface
     public function destroy()
     {
         $this->sessionData = [];
-        $this->regenerate();
     }
 }

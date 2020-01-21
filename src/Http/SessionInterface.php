@@ -19,16 +19,9 @@ interface SessionInterface
     /**
      * @param string $sessionKey
      *
-     * @return bool
+     * @return string|null
      */
-    public function has($sessionKey);
-
-    /**
-     * @param string $sessionKey
-     *
-     * @return string
-     */
-    public function getString($sessionKey);
+    public function get($sessionKey);
 
     /**
      * @param string $sessionKey
@@ -36,44 +29,14 @@ interface SessionInterface
      *
      * @return void
      */
-    public function setString($sessionKey, $sessionValue);
-
-    /**
-     * @param string $sessionKey
-     *
-     * @return array<string>
-     */
-    public function getStringArray($sessionKey);
-
-    /**
-     * @param string        $sessionKey
-     * @param array<string> $sessionValue
-     *
-     * @return void
-     */
-    public function setStringArray($sessionKey, array $sessionValue);
-
-    /**
-     * @param string $sessionKey
-     *
-     * @return bool
-     */
-    public function getBool($sessionKey);
-
-    /**
-     * @param string $sessionKey
-     * @param bool   $sessionValue
-     *
-     * @return void
-     */
-    public function setBool($sessionKey, $sessionValue);
+    public function set($sessionKey, $sessionValue);
 
     /**
      * @param string $sessionKey
      *
      * @return void
      */
-    public function delete($sessionKey);
+    public function remove($sessionKey);
 
     /**
      * @return void
