@@ -1,6 +1,6 @@
 # Changelog
 
-## 2.1.1 (2020-02-13)
+## 2.2.0 (2020-02-13)
 - remove `Tpl` class
 - update for new `fkooman/secookie` version (4.0.0)
 
