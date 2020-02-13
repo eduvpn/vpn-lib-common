@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.1.1 (2020-02-13)
+- remove `Tpl` class
+- update for new `fkooman/secookie` version (4.0.0)
+
 ## 2.1.0 (2020-01-20)
 - do not escape slashes (`/`) in JSON any longer
 - switch to our own `SessionInterface` and `CookieInterface` so we can drop 
