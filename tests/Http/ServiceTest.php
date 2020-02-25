@@ -88,30 +88,65 @@ class ServiceTest extends TestCase
         $request = new TestRequest(
             [
                 'REQUEST_METHOD' => 'DELETE',
+                'REQUEST_URI' => '/foo',
+            ]
+        );
+
+        $service = new Service();
+        $service->get('/foo',
+            /**
+             * @return \LC\Common\Http\Response
+             */
+            function (Request $request) {
+                return new Response();
+            }
+        );
+        $service->post('/foo',
+            /**
+             * @return \LC\Common\Http\Response
+             */
+            function (Request $request) {
+                return new Response();
+            }
+        );
+        $response = $service->run($request);
+        $this->assertSame(405, $response->getStatusCode());
+        $this->assertSame('GET,POST', $response->getHeader('Allow'));
+        $this->assertSame('{"error":"method \"DELETE\" not allowed"}', $response->getBody());
+    }
+
+    /**
+     * @return void
+     */
+    public function testUnsupportedMethodMissingDocument()
+    {
+        $request = new TestRequest(
+            [
+                'REQUEST_METHOD' => 'DELETE',
                 'REQUEST_URI' => '/bar',
             ]
         );
 
         $service = new Service();
         $service->get('/foo',
-        /**
-         * @return \LC\Common\Http\Response
-         */
-        function (Request $request) {
-            return new Response();
-        });
+            /**
+             * @return \LC\Common\Http\Response
+             */
+            function (Request $request) {
+                return new Response();
+            }
+        );
         $service->post('/foo',
-        /**
-         * @return \LC\Common\Http\Response
-         */
-        function (Request $request) {
-            return new Response();
-        });
+            /**
+             * @return \LC\Common\Http\Response
+             */
+            function (Request $request) {
+                return new Response();
+            }
+        );
         $response = $service->run($request);
-
-        $this->assertSame(405, $response->getStatusCode());
-        $this->assertSame('GET,POST', $response->getHeader('Allow'));
-        $this->assertSame('{"error":"method \"DELETE\" not allowed"}', $response->getBody());
+        $this->assertSame(404, $response->getStatusCode());
+        $this->assertSame('{"error":"\"/bar\" not found"}', $response->getBody());
     }
 
     /**

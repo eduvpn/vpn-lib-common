@@ -30,10 +30,7 @@ class Service
     public function __construct(TplInterface $tpl = null)
     {
         $this->tpl = $tpl;
-        $this->routes = [
-            'GET' => [],
-            'POST' => [],
-        ];
+        $this->routes = [];
         $this->beforeHooks = [];
         $this->afterHooks = [];
     }
@@ -66,7 +63,7 @@ class Service
      */
     public function addRoute($requestMethod, $pathInfo, callable $callback)
     {
-        $this->routes[$requestMethod][$pathInfo] = $callback;
+        $this->routes[$pathInfo][$requestMethod] = $callback;
     }
 
     /**
@@ -119,14 +116,14 @@ class Service
             $requestMethod = $request->getRequestMethod();
             $pathInfo = $request->getPathInfo();
 
-            if (!\array_key_exists($requestMethod, $this->routes)) {
-                throw new HttpException(sprintf('method "%s" not allowed', $requestMethod), 405, ['Allow' => implode(',', array_keys($this->routes))]);
-            }
-            if (!\array_key_exists($pathInfo, $this->routes[$requestMethod])) {
+            if (!\array_key_exists($pathInfo, $this->routes)) {
                 throw new HttpException(sprintf('"%s" not found', $pathInfo), 404);
             }
+            if (!\array_key_exists($requestMethod, $this->routes[$pathInfo])) {
+                throw new HttpException(sprintf('method "%s" not allowed', $requestMethod), 405, ['Allow' => implode(',', array_keys($this->routes[$pathInfo]))]);
+            }
 
-            $response = $this->routes[$requestMethod][$pathInfo]($request, $hookData);
+            $response = $this->routes[$pathInfo][$requestMethod]($request, $hookData);
 
             // after hooks
             return $this->runAfterHooks($request, $response);
