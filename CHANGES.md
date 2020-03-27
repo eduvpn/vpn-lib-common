@@ -1,9 +1,5 @@
 # Changelog
 
-## 2.2.1 (...)
-- introduce the experimental `excludeRoutes` option
-- swap 404/405 (issue #19)
-
 ## 2.2.0 (2020-02-13)
 - remove `Tpl` class
 - update for new `fkooman/secookie` version (4.0.0)
