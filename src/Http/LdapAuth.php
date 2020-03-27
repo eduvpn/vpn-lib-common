@@ -33,13 +33,17 @@ class LdapAuth implements CredentialValidatorInterface
     /** @var string|null */
     private $permissionAttribute;
 
+    /** @var bool */
+    private $stripRealm;
+
     /**
      * @param string      $bindDnTemplate
      * @param string|null $baseDn
      * @param string|null $userFilterTemplate
      * @param string|null $permissionAttribute
+     * @param bool        $stripRealm
      */
-    public function __construct(LoggerInterface $logger, LdapClient $ldapClient, $bindDnTemplate, $baseDn, $userFilterTemplate, $permissionAttribute)
+    public function __construct(LoggerInterface $logger, LdapClient $ldapClient, $bindDnTemplate, $baseDn, $userFilterTemplate, $permissionAttribute, $stripRealm)
     {
         $this->logger = $logger;
         $this->ldapClient = $ldapClient;
@@ -47,6 +51,7 @@ class LdapAuth implements CredentialValidatorInterface
         $this->baseDn = $baseDn;
         $this->userFilterTemplate = $userFilterTemplate;
         $this->permissionAttribute = $permissionAttribute;
+        $this->stripRealm = $stripRealm;
     }
 
     /**
@@ -57,6 +62,13 @@ class LdapAuth implements CredentialValidatorInterface
      */
     public function isValid($authUser, $authPass)
     {
+        if ($this->stripRealm) {
+            // strip the "realm" from the authUser, i.e. everything after and
+            // including the last "@" in the string
+            if (false !== $atPos = strrpos($authUser, '@')) {
+                $authUser = substr($authUser, 0, $atPos);
+            }
+        }
         $bindDn = str_replace('{{UID}}', LdapClient::escapeDn($authUser), $this->bindDnTemplate);
         try {
             $this->ldapClient->bind($bindDn, $authPass);
