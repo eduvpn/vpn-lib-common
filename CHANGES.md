@@ -2,8 +2,6 @@
 
 ## 2.2.1 (...)
 - swap 404/405 (issue #19)
-- implement `stripRealm` for LDAP backend to strip the realm of a provided user 
-  ID
  
 ## 2.2.0 (2020-02-13)
 - remove `Tpl` class
