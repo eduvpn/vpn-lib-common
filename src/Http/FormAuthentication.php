@@ -113,6 +113,7 @@ class FormAuthentication implements ServiceModuleInterface, BeforeHookInterface
                 $this->session->regenerate();
                 $this->session->set('_form_auth_user', $userInfo->getUserId());
                 $this->session->set('_form_auth_permission_list', serialize($permissionList));
+                $this->session->set('_form_auth_session_expires_at', serialize($userInfo->getSessionExpiresAt()));
 
                 return new RedirectResponse($redirectTo, 302);
             }
@@ -134,10 +135,16 @@ class FormAuthentication implements ServiceModuleInterface, BeforeHookInterface
                 $permissionList = unserialize($sessionValue);
             }
 
-            return new UserInfo(
+            $userInfo = new UserInfo(
                 $authUser,
                 $permissionList
             );
+            if (null !== $sessionExpiresAt = $this->session->get('_form_auth_session_expires_at')) {
+                $dateTime = unserialize($sessionExpiresAt);
+                $userInfo->setSessionExpiresAt(unserialize($sessionExpiresAt));
+            }
+
+            return $userInfo;
         }
 
         // any other URL, enforce authentication

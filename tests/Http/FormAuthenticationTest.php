@@ -106,6 +106,7 @@ class FormAuthenticationTest extends TestCase
 
         $response = $service->run($request);
         $this->assertSame('foo', $session->get('_form_auth_user'));
+        $this->assertSame(serialize(null), $session->get('_form_auth_session_expires_at'));
         $this->assertSame(302, $response->getStatusCode());
     }
 
