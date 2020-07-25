@@ -26,7 +26,6 @@
         "ext-json": "*",
         "ext-mbstring": "*",
         "ext-pcre": "*",
-        "ext-pdo": "*",
         "ext-spl": "*",
         "ircmaxell/password-compat": "^1",
         "paragonie/constant_time_encoding": "^1|^2",
