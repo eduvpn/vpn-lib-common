@@ -1,3 +1,10 @@
+**Summary**: Shared library for Let's Connect! and eduVPN
+
+**Description**: Shared library for Let's Connect! and eduVPN containing 
+functionality that is used by more than one of the other components.
+
+**License**:  AGPL-3.0-or-later
+
 # Introduction
 
 This library contains common functionality shared by the Let's Connect! server 
