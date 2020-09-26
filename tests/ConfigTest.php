@@ -25,7 +25,7 @@ class ConfigTest extends TestCase
                 'foo' => 'bar',
             ]
         );
-        $this->assertSame('bar', $c->getItem('foo'));
+        $this->assertSame('bar', $c->requireString('foo'));
     }
 
     /**
@@ -40,7 +40,7 @@ class ConfigTest extends TestCase
                 ],
             ]
         );
-        $this->assertSame('baz', $c->getSection('foo')->getItem('bar'));
+        $this->assertSame('baz', $c->s('foo')->requireString('bar'));
     }
 
     /**
@@ -59,8 +59,8 @@ class ConfigTest extends TestCase
     public function testExists()
     {
         $c = new Config(['foo' => 'bar']);
-        $this->assertTrue($c->hasItem('foo'));
-        $this->assertFalse($c->hasItem('bar'));
+        $this->assertNotNull($c->requireString('foo'));
+        $this->assertNull($c->optionalString('bar'));
     }
 
     /**
@@ -70,10 +70,10 @@ class ConfigTest extends TestCase
     {
         try {
             $c = new Config([]);
-            $c->getItem('foo');
+            $c->requireString('foo');
             self::fail();
         } catch (ConfigException $e) {
-            self::assertSame('item "foo" not available', $e->getMessage());
+            self::assertSame('key "foo" not available', $e->getMessage());
         }
     }
 
@@ -90,10 +90,10 @@ class ConfigTest extends TestCase
                     ],
                 ]
             );
-            $c->getSection('foo')->getItem('baz');
+            $c->s('foo')->requireString('baz');
             self::fail();
         } catch (ConfigException $e) {
-            self::assertSame('item "baz" not available', $e->getMessage());
+            self::assertSame('key "baz" not available', $e->getMessage());
         }
     }
 
@@ -103,7 +103,7 @@ class ConfigTest extends TestCase
     public function testFromFile()
     {
         $c = Config::fromFile(sprintf('%s/data/config.php', __DIR__));
-        $this->assertSame('b', $c->getSection('bar')->getItem('a'));
+        $this->assertSame('b', $c->s('bar')->requireString('a'));
     }
 
     /**
@@ -112,7 +112,7 @@ class ConfigTest extends TestCase
     public function testMyConfigDefaultValues()
     {
         $c = new MyConfig(['a' => ['b' => ['c' => 'd']]]);
-        $this->assertSame(['baz'], $c->getSection('foo')->getSection('bar')->toArray());
-        $this->assertSame(['b' => ['c' => 'd']], $c->getSection('a')->toArray());
+        $this->assertSame(['baz'], $c->s('foo')->s('bar')->toArray());
+        $this->assertSame(['b' => ['c' => 'd']], $c->requireArray('a'));
     }
 }

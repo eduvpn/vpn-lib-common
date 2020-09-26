@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.2.2 (...)
+- rework `Config` class to offer strict typing
+- remove `CliParser` as it was barely used by the other projects
+
 ## 2.2.1 (2020-03-30)
 - swap 404/405 (issue #19)
  

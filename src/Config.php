@@ -31,46 +31,168 @@ class Config
     }
 
     /**
-     * @param string $key
+     * @param string $k
+     *
+     * @return self
+     */
+    public function s($k)
+    {
+        if (!\array_key_exists($k, $this->configData)) {
+            return new self([]);
+        }
+        if (!\is_array($this->configData[$k])) {
+            throw new ConfigException('key "'.$k.'" not of type array');
+        }
+
+        return new self($this->configData[$k]);
+    }
+
+    /**
+     * @param string $k
+     *
+     * @return string|null
+     */
+    public function optionalString($k)
+    {
+        if (!\array_key_exists($k, $this->configData)) {
+            return null;
+        }
+        if (!\is_string($this->configData[$k])) {
+            throw new ConfigException('key "'.$k.'" not of type string');
+        }
+
+        return $this->configData[$k];
+    }
+
+    /**
+     * @param string      $k
+     * @param string|null $d
+     *
+     * @return string
+     */
+    public function requireString($k, $d = null)
+    {
+        if (null === $v = $this->optionalString($k)) {
+            if (null !== $d) {
+                return $d;
+            }
+
+            throw new ConfigException('key "'.$k.'" not available');
+        }
+
+        return $v;
+    }
+
+    /**
+     * @param string $k
+     *
+     * @return int|null
+     */
+    public function optionalInt($k)
+    {
+        if (!\array_key_exists($k, $this->configData)) {
+            return null;
+        }
+        if (!\is_int($this->configData[$k])) {
+            throw new ConfigException('key "'.$k.'" not of type int');
+        }
+
+        return $this->configData[$k];
+    }
+
+    /**
+     * @param string   $k
+     * @param int|null $d
+     *
+     * @return int
+     */
+    public function requireInt($k, $d = null)
+    {
+        if (null === $v = $this->optionalInt($k)) {
+            if (null !== $d) {
+                return $d;
+            }
+
+            throw new ConfigException('key "'.$k.'" not available');
+        }
+
+        return $v;
+    }
+
+    /**
+     * @param string $k
+     *
+     * @return bool|null
+     */
+    public function optionalBool($k)
+    {
+        if (!\array_key_exists($k, $this->configData)) {
+            return null;
+        }
+        if (!\is_bool($this->configData[$k])) {
+            throw new ConfigException('key "'.$k.'" not of type bool');
+        }
+
+        return $this->configData[$k];
+    }
+
+    /**
+     * @param string    $k
+     * @param bool|null $d
      *
      * @return bool
      */
-    public function hasSection($key)
+    public function requireBool($k, $d = null)
     {
-        if (!\array_key_exists($key, $this->configData)) {
-            return false;
+        if (null === $v = $this->optionalBool($k)) {
+            if (null !== $d) {
+                return $d;
+            }
+
+            throw new ConfigException('key "'.$k.'" not available');
         }
 
-        return \is_array($this->configData[$key]);
+        return $v;
     }
 
     /**
-     * @param string $key
+     * @param string $k
      *
-     * @return Config
+     * @return array|null
      */
-    public function getSection($key)
+    public function optionalArray($k)
     {
-        if (false === $this->hasSection($key)) {
-            throw new ConfigException(sprintf('"%s" is not a section', $key));
+        if (!\array_key_exists($k, $this->configData)) {
+            return null;
+        }
+        if (!\is_array($this->configData[$k])) {
+            throw new ConfigException('key "'.$k.'" not of type array');
         }
 
-        // do not return the parent object if we were subclassed, but an actual
-        // "Config" object to avoid copying in the defaults if set
-        return new self($this->configData[$key]);
+        return $this->configData[$k];
     }
 
     /**
-     * @param string $key
+     * @param string $k
      *
-     * @return bool
+     * @return array
      */
-    public function hasItem($key)
+    public function requireArray($k, array $d = null)
     {
-        return \array_key_exists($key, $this->configData);
+        if (null === $v = $this->optionalArray($k)) {
+            if (null !== $d) {
+                return $d;
+            }
+
+            throw new ConfigException('key "'.$k.'" not available');
+        }
+
+        return $v;
     }
 
     /**
+     * @deprecated
+     *
      * @param string $key
      * @param mixed  $value
      *
@@ -84,20 +206,8 @@ class Config
     }
 
     /**
-     * @param string $key
+     * @deprecated
      *
-     * @return mixed
-     */
-    public function getItem($key)
-    {
-        if (false === $this->hasItem($key)) {
-            throw new ConfigException(sprintf('item "%s" not available', $key));
-        }
-
-        return $this->configData[$key];
-    }
-
-    /**
      * @param string     $key
      * @param mixed|null $defaultValue
      *
@@ -105,11 +215,11 @@ class Config
      */
     public function optionalItem($key, $defaultValue = null)
     {
-        if (!$this->hasItem($key)) {
+        if (!\array_key_exists($key, $this->configData)) {
             return $defaultValue;
         }
 
-        return $this->getItem($key);
+        return $this->configData[$key];
     }
 
     /**
