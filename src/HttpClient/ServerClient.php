@@ -99,14 +99,11 @@ class ServerClient
     public function get($requestPath, array $getData = [])
     {
         $requestUri = sprintf('%s/%s', $this->baseUri, $requestPath);
-        if (0 !== \count($getData)) {
-            $requestUri = sprintf('%s?%s', $requestUri, http_build_query($getData));
-        }
 
         return $this->responseHandler(
             'GET',
             $requestPath,
-            $this->httpClient->get($requestUri)
+            $this->httpClient->get($requestUri, $getData)
         );
     }
 
@@ -158,7 +155,7 @@ class ServerClient
         return $this->responseHandler(
             'POST',
             $requestPath,
-            $this->httpClient->post($requestUri, $postData)
+            $this->httpClient->post($requestUri, [], $postData)
         );
     }
 
@@ -187,17 +184,15 @@ class ServerClient
     }
 
     /**
-     * @param string                   $requestMethod
-     * @param string                   $requestPath
-     * @param array{0: int, 1: string} $clientResponse
+     * @param string $requestMethod
+     * @param string $requestPath
      *
      * @return bool|string|array|int|null
      */
-    private function responseHandler($requestMethod, $requestPath, array $clientResponse)
+    private function responseHandler($requestMethod, $requestPath, HttpClientResponse $clientResponse)
     {
-        $statusCode = (int) $clientResponse[0];
-        $responseString = (string) $clientResponse[1];
-
+        $statusCode = $clientResponse->getCode();
+        $responseString = $clientResponse->getBody();
         try {
             $responseData = Json::decode($responseString);
             $this->validateClientResponse($requestMethod, $requestPath, $statusCode, $responseData);

@@ -12,16 +12,21 @@ namespace LC\Common\HttpClient;
 interface HttpClientInterface
 {
     /**
-     * @param string $requestUri
+     * @param string               $requestUrl
+     * @param array<string,string> $queryParameters
+     * @param array<string>        $requestHeaders
      *
-     * @return array{0: int, 1: string}
+     * @return HttpClientResponse
      */
-    public function get($requestUri);
+    public function get($requestUrl, array $queryParameters, array $requestHeaders = []);
 
     /**
-     * @param string $requestUri
+     * @param string               $requestUrl
+     * @param array<string,string> $queryParameters
+     * @param array<string,string> $postData
+     * @param array<string>        $requestHeaders
      *
-     * @return array{0: int, 1: string}
+     * @return HttpClientResponse
      */
-    public function post($requestUri, array $postData = []);
+    public function post($requestUrl, array $queryParameters, array $postData, array $requestHeaders = []);
 }

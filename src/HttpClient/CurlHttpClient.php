@@ -9,106 +9,157 @@
 
 namespace LC\Common\HttpClient;
 
+use LC\Common\HttpClient\Exception\HttpClientException;
+use ParagonIE\ConstantTime\Base64;
 use RuntimeException;
 
 class CurlHttpClient implements HttpClientInterface
 {
-    /** @var resource */
-    private $curlChannel;
+    /** @var array<string> */
+    private $requestHeaders = [];
 
-    /** @var array */
-    private $authInfo;
-
-    public function __construct(array $authInfo)
+    /**
+     * @param string|null   $authUser
+     * @param string|null   $authPass
+     * @param array<string> $requestHeaders
+     */
+    public function __construct($authUser = null, $authPass = null)
     {
-        if (false === $this->curlChannel = curl_init()) {
+        if (null !== $authUser) {
+            $authData = $authUser;
+            if (null !== $authPass) {
+                $authData .= ':'.$authPass;
+            }
+            $this->requestHeaders[] = 'Authorization: Basic '.Base64::encode($authData);
+        }
+    }
+
+    /**
+     * @param string               $requestUrl
+     * @param array<string,string> $queryParameters
+     * @param array<string>        $requestHeaders
+     *
+     * @return HttpClientResponse
+     */
+    public function get($requestUrl, array $queryParameters, array $requestHeaders = [])
+    {
+        if (false === $curlChannel = curl_init()) {
             throw new RuntimeException('unable to create cURL channel');
         }
-        $this->authInfo = $authInfo;
-    }
 
-    public function __destruct()
-    {
-        curl_close($this->curlChannel);
-    }
+        if (0 !== \count($queryParameters)) {
+            $qSep = false === strpos($requestUrl, '?') ? '?' : '&';
+            $requestUrl .= $qSep.http_build_query($queryParameters);
+        }
 
-    /**
-     * @param string $requestUri
-     *
-     * @return array{0: int, 1: string}
-     */
-    public function get($requestUri)
-    {
-        return $this->exec(
-            [
-                CURLOPT_URL => $requestUri,
-            ]
-        );
-    }
-
-    /**
-     * @param string $requestUri
-     *
-     * @return array{0: int, 1: string}
-     */
-    public function post($requestUri, array $postData = [])
-    {
-        return $this->exec(
-            [
-                CURLOPT_URL => $requestUri,
-                CURLOPT_POSTFIELDS => http_build_query($postData),
-            ]
-        );
-    }
-
-    /**
-     * @return array{0: int, 1: string}
-     */
-    private function exec(array $curlOptions)
-    {
-        // reset all cURL options
-        $this->curlReset();
-
-        $defaultCurlOptions = [
-            CURLOPT_USERPWD => sprintf('%s:%s', $this->authInfo[0], $this->authInfo[1]),
+        $headerList = '';
+        $curlOptions = [
+            CURLOPT_URL => $requestUrl,
+            CURLOPT_HTTPHEADER => array_merge($this->requestHeaders, $requestHeaders),
             CURLOPT_HEADER => false,
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_FOLLOWLOCATION => false,
+            CURLOPT_CONNECTTIMEOUT => 10,
+            CURLOPT_TIMEOUT => 15,
             CURLOPT_PROTOCOLS => CURLPROTO_HTTP | CURLPROTO_HTTPS,
+            CURLOPT_HEADERFUNCTION =>
+            /**
+             * @suppress PhanUnusedClosureParameter
+             *
+             * @param resource $curlChannel
+             * @param string   $headerLine
+             *
+             * @return int
+             */
+            function ($curlChannel, $headerLine) use (&$headerList) {
+                $headerList .= $headerLine;
+
+                return \strlen($headerLine);
+            },
         ];
 
-        if (false === curl_setopt_array($this->curlChannel, $curlOptions + $defaultCurlOptions)) {
+        if (false === curl_setopt_array($curlChannel, $curlOptions)) {
             throw new RuntimeException('unable to set cURL options');
         }
 
-        $responseData = curl_exec($this->curlChannel);
+        $responseData = curl_exec($curlChannel);
         if (!\is_string($responseData)) {
-            $curlError = curl_error($this->curlChannel);
-            throw new RuntimeException(sprintf('failure performing the HTTP request: "%s"', $curlError));
+            throw new HttpClientException(sprintf('failure performing the HTTP request: "%s"', curl_error($curlChannel)));
         }
 
-        return [
-            (int) curl_getinfo($this->curlChannel, CURLINFO_HTTP_CODE),
-            $responseData,
-        ];
+        $responseCode = (int) curl_getinfo($curlChannel, CURLINFO_HTTP_CODE);
+        curl_close($curlChannel);
+
+        return new HttpClientResponse(
+            $responseCode,
+            $headerList,
+            $responseData
+        );
     }
 
     /**
-     * @return void
+     * @param string               $requestUrl
+     * @param array<string,string> $queryParameters
+     * @param array<string,string> $postData
+     * @param array<string>        $requestHeaders
+     *
+     * @return HttpClientResponse
      */
-    private function curlReset()
+    public function post($requestUrl, array $queryParameters, array $postData, array $requestHeaders = [])
     {
-        // requires PHP >= 5.5 for curl_reset
-        if (\function_exists('curl_reset')) {
-            curl_reset($this->curlChannel);
-
-            return;
+        // XXX do not duplicate all GET code
+        if (false === $curlChannel = curl_init()) {
+            throw new RuntimeException('unable to create cURL channel');
         }
 
-        // reset the request method to GET, that is enough to allow for
-        // multiple requests using the same cURL channel
-        if (false === curl_setopt($this->curlChannel, CURLOPT_HTTPGET, true)) {
+        if (0 !== \count($queryParameters)) {
+            $qSep = false === strpos($requestUrl, '?') ? '?' : '&';
+            $requestUrl .= $qSep.http_build_query($queryParameters);
+        }
+
+        $headerList = '';
+        $curlOptions = [
+            CURLOPT_URL => $requestUrl,
+            CURLOPT_HTTPHEADER => array_merge($this->requestHeaders, $requestHeaders),
+            CURLOPT_POSTFIELDS => http_build_query($postData),
+            CURLOPT_HEADER => false,
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_FOLLOWLOCATION => false,
+            CURLOPT_CONNECTTIMEOUT => 10,
+            CURLOPT_TIMEOUT => 15,
+            CURLOPT_PROTOCOLS => CURLPROTO_HTTP | CURLPROTO_HTTPS,
+            CURLOPT_HEADERFUNCTION =>
+            /**
+             * @suppress PhanUnusedClosureParameter
+             *
+             * @param resource $curlChannel
+             * @param string   $headerLine
+             *
+             * @return int
+             */
+            function ($curlChannel, $headerLine) use (&$headerList) {
+                $headerList .= $headerLine;
+
+                return \strlen($headerLine);
+            },
+        ];
+
+        if (false === curl_setopt_array($curlChannel, $curlOptions)) {
             throw new RuntimeException('unable to set cURL options');
         }
+
+        $responseData = curl_exec($curlChannel);
+        if (!\is_string($responseData)) {
+            throw new HttpClientException(sprintf('failure performing the HTTP request: "%s"', curl_error($curlChannel)));
+        }
+
+        $responseCode = (int) curl_getinfo($curlChannel, CURLINFO_HTTP_CODE);
+        curl_close($curlChannel);
+
+        return new HttpClientResponse(
+            $responseCode,
+            $headerList,
+            $responseData
+        );
     }
 }
