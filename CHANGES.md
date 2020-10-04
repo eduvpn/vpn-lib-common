@@ -3,6 +3,7 @@
 ## 2.2.2 (...)
 - rework `Config` class to offer strict typing
 - remove `CliParser` as it was barely used by the other projects
+- unify the HTTP client so all components use the same one
 
 ## 2.2.1 (2020-03-30)
 - swap 404/405 (issue #19)
