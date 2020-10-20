@@ -19,9 +19,8 @@ class CurlHttpClient implements HttpClientInterface
     private $requestHeaders = [];
 
     /**
-     * @param string|null   $authUser
-     * @param string|null   $authPass
-     * @param array<string> $requestHeaders
+     * @param string|null $authUser
+     * @param string|null $authPass
      */
     public function __construct($authUser = null, $authPass = null)
     {
