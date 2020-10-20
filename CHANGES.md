@@ -1,6 +1,6 @@
 # Changelog
 
-## 2.2.2 (...)
+## 2.2.2 (2020-10-20)
 - rework `Config` class to offer strict typing
 - remove `CliParser` as it was barely used by the other projects
 - unify the HTTP client so all components use the same one
