@@ -146,7 +146,7 @@ class ProfileConfig
      */
     public function vpnProtoPorts()
     {
-        return $this->config->requireArray('vpnProtoPorts', []);
+        return $this->config->requireArray('vpnProtoPorts', ['udp/1194', 'tcp/1194']);
     }
 
     /**
