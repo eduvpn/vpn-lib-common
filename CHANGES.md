@@ -3,7 +3,7 @@
 ## 2.2.3 (...)
 - refactor `ProfileConfig`
 - allow calls to `/qr` when enrolling for 2FA when 2FA is enforced
-    
+
 ## 2.2.2 (2020-10-20)
 - rework `Config` class to offer strict typing
 - remove `CliParser` as it was barely used by the other projects
