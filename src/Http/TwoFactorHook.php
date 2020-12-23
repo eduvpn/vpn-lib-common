@@ -52,16 +52,12 @@ class TwoFactorHook implements BeforeHookInterface
         $whiteList = [
             'POST' => [
                 '/two_factor_enroll',
-                '/_saml/acs',
                 '/_form/auth/verify',
                 '/_form/auth/logout',
                 '/_logout',
                 '/_two_factor/auth/verify/totp',
             ],
             'GET' => [
-                '/_saml/login',
-                '/_saml/logout',
-                '/_saml/metadata',
                 '/two_factor_enroll',
                 '/qr',
                 '/documentation',
