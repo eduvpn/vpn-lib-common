@@ -60,6 +60,17 @@ class TestHttpClient implements HttpClientInterface
     }
 
     /**
+     * @param string               $requestUrl
+     * @param array<string,string> $queryParameters
+     * @param array<string>        $requestHeaders
+     *
+     * @return HttpClientResponse
+     */
+    public function postJson($requestUrl, array $queryParameters, array $jsonData, array $requestHeaders = [])
+    {
+    }
+
+    /**
      * @param mixed $key
      * @param mixed $responseData
      *

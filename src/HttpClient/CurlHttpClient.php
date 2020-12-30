@@ -10,6 +10,7 @@
 namespace LC\Common\HttpClient;
 
 use LC\Common\HttpClient\Exception\HttpClientException;
+use LC\Common\Json;
 use ParagonIE\ConstantTime\Base64;
 use RuntimeException;
 
@@ -106,6 +107,46 @@ class CurlHttpClient implements HttpClientInterface
      */
     public function post($requestUrl, array $queryParameters, array $postData, array $requestHeaders = [])
     {
+        return $this->postRequest(
+            $requestUrl,
+            $queryParameters,
+            http_build_query($postData),
+            $requestHeaders
+        );
+    }
+
+    /**
+     * @param string               $requestUrl
+     * @param array<string,string> $queryParameters
+     * @param array<string>        $requestHeaders
+     *
+     * @return HttpClientResponse
+     */
+    public function postJson($requestUrl, array $queryParameters, array $jsonData, array $requestHeaders = [])
+    {
+        return $this->postRequest(
+            $requestUrl,
+            $queryParameters,
+            Json::encode($jsonData),
+            array_merge(
+                $requestHeaders,
+                [
+                    'Content-Type: application/json',
+                ]
+            )
+        );
+    }
+
+    /**
+     * @param string               $requestUrl
+     * @param array<string,string> $queryParameters
+     * @param string               $rawPost
+     * @param array<string>        $requestHeaders
+     *
+     * @return HttpClientResponse
+     */
+    private function postRequest($requestUrl, array $queryParameters, $rawPost, array $requestHeaders = [])
+    {
         // XXX do not duplicate all GET code
         if (false === $curlChannel = curl_init()) {
             throw new RuntimeException('unable to create cURL channel');
@@ -120,7 +161,7 @@ class CurlHttpClient implements HttpClientInterface
         $curlOptions = [
             CURLOPT_URL => $requestUrl,
             CURLOPT_HTTPHEADER => array_merge($this->requestHeaders, $requestHeaders),
-            CURLOPT_POSTFIELDS => http_build_query($postData),
+            CURLOPT_POSTFIELDS => $rawPost,
             CURLOPT_HEADER => false,
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_FOLLOWLOCATION => false,
