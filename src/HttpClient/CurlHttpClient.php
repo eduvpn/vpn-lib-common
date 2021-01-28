@@ -106,27 +106,10 @@ class CurlHttpClient implements HttpClientInterface
      */
     public function post($requestUrl, array $queryParameters, array $postData, array $requestHeaders = [])
     {
-        return $this->postRequest(
+        return $this->postRaw(
             $requestUrl,
             $queryParameters,
             http_build_query($postData),
-            $requestHeaders
-        );
-    }
-
-    /**
-     * @param string               $requestUrl
-     * @param array<string,string> $queryParameters
-     * @param array<string>        $requestHeaders
-     *
-     * @return HttpClientResponse
-     */
-    public function postRaw($requestUrl, array $queryParameters, string $rawPost, array $requestHeaders = [])
-    {
-        return $this->postRequest(
-            $requestUrl,
-            $queryParameters,
-            $rawPost,
             $requestHeaders
         );
     }
@@ -139,7 +122,7 @@ class CurlHttpClient implements HttpClientInterface
      *
      * @return HttpClientResponse
      */
-    private function postRequest($requestUrl, array $queryParameters, $rawPost, array $requestHeaders = [])
+    public function postRaw($requestUrl, array $queryParameters, $rawPost, array $requestHeaders = [])
     {
         // XXX do not duplicate all GET code
         if (false === $curlChannel = curl_init()) {

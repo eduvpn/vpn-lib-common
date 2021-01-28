@@ -64,11 +64,12 @@ class TestHttpClient implements HttpClientInterface
     /**
      * @param string               $requestUrl
      * @param array<string,string> $queryParameters
+     * @param string               $rawPost
      * @param array<string>        $requestHeaders
      *
      * @return HttpClientResponse
      */
-    public function postRaw($requestUrl, array $queryParameters, string $rawPost, array $requestHeaders = [])
+    public function postRaw($requestUrl, array $queryParameters, $rawPost, array $requestHeaders = [])
     {
     }
 
