@@ -66,7 +66,7 @@ class TestHttpClient implements HttpClientInterface
      *
      * @return HttpClientResponse
      */
-    public function postJson($requestUrl, array $queryParameters, array $jsonData, array $requestHeaders = [])
+    public function postRaw($requestUrl, array $queryParameters, string $rawPost, array $requestHeaders = [])
     {
     }
 

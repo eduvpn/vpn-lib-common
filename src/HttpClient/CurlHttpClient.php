@@ -10,7 +10,6 @@
 namespace LC\Common\HttpClient;
 
 use LC\Common\HttpClient\Exception\HttpClientException;
-use LC\Common\Json;
 use ParagonIE\ConstantTime\Base64;
 use RuntimeException;
 
@@ -122,18 +121,13 @@ class CurlHttpClient implements HttpClientInterface
      *
      * @return HttpClientResponse
      */
-    public function postJson($requestUrl, array $queryParameters, array $jsonData, array $requestHeaders = [])
+    public function postRaw($requestUrl, array $queryParameters, string $rawPost, array $requestHeaders = [])
     {
         return $this->postRequest(
             $requestUrl,
             $queryParameters,
-            Json::encode($jsonData),
-            array_merge(
-                $requestHeaders,
-                [
-                    'Content-Type: application/json',
-                ]
-            )
+            $rawPost,
+            $requestHeaders
         );
     }
 
