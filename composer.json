@@ -43,7 +43,7 @@
     },
     "support": {
         "email": "eduvpn@surfnet.nl",
-        "source": "https://github.com/eduvpn/vpn-lib-common"
+        "source": "https://git.sr.ht/~fkooman/vpn-lib-common"
     },
     "type": "library"
 }
