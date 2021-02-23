@@ -1,6 +1,6 @@
 # Changelog
 
-## 2.2.4 (...)
+## 2.2.4 (2021-02-23)
 - remove `tlsProtection` configuration option, `tls-crypt` will always be used
 - add `HttpClientInterface::postRaw` to allow sending JSON
 - remove obsolete `/_saml/*` whitelist
