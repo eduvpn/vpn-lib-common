@@ -2,6 +2,8 @@
 
 ## 2.2.4 (...)
 - remove `tlsProtection` configuration option, `tls-crypt` will always be used
+- add `HttpClientInterface::postRaw` to allow sending JSON
+- remove obsolete `/_saml/*` whitelist
 
 ## 2.2.3 (2020-11-27)
 - refactor `ProfileConfig`
