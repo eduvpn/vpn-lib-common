@@ -198,6 +198,14 @@ class ProfileConfig
     }
 
     /**
+     * @return string
+     */
+    public function vpnType()
+    {
+        return $this->config->requireString('vpnType', 'openvpn');
+    }
+
+    /**
      * @deprecated
      *
      * @return array
