@@ -21,19 +21,26 @@ class RadiusAuth implements CredentialValidatorInterface
     /** @var array */
     private $serverList;
 
+    /** @var int|null */
+    private $authorizationAttribute;
+
     /** @var string|null */
     private $realm = null;
 
     /** @var string|null */
     private $nasIdentifier = null;
 
-    public function __construct(LoggerInterface $logger, array $serverList)
+    /**
+     * @param int|null $authorizationAttribute
+     */
+    public function __construct(LoggerInterface $logger, array $serverList, $authorizationAttribute)
     {
         if (false === \extension_loaded('radius')) {
             throw new RuntimeException('"radius" PHP extension not available');
         }
         $this->logger = $logger;
         $this->serverList = $serverList;
+        $this->authorizationAttribute = $authorizationAttribute;
     }
 
     /**
@@ -87,31 +94,46 @@ class RadiusAuth implements CredentialValidatorInterface
             }
         }
 
-        if (false === radius_create_request($radiusAuth, RADIUS_ACCESS_REQUEST)) {
+        if (false === radius_create_request($radiusAuth, \RADIUS_ACCESS_REQUEST)) {
             $errorMsg = sprintf('RADIUS error: %s', radius_strerror($radiusAuth));
             $this->logger->error($errorMsg);
 
             throw new RadiusException($errorMsg);
         }
 
-        radius_put_attr($radiusAuth, RADIUS_USER_NAME, $authUser);
-        radius_put_attr($radiusAuth, RADIUS_USER_PASSWORD, $authPass);
+        radius_put_attr($radiusAuth, \RADIUS_USER_NAME, $authUser);
+        radius_put_attr($radiusAuth, \RADIUS_USER_PASSWORD, $authPass);
         if (null !== $this->nasIdentifier) {
-            radius_put_attr($radiusAuth, RADIUS_NAS_IDENTIFIER, $this->nasIdentifier);
+            radius_put_attr($radiusAuth, \RADIUS_NAS_IDENTIFIER, $this->nasIdentifier);
         }
 
-        if (RADIUS_ACCESS_ACCEPT === radius_send_request($radiusAuth)) {
-            return new UserInfo($authUser, []);
+        if (false === $radiusResponse = radius_send_request($radiusAuth)) {
+            $errorMsg = sprintf('RADIUS error: %s', radius_strerror($radiusAuth));
+            $this->logger->error($errorMsg);
+
+            throw new RadiusException($errorMsg);
         }
 
-        if (RADIUS_ACCESS_REJECT === radius_send_request($radiusAuth)) {
-            // wrong authUser/authPass
+        if (\RADIUS_ACCESS_ACCEPT !== $radiusResponse) {
+            // most likely wrong authUser/authPass, not an "error" in any
+            // case
             return false;
         }
 
-        $errorMsg = sprintf('RADIUS error: %s', radius_strerror($radiusAuth));
-        $this->logger->error($errorMsg);
+        $permissionList = [];
+        if (null !== $this->authorizationAttribute) {
+            // find the authorization attribute and use its value
+            while ($radiusAttribute = radius_get_attr($radiusAuth)) {
+                if (!\is_array($radiusAttribute)) {
+                    continue;
+                }
+                if ($this->authorizationAttribute !== $radiusAttribute['attr']) {
+                    continue;
+                }
+                $permissionList[] = $radiusAttribute['data'];
+            }
+        }
 
-        throw new RadiusException($errorMsg);
+        return new UserInfo($authUser, $permissionList);
     }
 }
