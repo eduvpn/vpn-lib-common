@@ -22,7 +22,7 @@ class RadiusAuth implements CredentialValidatorInterface
     private $serverList;
 
     /** @var int|null */
-    private $authorizationAttribute;
+    private $permissionAttribute;
 
     /** @var string|null */
     private $realm = null;
@@ -31,16 +31,16 @@ class RadiusAuth implements CredentialValidatorInterface
     private $nasIdentifier = null;
 
     /**
-     * @param int|null $authorizationAttribute
+     * @param int|null $permissionAttribute
      */
-    public function __construct(LoggerInterface $logger, array $serverList, $authorizationAttribute)
+    public function __construct(LoggerInterface $logger, array $serverList, $permissionAttribute)
     {
         if (false === \extension_loaded('radius')) {
             throw new RuntimeException('"radius" PHP extension not available');
         }
         $this->logger = $logger;
         $this->serverList = $serverList;
-        $this->authorizationAttribute = $authorizationAttribute;
+        $this->permissionAttribute = $permissionAttribute;
     }
 
     /**
@@ -121,13 +121,13 @@ class RadiusAuth implements CredentialValidatorInterface
         }
 
         $permissionList = [];
-        if (null !== $this->authorizationAttribute) {
+        if (null !== $this->permissionAttribute) {
             // find the authorization attribute and use its value
             while ($radiusAttribute = radius_get_attr($radiusAuth)) {
                 if (!\is_array($radiusAttribute)) {
                     continue;
                 }
-                if ($this->authorizationAttribute !== $radiusAttribute['attr']) {
+                if ($this->permissionAttribute !== $radiusAttribute['attr']) {
                     continue;
                 }
                 $permissionList[] = $radiusAttribute['data'];
