@@ -107,7 +107,6 @@ class RadiusAuth implements CredentialValidatorInterface
             radius_put_attr($radiusAuth, \RADIUS_NAS_IDENTIFIER, $this->nasIdentifier);
         }
 
-        /** @var int|false $radiusResponse */
         $radiusResponse = radius_send_request($radiusAuth);
         if (false === $radiusResponse) {
             $errorMsg = sprintf('RADIUS error: %s', radius_strerror($radiusAuth));
