@@ -1,5 +1,8 @@
 # Changelog
 
+## 2.2.5 (...)
+- update RADIUS plugin to support permissions through RADIUS attributes
+
 ## 2.2.4 (2021-02-23)
 - remove `tlsProtection` configuration option, `tls-crypt` will always be used
 - add `HttpClientInterface::postRaw` to allow sending JSON
