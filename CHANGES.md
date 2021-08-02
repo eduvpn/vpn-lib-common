@@ -1,7 +1,8 @@
 # Changelog
 
-## 2.2.5 (...)
-- update RADIUS plugin to support permissions through RADIUS attributes
+## 2.2.5 (2021-08-02)
+- update RADIUS plugin to support (non-vendor specific) permissions through 
+  RADIUS attributes
 
 ## 2.2.4 (2021-02-23)
 - remove `tlsProtection` configuration option, `tls-crypt` will always be used
