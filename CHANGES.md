@@ -1,5 +1,8 @@
 # Changelog
 
+## 2.2.6 (2021-08-27)
+- fix to accommodate for path change from `/qr` to `/qr/totp` (PR#21)
+
 ## 2.2.5 (2021-08-02)
 - update RADIUS plugin to support (non-vendor specific) permissions through 
   RADIUS attributes
