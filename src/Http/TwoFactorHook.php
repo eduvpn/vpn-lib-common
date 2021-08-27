@@ -59,7 +59,7 @@ class TwoFactorHook implements BeforeHookInterface
             ],
             'GET' => [
                 '/two_factor_enroll',
-                '/qr',
+                '/qr/totp',
                 '/documentation',
             ],
         ];
