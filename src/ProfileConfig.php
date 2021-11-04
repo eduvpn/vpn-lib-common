@@ -78,6 +78,14 @@ class ProfileConfig
     /**
      * @return array
      */
+    public function excludeRoutes()
+    {
+        return $this->config->requireArray('excludeRoutes', []);
+    }
+
+    /**
+     * @return array
+     */
     public function dns()
     {
         return $this->config->requireArray('dns', []);

@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.2.7 (...)
+- add InputValidation::tcpOnly
+- add ProfileConfig::excludeRoutes
+
 ## 2.2.6 (2021-08-27)
 - fix to accommodate for path change from `/qr` to `/qr/totp` (PR#21)
 
