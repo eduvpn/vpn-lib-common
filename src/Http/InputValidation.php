@@ -253,20 +253,6 @@ class InputValidation
     }
 
     /**
-     * @param string $authKey
-     *
-     * @return string
-     */
-    public static function authKey($authKey)
-    {
-        if (1 !== preg_match('/^[a-f0-9]{32}$/', $authKey)) {
-            throw new InputValidationException('invalid "authKey"');
-        }
-
-        return $authKey;
-    }
-
-    /**
      * @param string $twoFactorType
      *
      * @return string
