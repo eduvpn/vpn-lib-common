@@ -1,5 +1,8 @@
 # Changelog
 
+## 2.2.8 (...)
+- add `InputValidation::preferTcp`
+
 ## 2.2.7 (2021-11-08)
 - add InputValidation::tcpOnly
 - add ProfileConfig::excludeRoutes

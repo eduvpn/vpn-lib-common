@@ -225,6 +225,24 @@ class InputValidation
     }
 
     /**
+     * @param string|null $preferTcp
+     *
+     * @return string|null
+     */
+    public static function preferTcp($preferTcp)
+    {
+        if (null === $preferTcp) {
+            return null;
+        }
+
+        if (!\in_array($preferTcp, ['yes', 'no'], true)) {
+            throw new InputValidationException('invalid "prefer_tcp"');
+        }
+
+        return $preferTcp;
+    }
+
+    /**
      * @param string $disconnectedAt
      *
      * @return int
