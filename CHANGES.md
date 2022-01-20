@@ -1,6 +1,6 @@
 # Changelog
 
-## 2.2.8 (...)
+## 2.2.8 (2022-01-20)
 - add `InputValidation::preferTcp`
 
 ## 2.2.7 (2021-11-08)
