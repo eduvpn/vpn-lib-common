@@ -15,6 +15,11 @@
             "LC\\Common\\Tests\\": "tests/"
         }
     },
+    "config": {
+        "platform": {
+            "php": "5.4.8"
+        }
+    },
     "description": "Shared library for Let's Connect! and eduVPN",
     "license": "AGPL-3.0-or-later",
     "name": "lc/common",
@@ -30,7 +35,7 @@
         "ircmaxell/password-compat": "^1",
         "paragonie/constant_time_encoding": "^1|^2",
         "paragonie/random_compat": ">=1",
-        "php": ">= 5.4",
+        "php": ">= 5.4.8",
         "psr/log": "^1.0",
         "symfony/polyfill-php56": "^1"
     },
