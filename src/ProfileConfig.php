@@ -182,6 +182,14 @@ class ProfileConfig
     }
 
     /**
+     * @return string|null
+     */
+    public function ldapAuthPlugin()
+    {
+        return $this->config->optionalString('ldapAuthPlugin');
+    }
+
+    /**
      * @return bool
      */
     public function tlsOneThree()
