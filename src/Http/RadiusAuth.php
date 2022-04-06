@@ -10,12 +10,12 @@
 namespace LC\Common\Http;
 
 use LC\Common\Http\Exception\RadiusException;
-use Psr\Log\LoggerInterface;
+use LC\Common\Log\LoggerInterface;
 use RuntimeException;
 
 class RadiusAuth implements CredentialValidatorInterface
 {
-    /** @var \Psr\Log\LoggerInterface */
+    /** @var \LC\Common\Log\LoggerInterface */
     private $logger;
 
     /** @var array */
