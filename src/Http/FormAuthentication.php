@@ -64,11 +64,11 @@ class FormAuthentication implements ServiceModuleInterface, BeforeHookInterface
                 $redirectTo = $request->requirePostParameter('_form_auth_redirect_to');
 
                 // validate the URL
-                if (false === filter_var($redirectTo, FILTER_VALIDATE_URL, FILTER_FLAG_PATH_REQUIRED)) {
+                if (false === filter_var($redirectTo, \FILTER_VALIDATE_URL, \FILTER_FLAG_PATH_REQUIRED)) {
                     throw new HttpException('invalid redirect_to URL', 400);
                 }
                 // extract the "host" part of the URL
-                $redirectToHost = parse_url($redirectTo, PHP_URL_HOST);
+                $redirectToHost = parse_url($redirectTo, \PHP_URL_HOST);
                 if (!\is_string($redirectToHost)) {
                     throw new HttpException('invalid redirect_to URL, unable to extract host', 400);
                 }
