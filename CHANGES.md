@@ -1,5 +1,10 @@
 # Changelog
 
+## 2.2.9 (...)
+- drop `psr/log` and implement our own `LoggerInterface`, `SysLogger` and 
+  `NullLogger`
+- source formatting
+
 ## 2.2.8 (2022-01-20)
 - add `InputValidation::preferTcp`
 
