@@ -36,16 +36,6 @@ class NullLogger implements LoggerInterface
      *
      * @return void
      */
-    public function notice($logMessage)
-    {
-        // NOP
-    }
-
-    /**
-     * @param string $logMessage
-     *
-     * @return void
-     */
     public function info($logMessage)
     {
         // NOP
