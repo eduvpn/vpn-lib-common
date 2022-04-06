@@ -13,7 +13,10 @@ use RuntimeException;
 
 class SysLogger implements LoggerInterface
 {
-    public function __construct(string $appName)
+    /**
+     * @param string $appName
+     */
+    public function __construct($appName)
     {
         if (false === openlog($appName, \LOG_PERROR | \LOG_ODELAY, \LOG_USER)) {
             throw new RuntimeException('unable to open syslog');
