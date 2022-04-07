@@ -1,6 +1,6 @@
 # Changelog
 
-## 2.2.9 (...)
+## 2.2.9 (2022-04-07)
 - drop `psr/log` and implement our own `LoggerInterface`, `SysLogger` and 
   `NullLogger`
 - source formatting
