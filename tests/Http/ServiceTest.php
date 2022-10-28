@@ -29,23 +29,27 @@ class ServiceTest extends TestCase
         );
 
         $service = new Service();
-        $service->get('/foo',
-        /**
-         * @return \LC\Common\Http\Response
-         */
-        function (Request $request) {
-            $response = new Response(201, 'application/json');
-            $response->setBody('{}');
+        $service->get(
+            '/foo',
+            /**
+             * @return \LC\Common\Http\Response
+             */
+            function (Request $request) {
+                $response = new Response(201, 'application/json');
+                $response->setBody('{}');
 
-            return $response;
-        });
-        $service->post('/bar',
-        /**
-         * @return \LC\Common\Http\Response
-         */
-        function (Request $request) {
-            return new Response();
-        });
+                return $response;
+            }
+        );
+        $service->post(
+            '/bar',
+            /**
+             * @return \LC\Common\Http\Response
+             */
+            function (Request $request) {
+                return new Response();
+            }
+        );
         $response = $service->run($request);
 
         $this->assertSame(201, $response->getStatusCode());
@@ -64,16 +68,18 @@ class ServiceTest extends TestCase
         );
 
         $service = new Service();
-        $service->get('/foo',
-        /**
-         * @return \LC\Common\Http\Response
-         */
-        function (Request $request) {
-            $response = new Response(201, 'application/json');
-            $response->setBody('{}');
+        $service->get(
+            '/foo',
+            /**
+             * @return \LC\Common\Http\Response
+             */
+            function (Request $request) {
+                $response = new Response(201, 'application/json');
+                $response->setBody('{}');
 
-            return $response;
-        });
+                return $response;
+            }
+        );
         $response = $service->run($request);
 
         $this->assertSame(404, $response->getStatusCode());
@@ -93,7 +99,8 @@ class ServiceTest extends TestCase
         );
 
         $service = new Service();
-        $service->get('/foo',
+        $service->get(
+            '/foo',
             /**
              * @return \LC\Common\Http\Response
              */
@@ -101,7 +108,8 @@ class ServiceTest extends TestCase
                 return new Response();
             }
         );
-        $service->post('/foo',
+        $service->post(
+            '/foo',
             /**
              * @return \LC\Common\Http\Response
              */
@@ -128,7 +136,8 @@ class ServiceTest extends TestCase
         );
 
         $service = new Service();
-        $service->get('/foo',
+        $service->get(
+            '/foo',
             /**
              * @return \LC\Common\Http\Response
              */
@@ -136,7 +145,8 @@ class ServiceTest extends TestCase
                 return new Response();
             }
         );
-        $service->post('/foo',
+        $service->post(
+            '/foo',
             /**
              * @return \LC\Common\Http\Response
              */
@@ -180,16 +190,18 @@ class ServiceTest extends TestCase
         $service->addBeforeHook('test', $callbackHook);
         $service->addAfterHook('test', $callbackHook);
 
-        $service->get('/foo',
-        /**
-         * @return \LC\Common\Http\Response
-         */
-        function (Request $request, array $hookData) {
-            $response = new Response();
-            $response->setBody($hookData['test']);
+        $service->get(
+            '/foo',
+            /**
+             * @return \LC\Common\Http\Response
+             */
+            function (Request $request, array $hookData) {
+                $response = new Response();
+                $response->setBody($hookData['test']);
 
-            return $response;
-        });
+                return $response;
+            }
+        );
         $response = $service->run($request);
 
         $this->assertSame(200, $response->getStatusCode());
@@ -218,13 +230,15 @@ class ServiceTest extends TestCase
         );
         $service->addBeforeHook('test', $callbackHook);
 
-        $service->get('/foo',
-        /**
-         * @return \LC\Common\Http\Response
-         */
-        function (Request $request, array $hookData) {
-            return new Response();
-        });
+        $service->get(
+            '/foo',
+            /**
+             * @return \LC\Common\Http\Response
+             */
+            function (Request $request, array $hookData) {
+                return new Response();
+            }
+        );
         $response = $service->run($request);
 
         $this->assertSame(201, $response->getStatusCode());
@@ -280,13 +294,15 @@ class ServiceTest extends TestCase
         );
 
         $service = new Service();
-        $service->get('/foo',
-        /**
-         * @return \LC\Common\Http\Response
-         */
-        function (Request $request) {
-            return new Response(200);
-        });
+        $service->get(
+            '/foo',
+            /**
+             * @return \LC\Common\Http\Response
+             */
+            function (Request $request) {
+                return new Response(200);
+            }
+        );
         $response = $service->run($request);
         $this->assertSame(404, $response->getStatusCode());
         $this->assertSame('404: "/bar" not found', $response->getBody());
@@ -305,13 +321,15 @@ class ServiceTest extends TestCase
         );
 
         $service = new Service(new TestHtmlTpl());
-        $service->get('/foo',
-        /**
-         * @return \LC\Common\Http\Response
-         */
-        function (Request $request) {
-            return new Response(200);
-        });
+        $service->get(
+            '/foo',
+            /**
+             * @return \LC\Common\Http\Response
+             */
+            function (Request $request) {
+                return new Response(200);
+            }
+        );
         $response = $service->run($request);
         $this->assertSame(404, $response->getStatusCode());
         $this->assertSame('<html><head><title>404</title></head><body><h1>Error (404)</h1><p>"/bar" not found</p></body></html>', $response->getBody());
