@@ -10,6 +10,7 @@ return $config->setRules(
         'ordered_class_elements' => true,
         'array_syntax' => ['syntax' => 'short'],
         'phpdoc_order' => true,
+        'no_unused_imports' => true,
         'phpdoc_no_empty_return' => false,
         'phpdoc_add_missing_param_annotation' => true,
         'strict_comparison' => true,

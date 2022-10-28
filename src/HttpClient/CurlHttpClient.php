@@ -10,7 +10,6 @@
 namespace LC\Common\HttpClient;
 
 use LC\Common\HttpClient\Exception\HttpClientException;
-use ParagonIE\ConstantTime\Base64;
 use RuntimeException;
 
 class CurlHttpClient implements HttpClientInterface
@@ -29,7 +28,7 @@ class CurlHttpClient implements HttpClientInterface
             if (null !== $authPass) {
                 $authData .= ':'.$authPass;
             }
-            $this->requestHeaders[] = 'Authorization: Basic '.Base64::encode($authData);
+            $this->requestHeaders[] = 'Authorization: Basic '.sodium_bin2base64($authData, SODIUM_BASE64_VARIANT_ORIGINAL);
         }
     }
 

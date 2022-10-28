@@ -39,8 +39,8 @@
         "ext-pcre": "*",
         "ext-spl": "*",
         "ircmaxell/password-compat": "^1",
-        "paragonie/constant_time_encoding": "^1|^2",
         "paragonie/random_compat": ">=1",
+        "paragonie/sodium_compat": "^1",
         "php": ">= 5.4.8",
         "symfony/polyfill-php56": "^1"
     },

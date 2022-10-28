@@ -9,8 +9,6 @@
 
 namespace LC\Common;
 
-use ParagonIE\ConstantTime\Hex;
-
 class Random implements RandomInterface
 {
     /**
@@ -20,7 +18,7 @@ class Random implements RandomInterface
      */
     public function get($length)
     {
-        return Hex::encode(
+        return sodium_bin2hex(
             random_bytes($length)
         );
     }
