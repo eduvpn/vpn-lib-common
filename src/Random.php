@@ -18,7 +18,7 @@ class Random implements RandomInterface
      */
     public function get($length)
     {
-        return sodium_bin2hex(
+        return Hex::encode(
             random_bytes($length)
         );
     }
