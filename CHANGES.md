@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.3.0 (2022-10-31)
+- drop `paragonie/constant_time_encoding` dependency
+- switch to new version of php-cs-fixer
+- add Makefile
+- switch from PHPUnit to `fkooman/put`
+
 ## 2.2.9 (2022-04-07)
 - drop `psr/log` and implement our own `LoggerInterface`, `SysLogger` and 
   `NullLogger`
