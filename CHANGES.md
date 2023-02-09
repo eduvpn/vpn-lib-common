@@ -1,5 +1,8 @@
 # Changelog
 
+## 2.3.1 (2023-02-09)
+- prevent authUser to contain "\x00" with RADIUS authentication
+
 ## 2.3.0 (2022-10-31)
 - drop `paragonie/constant_time_encoding` dependency
 - switch to new version of php-cs-fixer
